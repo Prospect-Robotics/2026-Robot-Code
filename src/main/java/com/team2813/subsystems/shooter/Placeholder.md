@@ -11,4 +11,4 @@
 
 ## Subsystem Hardware Capabilities:
 - The hood should control launch angle.
-- The shooter speed should contain distance.
+- The shooter speed should control distance.
