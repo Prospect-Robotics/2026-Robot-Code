@@ -1,11 +1,11 @@
 package com.team2813.subsystems.hopper;
 
+import static com.team2813.subsystems.hopper.HopperConstants.*;
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import static com.team2813.subsystems.hopper.HopperConstants.*;
-import static edu.wpi.first.units.Units.Volts;
 
 public class Hopper extends SubsystemBase {
   private final HopperIO io;
