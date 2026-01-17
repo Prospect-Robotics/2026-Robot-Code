@@ -18,7 +18,7 @@ public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
-  public enum Mode {
+  public static enum Mode {
     /** Running on a real robot. */
     REAL,
 
@@ -28,7 +28,4 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
-
-  // CAN IDs
-  public static final int ROLLER_MOTOR_CAN_ID = 18;
 }
