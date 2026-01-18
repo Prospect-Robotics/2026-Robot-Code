@@ -1,7 +1,6 @@
 package com.team2813.subsystems.intake;
 
-import static com.team2813.subsystems.hopper.HopperConstants.INTAKE_VOLTAGE;
-import static com.team2813.subsystems.hopper.HopperConstants.OUTTAKE_VOLTAGE;
+import static com.team2813.subsystems.intake.IntakeConstants.*;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.wpilibj2.command.Command;
