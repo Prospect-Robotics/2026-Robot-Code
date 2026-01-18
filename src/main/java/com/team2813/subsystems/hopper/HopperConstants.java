@@ -11,7 +11,7 @@ public class HopperConstants {
   public static final Voltage ROLLER_INTAKE_VOLTAGE = Volts.of(5);
   public static final Voltage ROLLER_OUTTAKE_VOLTAGE = Volts.of(-5);
 
-  public static final TalonFXConfiguration HOTDOG_ROLLER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
@@ -19,8 +19,8 @@ public class HopperConstants {
   public static final Voltage FEEDER_INTAKE_VOLTAGE = Volts.of(3);
   public static final Voltage OUTTAKE_VOLTAGE = Volts.of(-3);
 
-  public static final TalonFXConfiguration MAIN_INTAKE_MOTOR_CONFIG =
-          new TalonFXConfiguration()
-                  .withMotorOutput(
-                          new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+  public static final TalonFXConfiguration MAIN_FEEDER_MOTOR_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 }

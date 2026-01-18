@@ -1,13 +1,12 @@
 package com.team2813.subsystems.hopper;
 
-import static com.team2813.subsystems.hopper.HopperConstants.HOTDOG_ROLLER_MOTOR_CONFIG;
+import static com.team2813.subsystems.hopper.HopperConstants.*;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
-import com.team2813.subsystems.shooter.IntakeConstants;
 import edu.wpi.first.units.measure.Voltage;
 
 public class HopperIOReal implements HopperIO {
@@ -17,22 +16,29 @@ public class HopperIOReal implements HopperIO {
 
   public HopperIOReal() {
     rollerMotor = new TalonFX(Constants.ROLLER_MOTOR_CAN_ID);
-    rollerMotor.getConfigurator().apply(HOTDOG_ROLLER_MOTOR_CONFIG);
+    rollerMotor.getConfigurator().apply(ROLLER_MOTOR_CONFIG);
 
-    mainFeederMotor = new TalonFX(Constants.MAIN_INTAKE_MOTOR_ID);
-    mainFeederMotor.getConfigurator().apply(IntakeConstants.MAIN_INTAKE_MOTOR_CONFIG);
+    mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_ID);
+    mainFeederMotor.getConfigurator().apply(MAIN_FEEDER_MOTOR_CONFIG);
 
-    followerFeederMotor = new TalonFX(Constants.FOLLOWER_INTAKE_MOTOR_ID);
+    followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_ID);
     followerFeederMotor.setControl(
-      new Follower(Constants.MAIN_INTAKE_MOTOR_ID, MotorAlignmentValue.Opposed));
-
+        new Follower(Constants.MAIN_FEEDER_MOTOR_ID, MotorAlignmentValue.Opposed));
   }
 
   @Override
   public void updateState(HopperIOInputs inputs) {
     inputs.rollerMotorCurrent = rollerMotor.getStatorCurrent().getValue();
-    inputs.rollerMotorVoltage = rollerMotor.getMotorVoltage().getValue();
     inputs.rollerMotorRPS = rollerMotor.getRotorVelocity().getValue();
+    inputs.rollerMotorVoltage = rollerMotor.getMotorVoltage().getValue();
+
+    inputs.mainFeederVoltage = mainFeederMotor.getMotorVoltage().getValue();
+    inputs.mainFeederRPS = mainFeederMotor.getRotorVelocity().getValue();
+    inputs.mainFeederCurrent = mainFeederMotor.getStatorCurrent().getValue();
+
+    inputs.followerFeederVoltage = followerFeederMotor.getMotorVoltage().getValue();
+    inputs.followerFeederRPS = followerFeederMotor.getRotorVelocity().getValue();
+    inputs.followerFeederCurrent = followerFeederMotor.getStatorCurrent().getValue();
   }
 
   @Override

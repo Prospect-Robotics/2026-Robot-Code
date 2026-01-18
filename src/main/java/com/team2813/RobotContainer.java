@@ -20,10 +20,6 @@ import com.team2813.subsystems.hopper.Hopper;
 import com.team2813.subsystems.hopper.HopperIO;
 import com.team2813.subsystems.hopper.HopperIOReal;
 import com.team2813.subsystems.hopper.HopperIOSim;
-import com.team2813.subsystems.shooter.Intake;
-import com.team2813.subsystems.shooter.IntakeIO;
-import com.team2813.subsystems.shooter.IntakeIOReal;
-import com.team2813.subsystems.shooter.IntakeIOSim;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,8 +38,6 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
-  private final Intake intake;
-
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
@@ -66,8 +60,6 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
 
         hopper = new Hopper(new HopperIOReal());
-
-        intake = new Intake(new IntakeIOReal());
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -100,8 +92,6 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOSim());
 
-        intake = new Intake(new IntakeIOSim());
-
         break;
 
       default:
@@ -115,8 +105,6 @@ public class RobotContainer {
                 new ModuleIO() {});
 
         hopper = new Hopper(new HopperIO() {});
-
-        intake = new Intake(new IntakeIO() {});
 
         break;
     }
@@ -159,15 +147,9 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    controller
-        .leftBumper()
-        .whileTrue(new ParallelCommandGroup(hopper.intakeCommand(), intake.intakeCommand()));
-    controller
-        .rightBumper()
-        .whileTrue(new ParallelCommandGroup(hopper.outtakeCommand(), intake.outtakeCommand()));
-    controller
-        .povDown()
-        .onTrue(new ParallelCommandGroup(hopper.stopCommand(), intake.stopCommand()));
+    controller.leftBumper().whileTrue(new ParallelCommandGroup(hopper.intakeCommand()));
+    controller.rightBumper().whileTrue(new ParallelCommandGroup(hopper.outtakeCommand()));
+    controller.povDown().onTrue(new ParallelCommandGroup(hopper.stopCommand()));
 
     //    // Lock to 0° when A button is held
     //    controller
