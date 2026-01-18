@@ -1,8 +1,9 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.shooter;
 
-import static com.team2813.subsystems.intake.IntakeConstants.*;
+import static com.team2813.subsystems.shooter.IntakeConstants.*;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.team2813.subsystems.intake.IntakeIOInputsAutoLogged;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;

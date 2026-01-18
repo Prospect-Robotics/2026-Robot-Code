@@ -1,4 +1,4 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.shooter;
 
 import com.team2813.subsystems.hopper.HopperIO;
 import edu.wpi.first.units.measure.Voltage;

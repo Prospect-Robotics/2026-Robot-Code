@@ -24,11 +24,11 @@ public class Hopper extends SubsystemBase {
   }
 
   public void intake() {
-    io.setMotorVoltage(INTAKE_VOLTAGE);
+    io.setMotorVoltage(ROLLER_INTAKE_VOLTAGE);
   }
 
   public void outtake() {
-    io.setMotorVoltage(OUTTAKE_VOLTAGE);
+    io.setMotorVoltage(ROLLER_OUTTAKE_VOLTAGE);
   }
 
   public void stop() {

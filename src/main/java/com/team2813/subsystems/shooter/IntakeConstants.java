@@ -1,4 +1,4 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.Volts;
 
