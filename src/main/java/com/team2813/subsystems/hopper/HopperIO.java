@@ -34,7 +34,8 @@ public interface HopperIO {
   default void updateState(HopperIOInputs inputs) {}
 
   /**
-   * @param voltage Voltage to apply to the motor.
+   * @param rollerVoltage Voltage to apply to the roller motor.
+   * @param feederVoltage Voltage to apply to the feeder motor(s).
    */
-  default void setMotorVoltage(Voltage voltage) {}
+  default void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {}
 }

@@ -42,8 +42,8 @@ public class HopperIOReal implements HopperIO {
   }
 
   @Override
-  public void setMotorVoltage(Voltage voltage) {
-    rollerMotor.setVoltage(voltage.in(Volts));
-    mainFeederMotor.setVoltage(voltage.in(Volts));
+  public void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {
+    rollerMotor.setVoltage(rollerVoltage.in(Volts));
+    mainFeederMotor.setVoltage(feederVoltage.in(Volts));
   }
 }

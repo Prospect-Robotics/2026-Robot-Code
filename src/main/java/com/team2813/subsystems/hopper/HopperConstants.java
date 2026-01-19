@@ -17,7 +17,7 @@ public class HopperConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 
   public static final Voltage FEEDER_INTAKE_VOLTAGE = Volts.of(3);
-  public static final Voltage OUTTAKE_VOLTAGE = Volts.of(-3);
+  public static final Voltage FEEDER_OUTTAKE_VOLTAGE = Volts.of(-3);
 
   public static final TalonFXConfiguration MAIN_FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()

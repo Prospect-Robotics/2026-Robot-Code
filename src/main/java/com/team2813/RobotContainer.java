@@ -23,7 +23,6 @@ import com.team2813.subsystems.hopper.HopperIOSim;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -147,9 +146,9 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    controller.leftBumper().whileTrue(new ParallelCommandGroup(hopper.intakeCommand()));
-    controller.rightBumper().whileTrue(new ParallelCommandGroup(hopper.outtakeCommand()));
-    controller.povDown().onTrue(new ParallelCommandGroup(hopper.stopCommand()));
+    controller.leftBumper().whileTrue(hopper.intakeCommand());
+    controller.rightBumper().whileTrue(hopper.outtakeCommand());
+    controller.povDown().onTrue(hopper.stopCommand());
 
     //    // Lock to 0° when A button is held
     //    controller
