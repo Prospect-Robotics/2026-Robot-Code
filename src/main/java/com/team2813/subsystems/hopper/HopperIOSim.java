@@ -1,6 +1,5 @@
 package com.team2813.subsystems.hopper;
 
-import com.team2813.subsystems.hopper.HopperConstants;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.Follower;
