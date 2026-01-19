@@ -1,7 +1,6 @@
 package com.team2813.subsystems.hopper;
 
-import static com.team2813.subsystems.hopper.HopperConstants.MAIN_FEEDER_MOTOR_CONFIG;
-import static com.team2813.subsystems.hopper.HopperConstants.ROLLER_MOTOR_CONFIG;
+import com.team2813.subsystems.hopper.HopperConstants;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.Follower;
@@ -25,11 +24,11 @@ public class HopperIOSim implements HopperIO {
 
   public HopperIOSim() {
     rollerMotor = new TalonFX(Constants.ROLLER_MOTOR_CAN_ID);
-    rollerMotor.getConfigurator().apply(ROLLER_MOTOR_CONFIG);
+    rollerMotor.getConfigurator().apply(HopperConstants.ROLLER_MOTOR_CONFIG);
     rollerMotorSimState = rollerMotor.getSimState();
 
     mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_ID);
-    mainFeederMotor.getConfigurator().apply(MAIN_FEEDER_MOTOR_CONFIG);
+    mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_FEEDER_MOTOR_CONFIG);
     mainFeederMotorSimState = mainFeederMotor.getSimState();
 
     followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_ID);
