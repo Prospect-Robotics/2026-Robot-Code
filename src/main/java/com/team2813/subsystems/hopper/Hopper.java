@@ -1,6 +1,5 @@
 package com.team2813.subsystems.hopper;
 
-import static com.team2813.subsystems.hopper.HopperConstants.*;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,11 +23,13 @@ public class Hopper extends SubsystemBase {
   }
 
   public void intake() {
-    io.setMotorVoltage(ROLLER_INTAKE_VOLTAGE, FEEDER_INTAKE_VOLTAGE);
+    io.setMotorVoltage(
+        HopperConstants.ROLLER_INTAKE_VOLTAGE, HopperConstants.FEEDER_INTAKE_VOLTAGE);
   }
 
   public void outtake() {
-    io.setMotorVoltage(ROLLER_OUTTAKE_VOLTAGE, FEEDER_OUTTAKE_VOLTAGE);
+    io.setMotorVoltage(
+        HopperConstants.ROLLER_OUTTAKE_VOLTAGE, HopperConstants.FEEDER_OUTTAKE_VOLTAGE);
   }
 
   public void stop() {
