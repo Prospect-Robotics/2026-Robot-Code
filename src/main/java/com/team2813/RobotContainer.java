@@ -37,7 +37,6 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
-
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
