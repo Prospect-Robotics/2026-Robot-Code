@@ -1,6 +1,5 @@
 package com.team2813.subsystems.hopper;
 
-import static com.team2813.subsystems.hopper.HopperConstants.HOTDOG_ROLLER_MOTOR_CONFIG;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.Follower;
