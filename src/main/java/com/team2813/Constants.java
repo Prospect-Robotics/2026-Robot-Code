@@ -31,4 +31,7 @@ public final class Constants {
 
   // CAN IDs
   public static final int ROLLER_MOTOR_CAN_ID = 18;
+
+  public static final int MAIN_FEEDER_MOTOR_ID = 19;
+  public static final int FOLLOWER_FEEDER_MOTOR_ID = 20;
 }

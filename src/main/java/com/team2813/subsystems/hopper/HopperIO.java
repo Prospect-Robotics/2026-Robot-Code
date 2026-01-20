@@ -15,6 +15,14 @@ public interface HopperIO {
     public Voltage rollerMotorVoltage = Volts.of(0);
     public AngularVelocity rollerMotorRPS = RotationsPerSecond.of(0);
     public Current rollerMotorCurrent = Amps.of(0);
+
+    public Voltage mainFeederVoltage = Volts.of(0);
+    public AngularVelocity mainFeederRPS = RotationsPerSecond.of(0);
+    public Current mainFeederCurrent = Amps.of(0);
+
+    public Voltage followerFeederVoltage = Volts.of(0);
+    public AngularVelocity followerFeederRPS = RotationsPerSecond.of(0);
+    public Current followerFeederCurrent = Amps.of(0);
   }
 
   /**
@@ -26,7 +34,8 @@ public interface HopperIO {
   default void updateState(HopperIOInputs inputs) {}
 
   /**
-   * @param voltage Voltage to apply to the motor.
+   * @param rollerVoltage Voltage to apply to the roller motor.
+   * @param feederVoltage Voltage to apply to the feeder motor(s).
    */
-  default void setMotorVoltage(Voltage voltage) {}
+  default void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {}
 }
