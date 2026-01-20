@@ -8,6 +8,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Voltage;
 
 public class HopperConstants {
+  public static final Voltage INTAKE_VOLTAGE = Volts.of(5);
+  public static final Voltage OUTTAKE_VOLTAGE = Volts.of(-5);
 
   // TODO: consider using Preferences or Smartdashboard to update voltage values w/o redeploy.
   public static final Voltage ROLLER_INTAKE_VOLTAGE = Volts.of(5);

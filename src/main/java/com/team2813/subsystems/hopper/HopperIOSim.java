@@ -1,5 +1,6 @@
 package com.team2813.subsystems.hopper;
 
+import static com.team2813.subsystems.hopper.HopperConstants.HOTDOG_ROLLER_MOTOR_CONFIG;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.Follower;
@@ -42,6 +43,7 @@ public class HopperIOSim implements HopperIO {
     mainFeederMotorSimState.setSupplyVoltage(Volts.of(12));
     followerFeederMotorSimState.setSupplyVoltage(Volts.of(12));
 
+    inputs.rollerMotorCurrent = rollerMotor.getStatorCurrent().getValue();
     inputs.rollerMotorVoltage = rollerMotor.getMotorVoltage().getValue();
     inputs.rollerMotorRPS = rollerMotor.getRotorVelocity().getValue();
     inputs.rollerMotorCurrent = rollerMotor.getStatorCurrent().getValue();

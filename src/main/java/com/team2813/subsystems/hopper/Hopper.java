@@ -1,5 +1,6 @@
 package com.team2813.subsystems.hopper;
 
+import static com.team2813.subsystems.hopper.HopperConstants.*;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.wpilibj2.command.Command;
