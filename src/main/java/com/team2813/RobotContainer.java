@@ -147,33 +147,9 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    controller.leftBumper().whileTrue(hopper.intakeCommand());
-    controller.rightBumper().whileTrue(hopper.outtakeCommand());
+    controller.leftBumper().onTrue(hopper.intakeCommand());
+    controller.rightBumper().onTrue(hopper.outtakeCommand());
     controller.povDown().onTrue(hopper.stopCommand());
-
-    //    // Lock to 0° when A button is held
-    //    controller
-    //        .a()
-    //        .whileTrue(
-    //            DriveCommands.joystickDriveAtAngle(
-    //                drive,
-    //                () -> -controller.getLeftY(),
-    //                () -> -controller.getLeftX(),
-    //                () -> Rotation2d.kZero));
-    //
-    //    // Switch to X pattern when X button is pressed
-    //    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-    //
-    //    // Reset gyro to 0° when B button is pressed
-    //    controller
-    //        .b()
-    //        .onTrue(
-    //            Commands.runOnce(
-    //                    () ->
-    //                        drive.setPose(
-    //                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-    //                    drive)
-    //                .ignoringDisable(true));
   }
 
   /**
