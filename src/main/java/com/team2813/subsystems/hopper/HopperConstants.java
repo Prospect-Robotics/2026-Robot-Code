@@ -33,12 +33,14 @@ public class HopperConstants {
 
   public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 
   private static final Voltage FEEDER_INTAKE_VOLTAGE =
       Volts.of(Preferences.getDouble("Hopper/FEEDER_INTAKE_VOLTAGE", 3));
   private static final Voltage FEEDER_OUTTAKE_VOLTAGE =
       Volts.of(Preferences.getDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -3));
+
 
   public static Voltage getFEEDER_OUTTAKE_VOLTAGE() {
     return FEEDER_OUTTAKE_VOLTAGE;
