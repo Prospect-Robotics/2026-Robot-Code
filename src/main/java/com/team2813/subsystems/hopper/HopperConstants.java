@@ -11,10 +11,16 @@ import edu.wpi.first.wpilibj.Preferences;
 public class HopperConstants {
 
   static {
+    // roller motors.
     Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 5);
-    Preferences.initDouble("Hopper/ROLLER_OUTTAKE_VOLTAGE", -5);
-    Preferences.initFloat("Hopper/FEEDER_INTAKE_VOLTAGE", 3);
-    Preferences.initDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -3);
+    Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -5);
+
+    // feeder/vector motors.
+    Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 3);
+    Preferences.initFloat("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -3);
+
+    Preferences.initFloat("Hopper/LEFT_FEEDER_INTAKE_VOLTAGE", 3);
+    Preferences.initFloat("Hopper/LEFT_FEEDER_OUTTAKE_VOLTAGE", -3);
   }
 
   public static Voltage getRollerIntakeVoltage() {
@@ -29,16 +35,28 @@ public class HopperConstants {
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 
-  public static Voltage getFeederIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_INTAKE_VOLTAGE", 3));
+  public static Voltage getRightFeederIntakeVoltage() {
+    return Volts.of(Preferences.getDouble("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 3));
   }
 
-  public static Voltage getFeederOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -3));
+  public static Voltage getRightFeederOuttakeVoltage() {
+    return Volts.of(Preferences.getDouble("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -3));
   }
 
-  public static final TalonFXConfiguration MAIN_FEEDER_MOTOR_CONFIG =
+  public static Voltage getLeftFeederIntakeVoltage() {
+    return Volts.of(Preferences.getDouble("Hopper/LEFT_FEEDER_INTAKE_VOLTAGE", 3));
+  }
+
+  public static Voltage getLeftFeederOuttakeVoltage() {
+    return Volts.of(Preferences.getDouble("Hopper/LEFT_FEEDER_OUTTAKE_VOLTAGE", -3));
+  }
+
+  public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+
+  public static final TalonFXConfiguration LEFT_FEEDER_MOTOR_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 }
