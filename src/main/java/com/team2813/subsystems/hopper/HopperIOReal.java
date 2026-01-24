@@ -7,13 +7,13 @@ import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
 
 public class HopperIOReal implements HopperIO {
-  private TalonFX rollerMotor;
+  private TalonFX mainRollerMotor;
   private TalonFX rightFeederMotor; // Left motor when seen from the front (intake side).
   private TalonFX leftFeederMotor; // Right motor when seen from the front (intake side).
 
   public HopperIOReal() {
-    rollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
-    rollerMotor.getConfigurator().apply(HopperConstants.ROLLER_MOTOR_CONFIG);
+    mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
+    mainRollerMotor.getConfigurator().apply(HopperConstants.ROLLER_MOTOR_CONFIG);
 
     rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
     rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
@@ -24,9 +24,9 @@ public class HopperIOReal implements HopperIO {
 
   @Override
   public void updateState(HopperIOInputs inputs) {
-    inputs.rollerMotorCurrent = rollerMotor.getStatorCurrent().getValue();
-    inputs.rollerMotorRPS = rollerMotor.getRotorVelocity().getValue();
-    inputs.rollerMotorVoltage = rollerMotor.getMotorVoltage().getValue();
+    inputs.mainRollerMotorCurrent = mainRollerMotor.getStatorCurrent().getValue();
+    inputs.mainRollerMotorRPS = mainRollerMotor.getRotorVelocity().getValue();
+    inputs.mainRollerMotorVoltage = mainRollerMotor.getMotorVoltage().getValue();
 
     inputs.rightFeederVoltage = rightFeederMotor.getMotorVoltage().getValue();
     inputs.rightFeederRPS = rightFeederMotor.getRotorVelocity().getValue();
@@ -40,7 +40,7 @@ public class HopperIOReal implements HopperIO {
   @Override
   public void setMotorVoltage(
       Voltage rollerVoltage, Voltage rightFeederVoltage, Voltage leftFeederVoltage) {
-    rollerMotor.setVoltage(rollerVoltage.in(Volts));
+    mainRollerMotor.setVoltage(rollerVoltage.in(Volts));
     rightFeederMotor.setVoltage(rightFeederVoltage.in(Volts));
     leftFeederMotor.setVoltage(leftFeederVoltage.in(Volts));
   }
