@@ -148,10 +148,6 @@ public class RobotContainer {
     controller.povDown().onTrue(hopper.stopCommand());
   }
 
-  public void updatePreferences() {
-    HopperConstants.updatePreferences();
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

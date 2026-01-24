@@ -93,11 +93,6 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledInit() {}
 
-  @Override
-  public void disabledExit() {
-    robotContainer.updatePreferences();
-  }
-
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {}
