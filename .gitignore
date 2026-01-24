@@ -185,3 +185,6 @@ compile_commands.json
 
 # Version file
 src/main/java/com/team2813/BuildConstants.java
+
+# Preferences meta stuff
+networktables.json.bck
