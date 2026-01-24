@@ -1,0 +1,34 @@
+[
+  {
+    "name": "/Preferences/Hopper/ROLLER_INTAKE_VOLTAGE",
+    "type": "double",
+    "value": 5.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Hopper/ROLLER_OUTTAKE_VOLTAGE",
+    "type": "double",
+    "value": -5.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Hopper/FEEDER_INTAKE_VOLTAGE",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Hopper/FEEDER_OUTTAKE_VOLTAGE",
+    "type": "double",
+    "value": -3.0,
+    "properties": {
+      "persistent": true
+    }
+  }
+]

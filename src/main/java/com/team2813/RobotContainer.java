@@ -16,10 +16,7 @@ import com.team2813.subsystems.drive.GyroIOPigeon2;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
-import com.team2813.subsystems.hopper.Hopper;
-import com.team2813.subsystems.hopper.HopperIO;
-import com.team2813.subsystems.hopper.HopperIOReal;
-import com.team2813.subsystems.hopper.HopperIOSim;
+import com.team2813.subsystems.hopper.*;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -149,6 +146,10 @@ public class RobotContainer {
     controller.leftBumper().onTrue(hopper.intakeCommand());
     controller.rightBumper().onTrue(hopper.outtakeCommand());
     controller.povDown().onTrue(hopper.stopCommand());
+  }
+
+  public void updatePreferences() {
+    HopperConstants.updatePreferences();
   }
 
   /**
