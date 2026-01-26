@@ -30,7 +30,8 @@ public class HopperIOSim implements HopperIO {
     mainRollerMotorSimState = mainRollerMotor.getSimState();
 
     followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
-    followerRollerMotor.setControl(new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
+    followerRollerMotor.setControl(
+        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
 
     rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);

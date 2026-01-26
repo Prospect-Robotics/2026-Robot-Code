@@ -21,7 +21,8 @@ public class HopperIOReal implements HopperIO {
 
     followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
     // Motors are on opposite sides of the magazine.
-    followerRollerMotor.setControl(new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
+    followerRollerMotor.setControl(
+        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
 
     rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
     rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
