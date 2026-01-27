@@ -12,8 +12,8 @@ public class HopperIOReal implements HopperIO {
   private TalonFX mainRollerMotor; // Right magazine motor.
   private TalonFX followerRollerMotor; // Left magazine motor.
 
-  private TalonFX rightFeederMotor; // Left motor when seen from the front (intake side).
-  private TalonFX leftFeederMotor; // Right motor when seen from the front (intake side).
+  private TalonFX rightFeederMotor; // Right motor when seen from the back (shooter side).
+  private TalonFX leftFeederMotor; // Left motor when seen from the back (shooter side).
 
   public HopperIOReal() {
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
