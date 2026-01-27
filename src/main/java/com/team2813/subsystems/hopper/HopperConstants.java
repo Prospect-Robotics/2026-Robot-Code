@@ -23,6 +23,7 @@ public class HopperConstants {
     Preferences.initFloat("Hopper/LEFT_FEEDER_OUTTAKE_VOLTAGE", -3);
   }
 
+  // Roller Motor Configs
   public static Voltage getRollerIntakeVoltage() {
     return Volts.of(Preferences.getDouble("Hopper/ROLLER_INTAKE_VOLTAGE", 5)); // 5 is the backup.
   }
@@ -35,6 +36,11 @@ public class HopperConstants {
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 
+  // TODO: Change this later because the design lead fell asleep as of writing this and I made the number up.
+  public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
+
+
+  // Feeder Motor Configs
   public static Voltage getRightFeederIntakeVoltage() {
     return Volts.of(Preferences.getDouble("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 3));
   }

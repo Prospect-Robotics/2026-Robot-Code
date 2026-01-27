@@ -7,22 +7,35 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class HopperIOSim implements HopperIO {
+
+  // Roller Motor simulation declaration.
   private TalonFX mainRollerMotor;
   private TalonFXSimState mainRollerMotorSimState;
 
   private TalonFX followerRollerMotor;
   private TalonFXSimState followerRollerMotorSimState;
 
+    private FlywheelSim rollerSim; // Used for simulating voltage of the roller
+
+  // Feeder Motor simulation declaration
   // Right motor when seen from the back (shooter side).
   private TalonFX rightFeederMotor;
   private TalonFXSimState rightFeederMotorSimState;
 
+  private FlywheelSim rightFeederModuleSim;
+
   // Left motor when seen from the back (shooter side).
   private TalonFX leftFeederMotor;
   private TalonFXSimState leftFeederMotorSimState;
+
+  private FlywheelSim leftFeederModuleSim;
 
   public HopperIOSim() {
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
@@ -33,6 +46,13 @@ public class HopperIOSim implements HopperIO {
     followerRollerMotor.setControl(
         new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
+
+    // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value is unavailable.
+    rollerSim = new FlywheelSim(
+        LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60(2), 0.01, HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
+        DCMotor.getKrakenX60(2),
+        1.0
+    );
 
     rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
     rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
