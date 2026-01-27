@@ -16,12 +16,12 @@ public class HopperIOSim implements HopperIO {
   private TalonFX followerRollerMotor;
   private TalonFXSimState followerRollerMotorSimState;
 
-  // Left motor when seen from the front (intake side).
+  // Right motor when seen from the back (shooter side).
   private TalonFX rightFeederMotor;
   private TalonFXSimState rightFeederMotorSimState;
 
-  // Right motor when seen from the front (intake side).
-  private TalonFX leftFeederMotor; // Right motor when seen from the front (intake side).
+  // Left motor when seen from the back (shooter side).
+  private TalonFX leftFeederMotor;
   private TalonFXSimState leftFeederMotorSimState;
 
   public HopperIOSim() {
