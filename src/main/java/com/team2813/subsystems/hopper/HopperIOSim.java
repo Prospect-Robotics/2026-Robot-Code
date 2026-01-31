@@ -15,24 +15,24 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 public class HopperIOSim implements HopperIO {
 
   // Roller Motor simulation declaration.
-  private TalonFX mainRollerMotor;
-  private TalonFXSimState mainRollerMotorSimState;
+  private final TalonFX mainRollerMotor;
+  private final TalonFXSimState mainRollerMotorSimState;
 
-  private TalonFX followerRollerMotor;
-  private TalonFXSimState followerRollerMotorSimState;
+  private final TalonFX followerRollerMotor;
+  private final TalonFXSimState followerRollerMotorSimState;
 
-  private FlywheelSim rollerSim; // Used for simulating voltage of the roller.
+  private final FlywheelSim rollerSim; // Used for simulating voltage of the roller.
 
   // Feeder Motor simulation declaration
   // Right motor when seen from the back (shooter side).
-  private TalonFX rightFeederMotor;
-  private TalonFXSimState rightFeederMotorSimState;
+  private final TalonFX rightFeederMotor;
+  private final TalonFXSimState rightFeederMotorSimState;
 
   private FlywheelSim rightFeederModuleSim;
 
   // Left motor when seen from the back (shooter side).
-  private TalonFX leftFeederMotor;
-  private TalonFXSimState leftFeederMotorSimState;
+  private final TalonFX leftFeederMotor;
+  private final TalonFXSimState leftFeederMotorSimState;
 
   private FlywheelSim leftFeederModuleSim;
 
