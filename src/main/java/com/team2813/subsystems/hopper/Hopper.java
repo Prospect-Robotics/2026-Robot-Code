@@ -24,16 +24,20 @@ public class Hopper extends SubsystemBase {
 
   public void intake() {
     io.setMotorVoltage(
-        HopperConstants.getRollerIntakeVoltage(), HopperConstants.getFeederIntakeVoltage());
+        HopperConstants.getRollerIntakeVoltage(),
+        HopperConstants.getRightFeederIntakeVoltage(),
+        HopperConstants.getLeftFeederIntakeVoltage());
   }
 
   public void outtake() {
     io.setMotorVoltage(
-        HopperConstants.getRollerOuttakeVoltage(), HopperConstants.getFeederOuttakeVoltage());
+        HopperConstants.getRollerOuttakeVoltage(),
+        HopperConstants.getRightFeederOuttakeVoltage(),
+        HopperConstants.getLeftFeederOuttakeVoltage());
   }
 
   public void stop() {
-    io.setMotorVoltage(Volts.of(0), Volts.of(0));
+    io.setMotorVoltage(Volts.of(0), Volts.of(0), Volts.of(0));
   }
 
   public Command intakeCommand() {

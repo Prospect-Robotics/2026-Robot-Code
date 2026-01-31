@@ -30,8 +30,13 @@ public final class Constants {
   }
 
   // CAN IDs
-  public static final int ROLLER_MOTOR_CAN_ID = 18;
 
-  public static final int MAIN_FEEDER_MOTOR_ID = 19;
-  public static final int FOLLOWER_FEEDER_MOTOR_ID = 20;
+  // Aliases: Magazine motors
+  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Right roller motor.
+  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 22; // Left roller motor.
+
+  // When robot front is facing away, this is the right feeder motor.
+  // Aliases: Vectoring motors
+  public static final int LEFT_FEEDER_MOTOR_ID = 23;
+  public static final int RIGHT_FEEDER_MOTOR_ID = 24;
 }
