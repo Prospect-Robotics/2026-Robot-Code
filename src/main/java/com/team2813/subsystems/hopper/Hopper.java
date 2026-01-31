@@ -41,14 +41,14 @@ public class Hopper extends SubsystemBase {
   }
 
   public Command intakeCommand() {
-    return new InstantCommand(() -> intake());
+    return new InstantCommand(this::intake, this);
   }
 
   public Command outtakeCommand() {
-    return new InstantCommand(() -> outtake());
+    return new InstantCommand(this::outtake, this);
   }
 
   public Command stopCommand() {
-    return new InstantCommand(() -> stop());
+    return new InstantCommand(this::stop, this);
   }
 }

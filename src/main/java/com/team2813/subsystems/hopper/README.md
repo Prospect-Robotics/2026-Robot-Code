@@ -11,4 +11,3 @@ Directions of motor are when robot is intaking.
   - Follows **25**
 - **25**: Main Roller/Magazine Motor
   - Rotates *Clockwise*
-  
