@@ -9,11 +9,11 @@ import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
 
 public class HopperIOReal implements HopperIO {
-  private TalonFX mainRollerMotor; // Right magazine motor.
-  private TalonFX followerRollerMotor; // Left magazine motor.
+  private final TalonFX mainRollerMotor; // Right magazine motor.
+  private final TalonFX followerRollerMotor; // Left magazine motor.
 
-  private TalonFX rightFeederMotor; // Right motor when seen from the back (shooter side).
-  private TalonFX leftFeederMotor; // Left motor when seen from the back (shooter side).
+  private final TalonFX rightFeederMotor; // Right motor when seen from the back (shooter side).
+  private final TalonFX leftFeederMotor; // Left motor when seen from the back (shooter side).
 
   public HopperIOReal() {
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
