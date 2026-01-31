@@ -10,7 +10,6 @@ import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class HopperIOSim implements HopperIO {
@@ -22,7 +21,7 @@ public class HopperIOSim implements HopperIO {
   private TalonFX followerRollerMotor;
   private TalonFXSimState followerRollerMotorSimState;
 
-    private FlywheelSim rollerSim; // Used for simulating voltage of the roller
+  private FlywheelSim rollerSim; // Used for simulating voltage of the roller.
 
   // Feeder Motor simulation declaration
   // Right motor when seen from the back (shooter side).
@@ -47,12 +46,14 @@ public class HopperIOSim implements HopperIO {
         new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
 
-    // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value is unavailable.
-    rollerSim = new FlywheelSim(
-        LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60(2), 0.01, HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
-        DCMotor.getKrakenX60(2),
-        1.0
-    );
+    // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value
+    // is unavailable.
+    rollerSim =
+        new FlywheelSim(
+            LinearSystemId.createFlywheelSystem(
+                DCMotor.getKrakenX60(2), 0.01, HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
+            DCMotor.getKrakenX60(2),
+            1.0);
 
     rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
     rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
@@ -65,6 +66,8 @@ public class HopperIOSim implements HopperIO {
 
   @Override
   public void updateState(HopperIOInputs inputs) {
+    updateSimulation();
+
     mainRollerMotorSimState.setSupplyVoltage(Volts.of(12));
     followerRollerMotorSimState.setSupplyVoltage(Volts.of(12));
     rightFeederMotorSimState.setSupplyVoltage(Volts.of(12));
@@ -87,10 +90,31 @@ public class HopperIOSim implements HopperIO {
     inputs.leftFeederCurrent = leftFeederMotor.getStatorCurrent().getValue();
   }
 
+  public void updateSimulation() {
+    // Update physics simulations every 20ms (like the actual bot).
+    rollerSim.update(0.02);
+
+    // Feed the velocity and acceleration of the roller simulation into the simulation motors to
+    // accurately model them.
+    mainRollerMotorSimState.setRotorAcceleration(rollerSim.getAngularAcceleration());
+    mainRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity());
+
+    // The follower roller motor opposes the main, therefore it has negative angular velocity.
+    followerRollerMotorSimState.setRotorAcceleration(
+        rollerSim.getAngularAcceleration().unaryMinus());
+    followerRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity().unaryMinus());
+  }
+
   @Override
   public void setMotorVoltage(
       Voltage rollerVoltage, Voltage rightFeederVoltage, Voltage leftFeederVoltage) {
+    // Rollers
     mainRollerMotor.setVoltage(rollerVoltage.in(Volts));
+    // Don't set the voltage of the follower motor, as this will be done automatically by the
+    // Follower command.
+    rollerSim.setInputVoltage(rollerVoltage.in(Volts));
+
+    // Feeders
     rightFeederMotor.setVoltage(rightFeederVoltage.in(Volts));
     leftFeederMotor.setVoltage(leftFeederVoltage.in(Volts));
   }

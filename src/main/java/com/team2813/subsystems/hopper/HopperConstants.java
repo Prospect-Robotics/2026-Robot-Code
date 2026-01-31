@@ -36,9 +36,8 @@ public class HopperConstants {
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 
-  // TODO: Change this later because the design lead fell asleep as of writing this and I made the number up.
+  // TODO: Change this later to the actual number.
   public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
-
 
   // Feeder Motor Configs
   public static Voltage getRightFeederIntakeVoltage() {
