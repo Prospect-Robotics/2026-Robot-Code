@@ -13,8 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-// This is taken from [lib2813](https://github.com/Prospect-Robotics/lib2813/blob/main/testing/src/main/java/com/team2813/lib2813/testing/junit/jupiter/CommandTester.java).
-// When lib2813 is on maven central, this file can be deleted in favor of adding a dependency on lib2813.
+// This is taken from
+// [lib2813](https://github.com/Prospect-Robotics/lib2813/blob/main/testing/src/main/java/com/team2813/lib2813/testing/junit/jupiter/CommandTester.java).
+// When lib2813 is on maven central, this file can be deleted in favor of adding a dependency on
+// lib2813.
 package com.team2813;
 
 import edu.wpi.first.wpilibj2.command.Command;
