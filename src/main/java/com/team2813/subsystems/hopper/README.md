@@ -11,3 +11,7 @@ Directions of motor are when robot is intaking.
   - Follows **25**
 - **25**: Main Roller/Magazine Motor
   - Rotates *Clockwise*
+
+Motor 22 and 25 spin the rollers of the system, moving fuel elements toward the vectoring motors and shooter.
+
+Motors 23 and 24 spin the vectoring "triangles" condensing a bunch of balls into a single stream for the shooter.
