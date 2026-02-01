@@ -43,7 +43,7 @@ public class HopperIOSim implements HopperIO {
 
     followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
     followerRollerMotor.setControl(
-        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
+        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Aligned));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
 
     // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value

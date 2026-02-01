@@ -143,9 +143,8 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    controller.leftBumper().onTrue(hopper.intakeCommand());
-    controller.rightBumper().onTrue(hopper.outtakeCommand());
-    controller.povDown().onTrue(hopper.stopCommand());
+    controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
+    controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
   }
 
   /**
