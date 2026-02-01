@@ -55,8 +55,10 @@ import org.junit.jupiter.api.extension.*;
  *
  * @since 2.0.0
  */
-// This is taken from [lib2813](https://github.com/Prospect-Robotics/lib2813/blob/main/testing/src/main/java/com/team2813/lib2813/testing/junit/jupiter/WPILibExtension.java).
-// When lib2813 is on maven central, this file can be deleted in favor of adding a dependency on lib2813.
+// This is taken from
+// [lib2813](https://github.com/Prospect-Robotics/lib2813/blob/main/testing/src/main/java/com/team2813/lib2813/testing/junit/jupiter/WPILibExtension.java).
+// When lib2813 is on maven central, this file can be deleted in favor of adding a dependency on
+// lib2813.
 public final class WPILibExtension
     implements Extension,
         AfterAllCallback,
