@@ -3,11 +3,11 @@
 ## CanIDs
 Directions of motor are when robot is intaking.
 - **23**: Left Feeder/Vectoring Motor
-  - Rotates *Clockwise*
+  - Rotates *Counter-Clockwise*
 - **24**: Right Feeder/Vectoring Motor
-  - Rotates *Counter-Clockwise*
+  - Rotates *Clockwise*
 - **22**: Follower Roller/Magazine Motor
-  - Rotates *Counter-Clockwise*
+  - Rotates *Clockwise*
   - Follows **25**
 - **25**: Main Roller/Magazine Motor
   - Rotates *Clockwise*

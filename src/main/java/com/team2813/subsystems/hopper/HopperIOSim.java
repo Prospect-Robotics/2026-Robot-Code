@@ -99,10 +99,9 @@ public class HopperIOSim implements HopperIO {
     mainRollerMotorSimState.setRotorAcceleration(rollerSim.getAngularAcceleration());
     mainRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity());
 
-    // The follower roller motor opposes the main, therefore it has negative angular velocity.
-    followerRollerMotorSimState.setRotorAcceleration(
-        rollerSim.getAngularAcceleration().unaryMinus());
-    followerRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity().unaryMinus());
+    // The follower roller motor is aligned with the main motor, so it gets the same values.
+    followerRollerMotorSimState.setRotorAcceleration(rollerSim.getAngularAcceleration());
+    followerRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity());
   }
 
   @Override
