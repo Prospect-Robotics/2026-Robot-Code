@@ -82,14 +82,14 @@ public class TunerConstants {
     private static final double kSteerGearRatio = 26.09090909090909;
     private static final Distance kWheelRadius = Inches.of(2);
 
-    private static final boolean kInvertLeftSide = true;
-    private static final boolean kInvertRightSide = false;
+    private static final boolean kInvertLeftSide = false;
+    private static final boolean kInvertRightSide = true;
 
     private static final int kPigeonId = 13;
 
     // These are only used for simulation
-    private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.004);
-    private static final MomentOfInertia kDriveInertia = KilogramSquareMeters.of(0.025);
+    private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.01);
+    private static final MomentOfInertia kDriveInertia = KilogramSquareMeters.of(0.01);
     // Simulated voltage necessary to overcome friction
     private static final Voltage kSteerFrictionVoltage = Volts.of(0.2);
     private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
@@ -127,7 +127,7 @@ public class TunerConstants {
     private static final int kFrontLeftDriveMotorId = 4;
     private static final int kFrontLeftSteerMotorId = 5;
     private static final int kFrontLeftEncoderId = 6;
-    private static final Angle kFrontLeftEncoderOffset = Rotations.of(0.165283203125);
+    private static final Angle kFrontLeftEncoderOffset = Rotations.of(-0.225830078125);
     private static final boolean kFrontLeftSteerMotorInverted = false;
     private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -138,7 +138,7 @@ public class TunerConstants {
     private static final int kFrontRightDriveMotorId = 1;
     private static final int kFrontRightSteerMotorId = 2;
     private static final int kFrontRightEncoderId = 3;
-    private static final Angle kFrontRightEncoderOffset = Rotations.of(0.352783203125);
+    private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.14453125);
     private static final boolean kFrontRightSteerMotorInverted = false;
     private static final boolean kFrontRightEncoderInverted = false;
 
@@ -149,7 +149,7 @@ public class TunerConstants {
     private static final int kBackLeftDriveMotorId = 7;
     private static final int kBackLeftSteerMotorId = 8;
     private static final int kBackLeftEncoderId = 9;
-    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.40234375);
+    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.24951171875);
     private static final boolean kBackLeftSteerMotorInverted = false;
     private static final boolean kBackLeftEncoderInverted = false;
 
@@ -160,7 +160,7 @@ public class TunerConstants {
     private static final int kBackRightDriveMotorId = 10;
     private static final int kBackRightSteerMotorId = 11;
     private static final int kBackRightEncoderId = 12;
-    private static final Angle kBackRightEncoderOffset = Rotations.of(-0.268798828125);
+    private static final Angle kBackRightEncoderOffset = Rotations.of(0.35595703125);
     private static final boolean kBackRightSteerMotorInverted = false;
     private static final boolean kBackRightEncoderInverted = false;
 
@@ -249,10 +249,10 @@ public class TunerConstants {
          *                                  unspecified or set to 0 Hz, this is 250 Hz on
          *                                  CAN FD, and 100 Hz on CAN 2.0.
          * @param odometryStandardDeviation The standard deviation for odometry calculation
-         *                                  in the form [x, y, theta]ᵀ, with units in meters
+         *                                  in the form [x, y, theta]áµ€, with units in meters
          *                                  and radians
          * @param visionStandardDeviation   The standard deviation for vision calculation
-         *                                  in the form [x, y, theta]ᵀ, with units in meters
+         *                                  in the form [x, y, theta]áµ€, with units in meters
          *                                  and radians
          * @param modules                   Constants for each specific module
          */
