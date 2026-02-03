@@ -53,6 +53,7 @@ public class RobotContainer {
         // a CANcoder
         drive =
             new Drive(
+                robotConstants,
                 new GyroIOPigeon2(),
                 new ModuleIOTalonFX(robotConstants.frontLeft()),
                 new ModuleIOTalonFX(robotConstants.frontRight()),
@@ -84,6 +85,7 @@ public class RobotContainer {
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
+                robotConstants,
                 new GyroIO() {},
                 new ModuleIOSim(robotConstants.frontLeft()),
                 new ModuleIOSim(robotConstants.frontRight()),
@@ -98,6 +100,7 @@ public class RobotContainer {
         // Replayed robot, disable IO implementations
         drive =
             new Drive(
+                robotConstants,
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
