@@ -78,6 +78,7 @@ public class Drive extends SubsystemBase {
   private final SysIdRoutine sysId;
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
+  private final double driveRadius;
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
   private Rotation2d rawGyroRotation = Rotation2d.kZero;
@@ -105,6 +106,7 @@ public class Drive extends SubsystemBase {
     modules[2] = new Module(blModuleIO, 2, TunerConstants.BackLeft);
     modules[3] = new Module(brModuleIO, 3, TunerConstants.BackRight);
 
+    driveRadius = robotConstants.calculateDriveBaseRadius();
     // Usage reporting for swerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);
 
@@ -341,8 +343,6 @@ public class Drive extends SubsystemBase {
   }
 
   /** Returns the maximum angular speed in radians per sec. */
-  final double driveRadius = robotConstants.calculateDriveBaseRadius();
-
   public double getMaxAngularSpeedRadPerSec() {
     return getMaxLinearSpeedMetersPerSec() / driveRadius;
   }
