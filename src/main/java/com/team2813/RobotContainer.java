@@ -9,7 +9,7 @@ package com.team2813;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
-import com.team2813.generated.TunerConstants;
+import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
 import com.team2813.subsystems.drive.GyroIOPigeon2;
@@ -40,8 +40,12 @@ public class RobotContainer {
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   *
+   * @param robotConstants2
+   */
+  public RobotContainer(AllTunerConstants robotConstants) {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -50,10 +54,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                new ModuleIOTalonFX(TunerConstants.FrontRight),
-                new ModuleIOTalonFX(TunerConstants.BackLeft),
-                new ModuleIOTalonFX(TunerConstants.BackRight));
+                new ModuleIOTalonFX(robotConstants.frontLeft()),
+                new ModuleIOTalonFX(robotConstants.frontRight()),
+                new ModuleIOTalonFX(robotConstants.backLeft()),
+                new ModuleIOTalonFX(robotConstants.frontRight()));
 
         hopper = new Hopper(new HopperIOReal());
 
@@ -70,10 +74,10 @@ public class RobotContainer {
         // drive =
         // new Drive(
         // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(TunerConstants.FrontLeft),
-        // new ModuleIOTalonFXS(TunerConstants.FrontRight),
+        // new ModuleIOTalonFXS(robotConstants.frontLeft()),
+        // new ModuleIOTalonFXS(robotConstants.frontRight()),
         // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(TunerConstants.BackRight));
+        // new ModuleIOTalonFXS(robotConstants.backRight()));
         break;
 
       case SIM:
@@ -81,10 +85,10 @@ public class RobotContainer {
         drive =
             new Drive(
                 new GyroIO() {},
-                new ModuleIOSim(TunerConstants.FrontLeft),
-                new ModuleIOSim(TunerConstants.FrontRight),
-                new ModuleIOSim(TunerConstants.BackLeft),
-                new ModuleIOSim(TunerConstants.BackRight));
+                new ModuleIOSim(robotConstants.frontLeft()),
+                new ModuleIOSim(robotConstants.frontRight()),
+                new ModuleIOSim(robotConstants.backLeft()),
+                new ModuleIOSim(robotConstants.backRight()));
 
         hopper = new Hopper(new HopperIOSim());
 
