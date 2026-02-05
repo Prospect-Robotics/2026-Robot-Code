@@ -17,7 +17,7 @@ public class ShooterIOSim implements ShooterIO {
   private TalonFX followerShooterMotor;
   private TalonFXSimState followerShooterSimState;
 
-  private FlywheelSim shooterFlywheelSim;
+  private FlywheelSim shooterSim;
 
   private TalonFX kickerMotor;
   private TalonFXSimState kickerSimState;
@@ -31,7 +31,7 @@ public class ShooterIOSim implements ShooterIO {
     followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
     followerShooterSimState = followerShooterMotor.getSimState();
     // MOI taken from onshape.
-    shooterFlywheelSim =
+    shooterSim =
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(2),
@@ -65,7 +65,18 @@ public class ShooterIOSim implements ShooterIO {
     inputs.kickerMotorCurrent = kickerMotor.getStatorCurrent().getValue();
   }
 
-  public void updateSimulation() {}
+  public void updateSimulation() {
+    // Update physics simulations every 20ms (like the actual bot).
+    shooterSim.update(0.02);
+
+    // Feed the velocity and acceleration of the roller simulation into the simulation motors to
+    // accurately model them.
+    mainShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
+    mainShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
+    // The follower roller motor is opposed with the main motor, so it gets negated values.
+    followerShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
+    followerShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
+  }
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterMotorVoltage) {
