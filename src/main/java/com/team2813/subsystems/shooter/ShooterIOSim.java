@@ -5,7 +5,10 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class ShooterIOSim implements ShooterIO {
   private TalonFX mainShooterMotor;
@@ -13,6 +16,8 @@ public class ShooterIOSim implements ShooterIO {
 
   private TalonFX followerShooterMotor;
   private TalonFXSimState followerShooterSimState;
+
+  private FlywheelSim shooterFlywheelSim;
 
   private TalonFX kickerMotor;
   private TalonFXSimState kickerSimState;
@@ -25,6 +30,14 @@ public class ShooterIOSim implements ShooterIO {
     followerShooterMotor = new TalonFX(Constants.FOLLOWER_SHOOTER_MOTOR_ID);
     followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
     followerShooterSimState = followerShooterMotor.getSimState();
+    // MOI taken from onshape.
+    shooterFlywheelSim =
+        new FlywheelSim(
+            LinearSystemId.createFlywheelSystem(
+                DCMotor.getKrakenX60(2),
+                0.00303431,
+                ShooterConstants.SHOOTER_MOTOR_TO_FLYWHEEL_GEARING),
+            DCMotor.getKrakenX60(2));
 
     kickerMotor = new TalonFX(Constants.KICKER_MOTOR_ID);
     kickerMotor.getConfigurator().apply(ShooterConstants.KICKER_MOTOR_CONFIG);

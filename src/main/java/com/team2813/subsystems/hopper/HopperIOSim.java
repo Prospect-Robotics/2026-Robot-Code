@@ -52,8 +52,7 @@ public class HopperIOSim implements HopperIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(2), 0.01, HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
-            DCMotor.getKrakenX60(2),
-            1.0);
+            DCMotor.getKrakenX60(2));
 
     rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
     rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);

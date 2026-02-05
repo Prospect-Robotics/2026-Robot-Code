@@ -10,15 +10,17 @@ import com.team2813.Constants;
 public class ShooterConstants {
 
   // Reminder: this is the left shooter motor when robot is viewed from behind.
-  public static TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 
   // Right shooter motor.
-  public static Follower FOLLOWER_SHOOTER_CONTROL_MODE =
+  public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
       new Follower(Constants.MAIN_SHOOTER_MOTOR_ID, MotorAlignmentValue.Opposed);
 
-  public static TalonFXConfiguration KICKER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration KICKER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+
+  public static final int SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1;
 }
