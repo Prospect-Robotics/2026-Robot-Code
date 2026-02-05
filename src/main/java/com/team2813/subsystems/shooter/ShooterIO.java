@@ -19,9 +19,9 @@ public interface ShooterIO {
     public AngularVelocity followerShooterMotorRPS = RotationsPerSecond.of(0);
     public Current followerShooterMotorCurrent = Amps.of(0);
 
-    public Voltage kickerShooterMotorVoltage = Volts.of(0);
-    public AngularVelocity kickerShooterMotorRPS = RotationsPerSecond.of(0);
-    public Current kickerShooterMotorCurrent = Amps.of(0);
+    public Voltage kickerMotorVoltage = Volts.of(0);
+    public AngularVelocity kickerMotorRPS = RotationsPerSecond.of(0);
+    public Current kickerMotorCurrent = Amps.of(0);
   }
 
   /**
