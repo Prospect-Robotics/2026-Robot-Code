@@ -32,5 +32,5 @@ public interface ShooterIO {
    */
   default void updateState(ShooterIOInputs inputs) {}
 
-  default void setMotorVoltage() {}
+  default void setMotorVoltage(Voltage shooterVoltage, Voltage kickerVoltage) {}
 }
