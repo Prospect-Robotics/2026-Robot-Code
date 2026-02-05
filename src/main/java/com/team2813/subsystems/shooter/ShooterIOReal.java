@@ -1,10 +1,10 @@
 package com.team2813.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
-
-import static edu.wpi.first.units.Units.Volts;
 
 public class ShooterIOReal implements ShooterIO {
   private TalonFX mainShooterMotor;
@@ -37,9 +37,13 @@ public class ShooterIOReal implements ShooterIO {
     inputs.kickerMotorCurrent = kickerMotor.getStatorCurrent().getValue();
   }
 
-    @Override
-    public void setMotorVoltage(Voltage shooterVoltage, Voltage kickerVoltage) {
-      mainShooterMotor.setVoltage(shooterVoltage.in(Volts));
-      kickerMotor.setVoltage(kickerVoltage.in(Volts));
-    }
+  @Override
+  public void setShooterMotorVoltage(Voltage shooterVoltage) {
+    mainShooterMotor.setVoltage(shooterVoltage.in(Volts));
+  }
+
+  @Override
+  public void setKickerMotorVoltage(Voltage kickerMotorVoltage) {
+    kickerMotor.setVoltage(kickerMotorVoltage.in(Volts));
+  }
 }
