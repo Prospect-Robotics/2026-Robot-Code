@@ -43,7 +43,7 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    *
-   * @param robotConstants2
+   * @param robotConstants The tuner constants for the robot.
    */
   public RobotContainer(AllTunerConstants robotConstants) {
     switch (Constants.currentMode) {
