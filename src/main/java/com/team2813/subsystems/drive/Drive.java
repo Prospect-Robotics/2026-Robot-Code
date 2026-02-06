@@ -357,8 +357,8 @@ public class Drive extends SubsystemBase {
     };
   }
 
+  /** Gets the radius of the drivetrain, in meters. */
   public double driveBaseRadius() {
-
     return driveRadius;
   }
 }
