@@ -58,7 +58,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(robotConstants.frontLeft()),
                 new ModuleIOTalonFX(robotConstants.frontRight()),
                 new ModuleIOTalonFX(robotConstants.backLeft()),
-                new ModuleIOTalonFX(robotConstants.frontRight()));
+                new ModuleIOTalonFX(robotConstants.backRight()));
 
         hopper = new Hopper(new HopperIOReal());
 
