@@ -6,12 +6,22 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
+  private final ShooterIOInputsAutoLogged replayedInputs;
 
   public Shooter(ShooterIO io) {
     this.io = io;
+    this.replayedInputs = new ShooterIOInputsAutoLogged();
+  }
+
+  @Override
+  public void periodic() {
+    io.updateState(replayedInputs);
+
+    Logger.processInputs("Shooter", replayedInputs);
   }
 
   public void intake() {

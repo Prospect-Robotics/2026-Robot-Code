@@ -155,6 +155,9 @@ public class RobotContainer {
 
     controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
     controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
+
+    controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+    controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
   }
 
   /**
