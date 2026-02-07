@@ -91,6 +91,7 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, Pose2d.kZero);
 
+  // TODO: Remove the last four params, and replace with a Function<SwerveModuleConstants, ModueIO>
   public Drive(
       AllTunerConstants robotConstants,
       GyroIO gyroIO,
@@ -355,8 +356,8 @@ public class Drive extends SubsystemBase {
     };
   }
 
+  /** Gets the radius of the drivetrain, in meters. */
   public double driveBaseRadius() {
-
     return driveRadius;
   }
 }
