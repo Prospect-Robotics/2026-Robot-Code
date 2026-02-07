@@ -7,6 +7,7 @@
 
 package com.team2813;
 
+import com.team2813.subsystems.drive.AllDrivetrains;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -68,7 +69,8 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
+
+    robotContainer = new RobotContainer(AllDrivetrains.drWomp());
   }
 
   /** This function is called periodically during all modes. */
