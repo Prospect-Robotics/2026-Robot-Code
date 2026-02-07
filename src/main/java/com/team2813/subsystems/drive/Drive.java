@@ -91,19 +91,22 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, Pose2d.kZero);
 
-   /** Computes a conservative drive base radius in meters. */
-    private static double calculateDriveBaseRadius(AllTunerConstants tunerConstants) {
-     double radius = Math.max(
+  /** Computes a conservative drive base radius in meters. */
+  private static double calculateDriveBaseRadius(AllTunerConstants tunerConstants) {
+    double radius =
+        Math.max(
             Math.max(
-                Math.hypot(tunerConstants.frontLeft().LocationX, tunerConstants.frontLeft().LocationY),
-                Math.hypot(tunerConstants.frontRight().LocationX, tunerConstants.frontRight().LocationY)),
+                Math.hypot(
+                    tunerConstants.frontLeft().LocationX, tunerConstants.frontLeft().LocationY),
+                Math.hypot(
+                    tunerConstants.frontRight().LocationX, tunerConstants.frontRight().LocationY)),
             Math.max(
-                Math.hypot(tunerConstants.backLeft().LocationX, tunerConstants.backLeft().LocationY),
-                Math.hypot(tunerConstants.backRight().LocationX, tunerConstants.backRight().LocationY)));
-     return radius; 
-   }
-
-    
+                Math.hypot(
+                    tunerConstants.backLeft().LocationX, tunerConstants.backLeft().LocationY),
+                Math.hypot(
+                    tunerConstants.backRight().LocationX, tunerConstants.backRight().LocationY)));
+    return radius;
+  }
 
   // TODO: Remove the last four params, and replace with a Function<SwerveModuleConstants, ModueIO>
   public Drive(
@@ -118,7 +121,6 @@ public class Drive extends SubsystemBase {
     modules[1] = new Module(frModuleIO, 1, TunerConstants.FrontRight);
     modules[2] = new Module(blModuleIO, 2, TunerConstants.BackLeft);
     modules[3] = new Module(brModuleIO, 3, TunerConstants.BackRight);
-
 
     // Usage reporting for swerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);
@@ -158,7 +160,7 @@ public class Drive extends SubsystemBase {
             new SysIdRoutine.Mechanism(
                 (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
 
-  driveRadius = calculateDriveBaseRadius(robotConstants);
+    driveRadius = calculateDriveBaseRadius(robotConstants);
   }
 
   @Override

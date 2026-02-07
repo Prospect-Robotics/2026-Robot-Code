@@ -20,17 +20,4 @@ public record AllTunerConstants(
     SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
         backLeft,
     SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
-        backRight) {
-
-  public double calculateDriveBaseRadius() {
-    double radius =
-        Math.max(
-            Math.max(
-                Math.hypot(frontLeft().LocationX, frontLeft().LocationY),
-                Math.hypot(frontRight().LocationX, frontRight().LocationY)),
-            Math.max(
-                Math.hypot(backLeft().LocationX, backLeft().LocationY),
-                Math.hypot(backRight().LocationX, backRight().LocationY)));
-    return radius;
-  }
-}
+        backRight) {}
