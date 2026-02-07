@@ -1,5 +1,7 @@
 package com.team2813.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -8,8 +10,6 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Preferences;
-
-import static edu.wpi.first.units.Units.Volts;
 
 public class ShooterConstants {
 
@@ -38,7 +38,7 @@ public class ShooterConstants {
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1;
 
-  public static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0/5.0;
+  public static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
 
   public static Voltage getShooterIntakeVoltage() {
     return Volts.of(Preferences.getDouble("Shooter/SHOOTER_INTAKE_VOLTAGE", 5));
