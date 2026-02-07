@@ -22,6 +22,8 @@ public class ShooterIOSim implements ShooterIO {
   private TalonFX kickerMotor;
   private TalonFXSimState kickerSimState;
 
+  private FlywheelSim kickerSim;
+
   public ShooterIOSim() {
     mainShooterMotor = new TalonFX(Constants.MAIN_SHOOTER_MOTOR_ID);
     mainShooterMotor.getConfigurator().apply(ShooterConstants.MAIN_SHOOTER_MOTOR_CONFIG);
@@ -42,6 +44,14 @@ public class ShooterIOSim implements ShooterIO {
     kickerMotor = new TalonFX(Constants.KICKER_MOTOR_ID);
     kickerMotor.getConfigurator().apply(ShooterConstants.KICKER_MOTOR_CONFIG);
     kickerSimState = kickerMotor.getSimState();
+
+    kickerSim =
+        new FlywheelSim(
+            LinearSystemId.createFlywheelSystem(
+                DCMotor.getKrakenX60(1),
+                0.172148,
+                ShooterConstants.KICKER_MOTOR_TO_FLYWHEEL_GEARING),
+            DCMotor.getKrakenX60(2));
   }
 
   @Override
@@ -76,15 +86,20 @@ public class ShooterIOSim implements ShooterIO {
     // The follower roller motor is opposed with the main motor, so it gets negated values.
     followerShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
     followerShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
+
+    kickerSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
+    kickerSimState.setRotorVelocity(shooterSim.getAngularVelocity());
   }
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterMotorVoltage) {
     mainShooterMotor.setVoltage(shooterMotorVoltage.in(Volts));
+    shooterSim.setInputVoltage(shooterMotorVoltage.in(Volts));
   }
 
   @Override
   public void setKickerMotorVoltage(Voltage kickerMotorVoltage) {
     kickerMotor.setVoltage(kickerMotorVoltage.in(Volts));
+    kickerSim.setInputVoltage(kickerMotorVoltage.in(Volts));
   }
 }
