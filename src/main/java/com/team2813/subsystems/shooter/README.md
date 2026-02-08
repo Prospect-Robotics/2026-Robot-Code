@@ -1,6 +1,5 @@
 ![Image](../../../../../../../documentation/images/shooter_and_kicker_motor_diagram.png)
-Note: The robot is currently facing toward the camera. The directions for the motors are for when the robot is facing away.
-
+NOTE: The motor names ("Right" and "Left") appear inverted because are assigned with respect to robot forward direction, since the diagram depicts the robot facing the camera.
 ## Motors
 * Right & Left Shooter Motors.
   * Spin the brass flywheels to launch the fuel.
