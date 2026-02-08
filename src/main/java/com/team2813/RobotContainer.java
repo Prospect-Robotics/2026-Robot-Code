@@ -17,6 +17,10 @@ import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
 import com.team2813.subsystems.hopper.*;
+import com.team2813.subsystems.shooter.Shooter;
+import com.team2813.subsystems.shooter.ShooterIO;
+import com.team2813.subsystems.shooter.ShooterIOReal;
+import com.team2813.subsystems.shooter.ShooterIOSim;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,6 +38,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
+  private final Shooter shooter;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
@@ -62,6 +67,7 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOReal());
 
+        shooter = new Shooter(new ShooterIOReal());
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
         // implementations
@@ -94,6 +100,8 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOSim());
 
+        shooter = new Shooter(new ShooterIOSim());
+
         break;
 
       default:
@@ -108,6 +116,8 @@ public class RobotContainer {
                 new ModuleIO() {});
 
         hopper = new Hopper(new HopperIO() {});
+
+        shooter = new Shooter(new ShooterIO() {});
 
         break;
     }
@@ -152,6 +162,9 @@ public class RobotContainer {
 
     controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
     controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
+
+    controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+    controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
   }
 
   /**
