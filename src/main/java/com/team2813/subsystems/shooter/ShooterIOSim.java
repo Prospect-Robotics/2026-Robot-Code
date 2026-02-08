@@ -32,12 +32,12 @@ public class ShooterIOSim implements ShooterIO {
     followerShooterMotor = new TalonFX(Constants.FOLLOWER_SHOOTER_MOTOR_ID);
     followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
     followerShooterSimState = followerShooterMotor.getSimState();
-    // MOI taken from onshape.
+
     shooterSim =
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(2),
-                0.00303431,
+                0.00303431, // "Moment of Inertia" taken from OnShape.
                 ShooterConstants.SHOOTER_MOTOR_TO_FLYWHEEL_GEARING),
             DCMotor.getKrakenX60(2));
 
@@ -49,7 +49,7 @@ public class ShooterIOSim implements ShooterIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(1),
-                0.172148,
+                0.172148, // "Moment of Inertia" taken from OnShape.
                 ShooterConstants.KICKER_MOTOR_TO_FLYWHEEL_GEARING),
             DCMotor.getKrakenX60(2));
   }
