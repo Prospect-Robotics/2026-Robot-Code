@@ -70,6 +70,15 @@ task(replayWatch, type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+repositories {
+    mavenCentral()
+    mavenLocal()
+    // currently needed for lib2813's testing library; only pulls in deps for testing
+    maven {
+        url = 'https://maven.revrobotics.com/'
+    }
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
