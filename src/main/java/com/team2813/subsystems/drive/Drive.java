@@ -9,6 +9,7 @@ package com.team2813.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
@@ -50,25 +51,31 @@ import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
   // TunerConstants doesn't include these constants, so they are declared locally
-  static final double ODOMETRY_FREQUENCY = TunerConstants.kCANBus.isNetworkFD() ? 250.0 : 100.0;
+  public static double odometryFrequency(AllTunerConstants tunerConstants) {
+    return tunerConstants.kCANBus().isNetworkFD() ? 250.0 : 100.0;
+  }
+
+  public static double odometryFrequency(CANBus canBus) {
+    return canBus.isNetworkFD() ? 250.0 : 100.0;
+  }
 
   // PathPlanner config constants
   private static final double ROBOT_MASS_KG = 74.088;
   private static final double ROBOT_MOI = 6.883;
   private static final double WHEEL_COF = 1.2;
-  private static final RobotConfig PP_CONFIG =
-      new RobotConfig(
-          ROBOT_MASS_KG,
-          ROBOT_MOI,
-          new ModuleConfig(
-              TunerConstants.FrontLeft.WheelRadius,
-              TunerConstants.kSpeedAt12Volts.in(MetersPerSecond),
-              WHEEL_COF,
-              DCMotor.getKrakenX60Foc(1)
-                  .withReduction(TunerConstants.FrontLeft.DriveMotorGearRatio),
-              TunerConstants.FrontLeft.SlipCurrent,
-              1),
-          getModuleTranslations());
+  // private static final RobotConfig PP_CONFIG =
+  //     new RobotConfig(
+  //         ROBOT_MASS_KG,
+  //         ROBOT_MOI,
+  //         new ModuleConfig(
+  //             TunerConstants.FrontLeft.WheelRadius,
+  //             TunerConstants.kSpeedAt12Volts.in(MetersPerSecond),
+  //             WHEEL_COF,
+  //             DCMotor.getKrakenX60Foc(1)
+  //                 .withReduction(TunerConstants.FrontLeft.DriveMotorGearRatio),
+  //             TunerConstants.FrontLeft.SlipCurrent,
+  //             1),
+  //         getModuleTranslations());
 
   static final Lock odometryLock = new ReentrantLock();
   private final GyroIO gyroIO;
@@ -110,23 +117,38 @@ public class Drive extends SubsystemBase {
 
   // TODO: Remove the last four params, and replace with a Function<SwerveModuleConstants, ModueIO>
   public Drive(
-      AllTunerConstants robotConstants,
+      AllTunerConstants tunerConstants,
       GyroIO gyroIO,
       ModuleIO flModuleIO,
       ModuleIO frModuleIO,
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
     this.gyroIO = gyroIO;
-    modules[0] = new Module(flModuleIO, 0, TunerConstants.FrontLeft);
-    modules[1] = new Module(frModuleIO, 1, TunerConstants.FrontRight);
-    modules[2] = new Module(blModuleIO, 2, TunerConstants.BackLeft);
-    modules[3] = new Module(brModuleIO, 3, TunerConstants.BackRight);
+    modules[0] = new Module(flModuleIO, 0, tunerConstants.frontLeft());
+    modules[1] = new Module(frModuleIO, 1, tunerConstants.frontRight());
+    modules[2] = new Module(blModuleIO, 2, tunerConstants.backLeft());
+    modules[3] = new Module(brModuleIO, 3, tunerConstants.backRight());
 
     // Usage reporting for swerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);
 
     // Start odometry thread
+    PhoenixOdometryThread.getInstance().setCanBus(tunerConstants.kCANBus());
     PhoenixOdometryThread.getInstance().start();
+
+    RobotConfig ppConfig =
+        new RobotConfig(
+            ROBOT_MASS_KG,
+            ROBOT_MOI,
+            new ModuleConfig(
+                tunerConstants.frontLeft().WheelRadius,
+                tunerConstants.kSpeedAt12Volts().in(MetersPerSecond),
+                WHEEL_COF,
+                DCMotor.getKrakenX60Foc(1)
+                    .withReduction(tunerConstants.frontLeft().DriveMotorGearRatio),
+                tunerConstants.frontLeft().SlipCurrent,
+                1),
+            getModuleTranslations());
 
     // Configure AutoBuilder for PathPlanner
     AutoBuilder.configure(
@@ -136,7 +158,7 @@ public class Drive extends SubsystemBase {
         this::runVelocity,
         new PPHolonomicDriveController(
             new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
-        PP_CONFIG,
+        ppConfig,
         () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
         this);
     Pathfinding.setPathfinder(new LocalADStarAK());
@@ -160,7 +182,7 @@ public class Drive extends SubsystemBase {
             new SysIdRoutine.Mechanism(
                 (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
 
-    driveRadius = calculateDriveBaseRadius(robotConstants);
+    driveRadius = calculateDriveBaseRadius(tunerConstants);
   }
 
   @Override

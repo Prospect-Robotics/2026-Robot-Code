@@ -80,9 +80,10 @@ public class ModuleIOTalonFXS implements ModuleIO {
 
   public ModuleIOTalonFXS(
       SwerveModuleConstants<TalonFXSConfiguration, TalonFXSConfiguration, CANdiConfiguration>
-          constants) {
-    driveTalon = new TalonFXS(constants.DriveMotorId, TunerConstants.kCANBus);
-    turnTalon = new TalonFXS(constants.SteerMotorId, TunerConstants.kCANBus);
+          constants,
+      AllTunerConstants tunerConstants) {
+    driveTalon = new TalonFXS(constants.DriveMotorId, tunerConstants.kCANBus());
+    turnTalon = new TalonFXS(constants.SteerMotorId, tunerConstants.kCANBus());
     candi = new CANdi(constants.EncoderId, TunerConstants.kCANBus);
 
     // Configure drive motor
@@ -174,7 +175,7 @@ public class ModuleIOTalonFXS implements ModuleIO {
 
     // Configure periodic frames
     BaseStatusSignal.setUpdateFrequencyForAll(
-        Drive.ODOMETRY_FREQUENCY, drivePosition, turnPosition);
+        Drive.odometryFrequency(tunerConstants), drivePosition, turnPosition);
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
         driveVelocity,

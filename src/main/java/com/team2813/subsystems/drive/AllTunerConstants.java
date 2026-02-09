@@ -1,8 +1,11 @@
 package com.team2813.subsystems.drive;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
+import edu.wpi.first.units.measure.LinearVelocity;
 
 /**
  * A record class that holds tuner constants.
@@ -20,4 +23,7 @@ public record AllTunerConstants(
     SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
         backLeft,
     SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
-        backRight) {}
+        backRight,
+    SwerveDrivetrainConstants drivetrainConstants,
+    CANBus kCANBus,
+    LinearVelocity kSpeedAt12Volts) {}

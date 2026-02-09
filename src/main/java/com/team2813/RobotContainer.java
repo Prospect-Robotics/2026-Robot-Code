@@ -59,11 +59,11 @@ public class RobotContainer {
         drive =
             new Drive(
                 robotConstants,
-                new GyroIOPigeon2(),
-                new ModuleIOTalonFX(robotConstants.frontLeft()),
-                new ModuleIOTalonFX(robotConstants.frontRight()),
-                new ModuleIOTalonFX(robotConstants.backLeft()),
-                new ModuleIOTalonFX(robotConstants.backRight()));
+                new GyroIOPigeon2(robotConstants),
+                new ModuleIOTalonFX(robotConstants.frontLeft(), robotConstants),
+                new ModuleIOTalonFX(robotConstants.frontRight(), robotConstants),
+                new ModuleIOTalonFX(robotConstants.backLeft(), robotConstants),
+                new ModuleIOTalonFX(robotConstants.backRight(), robotConstants));
 
         hopper = new Hopper(new HopperIOReal());
 
