@@ -39,4 +39,7 @@ public final class Constants {
   // Aliases: Vectoring motors
   public static final int LEFT_FEEDER_MOTOR_ID = 23;
   public static final int RIGHT_FEEDER_MOTOR_ID = 24;
+
+  public static final int INTAKE_MOTOR_CAN_ID = 26;
+  public static final int EXTENDER_MOTOR_CAN_ID = 27;
 }
