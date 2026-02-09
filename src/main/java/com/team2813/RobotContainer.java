@@ -9,7 +9,7 @@ package com.team2813;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
-import com.team2813.generated.TunerConstants;
+import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
 import com.team2813.subsystems.drive.GyroIOPigeon2;
@@ -17,6 +17,10 @@ import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
 import com.team2813.subsystems.hopper.*;
+import com.team2813.subsystems.shooter.Shooter;
+import com.team2813.subsystems.shooter.ShooterIO;
+import com.team2813.subsystems.shooter.ShooterIOReal;
+import com.team2813.subsystems.shooter.ShooterIOSim;
 import com.team2813.subsystems.intake.Intake;
 import com.team2813.subsystems.intake.IntakeIO;
 import com.team2813.subsystems.intake.IntakeIOReal;
@@ -41,14 +45,19 @@ public class RobotContainer {
   private final Hopper hopper;
   private final Vision vision;
   private final Intake intake;
+  private final Shooter shooter;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   *
+   * @param robotConstants The tuner constants for the robot.
+   */
+  public RobotContainer(AllTunerConstants robotConstants) {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -56,11 +65,12 @@ public class RobotContainer {
         // a CANcoder
         drive =
             new Drive(
+                robotConstants,
                 new GyroIOPigeon2(),
-                new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                new ModuleIOTalonFX(TunerConstants.FrontRight),
-                new ModuleIOTalonFX(TunerConstants.BackLeft),
-                new ModuleIOTalonFX(TunerConstants.BackRight));
+                new ModuleIOTalonFX(robotConstants.frontLeft()),
+                new ModuleIOTalonFX(robotConstants.frontRight()),
+                new ModuleIOTalonFX(robotConstants.backLeft()),
+                new ModuleIOTalonFX(robotConstants.backRight()));
 
         hopper = new Hopper(new HopperIOReal());
 
@@ -75,6 +85,7 @@ public class RobotContainer {
                     VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
 
         intake = new Intake(new IntakeIOReal());
+        shooter = new Shooter(new ShooterIOReal());
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
         // implementations
@@ -88,21 +99,22 @@ public class RobotContainer {
         // drive =
         // new Drive(
         // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(TunerConstants.FrontLeft),
-        // new ModuleIOTalonFXS(TunerConstants.FrontRight),
+        // new ModuleIOTalonFXS(robotConstants.frontLeft()),
+        // new ModuleIOTalonFXS(robotConstants.frontRight()),
         // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(TunerConstants.BackRight));
+        // new ModuleIOTalonFXS(robotConstants.backRight()));
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
+                robotConstants,
                 new GyroIO() {},
-                new ModuleIOSim(TunerConstants.FrontLeft),
-                new ModuleIOSim(TunerConstants.FrontRight),
-                new ModuleIOSim(TunerConstants.BackLeft),
-                new ModuleIOSim(TunerConstants.BackRight));
+                new ModuleIOSim(robotConstants.frontLeft()),
+                new ModuleIOSim(robotConstants.frontRight()),
+                new ModuleIOSim(robotConstants.backLeft()),
+                new ModuleIOSim(robotConstants.backRight()));
 
         hopper = new Hopper(new HopperIOSim());
 
@@ -123,12 +135,15 @@ public class RobotContainer {
                     drive::getPose));
 
         intake = new Intake(new IntakeIOSim());
+        shooter = new Shooter(new ShooterIOSim());
+
         break;
 
       default:
         // Replayed robot, disable IO implementations
         drive =
             new Drive(
+                robotConstants,
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
@@ -144,6 +159,8 @@ public class RobotContainer {
                 new VisionIO() {},
                 new VisionIO() {});
         intake = new Intake(new IntakeIO() {});
+
+        shooter = new Shooter(new ShooterIO() {});
 
         break;
     }
@@ -186,9 +203,11 @@ public class RobotContainer {
             () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
-    controller.leftBumper().onTrue(hopper.intakeCommand());
-    controller.rightBumper().onTrue(hopper.outtakeCommand());
-    controller.povDown().onTrue(hopper.stopCommand());
+    controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
+    controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
+
+    controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+    controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
     controller.a().onTrue(intake.intakeCommand());
     controller.b().onTrue(intake.outtakeCommand());

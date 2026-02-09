@@ -7,6 +7,7 @@
 
 package com.team2813;
 
+import com.team2813.subsystems.drive.AllDrivetrains;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -68,7 +69,8 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
+
+    robotContainer = new RobotContainer(AllDrivetrains.drWomp());
   }
 
   /** This function is called periodically during all modes. */
@@ -112,17 +114,18 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousPeriodic() {}
 
-  /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+  public void autonomousExit() {
+    // This makes sure that the autonomous command isn't running after we exit the autonomous
+    // period
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
   }
+
+  /** This function is called once when teleop is enabled. */
+  @Override
+  public void teleopInit() {}
 
   /** This function is called periodically during operator control. */
   @Override

@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.Preferences;
 public class HopperConstants {
 
   static {
-    // roller motors.
+    // Roller motors.
     Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 5);
     Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -5);
 
-    // feeder/vector motors.
+    // Feeder/Vectoring motors.
     Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 3);
     Preferences.initFloat("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -3);
 
@@ -58,10 +58,10 @@ public class HopperConstants {
 
   public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 
   public static final TalonFXConfiguration LEFT_FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 }
