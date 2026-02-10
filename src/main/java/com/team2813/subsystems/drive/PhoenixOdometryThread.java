@@ -9,7 +9,7 @@ package com.team2813.subsystems.drive;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
-import com.team2813.generated.TunerConstants;
+import com.team2813.generated.drwomp.TunerConstants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.RobotController;
 import java.util.ArrayList;

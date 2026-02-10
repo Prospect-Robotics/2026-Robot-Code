@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.534450784593438,
+        "y": 3.9767760342368046
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.990264532410275,
+        "y": 3.913101280328675
+      },
+      "isLocked": false,
+      "linkedName": "center"
+    },
+    {
+      "anchor": {
+        "x": 1.5755666666666666,
+        "y": 3.840111111111111
+      },
+      "prevControl": {
+        "x": 2.4931041304285277,
+        "y": 3.9267619139220797
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "tower"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "shoot 8 balls+climb",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

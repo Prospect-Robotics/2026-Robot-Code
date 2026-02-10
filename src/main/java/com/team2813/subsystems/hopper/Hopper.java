@@ -9,10 +9,11 @@ import org.littletonrobotics.junction.Logger;
 
 public class Hopper extends SubsystemBase {
   private final HopperIO io;
-  private final HopperIOInputsAutoLogged replayedInputs = new HopperIOInputsAutoLogged();
+  private final HopperIOInputsAutoLogged replayedInputs;
 
   public Hopper(HopperIO io) {
     this.io = io;
+    this.replayedInputs = new HopperIOInputsAutoLogged();
   }
 
   @Override

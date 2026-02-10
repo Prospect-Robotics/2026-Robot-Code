@@ -83,9 +83,16 @@ public class DriveCommands {
                   linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                   linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                   omega * drive.getMaxAngularSpeedRadPerSec());
+
+          // We have to call DriverStation#getAlliance() only once, since the return value could
+          // change in between calls to it. So, we turn the Optional<Alliance> from
+          // DriverStation#getAlliance() to an Optional<Boolean> by mapping a Red alliance to
+          // `true`, and defaulting to `false` if the DriverStation#getAlliance() returned an empty
+          // optional. This achieves the intended behavior of having `true` if, and only if
+          // DriverStation#getAlliance() returned a non-empty option with Alliance.Red, but avoiding
+          // accidentally unwrapping an empty optional
           boolean isFlipped =
-              DriverStation.getAlliance().isPresent()
-                  && DriverStation.getAlliance().get() == Alliance.Red;
+              DriverStation.getAlliance().map((alliance) -> alliance == Alliance.Red).orElse(false);
           drive.runVelocity(
               ChassisSpeeds.fromFieldRelativeSpeeds(
                   speeds,
@@ -257,6 +264,7 @@ public class DriveCommands {
                     })
 
                 // When cancelled, calculate and print results
+
                 .finallyDo(
                     () -> {
                       double[] positions = drive.getWheelRadiusCharacterizationPositions();
@@ -264,7 +272,7 @@ public class DriveCommands {
                       for (int i = 0; i < 4; i++) {
                         wheelDelta += Math.abs(positions[i] - state.positions[i]) / 4.0;
                       }
-                      double wheelRadius = (state.gyroDelta * Drive.DRIVE_BASE_RADIUS) / wheelDelta;
+                      double wheelRadius = (state.gyroDelta * drive.driveBaseRadius()) / wheelDelta;
 
                       NumberFormat formatter = new DecimalFormat("#0.000");
                       System.out.println(
