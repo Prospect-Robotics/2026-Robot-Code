@@ -39,7 +39,7 @@ public class PhoenixOdometryThread extends Thread {
   private final List<Queue<Double>> timestampQueues = new ArrayList<>();
 
   // private static boolean isCANFD; //  = TunerConstants.kCANBus.isNetworkFD();
-  private Optional<CANBus> canBus = Optional.empty();
+  private volatile Optional<CANBus> canBus = Optional.empty();
   private static PhoenixOdometryThread instance = null;
 
   public static PhoenixOdometryThread getInstance() {
