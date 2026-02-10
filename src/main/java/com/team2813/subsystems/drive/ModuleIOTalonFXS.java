@@ -25,7 +25,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-import com.team2813.generated.drwomp.TunerConstants;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -84,7 +83,7 @@ public class ModuleIOTalonFXS implements ModuleIO {
       AllTunerConstants tunerConstants) {
     driveTalon = new TalonFXS(constants.DriveMotorId, tunerConstants.kCANBus());
     turnTalon = new TalonFXS(constants.SteerMotorId, tunerConstants.kCANBus());
-    candi = new CANdi(constants.EncoderId, TunerConstants.kCANBus);
+    candi = new CANdi(constants.EncoderId, tunerConstants.kCANBus());
 
     // Configure drive motor
     var driveConfig = constants.DriveMotorInitialConfigs;

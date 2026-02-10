@@ -19,7 +19,6 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.team2813.Constants;
 import com.team2813.Constants.Mode;
-import com.team2813.generated.drwomp.TunerConstants;
 import com.team2813.util.LocalADStarAK;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -86,7 +85,13 @@ public class Drive extends SubsystemBase {
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
   private final double driveRadius;
 
-  private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
+  private SwerveDriveKinematics kinematics() {
+    SwerveDriveKinematics kinematics =
+        new SwerveDriveKinematics(getModuleTranslations(allTunerConstants));
+    return kinematics;
+  }
+
+  private final AllTunerConstants allTunerConstants;
   private Rotation2d rawGyroRotation = Rotation2d.kZero;
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
@@ -95,8 +100,13 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition(),
         new SwerveModulePosition()
       };
-  private SwerveDrivePoseEstimator poseEstimator =
-      new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, Pose2d.kZero);
+
+  private SwerveDrivePoseEstimator poseEstimator() {
+    SwerveDrivePoseEstimator poseEstimator =
+        new SwerveDrivePoseEstimator(
+            kinematics(), rawGyroRotation, lastModulePositions, Pose2d.kZero);
+    return poseEstimator;
+  }
 
   /** Computes a conservative drive base radius in meters. */
   private static double calculateDriveBaseRadius(AllTunerConstants tunerConstants) {
@@ -123,6 +133,7 @@ public class Drive extends SubsystemBase {
       ModuleIO frModuleIO,
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
+    this.allTunerConstants = tunerConstants;
     this.gyroIO = gyroIO;
     modules[0] = new Module(flModuleIO, 0, tunerConstants.frontLeft());
     modules[1] = new Module(frModuleIO, 1, tunerConstants.frontRight());
@@ -148,7 +159,7 @@ public class Drive extends SubsystemBase {
                     .withReduction(tunerConstants.frontLeft().DriveMotorGearRatio),
                 tunerConstants.frontLeft().SlipCurrent,
                 1),
-            getModuleTranslations());
+            getModuleTranslations(tunerConstants));
 
     // Configure AutoBuilder for PathPlanner
     AutoBuilder.configure(
@@ -235,12 +246,12 @@ public class Drive extends SubsystemBase {
         rawGyroRotation = gyroInputs.odometryYawPositions[i];
       } else {
         // Use the angle delta from the kinematics and module deltas
-        Twist2d twist = kinematics.toTwist2d(moduleDeltas);
+        Twist2d twist = kinematics().toTwist2d(moduleDeltas);
         rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
       }
 
       // Apply update
-      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+      poseEstimator().updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
 
     // Update gyro alert
@@ -255,8 +266,9 @@ public class Drive extends SubsystemBase {
   public void runVelocity(ChassisSpeeds speeds) {
     // Calculate module setpoints
     ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
-    SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(setpointStates, TunerConstants.kSpeedAt12Volts);
+    SwerveModuleState[] setpointStates = kinematics().toSwerveModuleStates(discreteSpeeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        setpointStates, allTunerConstants.kSpeedAt12Volts());
 
     // Log unoptimized setpoints and setpoint speeds
     Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
@@ -290,9 +302,9 @@ public class Drive extends SubsystemBase {
   public void stopWithX() {
     Rotation2d[] headings = new Rotation2d[4];
     for (int i = 0; i < 4; i++) {
-      headings[i] = getModuleTranslations()[i].getAngle();
+      headings[i] = getModuleTranslations(allTunerConstants)[i].getAngle();
     }
-    kinematics.resetHeadings(headings);
+    kinematics().resetHeadings(headings);
     stop();
   }
 
@@ -330,7 +342,7 @@ public class Drive extends SubsystemBase {
   /** Returns the measured chassis speeds of the robot. */
   @AutoLogOutput(key = "SwerveChassisSpeeds/Measured")
   private ChassisSpeeds getChassisSpeeds() {
-    return kinematics.toChassisSpeeds(getModuleStates());
+    return kinematics().toChassisSpeeds(getModuleStates());
   }
 
   /** Returns the position of each module in radians. */
@@ -354,7 +366,7 @@ public class Drive extends SubsystemBase {
   /** Returns the current odometry pose. */
   @AutoLogOutput(key = "Odometry/Robot")
   public Pose2d getPose() {
-    return poseEstimator.getEstimatedPosition();
+    return poseEstimator().getEstimatedPosition();
   }
 
   /** Returns the current odometry rotation. */
@@ -364,7 +376,7 @@ public class Drive extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+    poseEstimator().resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
 
   /** Adds a new timestamped vision measurement. */
@@ -372,13 +384,13 @@ public class Drive extends SubsystemBase {
       Pose2d visionRobotPoseMeters,
       double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
-    poseEstimator.addVisionMeasurement(
-        visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+    poseEstimator()
+        .addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
   }
 
   /** Returns the maximum linear speed in meters per sec. */
   public double getMaxLinearSpeedMetersPerSec() {
-    return TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+    return allTunerConstants.kSpeedAt12Volts().in(MetersPerSecond);
   }
 
   /** Returns the maximum angular speed in radians per sec. */
@@ -387,12 +399,13 @@ public class Drive extends SubsystemBase {
   }
 
   /** Returns an array of module translations. */
-  public static Translation2d[] getModuleTranslations() {
+  public static Translation2d[] getModuleTranslations(AllTunerConstants tunerConstants) {
     return new Translation2d[] {
-      new Translation2d(TunerConstants.FrontLeft.LocationX, TunerConstants.FrontLeft.LocationY),
-      new Translation2d(TunerConstants.FrontRight.LocationX, TunerConstants.FrontRight.LocationY),
-      new Translation2d(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),
-      new Translation2d(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)
+      new Translation2d(tunerConstants.frontLeft().LocationX, tunerConstants.frontLeft().LocationY),
+      new Translation2d(
+          tunerConstants.frontRight().LocationX, tunerConstants.frontRight().LocationY),
+      new Translation2d(tunerConstants.backLeft().LocationX, tunerConstants.backLeft().LocationY),
+      new Translation2d(tunerConstants.backRight().LocationX, tunerConstants.backRight().LocationY)
     };
   }
 

@@ -7,6 +7,7 @@
 
 package com.team2813.commands;
 
+import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -221,7 +222,7 @@ public class DriveCommands {
   }
 
   /** Measures the robot's wheel radius by spinning in a circle. */
-  public static Command wheelRadiusCharacterization(Drive drive) {
+  public static Command wheelRadiusCharacterization(Drive drive, AllTunerConstants tunerConstants) {
     SlewRateLimiter limiter = new SlewRateLimiter(WHEEL_RADIUS_RAMP_RATE);
     WheelRadiusCharacterizationState state = new WheelRadiusCharacterizationState();
 
