@@ -128,7 +128,7 @@ public class RobotContainer {
     // Set up SysId routines
     autoChooser.addOption(
         "Drive Wheel Radius Characterization",
-        DriveCommands.wheelRadiusCharacterization(drive, tunerConstants));
+        DriveCommands.wheelRadiusCharacterization(drive));
     autoChooser.addOption(
         "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
     autoChooser.addOption(
@@ -143,7 +143,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
-    configureButtonBindings(tunerConstants);
+    configureButtonBindings();
   }
 
   /**
@@ -152,7 +152,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings(AllTunerConstants tunerConstants) {
+  private void configureButtonBindings() {
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(

@@ -51,7 +51,7 @@ import org.littletonrobotics.junction.Logger;
 public class Drive extends SubsystemBase {
   // TunerConstants doesn't include these constants, so they are declared locally
   public static double odometryFrequency(AllTunerConstants tunerConstants) {
-    return tunerConstants.kCANBus().isNetworkFD() ? 250.0 : 100.0;
+    return odometryFrequency(tunerConstants.kCANBus()); 
   }
 
   public static double odometryFrequency(CANBus canBus) {
@@ -59,6 +59,7 @@ public class Drive extends SubsystemBase {
   }
 
   // PathPlanner config constants
+  //TODO:add to the AllTunerConstants file
   private static final double ROBOT_MASS_KG = 74.088;
   private static final double ROBOT_MOI = 6.883;
   private static final double WHEEL_COF = 1.2;
@@ -405,6 +406,7 @@ public class Drive extends SubsystemBase {
   }
 
   /** Returns an array of module translations. */
+  //assign this to a field so we dont recalculate 
   public static Translation2d[] getModuleTranslations(AllTunerConstants tunerConstants) {
     return new Translation2d[] {
       new Translation2d(tunerConstants.frontLeft().LocationX, tunerConstants.frontLeft().LocationY),

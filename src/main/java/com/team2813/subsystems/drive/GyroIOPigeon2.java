@@ -30,11 +30,12 @@ public class GyroIOPigeon2 implements GyroIO {
     pigeon = new Pigeon2(tunerConstants.drivetrainConstants().Pigeon2Id, tunerConstants.kCANBus());
     yaw = pigeon.getYaw();
     yawVelocity = pigeon.getAngularVelocityZWorld();
-    if (tunerConstants.drivetrainConstants().Pigeon2Configs != null) {
-      pigeon.getConfigurator().apply(tunerConstants.drivetrainConstants().Pigeon2Configs);
-    } else {
-      pigeon.getConfigurator().apply(new Pigeon2Configuration());
+    Pigeon2Configuration pigeon2Configs = tunerConstants.drivetrainConstants().Pigeon2Configs;
+    if (pigeon2Configs == null) {
+      pigeon2Configs = new Pigeon2Configuration();
     }
+    pigeon.getConfigurator().apply(pigeon2Configs);
+
 
     pigeon.getConfigurator().setYaw(0.0);
     yaw.setUpdateFrequency(Drive.odometryFrequency(tunerConstants));
