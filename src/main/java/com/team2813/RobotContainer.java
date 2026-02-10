@@ -17,11 +17,14 @@ import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
 import com.team2813.subsystems.hopper.*;
-import com.team2813.subsystems.vision.*;
 import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
+import com.team2813.subsystems.vision.*;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,6 +49,9 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+
+  private static final Pose2d BLUE_HUB_POSITION = new Pose2d(4.580, 4.000, Rotation2d.kZero);
+  private static final Pose2d RED_HUB_POSITION = new Pose2d(11.812, 4.000, Rotation2d.kZero);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -197,6 +203,15 @@ public class RobotContainer {
 
     controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
     controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+
+    controller
+        .y()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -controller.getLeftY(),
+                () -> -controller.getLeftX(),
+                this::getBotToHub));
   }
 
   /**
@@ -206,5 +221,16 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  public Rotation2d getBotToHub() {
+    Pose2d hub;
+    if (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+        == DriverStation.Alliance.Red) {
+      hub = RED_HUB_POSITION;
+    } else {
+      hub = BLUE_HUB_POSITION;
+    }
+    return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
 }
