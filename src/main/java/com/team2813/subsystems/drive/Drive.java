@@ -84,10 +84,11 @@ public class Drive extends SubsystemBase {
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
   private final double driveRadius;
+  private final SwerveDriveKinematics kinematics;
 
-  private SwerveDriveKinematics kinematics() {
+  private static SwerveDriveKinematics createKinematics(AllTunerConstants tunerConstants) {
     SwerveDriveKinematics kinematics =
-        new SwerveDriveKinematics(getModuleTranslations(allTunerConstants));
+        new SwerveDriveKinematics(getModuleTranslations(tunerConstants));
     return kinematics;
   }
 
@@ -104,7 +105,7 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator() {
     SwerveDrivePoseEstimator poseEstimator =
         new SwerveDrivePoseEstimator(
-            kinematics(), rawGyroRotation, lastModulePositions, Pose2d.kZero);
+            kinematics, rawGyroRotation, lastModulePositions, Pose2d.kZero);
     return poseEstimator;
   }
 
@@ -139,6 +140,7 @@ public class Drive extends SubsystemBase {
     modules[1] = new Module(frModuleIO, 1, tunerConstants.frontRight());
     modules[2] = new Module(blModuleIO, 2, tunerConstants.backLeft());
     modules[3] = new Module(brModuleIO, 3, tunerConstants.backRight());
+    kinematics = createKinematics(tunerConstants);
 
     // Usage reporting for swerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);
@@ -246,7 +248,7 @@ public class Drive extends SubsystemBase {
         rawGyroRotation = gyroInputs.odometryYawPositions[i];
       } else {
         // Use the angle delta from the kinematics and module deltas
-        Twist2d twist = kinematics().toTwist2d(moduleDeltas);
+        Twist2d twist = kinematics.toTwist2d(moduleDeltas);
         rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
       }
 
@@ -266,7 +268,7 @@ public class Drive extends SubsystemBase {
   public void runVelocity(ChassisSpeeds speeds) {
     // Calculate module setpoints
     ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
-    SwerveModuleState[] setpointStates = kinematics().toSwerveModuleStates(discreteSpeeds);
+    SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(
         setpointStates, allTunerConstants.kSpeedAt12Volts());
 
@@ -304,7 +306,7 @@ public class Drive extends SubsystemBase {
     for (int i = 0; i < 4; i++) {
       headings[i] = getModuleTranslations(allTunerConstants)[i].getAngle();
     }
-    kinematics().resetHeadings(headings);
+    kinematics.resetHeadings(headings);
     stop();
   }
 
@@ -342,7 +344,7 @@ public class Drive extends SubsystemBase {
   /** Returns the measured chassis speeds of the robot. */
   @AutoLogOutput(key = "SwerveChassisSpeeds/Measured")
   private ChassisSpeeds getChassisSpeeds() {
-    return kinematics().toChassisSpeeds(getModuleStates());
+    return kinematics.toChassisSpeeds(getModuleStates());
   }
 
   /** Returns the position of each module in radians. */
