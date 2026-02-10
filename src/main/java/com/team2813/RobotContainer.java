@@ -60,14 +60,14 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOReal());
 
         vision =
-                new Vision(
-                        drive::addVisionMeasurement,
-                        new VisionIOPhotonVision(
-                                VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
-                        new VisionIOPhotonVision(
-                                VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
-                        new VisionIOPhotonVision(
-                                VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVision(
+                    VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
+                new VisionIOPhotonVision(
+                    VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
+                new VisionIOPhotonVision(
+                    VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
         // implementations
@@ -100,20 +100,20 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOSim());
 
         vision =
-                new Vision(
-                        drive::addVisionMeasurement,
-                        new VisionIOPhotonVisionSim(
-                                VisionConstants.LEFT_COLOR_CAMERA_NAME,
-                                VisionConstants.ROBOT_TO_LEFT_CAM,
-                                drive::getPose),
-                        new VisionIOPhotonVisionSim(
-                                VisionConstants.RIGHT_COLOR_CAMERA_NAME,
-                                VisionConstants.ROBOT_TO_RIGHT_CAM,
-                                drive::getPose),
-                        new VisionIOPhotonVisionSim(
-                                VisionConstants.MIDDLE_MONO_CAMERA_NAME,
-                                VisionConstants.ROBOT_TO_MID_CAM,
-                                drive::getPose));
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.ROBOT_TO_LEFT_CAM,
+                    drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.ROBOT_TO_RIGHT_CAM,
+                    drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.MIDDLE_MONO_CAMERA_NAME,
+                    VisionConstants.ROBOT_TO_MID_CAM,
+                    drive::getPose));
         break;
 
       default:
@@ -128,10 +128,12 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIO() {});
 
-        vision = new Vision(drive::addVisionMeasurement,
-                            new VisionIO() {},
-                            new VisionIO() {},
-                            new VisionIO() {});
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIO() {},
+                new VisionIO() {},
+                new VisionIO() {});
         break;
     }
 
