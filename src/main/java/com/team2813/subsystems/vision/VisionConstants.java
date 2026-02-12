@@ -17,27 +17,26 @@ import edu.wpi.first.math.geometry.Translation3d;
 
 public class VisionConstants {
   // AprilTag layout
-  public static AprilTagFieldLayout aprilTagLayout =
+  public static final AprilTagFieldLayout APRIL_TAG_LAYOUT =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   // Camera names, must match names configured on coprocessor
-  public static String LEFT_COLOR_CAMERA_NAME = "left_color";
-  public static String RIGHT_COLOR_CAMERA_NAME = "right_color";
-  public static String MIDDLE_MONO_CAMERA_NAME = "middle_monochrome";
+  public static final String LEFT_COLOR_CAMERA_NAME = "left_color";
+  public static final String RIGHT_COLOR_CAMERA_NAME = "right_color";
+  public static final String MIDDLE_MONO_CAMERA_NAME = "middle_monochrome";
 
   // Robot to camera transforms
-  // (Not used by Limelight, configure in web UI instead)
-  public static Transform3d ROBOT_TO_LEFT_CAM =
+  public static final Transform3d ROBOT_TO_LEFT_CAM =
       new Transform3d(
           new Translation3d(Centimeters.of(31), Centimeters.of(21), Centimeters.of(20)),
           new Rotation3d(Degrees.of(0), Degrees.of(-20), Degrees.of(-30)));
 
-  public static Transform3d ROBOT_TO_RIGHT_CAM =
+  public static final Transform3d ROBOT_TO_RIGHT_CAM =
       new Transform3d(
           new Translation3d(Centimeters.of(29), Centimeters.of(-23), Centimeters.of(13)),
           new Rotation3d(Degrees.of(0), Degrees.of(-20), Degrees.of(20)));
 
-  public static Transform3d ROBOT_TO_MID_CAM =
+  public static final Transform3d ROBOT_TO_MID_CAM =
       new Transform3d(
           // Field of translation in X,Y,Z (X: front-back (+:front)), (Y: left-right (+:left), (Z:
           // up-down (+:up))
@@ -46,24 +45,24 @@ public class VisionConstants {
           new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(0)));
 
   // Basic filtering thresholds
-  public static double maxAmbiguity = 0.3;
-  public static double maxZError = 0.75;
+  public static final double MAX_AMBIGUITY = 0.3;
+  public static final double MAX_Z_ERROR = 0.75;
 
   // Standard deviation baselines, for 1 meter distance and 1 tag
   // (Adjusted automatically based on distance and # of tags)
-  public static double linearStdDevBaseline = 0.02; // Meters
-  public static double angularStdDevBaseline = 0.06; // Radians
+  public static final double LINEAR_STD_DEV_BASELINE = 0.02; // Meters
+  public static final double ANGULAR_STD_DEV_BASELINE = 0.06; // Radians
 
   // Standard deviation multipliers for each camera
   // (Adjust to trust some cameras more than others)
-  public static double[] cameraStdDevFactors =
+  public static final double[] CAMERA_STD_DEV_FACTORS =
       new double[] {
         1.0, // Camera 0
         1.0 // Camera 1
       };
 
   // Multipliers to apply for MegaTag 2 observations
-  public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
-  public static double angularStdDevMegatag2Factor =
+  public static final double LINEAR_STD_DEV_MEGATAG2_FACTOR = 0.5; // More stable than full 3D solve
+  public static final double ANGULAR_STD_DEV_MEGATAG2_FACTOR =
       Double.POSITIVE_INFINITY; // No rotation data available
 }
