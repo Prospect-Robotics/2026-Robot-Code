@@ -81,9 +81,9 @@ public class ModuleIOTalonFXS implements ModuleIO {
       SwerveModuleConstants<TalonFXSConfiguration, TalonFXSConfiguration, CANdiConfiguration>
           constants,
       AllTunerConstants tunerConstants) {
-    driveTalon = new TalonFXS(constants.DriveMotorId, tunerConstants.CANBus());
-    turnTalon = new TalonFXS(constants.SteerMotorId, tunerConstants.CANBus());
-    candi = new CANdi(constants.EncoderId, tunerConstants.CANBus());
+    driveTalon = new TalonFXS(constants.DriveMotorId, tunerConstants.canBus());
+    turnTalon = new TalonFXS(constants.SteerMotorId, tunerConstants.canBus());
+    candi = new CANdi(constants.EncoderId, tunerConstants.canBus());
 
     // Configure drive motor
     var driveConfig = constants.DriveMotorInitialConfigs;
@@ -174,7 +174,7 @@ public class ModuleIOTalonFXS implements ModuleIO {
 
     // Configure periodic frames
     BaseStatusSignal.setUpdateFrequencyForAll(
-        Drive.odometryFrequency(tunerConstants.CANBus()), drivePosition, turnPosition);
+        Drive.odometryFrequency(tunerConstants.canBus()), drivePosition, turnPosition);
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
         driveVelocity,

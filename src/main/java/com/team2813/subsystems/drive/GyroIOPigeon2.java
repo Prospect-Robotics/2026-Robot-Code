@@ -27,7 +27,7 @@ public class GyroIOPigeon2 implements GyroIO {
   private final StatusSignal<AngularVelocity> yawVelocity;
 
   public GyroIOPigeon2(AllTunerConstants tunerConstants) {
-    pigeon = new Pigeon2(tunerConstants.drivetrainConstants().Pigeon2Id, tunerConstants.CANBus());
+    pigeon = new Pigeon2(tunerConstants.drivetrainConstants().Pigeon2Id, tunerConstants.canBus());
     yaw = pigeon.getYaw();
     yawVelocity = pigeon.getAngularVelocityZWorld();
     Pigeon2Configuration pigeon2Configs = tunerConstants.drivetrainConstants().Pigeon2Configs;
@@ -37,7 +37,7 @@ public class GyroIOPigeon2 implements GyroIO {
     pigeon.getConfigurator().apply(pigeon2Configs);
 
     pigeon.getConfigurator().setYaw(0.0);
-    yaw.setUpdateFrequency(Drive.odometryFrequency(tunerConstants.CANBus()));
+    yaw.setUpdateFrequency(Drive.odometryFrequency(tunerConstants.canBus()));
     yawVelocity.setUpdateFrequency(50.0);
     pigeon.optimizeBusUtilization();
     yawTimestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();

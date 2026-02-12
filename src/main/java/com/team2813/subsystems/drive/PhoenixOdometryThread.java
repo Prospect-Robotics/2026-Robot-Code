@@ -122,9 +122,6 @@ public class PhoenixOdometryThread extends Thread {
       // Wait for updates from all signals
       signalsLock.lock();
       try {
-        if (!optionalCanBus.isPresent()) {
-          throw new InterruptedException("CANBus not specified");
-        }
         if (canBus.isNetworkFD() && phoenixSignals.length > 0) {
           BaseStatusSignal.waitForAll(2.0 / Drive.odometryFrequency(canBus), phoenixSignals);
         } else {

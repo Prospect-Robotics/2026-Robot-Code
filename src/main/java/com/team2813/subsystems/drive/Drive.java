@@ -51,7 +51,7 @@ import org.littletonrobotics.junction.Logger;
 public class Drive extends SubsystemBase {
   // TunerConstants doesn't include these constants, so they are declared locally
   public static double odometryFrequency(AllTunerConstants tunerConstants) {
-    return odometryFrequency(tunerConstants.CANBus());
+    return odometryFrequency(tunerConstants.canBus());
   }
 
   public static double odometryFrequency(CANBus canBus) {
@@ -138,7 +138,7 @@ public class Drive extends SubsystemBase {
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);
 
     // Start odometry thread
-    PhoenixOdometryThread.getInstance().setCanBus(tunerConstants.CANBus());
+    PhoenixOdometryThread.getInstance().setCanBus(tunerConstants.canBus());
     PhoenixOdometryThread.getInstance().start();
 
     RobotConfig ppConfig =
