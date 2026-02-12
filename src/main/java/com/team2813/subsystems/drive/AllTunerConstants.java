@@ -25,5 +25,5 @@ public record AllTunerConstants(
     SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
         backRight,
     SwerveDrivetrainConstants drivetrainConstants,
-    CANBus CANBus,
+    CANBus canBus,
     LinearVelocity kSpeedAt12Volts) {}
