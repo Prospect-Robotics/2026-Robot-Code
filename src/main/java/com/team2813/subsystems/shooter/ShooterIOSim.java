@@ -51,7 +51,7 @@ public class ShooterIOSim implements ShooterIO {
                 DCMotor.getKrakenX60(1),
                 0.172148, // "Moment of Inertia" taken from OnShape.
                 ShooterConstants.KICKER_MOTOR_TO_FLYWHEEL_GEARING),
-            DCMotor.getKrakenX60(2));
+            DCMotor.getKrakenX60(1));
   }
 
   @Override
@@ -87,8 +87,8 @@ public class ShooterIOSim implements ShooterIO {
     followerShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
     followerShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
 
-    kickerSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
-    kickerSimState.setRotorVelocity(shooterSim.getAngularVelocity());
+    kickerSimState.setRotorAcceleration(kickerSim.getAngularAcceleration());
+    kickerSimState.setRotorVelocity(kickerSim.getAngularVelocity());
   }
 
   @Override
