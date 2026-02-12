@@ -78,6 +78,7 @@ public class ShooterIOSim implements ShooterIO {
   public void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
     shooterSim.update(0.02);
+    kickerSim.update(0.02);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.
