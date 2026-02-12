@@ -223,7 +223,7 @@ public class RobotContainer {
     return autoChooser.get();
   }
 
-  public Rotation2d getBotToHub() {
+  private Rotation2d getBotToHub() {
     Pose2d hub;
     if (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
         == DriverStation.Alliance.Red) {
