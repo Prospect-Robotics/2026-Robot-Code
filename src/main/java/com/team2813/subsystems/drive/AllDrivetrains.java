@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.RobotController;
 import java.util.Map;
 
 public class AllDrivetrains {
-  static Map<String, AllTunerConstants> robotConstants = Map.of("", drWomp());
+  static Map<String, AllTunerConstants> robotConstants =
+      // 2026 robot roborio S/N is 24056E5
+      Map.of("327B9D0", drWomp());
 
   public static AllTunerConstants drWomp() {
     AllTunerConstants robotConstants =
