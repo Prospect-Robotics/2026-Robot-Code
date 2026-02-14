@@ -12,7 +12,6 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.team2813.generated.drwomp.TunerConstants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -21,22 +20,24 @@ import java.util.Queue;
 
 /** IO implementation for Pigeon 2. */
 public class GyroIOPigeon2 implements GyroIO {
-  private final Pigeon2 pigeon =
-      new Pigeon2(TunerConstants.DrivetrainConstants.Pigeon2Id, TunerConstants.kCANBus);
-  private final StatusSignal<Angle> yaw = pigeon.getYaw();
+  private final Pigeon2 pigeon;
+  private final StatusSignal<Angle> yaw;
   private final Queue<Double> yawPositionQueue;
   private final Queue<Double> yawTimestampQueue;
-  private final StatusSignal<AngularVelocity> yawVelocity = pigeon.getAngularVelocityZWorld();
+  private final StatusSignal<AngularVelocity> yawVelocity;
 
-  public GyroIOPigeon2() {
-    if (TunerConstants.DrivetrainConstants.Pigeon2Configs != null) {
-      pigeon.getConfigurator().apply(TunerConstants.DrivetrainConstants.Pigeon2Configs);
-    } else {
-      pigeon.getConfigurator().apply(new Pigeon2Configuration());
+  public GyroIOPigeon2(AllTunerConstants tunerConstants) {
+    pigeon = new Pigeon2(tunerConstants.drivetrainConstants().Pigeon2Id, tunerConstants.canBus());
+    yaw = pigeon.getYaw();
+    yawVelocity = pigeon.getAngularVelocityZWorld();
+    Pigeon2Configuration pigeon2Configs = tunerConstants.drivetrainConstants().Pigeon2Configs;
+    if (pigeon2Configs == null) {
+      pigeon2Configs = new Pigeon2Configuration();
     }
+    pigeon.getConfigurator().apply(pigeon2Configs);
 
     pigeon.getConfigurator().setYaw(0.0);
-    yaw.setUpdateFrequency(Drive.ODOMETRY_FREQUENCY);
+    yaw.setUpdateFrequency(Drive.odometryFrequency(tunerConstants.canBus()));
     yawVelocity.setUpdateFrequency(50.0);
     pigeon.optimizeBusUtilization();
     yawTimestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();

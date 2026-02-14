@@ -18,7 +18,10 @@ public class AllDrivetrains {
             TunerConstants.FrontLeft,
             TunerConstants.FrontRight,
             TunerConstants.BackLeft,
-            TunerConstants.BackRight);
+            TunerConstants.BackRight,
+            TunerConstants.DrivetrainConstants,
+            TunerConstants.kCANBus,
+            TunerConstants.kSpeedAt12Volts);
     return robotConstants;
   }
 
