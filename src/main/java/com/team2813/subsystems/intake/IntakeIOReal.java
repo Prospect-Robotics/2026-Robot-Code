@@ -27,6 +27,8 @@ public class IntakeIOReal implements IntakeIO {
     inputs.extenderMotorVoltage = extenderMotor.getMotorVoltage().getValue();
     inputs.extenderMotorRPS = extenderMotor.getRotorVelocity().getValue();
     inputs.extenderMotorCurrent = extenderMotor.getStatorCurrent().getValue();
+    inputs.extenderMotorPosition = extenderMotor.getPosition().getValue();
+    inputs.extenderMotorSetpoint = extenderMotor.getClosedLoopReference(false).getValue();
   }
 
   @Override

@@ -12,7 +12,8 @@ public interface IntakeIO {
     public Voltage extenderMotorVoltage = Volts.of(0);
     public AngularVelocity extenderMotorRPS = RotationsPerSecond.of(0);
     public Current extenderMotorCurrent = Amps.of(0);
-
+    public Angle extenderMotorPosition = Rotation.of(0);
+    public double extenderMotorSetpoint = 0;
     public Voltage intakeMotorVoltage = Volts.of(0);
     public AngularVelocity intakeMotorRPS = RotationsPerSecond.of(0);
     public Current intakeMotorCurrent = Amps.of(0);
