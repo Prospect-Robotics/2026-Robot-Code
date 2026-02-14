@@ -1,0 +1,42 @@
+{
+  "name": "2026 Robot",
+  "isFTC": false,
+  "disableSimplification": true,
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 90
+    },
+    {
+      "axis": "y",
+      "degrees": 0
+    },
+    {
+      "axis": "z",
+      "degrees": 90
+    }
+  ],
+  "position": [
+    0,
+    0,
+    0
+  ],
+  "cameras": [
+    {
+      "name": "Front Camera",
+      "rotation": [
+        {
+          "axis": "y",
+          "degrees": -29.5
+        }
+      ],
+      "position": [
+        -0.054564,
+        0,
+        0.501754
+      ],
+      "fov": 70
+    }
+  ],
+  "components": []
+}
