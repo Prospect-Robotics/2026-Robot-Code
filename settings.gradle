@@ -1,5 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -24,6 +25,10 @@ pluginManagement {
             url frcHomeMaven
         }
     }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
 Properties props = System.getProperties();

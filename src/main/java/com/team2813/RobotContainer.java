@@ -165,6 +165,8 @@ public class RobotContainer {
 
     controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
     controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+
+    controller.x().onTrue(DriveCommands.resetPose(drive));
   }
 
   /**
