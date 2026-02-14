@@ -18,6 +18,8 @@ public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
+  public static double SIM_TIME_PERIOD = 0.02; // Corresponds to 20 ms.
+
   public enum Mode {
     /** Running on a real robot. */
     REAL,

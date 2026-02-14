@@ -52,7 +52,7 @@ public class HopperIOSim implements HopperIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(2),
-                0.00057684,
+                HopperConstants.ROLLER_SIM_MOI,
                 HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
             DCMotor.getKrakenX60(2));
 
@@ -93,7 +93,7 @@ public class HopperIOSim implements HopperIO {
 
   public void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
-    rollerSim.update(0.02);
+    rollerSim.update(Constants.SIM_TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.
