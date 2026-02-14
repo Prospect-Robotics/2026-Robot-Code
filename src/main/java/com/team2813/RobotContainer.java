@@ -25,7 +25,6 @@ import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
-import com.team2813.subsystems.vision.*;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,7 +42,6 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
-  private final Vision vision;
   private final Intake intake;
   private final Shooter shooter;
   // Controller
@@ -73,16 +71,6 @@ public class RobotContainer {
                 new ModuleIOTalonFX(robotConstants.backRight()));
 
         hopper = new Hopper(new HopperIOReal());
-
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOPhotonVision(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
-                new VisionIOPhotonVision(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
-                new VisionIOPhotonVision(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
 
         intake = new Intake(new IntakeIOReal());
         shooter = new Shooter(new ShooterIOReal());
@@ -118,22 +106,6 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOSim());
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIOPhotonVisionSim(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_LEFT_CAM,
-                    drive::getPose),
-                new VisionIOPhotonVisionSim(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_RIGHT_CAM,
-                    drive::getPose),
-                new VisionIOPhotonVisionSim(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_MID_CAM,
-                    drive::getPose));
-
         intake = new Intake(new IntakeIOSim());
         shooter = new Shooter(new ShooterIOSim());
 
@@ -152,12 +124,6 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIO() {});
 
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                new VisionIO() {},
-                new VisionIO() {},
-                new VisionIO() {});
         intake = new Intake(new IntakeIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
