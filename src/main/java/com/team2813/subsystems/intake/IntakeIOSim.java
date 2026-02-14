@@ -1,5 +1,6 @@
 package com.team2813.subsystems.intake;
 
+import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
@@ -23,6 +25,8 @@ public class IntakeIOSim implements IntakeIO {
 
   private final FlywheelSim intakeSim;
   private final LinearSystemSim<N2, N1, N2> extenderSim;
+
+  private Angle extensionSetpoint;
 
   public IntakeIOSim() {
     intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
@@ -51,6 +55,8 @@ public class IntakeIOSim implements IntakeIO {
                 IntakeConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING),
             0.0,
             0.0);
+
+    extensionSetpoint = Rotation.of(0);
   }
 
   @Override
@@ -67,6 +73,7 @@ public class IntakeIOSim implements IntakeIO {
     inputs.extenderMotorRPS = extenderMotor.getRotorVelocity().getValue();
     inputs.extenderMotorCurrent = extenderMotor.getStatorCurrent().getValue();
     inputs.extenderMotorPosition = extenderMotor.getPosition().getValue();
+    inputs.extenderMotorSetpoint = extensionSetpoint;
   }
 
   public void updateSimulation() {

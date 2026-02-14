@@ -26,7 +26,7 @@ public class IntakeConstants {
 
   public static final TalonFXConfiguration EXTENDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withSlot0(new Slot0Configs().withKP(5).withKI(0.01).withKD(0.000))
+          .withSlot0(new Slot0Configs().withKP(6).withKI(0.01).withKD(0.000))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(
               new FeedbackConfigs().withSensorToMechanismRatio(EXTENDER_MOTOR_TO_EXTENDER_GEARING));
