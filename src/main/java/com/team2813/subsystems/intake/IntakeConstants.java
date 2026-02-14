@@ -26,7 +26,7 @@ public class IntakeConstants {
 
   public static final TalonFXConfiguration EXTENDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withSlot0(new Slot0Configs().withKP(1).withKI(0).withKD(0))
+          .withSlot0(new Slot0Configs().withKP(5).withKI(0.01).withKD(0.000))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(
               new FeedbackConfigs().withSensorToMechanismRatio(EXTENDER_MOTOR_TO_EXTENDER_GEARING));
@@ -35,9 +35,11 @@ public class IntakeConstants {
 
   public static final Distance INCHES_PER_ROTATION = Inches.of(Math.PI);
 
-  public enum ExtenderPositions {
-    OUT(Inches.of(10.75)),
-    IN(Inches.of(0));
+  public enum
+      ExtenderPositions { // added 0.2 in the direction of motion to prevent stalling and ensure
+    // the intake retracts all the way back
+    OUT(Inches.of(10.95)),
+    IN(Inches.of(-0.2));
 
     private final Distance position;
 
