@@ -23,17 +23,18 @@ public class Intake extends SubsystemBase {
   }
 
   public void intake() {
-    io.setMotorVoltage(
-        IntakeConstants.getIntakeMotorVoltage(), IntakeConstants.getExtenderOutVoltage());
+    io.setExtensionSetpoint(IntakeConstants.getExtendOutSetpoint());
+    io.setIntakeVoltage(IntakeConstants.getIntakeMotorVoltage());
   }
 
   public void outtake() {
-    io.setMotorVoltage(
-        IntakeConstants.getOuttakeMotorVoltage(), IntakeConstants.getExtenderInVoltage());
+    io.setExtensionSetpoint(IntakeConstants.getExtendInSetpoint());
+    io.setIntakeVoltage(IntakeConstants.getOuttakeMotorVoltage());
   }
 
   public void stop() {
-    io.setMotorVoltage(Volts.of(0), Volts.of(0));
+    io.setIntakeVoltage(Volts.of(0));
+    io.stopExtender();
   }
 
   public Command intakeCommand() {

@@ -2,9 +2,7 @@ package com.team2813.subsystems.intake;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.*;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface IntakeIO {
@@ -22,5 +20,9 @@ public interface IntakeIO {
 
   default void updateState(IntakeIOInputs inputs) {}
 
-  default void setMotorVoltage(Voltage intakeVoltage, Voltage extenderVoltage) {}
+  default void setIntakeVoltage(Voltage intakeVoltage) {}
+
+  default void setExtensionSetpoint(Angle setpoint) {}
+
+  default void stopExtender() {}
 }

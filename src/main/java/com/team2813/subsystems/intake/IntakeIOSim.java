@@ -90,8 +90,7 @@ public class IntakeIOSim implements IntakeIO {
   }
 
   @Override
-  public void setMotorVoltage(Voltage intakeVoltage, Voltage extenderVoltage) {
+  public void setIntakeVoltage(Voltage intakeVoltage) {
     intakeMotor.setVoltage(intakeVoltage.in(Volts));
-    extenderMotor.setVoltage(extenderVoltage.in(Volts));
   }
 }

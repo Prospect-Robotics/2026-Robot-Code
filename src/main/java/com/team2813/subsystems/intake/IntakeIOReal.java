@@ -1,7 +1,9 @@
 package com.team2813.subsystems.intake;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 
 public class IntakeIOReal implements IntakeIO {
@@ -28,8 +30,17 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setMotorVoltage(Voltage intakeVoltage, Voltage extenderVoltage) {
+  public void setIntakeVoltage(Voltage intakeVoltage) {
     intakeMotor.setVoltage(intakeVoltage.in(edu.wpi.first.units.Units.Volts));
-    extenderMotor.setVoltage(extenderVoltage.in(edu.wpi.first.units.Units.Volts));
+  }
+
+  @Override
+  public void setExtensionSetpoint(Angle setpoint) {
+    extenderMotor.setControl(new PositionVoltage(setpoint));
+  }
+
+  @Override
+  public void stopExtender() {
+    extenderMotor.setVoltage(0);
   }
 }
