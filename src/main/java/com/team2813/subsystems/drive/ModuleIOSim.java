@@ -9,7 +9,6 @@ package com.team2813.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.team2813.generated.drwomp.TunerConstants;
 import com.team2813.util.PhoenixUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
