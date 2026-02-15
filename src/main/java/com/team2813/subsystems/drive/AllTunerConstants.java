@@ -16,7 +16,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
  * @param backLeft The swerve constants for the back-left module.
  * @param backRight The swerve constants for the back-right module.
  * @param drivetrainConstants The swerve constants for the robot.
- * @param kSpeedAt12Volts The theoretical free speed, in meters/second, at 12 V applied output.
+ * @param speedAt12Volts The theoretical free speed, in meters/second, at 12 V applied output.
  */
 public record AllTunerConstants(
     String drivetrainName,
@@ -30,4 +30,4 @@ public record AllTunerConstants(
         backRight,
     SwerveDrivetrainConstants drivetrainConstants,
     CANBus canBus,
-    LinearVelocity kSpeedAt12Volts) {}
+    LinearVelocity speedAt12Volts) {}
