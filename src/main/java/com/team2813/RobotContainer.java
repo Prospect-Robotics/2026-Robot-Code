@@ -9,6 +9,7 @@ package com.team2813;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
+import com.team2813.commands.IntakeExtensionDefaultCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -29,6 +30,7 @@ import com.team2813.subsystems.vision.*;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -47,7 +49,8 @@ public class RobotContainer {
   private final Intake intake;
   private final Shooter shooter;
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driveController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -199,19 +202,42 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX()));
 
-    controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
+    driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
+    driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
 
-    controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
-    controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+    driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+    driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
-    controller.a().onTrue(intake.intakeCommand());
-    controller.b().onTrue(intake.outtakeCommand());
-    controller.y().onTrue(intake.stopCommand());
+    intake.setDefaultCommand(
+        new IntakeExtensionDefaultCommand(intake, () -> -operatorController.getLeftY()));
+    operatorController
+        .leftBumper()
+        .onTrue(intake.intakeCommand())
+        .onFalse(intake.stopRollerCommand());
+    operatorController
+        .rightBumper()
+        .onTrue(intake.outtakeCommand())
+        .onFalse(intake.stopRollerCommand());
+    operatorController
+        .a()
+        .onTrue(
+            (new StartEndCommand(intake::extend, intake::stopExtender, intake))
+                .until(
+                    () ->
+                        ((Math.abs(operatorController.getLeftY()) > 0.3)
+                            || intake.isExtenderAtPosition())));
+    operatorController
+        .b()
+        .onTrue(
+            (new StartEndCommand(intake::retract, intake::stopExtender, intake))
+                .until(
+                    () ->
+                        ((Math.abs(operatorController.getLeftY()) > 0.3)
+                            || intake.isExtenderAtPosition())));
   }
 
   /**
