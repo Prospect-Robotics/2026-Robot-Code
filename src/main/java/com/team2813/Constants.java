@@ -7,6 +7,12 @@
 
 package com.team2813;
 
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Meters;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -28,6 +34,11 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static final Transform3d FRONT_CAMERA_POSITION =
+      new Transform3d(
+          new Translation3d(Meters.of(-0.054564), Meters.of(0), Meters.of(0.501754)),
+          new Rotation3d(Degree.of(0), Degree.of(-29.5), Degree.of(0)));
 
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.
