@@ -32,6 +32,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import static com.team2813.Constants.onRed;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -225,8 +227,7 @@ public class RobotContainer {
 
   private Rotation2d getBotToHub() {
     Pose2d hub;
-    if (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
-        == DriverStation.Alliance.Red) {
+    if (onRed.getAsBoolean()) {
       hub = RED_HUB_POSITION;
     } else {
       hub = BLUE_HUB_POSITION;

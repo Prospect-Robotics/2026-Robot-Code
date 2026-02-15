@@ -7,7 +7,10 @@
 
 package com.team2813;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -48,4 +51,6 @@ public final class Constants {
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
+
+  public static final BooleanSupplier onRed = () -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red;
 }
