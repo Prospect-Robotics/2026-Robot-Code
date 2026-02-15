@@ -60,7 +60,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   }
 
   @Override
-  public void updateState(IntakeIOInputs inputs) {
+  public void updateState(IntakeExtensionIOInputs inputs) {
     updateSimulation();
     intakeMotorSimState.setSupplyVoltage(12);
     extenderMotorSimState.setSupplyVoltage(12);

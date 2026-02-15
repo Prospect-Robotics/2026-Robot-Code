@@ -8,7 +8,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IntakeExtensionIO {
 
   @AutoLog
-  class IntakeIOInputs {
+  class IntakeExtensionIOInputs {
     public Voltage extenderMotorVoltage = Volts.of(0);
     public AngularVelocity extenderMotorRPS = RotationsPerSecond.of(0);
     public Current extenderMotorCurrent = Amps.of(0);
@@ -20,7 +20,7 @@ public interface IntakeExtensionIO {
     public Current intakeMotorCurrent = Amps.of(0);
   }
 
-  default void updateState(IntakeIOInputs inputs) {}
+  default void updateState(IntakeExtensionIOInputs inputs) {}
 
   default void setIntakeVoltage(Voltage intakeVoltage) {}
 

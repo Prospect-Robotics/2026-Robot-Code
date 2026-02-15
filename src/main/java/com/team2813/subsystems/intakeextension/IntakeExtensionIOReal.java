@@ -25,7 +25,7 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   }
 
   @Override
-  public void updateState(IntakeIOInputs inputs) {
+  public void updateState(IntakeExtensionIOInputs inputs) {
     inputs.intakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
     inputs.intakeMotorRPS = intakeMotor.getRotorVelocity().getValue();
     inputs.intakeMotorCurrent = intakeMotor.getStatorCurrent().getValue();
