@@ -27,7 +27,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-import com.team2813.generated.drwomp.TunerConstants;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -93,11 +92,12 @@ public class ModuleIOTalonFX implements ModuleIO {
 
   public ModuleIOTalonFX(
       SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
-          constants) {
+          constants,
+      AllTunerConstants tunerConstants) {
     this.constants = constants;
-    driveTalon = new TalonFX(constants.DriveMotorId, TunerConstants.kCANBus);
-    turnTalon = new TalonFX(constants.SteerMotorId, TunerConstants.kCANBus);
-    cancoder = new CANcoder(constants.EncoderId, TunerConstants.kCANBus);
+    driveTalon = new TalonFX(constants.DriveMotorId, tunerConstants.canBus());
+    turnTalon = new TalonFX(constants.SteerMotorId, tunerConstants.canBus());
+    cancoder = new CANcoder(constants.EncoderId, tunerConstants.canBus());
 
     // Configure drive motor
     var driveConfig = constants.DriveMotorInitialConfigs;
@@ -170,7 +170,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
     // Configure periodic frames
     BaseStatusSignal.setUpdateFrequencyForAll(
-        Drive.ODOMETRY_FREQUENCY, drivePosition, turnPosition);
+        Drive.odometryFrequency(tunerConstants.canBus()), drivePosition, turnPosition);
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
         driveVelocity,

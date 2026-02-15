@@ -1,0 +1,5 @@
+[versions]
+lib2813 = "2.0.0-rc-3"
+
+[libraries]
+lib2813-testing = { module = "com.team2813.lib2813:testing", version.ref = "lib2813" }
