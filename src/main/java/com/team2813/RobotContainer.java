@@ -191,7 +191,8 @@ public class RobotContainer {
     operatorController
         .a()
         .onTrue(
-            (new StartEndCommand(intakeExtension::extend, intakeExtension::stopExtender, intakeExtension))
+            (new StartEndCommand(
+                    intakeExtension::extend, intakeExtension::stopExtender, intakeExtension))
                 .until(
                     () ->
                         ((Math.abs(operatorController.getLeftY()) > 0.3)
@@ -199,7 +200,8 @@ public class RobotContainer {
     operatorController
         .b()
         .onTrue(
-            (new StartEndCommand(intakeExtension::retract, intakeExtension::stopExtender, intakeExtension))
+            (new StartEndCommand(
+                    intakeExtension::retract, intakeExtension::stopExtender, intakeExtension))
                 .until(
                     () ->
                         ((Math.abs(operatorController.getLeftY()) > 0.3)

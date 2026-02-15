@@ -35,9 +35,9 @@ public class IntakeExtensionConstants {
 
   public static final Distance INCHES_PER_ROTATION = Inches.of(Math.PI);
 
-  public enum
-      ExtenderPositions { // added 0.2 in the direction of motion to prevent stalling and ensure
-    // the intake retracts all the way back
+  public enum ExtenderPositions {
+    // Added 0.2 in the direction of motion to prevent stalling and ensure the intake retracts all
+    // the way back.
     OUT(Inches.of(10.95)),
     IN(Inches.of(-0.2));
 

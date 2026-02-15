@@ -21,6 +21,7 @@ public class IntakeExtensionDefaultCommand extends Command {
   public void execute() {
     double val = movement.getAsDouble();
     // manual control is being used
-    intakeExtension.setExtenderVoltage(Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR));
+    intakeExtension.setExtenderVoltage(
+        Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR));
   }
 }
