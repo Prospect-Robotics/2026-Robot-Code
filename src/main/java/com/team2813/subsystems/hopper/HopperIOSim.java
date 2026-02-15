@@ -92,7 +92,6 @@ public class HopperIOSim implements HopperIO {
   }
 
   public void updateSimulation() {
-    // Update physics simulations every 20ms (like the actual bot).
     rollerSim.update(Constants.SIM_TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
