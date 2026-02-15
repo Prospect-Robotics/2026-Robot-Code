@@ -10,7 +10,8 @@ import org.littletonrobotics.junction.Logger;
 
 public class IntakeExtension extends SubsystemBase {
   private final IntakeExtensionIO io;
-  private final IntakeExtensionIOInputsAutoLogged replayedInputs = new IntakeExtensionIOInputsAutoLogged();
+  private final IntakeExtensionIOInputsAutoLogged replayedInputs =
+      new IntakeExtensionIOInputsAutoLogged();
   private boolean extenderAtPosition = true;
 
   public IntakeExtension(IntakeExtensionIO io) {
