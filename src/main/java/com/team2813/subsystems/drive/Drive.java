@@ -19,6 +19,7 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.team2813.Constants;
 import com.team2813.Constants.Mode;
+import com.team2813.generated.drwomp.TunerConstants;
 import com.team2813.util.LocalADStarAK;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -45,6 +46,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+import org.ironmaple.simulation.drivesims.COTS;
+import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
+import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -63,6 +68,28 @@ public class Drive extends SubsystemBase {
   private static final double ROBOT_MASS_KG = 74.088;
   private static final double ROBOT_MOI = 6.883;
   private static final double WHEEL_COF = 1.2;
+
+  // A mapleSimConfig that was carefully crafted to make the CTRE motor simulations play nicely with
+  // maplesim's simulation system. The values were copied from a forum thread that also provides
+  // some additional context for the problem
+  // https://www.chiefdelphi.com/t/maplesim-strange-behavior-need-help/502245/6
+  public static final DriveTrainSimulationConfig mapleSimConfig =
+      DriveTrainSimulationConfig.Default()
+          .withRobotMass(Kilograms.of(ROBOT_MASS_KG))
+          .withCustomModuleTranslations(getModuleTranslations())
+          .withGyro(COTS.ofPigeon2())
+          .withBumperSize(Inches.of(30 + 3.25 * 2), Inches.of(28 + 3.25 * 2))
+          .withSwerveModule(
+              new SwerveModuleSimulationConfig(
+                  DCMotor.getKrakenX60(1),
+                  DCMotor.getKrakenX60(1),
+                  TunerConstants.FrontLeft.DriveMotorGearRatio,
+                  TunerConstants.FrontLeft.SteerMotorGearRatio,
+                  Volts.of(0.3),
+                  Volts.of(0.5),
+                  Meters.of(TunerConstants.FrontLeft.WheelRadius),
+                  KilogramSquareMeters.of(0.05),
+                  WHEEL_COF)); 
 
   static final Lock odometryLock = new ReentrantLock();
   private final GyroIO gyroIO;
@@ -101,6 +128,8 @@ public class Drive extends SubsystemBase {
     return poseEstimator;
   }
 
+  private final Consumer<Pose2d> resetSimulationPoseCallBack;
+
   /** Computes a conservative drive base radius in meters. */
   private static double calculateDriveBaseRadius(AllTunerConstants tunerConstants) {
     double radius =
@@ -125,15 +154,19 @@ public class Drive extends SubsystemBase {
       ModuleIO flModuleIO,
       ModuleIO frModuleIO,
       ModuleIO blModuleIO,
-      ModuleIO brModuleIO) {
+      ModuleIO brModuleIO,
+      Consumer<Pose2d> resetSimulationPoseCallBack) {
     this.allTunerConstants = tunerConstants;
     this.gyroIO = gyroIO;
+    this.resetSimulationPoseCallBack = resetSimulationPoseCallBack;
     modules[0] = new Module(flModuleIO, 0, tunerConstants.frontLeft());
     modules[1] = new Module(frModuleIO, 1, tunerConstants.frontRight());
     modules[2] = new Module(blModuleIO, 2, tunerConstants.backLeft());
     modules[3] = new Module(brModuleIO, 3, tunerConstants.backRight());
     kinematics = createKinematics(tunerConstants);
     poseEstimator = createPoseEstimator(kinematics, rawGyroRotation, lastModulePositions);
+
+
     // Usage reporting for swerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);
 
@@ -368,8 +401,14 @@ public class Drive extends SubsystemBase {
     return getPose().getRotation();
   }
 
-  /** Resets the current odometry pose. */
+  /**
+   * Resets the current odometry pose.
+   *
+   * <p>The Pearadox team has renamed this method to "resetOdometry". Consider if that name provides
+   * a better intuition about what the current method does.
+   */
   public void setPose(Pose2d pose) {
+    resetSimulationPoseCallBack.accept(pose);
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
 
