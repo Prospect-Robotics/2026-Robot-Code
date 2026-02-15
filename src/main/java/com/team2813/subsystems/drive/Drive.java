@@ -147,7 +147,7 @@ public class Drive extends SubsystemBase {
             ROBOT_MOI,
             new ModuleConfig(
                 tunerConstants.frontLeft().WheelRadius,
-                tunerConstants.kSpeedAt12Volts().in(MetersPerSecond),
+                tunerConstants.speedAt12Volts().in(MetersPerSecond),
                 WHEEL_COF,
                 DCMotor.getKrakenX60Foc(1)
                     .withReduction(tunerConstants.frontLeft().DriveMotorGearRatio),
@@ -261,8 +261,7 @@ public class Drive extends SubsystemBase {
     // Calculate module setpoints
     ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
     SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        setpointStates, allTunerConstants.kSpeedAt12Volts());
+    SwerveDriveKinematics.desaturateWheelSpeeds(setpointStates, allTunerConstants.speedAt12Volts());
 
     // Log unoptimized setpoints and setpoint speeds
     Logger.recordOutput("SwerveStates/Setpoints", setpointStates);
@@ -384,7 +383,7 @@ public class Drive extends SubsystemBase {
 
   /** Returns the maximum linear speed in meters per sec. */
   public double getMaxLinearSpeedMetersPerSec() {
-    return allTunerConstants.kSpeedAt12Volts().in(MetersPerSecond);
+    return allTunerConstants.speedAt12Volts().in(MetersPerSecond);
   }
 
   /** Returns the maximum angular speed in radians per sec. */
