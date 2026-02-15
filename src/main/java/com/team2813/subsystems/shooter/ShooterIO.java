@@ -12,15 +12,15 @@ public interface ShooterIO {
   @AutoLog
   class ShooterIOInputs {
     public Voltage mainShooterMotorVoltage = Volts.of(0);
-    public AngularVelocity mainShooterMotorRPS = RotationsPerSecond.of(0);
+    public AngularVelocity mainShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current mainShooterMotorCurrent = Amps.of(0);
 
     public Voltage followerShooterMotorVoltage = Volts.of(0);
-    public AngularVelocity followerShooterMotorRPS = RotationsPerSecond.of(0);
+    public AngularVelocity followerShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current followerShooterMotorCurrent = Amps.of(0);
 
     public Voltage kickerMotorVoltage = Volts.of(0);
-    public AngularVelocity kickerMotorRPS = RotationsPerSecond.of(0);
+    public AngularVelocity kickerMotorRotPerSec = RotationsPerSecond.of(0);
     public Current kickerMotorCurrent = Amps.of(0);
   }
 

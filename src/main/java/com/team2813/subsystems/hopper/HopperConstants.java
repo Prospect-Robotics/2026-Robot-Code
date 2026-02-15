@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class HopperConstants {
 
+  public static final double ROLLER_SIM_MOI = 0.00057684; // in kilograms*meters squared.
+
   static {
     // Roller motors.
     Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 5);
