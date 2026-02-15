@@ -25,15 +25,15 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public void updateState(ShooterIOInputs inputs) {
     inputs.mainShooterMotorVoltage = mainShooterMotor.getMotorVoltage().getValue();
-    inputs.mainShooterMotorRPS = mainShooterMotor.getVelocity().getValue();
+    inputs.mainShooterMotorRotPerSec = mainShooterMotor.getVelocity().getValue();
     inputs.mainShooterMotorCurrent = mainShooterMotor.getStatorCurrent().getValue();
 
     inputs.followerShooterMotorVoltage = followerShooterMotor.getMotorVoltage().getValue();
-    inputs.followerShooterMotorRPS = followerShooterMotor.getVelocity().getValue();
+    inputs.followerShooterMotorRotPerSec = followerShooterMotor.getVelocity().getValue();
     inputs.followerShooterMotorCurrent = followerShooterMotor.getStatorCurrent().getValue();
 
     inputs.kickerMotorVoltage = kickerMotor.getMotorVoltage().getValue();
-    inputs.kickerMotorRPS = kickerMotor.getVelocity().getValue();
+    inputs.kickerMotorRotPerSec = kickerMotor.getVelocity().getValue();
     inputs.kickerMotorCurrent = kickerMotor.getStatorCurrent().getValue();
   }
 

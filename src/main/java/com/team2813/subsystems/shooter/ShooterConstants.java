@@ -18,6 +18,9 @@ public class ShooterConstants {
   public static final String KICKER_INTAKE_PREFERENCE_NT = "Shooter/KICKER_INTAKE_VOLTAGE";
   public static final String KICKER_OUTTAKE_PREFERENCE_NT = "Shooter/KICKER_OUTTAKE_VOLTAGE";
 
+  public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
+  public static final double KICKER_SIM_MOI = 0.0000535531; // in kilograms*meters squared.
+
   static {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 5);
