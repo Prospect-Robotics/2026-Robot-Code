@@ -22,6 +22,10 @@ import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIOReal;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIOSim;
+import com.team2813.subsystems.intakeroller.IntakeRoller;
+import com.team2813.subsystems.intakeroller.IntakeRollerIO;
+import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
+import com.team2813.subsystems.intakeroller.IntakeRollerIOSim;
 import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
@@ -45,7 +49,10 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
+
   private final IntakeExtension intakeExtension;
+  private final IntakeRoller intakeRoller;
+
   private final Shooter shooter;
   // Controller
   private final CommandXboxController driveController = new CommandXboxController(0);
@@ -77,24 +84,9 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOReal());
 
         intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
+        intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
+
         shooter = new Shooter(new ShooterIOReal());
-        // The ModuleIOTalonFXS implementation provides an example implementation for
-        // TalonFXS controller connected to a CANdi with a PWM encoder. The
-        // implementations
-        // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
-        // swerve
-        // template) can be freely intermixed to support alternative hardware
-        // arrangements.
-        // Please see the AdvantageKit template documentation for more information:
-        // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
-        //
-        // drive =
-        // new Drive(
-        // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(robotConstants.frontLeft()),
-        // new ModuleIOTalonFXS(robotConstants.frontRight()),
-        // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(robotConstants.backRight()));
         break;
 
       case SIM:
@@ -111,6 +103,8 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOSim());
 
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
+        intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
+
         shooter = new Shooter(new ShooterIOSim());
 
         break;
@@ -129,6 +123,7 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIO() {});
 
         intakeExtension = new IntakeExtension(new IntakeExtensionIO() {});
+        intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
 

@@ -9,7 +9,7 @@ import edu.wpi.first.units.measure.Voltage;
 public class IntakeRollerIOReal implements IntakeRollerIO {
   private TalonFX intakeMotor;
 
-  IntakeRollerIOReal() {
+  public IntakeRollerIOReal() {
     intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
     intakeMotor.getConfigurator().apply(IntakeRollerConstants.INTAKE_MOTOR_CONFIG);
   }

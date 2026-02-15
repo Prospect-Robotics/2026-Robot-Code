@@ -16,7 +16,7 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
 
   private FlywheelSim intakeFlywheelSim;
 
-  IntakeRollerIOSim(IntakeRollerIO intakeRollerIO) {
+  public IntakeRollerIOSim() {
     intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
     intakeMotor.getConfigurator().apply(IntakeRollerConstants.INTAKE_MOTOR_CONFIG);
 
