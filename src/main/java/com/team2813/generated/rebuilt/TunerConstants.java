@@ -147,7 +147,7 @@ public class TunerConstants {
   private static final int kFrontRightDriveMotorId = 4;
   private static final int kFrontRightSteerMotorId = 5;
   private static final int kFrontRightEncoderId = 6;
-  private static final Angle kFrontRightEncoderOffset = Rotations.of(0.408691);
+  private static final Angle kFrontRightEncoderOffset = Rotations.of(0.446533);
   private static final boolean kFrontRightSteerMotorInverted = false;
   private static final boolean kFrontRightEncoderInverted = false;
 
@@ -158,7 +158,7 @@ public class TunerConstants {
   private static final int kBackLeftDriveMotorId = 10;
   private static final int kBackLeftSteerMotorId = 11;
   private static final int kBackLeftEncoderId = 12;
-  private static final Angle kBackLeftEncoderOffset = Rotations.of(0.103027);
+  private static final Angle kBackLeftEncoderOffset = Rotations.of(0.197226);
   private static final boolean kBackLeftSteerMotorInverted = false;
   private static final boolean kBackLeftEncoderInverted = false;
 
