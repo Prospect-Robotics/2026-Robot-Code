@@ -3,8 +3,9 @@ package com.team2813.subsystems.intakeroller;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class IntakeRoller extends SubsystemBase {
   private final IntakeRollerIO io;
@@ -13,6 +14,13 @@ public class IntakeRoller extends SubsystemBase {
   public IntakeRoller(IntakeRollerIO io) {
     this.io = io;
     replayedInputs = new IntakeRollerIOInputsAutoLogged();
+  }
+
+  @Override
+  public void periodic() {
+    io.updateState(replayedInputs);
+
+    Logger.processInputs("IntakeRoller", replayedInputs);
   }
 
   public void intake() {
@@ -27,11 +35,16 @@ public class IntakeRoller extends SubsystemBase {
     io.setIntakeMotorVoltage(Volts.of(0));
   }
 
+  /**
+   * This command should be used with Trigger.whileTrue();
+   *
+   * @return StartEndCommand instance which stops the motor on the end of the command.
+   */
   public Command intakeCommand() {
-    return new RunCommand(this::intake).andThen(this::stop);
+    return new StartEndCommand(this::intake, this::stop, this);
   }
 
   public Command outtakeCommand() {
-    return new RunCommand(this::outtake).andThen(this::stop);
+    return new StartEndCommand(this::outtake, this::stop, this);
   }
 }
