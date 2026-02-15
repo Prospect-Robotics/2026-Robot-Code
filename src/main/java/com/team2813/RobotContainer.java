@@ -7,6 +7,8 @@
 
 package com.team2813;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
 import com.team2813.subsystems.drive.AllTunerConstants;
@@ -78,23 +80,6 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOReal());
 
         shooter = new Shooter(new ShooterIOReal());
-        // The ModuleIOTalonFXS implementation provides an example implementation for
-        // TalonFXS controller connected to a CANdi with a PWM encoder. The
-        // implementations
-        // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
-        // swerve
-        // template) can be freely intermixed to support alternative hardware
-        // arrangements.
-        // Please see the AdvantageKit template documentation for more information:
-        // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
-        //
-        // drive =
-        // new Drive(
-        // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(tunerConstants.frontLeft()),
-        // new ModuleIOTalonFXS(tunerConstants.frontRight()),
-        // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(tunerConstants.backRight()));
         break;
 
       case SIM:
@@ -108,10 +93,18 @@ public class RobotContainer {
             new Drive(
                 tunerConstants,
                 new GyroIOSim(driveSimulation.getGyroSimulation()),
-                new ModuleIOSim(driveSimulation.getModules()[0], 0),
-                new ModuleIOSim(driveSimulation.getModules()[1], 1),
-                new ModuleIOSim(driveSimulation.getModules()[2], 2),
-                new ModuleIOSim(driveSimulation.getModules()[3], 3),
+                new ModuleIOSim(
+                    driveSimulation.getModules()[0],
+                    Amps.of(tunerConstants.frontLeft().SlipCurrent)),
+                new ModuleIOSim(
+                    driveSimulation.getModules()[1],
+                    Amps.of(tunerConstants.frontRight().SlipCurrent)),
+                new ModuleIOSim(
+                    driveSimulation.getModules()[2],
+                    Amps.of(tunerConstants.backLeft().SlipCurrent)),
+                new ModuleIOSim(
+                    driveSimulation.getModules()[3],
+                    Amps.of(tunerConstants.backRight().SlipCurrent)),
                 driveSimulation::setSimulationWorldPose);
 
         hopper = new Hopper(new HopperIOSim());

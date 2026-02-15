@@ -9,12 +9,11 @@ package com.team2813.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.team2813.generated.drwomp.TunerConstants;
 import com.team2813.util.PhoenixUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Current;
 import java.util.Arrays;
 import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.motorsims.SimulatedMotorController;
@@ -34,10 +33,7 @@ public class ModuleIOSim implements ModuleIO {
   private static final double DRIVE_KV = 1.0 / Units.rotationsToRadians(1.0 / DRIVE_KV_ROT);
   private static final double TURN_KP = 8.0;
   private static final double TURN_KD = 0.0;
-  private static final DCMotor DRIVE_GEARBOX = DCMotor.getKrakenX60Foc(1);
-  private static final DCMotor TURN_GEARBOX = DCMotor.getKrakenX60Foc(1);
 
-  private final int moduleId;
   private final SwerveModuleSimulation moduleSimulation;
   private final SimulatedMotorController.GenericMotorController driveMotor;
   private final SimulatedMotorController.GenericMotorController turnMotor;
@@ -50,13 +46,10 @@ public class ModuleIOSim implements ModuleIO {
   private double driveAppliedVolts = 0.0;
   private double turnAppliedVolts = 0.0;
 
-  public ModuleIOSim(SwerveModuleSimulation moduleSimulation, int moduleId) {
-    this.moduleId = moduleId;
+  public ModuleIOSim(SwerveModuleSimulation moduleSimulation, Current slipCurrent) {
     this.moduleSimulation = moduleSimulation;
     this.driveMotor =
-        moduleSimulation
-            .useGenericMotorControllerForDrive()
-            .withCurrentLimit(Amps.of(TunerConstants.FrontLeft.SlipCurrent));
+        moduleSimulation.useGenericMotorControllerForDrive().withCurrentLimit(slipCurrent);
     this.turnMotor = moduleSimulation.useGenericControllerForSteer().withCurrentLimit(Amps.of(20));
 
     this.driveController = new PIDController(0.05, 0.0, 0.0);
