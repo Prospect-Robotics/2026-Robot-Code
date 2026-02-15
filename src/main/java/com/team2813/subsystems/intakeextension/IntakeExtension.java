@@ -38,14 +38,6 @@ public class IntakeExtension extends SubsystemBase {
     return extenderAtPosition;
   }
 
-  public void intake() {
-    io.setIntakeVoltage(IntakeExtensionConstants.getIntakeMotorVoltage());
-  }
-
-  public void outtake() {
-    io.setIntakeVoltage(IntakeExtensionConstants.getOuttakeMotorVoltage());
-  }
-
   public void extend() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(IntakeExtensionConstants.getExtendOutSetpoint());
@@ -60,32 +52,16 @@ public class IntakeExtension extends SubsystemBase {
     io.setExtenderVoltage(extensionVoltage);
   }
 
-  public void stopRoller() {
-    io.setIntakeVoltage(Volts.of(0));
-  }
-
   public void stopExtender() {
     io.setExtenderVoltage(Volts.of(0));
   }
 
-  public Command intakeCommand() {
-    return new InstantCommand(this::intake, this);
-  }
-
-  public Command outtakeCommand() {
-    return new InstantCommand(this::outtake, this);
-  }
-
-  public Command extendCommnand() {
+  public Command extendCommand() {
     return new InstantCommand(this::extend, this);
   }
 
   public Command retractCommand() {
     return new InstantCommand(this::retract, this);
-  }
-
-  public Command stopRollerCommand() {
-    return new InstantCommand(this::stopRoller, this);
   }
 
   public Command stopExtenderCommand() {

@@ -10,15 +10,11 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 
 public class IntakeExtensionIOReal implements IntakeExtensionIO {
-  private final TalonFX intakeMotor;
   private final TalonFX extenderMotor;
   private Angle extensionSetpoint;
 
   public IntakeExtensionIOReal() {
-    intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
     extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);
-    // Apply any necessary configuration to the intakeMotor here
-    intakeMotor.getConfigurator().apply(IntakeExtensionConstants.INTAKE_MOTOR_CONFIG);
     extenderMotor.getConfigurator().apply(IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG);
     extenderMotor.setPosition(Rotation.of(0)); // intake should be fully retracted on bootup
     extensionSetpoint = Rotation.of(0);
@@ -26,20 +22,12 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
 
   @Override
   public void updateState(IntakeExtensionIOInputs inputs) {
-    inputs.intakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
-    inputs.intakeMotorRPS = intakeMotor.getRotorVelocity().getValue();
-    inputs.intakeMotorCurrent = intakeMotor.getStatorCurrent().getValue();
 
     inputs.extenderMotorVoltage = extenderMotor.getMotorVoltage().getValue();
     inputs.extenderMotorRPS = extenderMotor.getRotorVelocity().getValue();
     inputs.extenderMotorCurrent = extenderMotor.getStatorCurrent().getValue();
     inputs.extenderMotorPosition = extenderMotor.getPosition().getValue();
     inputs.extenderMotorSetpoint = extensionSetpoint;
-  }
-
-  @Override
-  public void setIntakeVoltage(Voltage intakeVoltage) {
-    intakeMotor.setVoltage(intakeVoltage.in(edu.wpi.first.units.Units.Volts));
   }
 
   @Override

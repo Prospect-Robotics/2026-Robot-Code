@@ -22,8 +22,6 @@ public interface IntakeExtensionIO {
 
   default void updateState(IntakeExtensionIOInputs inputs) {}
 
-  default void setIntakeVoltage(Voltage intakeVoltage) {}
-
   default void setExtenderVoltage(Voltage extensionVoltage) {}
 
   default void setExtensionSetpoint(Angle setpoint) {}

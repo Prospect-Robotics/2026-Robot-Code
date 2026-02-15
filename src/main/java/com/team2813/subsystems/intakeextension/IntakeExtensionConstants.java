@@ -14,14 +14,6 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class IntakeExtensionConstants {
 
-  public static final double INTAKE_MOTOR_TO_INTAKE_GEARING = 2.5; // reduction
-
-  public static final TalonFXConfiguration INTAKE_MOTOR_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(INTAKE_MOTOR_TO_INTAKE_GEARING));
-
   public static final double EXTENDER_MOTOR_TO_EXTENDER_GEARING = 3; // reduction
 
   public static final TalonFXConfiguration EXTENDER_MOTOR_CONFIG =
