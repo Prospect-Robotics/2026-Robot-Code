@@ -21,9 +21,12 @@ import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -148,6 +151,18 @@ public class RobotContainer {
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
+  drive,
+  () -> -controller.getLeftY(),
+  () -> -controller.getLeftX(),
+  () -> -controller.getRightX()));
+
+  controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
+  controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
+
+  controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+  controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+
+  controller.x().onTrue(DriveCommands.re
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
@@ -166,7 +181,7 @@ public class RobotContainer {
     controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
     controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
-    controller.x().onTrue(DriveCommands.resetPose(drive));
+    controller.x().onTrue(new InstantCommand(() -> {drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));}));
   }
 
   /**
