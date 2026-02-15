@@ -19,7 +19,6 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.team2813.Constants;
 import com.team2813.Constants.Mode;
-import com.team2813.generated.drwomp.TunerConstants;
 import com.team2813.util.LocalADStarAK;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -69,28 +68,6 @@ public class Drive extends SubsystemBase {
   private static final double ROBOT_MOI = 6.883;
   private static final double WHEEL_COF = 1.2;
 
-  // A mapleSimConfig that was carefully crafted to make the CTRE motor simulations play nicely with
-  // maplesim's simulation system. The values were copied from a forum thread that also provides
-  // some additional context for the problem
-  // https://www.chiefdelphi.com/t/maplesim-strange-behavior-need-help/502245/6
-  public static final DriveTrainSimulationConfig mapleSimConfig =
-      DriveTrainSimulationConfig.Default()
-          .withRobotMass(Kilograms.of(ROBOT_MASS_KG))
-          .withCustomModuleTranslations(getModuleTranslations())
-          .withGyro(COTS.ofPigeon2())
-          .withBumperSize(Inches.of(30 + 3.25 * 2), Inches.of(28 + 3.25 * 2))
-          .withSwerveModule(
-              new SwerveModuleSimulationConfig(
-                  DCMotor.getKrakenX60(1),
-                  DCMotor.getKrakenX60(1),
-                  TunerConstants.FrontLeft.DriveMotorGearRatio,
-                  TunerConstants.FrontLeft.SteerMotorGearRatio,
-                  Volts.of(0.3),
-                  Volts.of(0.5),
-                  Meters.of(TunerConstants.FrontLeft.WheelRadius),
-                  KilogramSquareMeters.of(0.05),
-                  WHEEL_COF)); 
-
   static final Lock odometryLock = new ReentrantLock();
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
@@ -101,6 +78,30 @@ public class Drive extends SubsystemBase {
   private final double driveRadius;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDrivePoseEstimator poseEstimator;
+
+  // A mapleSimConfig that was carefully crafted to make the CTRE motor simulations play nicely with
+  // maplesim's simulation system. The values were copied from a forum thread that also provides
+  // some additional context for the problem
+  // https://www.chiefdelphi.com/t/maplesim-strange-behavior-need-help/502245/6
+  public static final DriveTrainSimulationConfig createMapleSimConfig(
+      AllTunerConstants tunerConstants) {
+    return DriveTrainSimulationConfig.Default()
+        .withRobotMass(Kilograms.of(ROBOT_MASS_KG))
+        .withCustomModuleTranslations(getModuleTranslations(tunerConstants))
+        .withGyro(COTS.ofPigeon2())
+        .withBumperSize(Inches.of(30 + 3.25 * 2), Inches.of(28 + 3.25 * 2))
+        .withSwerveModule(
+            new SwerveModuleSimulationConfig(
+                DCMotor.getKrakenX60(1),
+                DCMotor.getKrakenX60(1),
+                tunerConstants.frontLeft().SteerMotorGearRatio,
+                tunerConstants.frontLeft().DriveMotorGearRatio,
+                Volts.of(0.3),
+                Volts.of(0.5),
+                Meters.of(tunerConstants.frontLeft().WheelRadius),
+                KilogramSquareMeters.of(0.05),
+                WHEEL_COF));
+  }
 
   private static SwerveDriveKinematics createKinematics(AllTunerConstants tunerConstants) {
     SwerveDriveKinematics kinematics =
@@ -165,7 +166,6 @@ public class Drive extends SubsystemBase {
     modules[3] = new Module(brModuleIO, 3, tunerConstants.backRight());
     kinematics = createKinematics(tunerConstants);
     poseEstimator = createPoseEstimator(kinematics, rawGyroRotation, lastModulePositions);
-
 
     // Usage reporting for swerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_AdvantageKit);

@@ -72,7 +72,8 @@ public class RobotContainer {
                 new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.frontRight(), tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.backLeft(), tunerConstants),
-                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants));
+                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants),
+                (robotPose) -> {});
 
         hopper = new Hopper(new HopperIOReal());
 
@@ -99,12 +100,13 @@ public class RobotContainer {
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         driveSimulation =
-            new SwerveDriveSimulation(Drive.mapleSimConfig, new Pose2d(12, 2, new Rotation2d()));
+            new SwerveDriveSimulation(
+                Drive.createMapleSimConfig(tunerConstants), new Pose2d(12, 2, new Rotation2d()));
         SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
 
         drive =
             new Drive(
-                robotConstants,
+                tunerConstants,
                 new GyroIOSim(driveSimulation.getGyroSimulation()),
                 new ModuleIOSim(driveSimulation.getModules()[0], 0),
                 new ModuleIOSim(driveSimulation.getModules()[1], 1),
