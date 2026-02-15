@@ -18,10 +18,10 @@ import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
 import com.team2813.subsystems.hopper.*;
-import com.team2813.subsystems.intake.Intake;
-import com.team2813.subsystems.intake.IntakeIO;
-import com.team2813.subsystems.intake.IntakeIOReal;
-import com.team2813.subsystems.intake.IntakeIOSim;
+import com.team2813.subsystems.intakeextension.IntakeExtension;
+import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
+import com.team2813.subsystems.intakeextension.IntakeExtensionIOReal;
+import com.team2813.subsystems.intakeextension.IntakeExtensionIOSim;
 import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
@@ -44,7 +44,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
-  private final Intake intake;
+  private final IntakeExtension intakeExtension;
   private final Shooter shooter;
   // Controller
   private final CommandXboxController driveController = new CommandXboxController(0);
@@ -75,7 +75,7 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOReal());
 
-        intake = new Intake(new IntakeIOReal());
+        intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
         shooter = new Shooter(new ShooterIOReal());
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -109,7 +109,7 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOSim());
 
-        intake = new Intake(new IntakeIOSim());
+        intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         shooter = new Shooter(new ShooterIOSim());
 
         break;
@@ -127,7 +127,7 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIO() {});
 
-        intake = new Intake(new IntakeIO() {});
+        intakeExtension = new IntakeExtension(new IntakeExtensionIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
 
@@ -178,32 +178,32 @@ public class RobotContainer {
     driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
     driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
-    intake.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(intake, () -> -operatorController.getLeftY()));
+    intakeExtension.setDefaultCommand(
+        new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
     operatorController
         .leftBumper()
-        .onTrue(intake.intakeCommand())
-        .onFalse(intake.stopRollerCommand());
+        .onTrue(intakeExtension.intakeCommand())
+        .onFalse(intakeExtension.stopRollerCommand());
     operatorController
         .rightBumper()
-        .onTrue(intake.outtakeCommand())
-        .onFalse(intake.stopRollerCommand());
+        .onTrue(intakeExtension.outtakeCommand())
+        .onFalse(intakeExtension.stopRollerCommand());
     operatorController
         .a()
         .onTrue(
-            (new StartEndCommand(intake::extend, intake::stopExtender, intake))
+            (new StartEndCommand(intakeExtension::extend, intakeExtension::stopExtender, intakeExtension))
                 .until(
                     () ->
                         ((Math.abs(operatorController.getLeftY()) > 0.3)
-                            || intake.isExtenderAtPosition())));
+                            || intakeExtension.isExtenderAtPosition())));
     operatorController
         .b()
         .onTrue(
-            (new StartEndCommand(intake::retract, intake::stopExtender, intake))
+            (new StartEndCommand(intakeExtension::retract, intakeExtension::stopExtender, intakeExtension))
                 .until(
                     () ->
                         ((Math.abs(operatorController.getLeftY()) > 0.3)
-                            || intake.isExtenderAtPosition())));
+                            || intakeExtension.isExtenderAtPosition())));
   }
 
   /**

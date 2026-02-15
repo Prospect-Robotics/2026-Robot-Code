@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "midleft-intake-shoot-climb",
+  "folder": "midleft-intakeExtension-shoot-climb",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

@@ -1,4 +1,4 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -12,7 +12,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Preferences;
 
-public class IntakeConstants {
+public class IntakeExtensionConstants {
 
   public static final double INTAKE_MOTOR_TO_INTAKE_GEARING = 2.5; // reduction
 

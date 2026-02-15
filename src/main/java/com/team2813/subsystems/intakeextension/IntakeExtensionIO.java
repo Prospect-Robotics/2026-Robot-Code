@@ -1,11 +1,11 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.*;
 import org.littletonrobotics.junction.AutoLog;
 
-public interface IntakeIO {
+public interface IntakeExtensionIO {
 
   @AutoLog
   class IntakeIOInputs {

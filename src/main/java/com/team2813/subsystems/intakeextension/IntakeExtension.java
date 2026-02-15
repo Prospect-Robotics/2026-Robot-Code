@@ -1,4 +1,4 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
-public class Intake extends SubsystemBase {
-  private final IntakeIO io;
+public class IntakeExtension extends SubsystemBase {
+  private final IntakeExtensionIO io;
   private final IntakeIOInputsAutoLogged replayedInputs = new IntakeIOInputsAutoLogged();
   private boolean extenderAtPosition = true;
 
-  public Intake(IntakeIO io) {
+  public IntakeExtension(IntakeExtensionIO io) {
     this.io = io;
   }
 
@@ -38,21 +38,21 @@ public class Intake extends SubsystemBase {
   }
 
   public void intake() {
-    io.setIntakeVoltage(IntakeConstants.getIntakeMotorVoltage());
+    io.setIntakeVoltage(IntakeExtensionConstants.getIntakeMotorVoltage());
   }
 
   public void outtake() {
-    io.setIntakeVoltage(IntakeConstants.getOuttakeMotorVoltage());
+    io.setIntakeVoltage(IntakeExtensionConstants.getOuttakeMotorVoltage());
   }
 
   public void extend() {
     extenderAtPosition = false;
-    io.setExtensionSetpoint(IntakeConstants.getExtendOutSetpoint());
+    io.setExtensionSetpoint(IntakeExtensionConstants.getExtendOutSetpoint());
   }
 
   public void retract() {
     extenderAtPosition = false;
-    io.setExtensionSetpoint(IntakeConstants.getExtendInSetpoint());
+    io.setExtensionSetpoint(IntakeExtensionConstants.getExtendInSetpoint());
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {

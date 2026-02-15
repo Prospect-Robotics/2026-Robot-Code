@@ -1,4 +1,4 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.Volts;
@@ -16,7 +16,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 
-public class IntakeIOSim implements IntakeIO {
+public class IntakeExtensionIOSim implements IntakeExtensionIO {
   private final TalonFX intakeMotor;
   private final TalonFXSimState intakeMotorSimState;
 
@@ -28,21 +28,21 @@ public class IntakeIOSim implements IntakeIO {
 
   private Angle extensionSetpoint;
 
-  public IntakeIOSim() {
+  public IntakeExtensionIOSim() {
     intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
     extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);
     intakeMotorSimState = intakeMotor.getSimState();
     extenderMotorSimState = extenderMotor.getSimState();
 
-    intakeMotor.getConfigurator().apply(IntakeConstants.INTAKE_MOTOR_CONFIG);
-    extenderMotor.getConfigurator().apply(IntakeConstants.EXTENDER_MOTOR_CONFIG);
+    intakeMotor.getConfigurator().apply(IntakeExtensionConstants.INTAKE_MOTOR_CONFIG);
+    extenderMotor.getConfigurator().apply(IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG);
 
     intakeSim =
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(1),
                 0.000157147494,
-                IntakeConstants.INTAKE_MOTOR_TO_INTAKE_GEARING),
+                IntakeExtensionConstants.INTAKE_MOTOR_TO_INTAKE_GEARING),
             DCMotor.getKrakenX60(1),
             0.0);
 
@@ -51,8 +51,8 @@ public class IntakeIOSim implements IntakeIO {
             LinearSystemId.createElevatorSystem(
                 DCMotor.getKrakenX60(1),
                 5.0,
-                IntakeConstants.PULLEY_RADIUS_METERS,
-                IntakeConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING),
+                IntakeExtensionConstants.PULLEY_RADIUS_METERS,
+                IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING),
             0.0,
             0.0);
 
@@ -88,13 +88,13 @@ public class IntakeIOSim implements IntakeIO {
 
     extenderMotorSimState.setRotorVelocity(
         extenderSim.getOutput(1)
-            / (2.0 * Math.PI * IntakeConstants.PULLEY_RADIUS_METERS)
-            * IntakeConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING);
+            / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS_METERS)
+            * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING);
     extenderMotorSimState.setRawRotorPosition(
         Units.radiansToRotations(
             extenderSim.getOutput(0)
-                / (2.0 * Math.PI * IntakeConstants.PULLEY_RADIUS_METERS)
-                * IntakeConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING));
+                / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS_METERS)
+                * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING));
   }
 
   @Override

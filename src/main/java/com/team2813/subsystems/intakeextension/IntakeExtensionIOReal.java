@@ -1,4 +1,4 @@
-package com.team2813.subsystems.intake;
+package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.Volts;
@@ -9,17 +9,17 @@ import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 
-public class IntakeIOReal implements IntakeIO {
+public class IntakeExtensionIOReal implements IntakeExtensionIO {
   private final TalonFX intakeMotor;
   private final TalonFX extenderMotor;
   private Angle extensionSetpoint;
 
-  public IntakeIOReal() {
+  public IntakeExtensionIOReal() {
     intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
     extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);
     // Apply any necessary configuration to the intakeMotor here
-    intakeMotor.getConfigurator().apply(IntakeConstants.INTAKE_MOTOR_CONFIG);
-    extenderMotor.getConfigurator().apply(IntakeConstants.EXTENDER_MOTOR_CONFIG);
+    intakeMotor.getConfigurator().apply(IntakeExtensionConstants.INTAKE_MOTOR_CONFIG);
+    extenderMotor.getConfigurator().apply(IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG);
     extenderMotor.setPosition(Rotation.of(0)); // intake should be fully retracted on bootup
     extensionSetpoint = Rotation.of(0);
   }
