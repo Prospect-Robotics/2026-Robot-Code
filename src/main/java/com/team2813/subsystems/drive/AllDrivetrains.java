@@ -1,6 +1,5 @@
 package com.team2813.subsystems.drive;
 
-import com.team2813.generated.drwomp.TunerConstants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -11,7 +10,7 @@ import java.util.function.Supplier;
 public class AllDrivetrains {
   private static final String SIMULATOR_SERIAL_NUM = "";
   private static final String DR_WOMP_SERIAL_NUM = "327B9D0";
-  private static final String REBUILT_SERIAL_NUM = "24056E5";
+  private static final String REBUILT_SERIAL_NUM = "024056E5";
 
   private static final Map<String, Supplier<AllTunerConstants>> SERIAL_NUMBER_TO_TUNER_CONSTANTS =
       Map.of(
@@ -24,19 +23,28 @@ public class AllDrivetrains {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "Dr. Womp",
-            TunerConstants.FrontLeft,
-            TunerConstants.FrontRight,
-            TunerConstants.BackLeft,
-            TunerConstants.BackRight,
-            TunerConstants.DrivetrainConstants,
-            TunerConstants.kCANBus,
-            TunerConstants.kSpeedAt12Volts);
+            com.team2813.generated.drwomp.TunerConstants.FrontLeft,
+            com.team2813.generated.drwomp.TunerConstants.FrontRight,
+            com.team2813.generated.drwomp.TunerConstants.BackLeft,
+            com.team2813.generated.drwomp.TunerConstants.BackRight,
+            com.team2813.generated.drwomp.TunerConstants.DrivetrainConstants,
+            com.team2813.generated.drwomp.TunerConstants.kCANBus,
+            com.team2813.generated.drwomp.TunerConstants.kSpeedAt12Volts);
     return robotConstants;
   }
 
   private static AllTunerConstants defaultDrivetrain() {
-    // TODO: Return constants for the 2026 robot.
-    return drWomp();
+    AllTunerConstants robotConstants =
+        new AllTunerConstants(
+            "REBUILT",
+            com.team2813.generated.rebuilt.TunerConstants.FrontLeft,
+            com.team2813.generated.rebuilt.TunerConstants.FrontRight,
+            com.team2813.generated.rebuilt.TunerConstants.BackLeft,
+            com.team2813.generated.rebuilt.TunerConstants.BackRight,
+            com.team2813.generated.rebuilt.TunerConstants.DrivetrainConstants,
+            com.team2813.generated.rebuilt.TunerConstants.kCANBus,
+            com.team2813.generated.rebuilt.TunerConstants.kSpeedAt12Volts);
+    return robotConstants;
   }
 
   public static AllTunerConstants forRoboRIO() {
