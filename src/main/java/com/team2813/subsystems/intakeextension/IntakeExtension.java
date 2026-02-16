@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 /**
- * Code that controls the extension of the intake and the front plate of the hopper via a rack and pinion gear.
+ * Code that controls the extension of the intake and the front plate of the hopper via a rack and
+ * pinion gear.
  */
 public class IntakeExtension extends SubsystemBase {
   private final IntakeExtensionIO io;
@@ -30,8 +31,9 @@ public class IntakeExtension extends SubsystemBase {
             .extenderMotorPosition
             .minus(replayedInputs.extenderMotorSetpoint)
             .abs(Rotation);
-    extenderAtPosition =
-        error <= 0.5; // Is the error between the setpoint greater than half a rotation.
+
+    // Is the error between the setpoint greater than half a rotation.
+    extenderAtPosition = error <= 0.5;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.processInputs("IntakeExtension", replayedInputs);

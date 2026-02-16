@@ -9,8 +9,6 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.Preferences;
 
 public class IntakeExtensionConstants {
 
@@ -52,6 +50,6 @@ public class IntakeExtensionConstants {
     return Rotations.of(ExtenderPositions.IN.getPosition().div(INCHES_PER_ROTATION).magnitude());
   }
 
-  public static final double MANUAL_SPEED_FACTOR =
-      3.0; // controls how fast the extension moves during manual control
+  // controls how fast the extension moves during manual control
+  public static final double MANUAL_SPEED_FACTOR = 3.0;
 }
