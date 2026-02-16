@@ -8,6 +8,7 @@
 package com.team2813;
 
 import static com.team2813.Constants.onRed;
+import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
@@ -120,6 +121,7 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOSim());
 
         VisionSystemSim visionSim = new VisionSystemSim("main");
+        visionSim.addAprilTags(APRIL_TAG_LAYOUT);
 
         vision =
             new Vision(

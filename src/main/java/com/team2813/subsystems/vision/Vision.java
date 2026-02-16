@@ -80,46 +80,10 @@ public class Vision extends SubsystemBase {
       // Add tag poses
       for (int tagId : inputs[cameraIndex].tagIds) {
         var tagPose = VisionConstants.APRIL_TAG_LAYOUT.getTagPose(tagId);
-        if (tagPose.isPresent()) {
-          tagPoses.add(tagPose.get());
-        }
+        tagPose.ifPresent(tagPoses::add);
       }
-      // TODO: Extract methods from rather long pieces of code, such as the following loop
 
-      // Loop over pose observations
-      for (var observation : inputs[cameraIndex].poseObservations) {
-        // Check whether to reject pose
-        boolean rejectPose = shouldRejectPose(observation);
-
-        // Add pose to log
-        robotPoses.add(observation.pose());
-        if (rejectPose) {
-          robotPosesRejected.add(observation.pose());
-        } else {
-          robotPosesAccepted.add(observation.pose());
-        }
-
-        // Skip if rejected
-        if (rejectPose) {
-          continue;
-        }
-
-        // Calculate standard deviations
-        double stdDevFactor =
-            Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
-        double linearStdDev = VisionConstants.LINEAR_STD_DEV_BASELINE * stdDevFactor;
-        double angularStdDev = VisionConstants.ANGULAR_STD_DEV_BASELINE * stdDevFactor;
-        if (cameraIndex < VisionConstants.CAMERA_STD_DEV_FACTORS.length) {
-          linearStdDev *= VisionConstants.CAMERA_STD_DEV_FACTORS[cameraIndex];
-          angularStdDev *= VisionConstants.CAMERA_STD_DEV_FACTORS[cameraIndex];
-        }
-
-        // Send vision observation
-        consumer.accept(
-            observation.pose().toPose2d(),
-            observation.timestamp(),
-            VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
-      }
+      processObservations(cameraIndex, robotPoses, robotPosesAccepted, robotPosesRejected);
 
       // Log camera metadata
       Logger.recordOutput(
@@ -153,6 +117,47 @@ public class Vision extends SubsystemBase {
         Pose2d visionRobotPoseMeters,
         double timestampSeconds,
         Matrix<N3, N1> visionMeasurementStdDevs);
+  }
+
+  private void processObservations(
+          int cameraIndex,
+          List<Pose3d> robotPoses,
+          List<Pose3d> robotPosesAccepted,
+          List<Pose3d> robotPosesRejected) {
+    // Loop over pose observations
+    for (var observation : inputs[cameraIndex].poseObservations) {
+      // Check whether to reject pose
+      boolean rejectPose = shouldRejectPose(observation);
+
+      // Add pose to log
+      robotPoses.add(observation.pose());
+      if (rejectPose) {
+        robotPosesRejected.add(observation.pose());
+      } else {
+        robotPosesAccepted.add(observation.pose());
+      }
+
+      // Skip if rejected
+      if (rejectPose) {
+        continue;
+      }
+
+      // Calculate standard deviations
+      double stdDevFactor =
+              Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
+      double linearStdDev = VisionConstants.LINEAR_STD_DEV_BASELINE * stdDevFactor;
+      double angularStdDev = VisionConstants.ANGULAR_STD_DEV_BASELINE * stdDevFactor;
+      if (cameraIndex < VisionConstants.CAMERA_STD_DEV_FACTORS.length) {
+        linearStdDev *= VisionConstants.CAMERA_STD_DEV_FACTORS[cameraIndex];
+        angularStdDev *= VisionConstants.CAMERA_STD_DEV_FACTORS[cameraIndex];
+      }
+
+      // Send vision observation
+      consumer.accept(
+              observation.pose().toPose2d(),
+              observation.timestamp(),
+              VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
+    }
   }
 
   private boolean shouldRejectPose(VisionIO.PoseObservation observation) {
