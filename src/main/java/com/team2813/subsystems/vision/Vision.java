@@ -120,13 +120,15 @@ public class Vision extends SubsystemBase {
   }
 
   /**
-   * Processes the observations from each camera, sending accepted observations to the consumer and logging all observations.
-   *
+   * Processes the observations from each camera, sending accepted observations to the consumer and
+   * logging all observations.
    *
    * @param cameraIndex - the index of the camera to process observations for
    * @param robotPoses - the list of robot poses to add all observations from selected camera to
-   * @param robotPosesAccepted - the list of robot poses to add accepted observations from selected camera to
-   * @param robotPosesRejected - the list of robot poses to add rejected observations from selected camera to
+   * @param robotPosesAccepted - the list of robot poses to add accepted observations from selected
+   *     camera to
+   * @param robotPosesRejected - the list of robot poses to add rejected observations from selected
+   *     camera to
    */
   private void processObservations(
       int cameraIndex,
@@ -169,9 +171,9 @@ public class Vision extends SubsystemBase {
     }
   }
 
-
   /**
-   * Determines whether to reject a vision pose observation based on various criteria such as ambiguity, Z coordinate, and field boundaries.
+   * Determines whether to reject a vision pose observation based on various criteria such as
+   * ambiguity, Z coordinate, and field boundaries.
    *
    * @param observation
    * @return - true if the pose observation should be rejected, false otherwise

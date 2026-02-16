@@ -56,9 +56,9 @@ public class VisionConstants {
   // Standard deviation multipliers for each camera
   // (Adjust to trust some cameras more than others)
   public static final double[] CAMERA_STD_DEV_FACTORS =
-      new double[]{
-              1.0, // Camera 0
-              1.0, // Camera 1
-              1.0 // Camera 2
+      new double[] {
+        1.0, // Camera 0
+        1.0, // Camera 1
+        1.0 // Camera 2
       };
 }

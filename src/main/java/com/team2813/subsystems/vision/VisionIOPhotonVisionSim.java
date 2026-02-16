@@ -44,7 +44,6 @@ public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
     visionSim.addCamera(cameraSim, robotToCamera);
   }
 
-
   // TODO: make sure that visionSim.update() is only called once, at the start of Vision.periodic()
   @Override
   public void updateInputs(VisionIOInputs inputs) {
