@@ -17,7 +17,9 @@ public class AllDrivetrains {
           SIMULATOR_SERIAL_NUM,
           AllDrivetrains::defaultDrivetrain,
           DR_WOMP_SERIAL_NUM,
-          AllDrivetrains::drWomp);
+          AllDrivetrains::drWomp,
+          REBUILT_SERIAL_NUM,
+          AllDrivetrains::rebuilt);
 
   public static AllTunerConstants drWomp() {
     AllTunerConstants robotConstants =
@@ -33,7 +35,7 @@ public class AllDrivetrains {
     return robotConstants;
   }
 
-  private static AllTunerConstants defaultDrivetrain() {
+  private static AllTunerConstants rebuilt() {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "REBUILT",
@@ -45,6 +47,10 @@ public class AllDrivetrains {
             com.team2813.generated.rebuilt.TunerConstants.kCANBus,
             com.team2813.generated.rebuilt.TunerConstants.kSpeedAt12Volts);
     return robotConstants;
+  }
+
+  private static AllTunerConstants defaultDrivetrain() {
+    return rebuilt();
   }
 
   public static AllTunerConstants forRoboRIO() {
