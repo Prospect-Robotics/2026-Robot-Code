@@ -7,6 +7,8 @@
 
 package com.team2813.commands;
 
+import static com.team2813.Constants.onRed;
+
 import com.team2813.subsystems.drive.Drive;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -27,8 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-
-import static com.team2813.Constants.onRed;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
@@ -89,8 +89,7 @@ public class DriveCommands {
           // optional. This achieves the intended behavior of having `true` if, and only if
           // DriverStation#getAlliance() returned a non-empty option with Alliance.Red, but avoiding
           // accidentally unwrapping an empty optional
-          boolean isFlipped =
-              onRed.getAsBoolean();
+          boolean isFlipped = onRed.getAsBoolean();
           drive.runVelocity(
               ChassisSpeeds.fromFieldRelativeSpeeds(
                   speeds,
@@ -134,9 +133,7 @@ public class DriveCommands {
                       linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                       linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                       omega);
-              boolean isFlipped =
-                  DriverStation.getAlliance().isPresent()
-                      && onRed.getAsBoolean();
+              boolean isFlipped = DriverStation.getAlliance().isPresent() && onRed.getAsBoolean();
               drive.runVelocity(
                   ChassisSpeeds.fromFieldRelativeSpeeds(
                       speeds,

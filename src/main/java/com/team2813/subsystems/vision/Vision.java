@@ -7,7 +7,6 @@
 
 package com.team2813.subsystems.vision;
 
-import com.team2813.subsystems.vision.VisionIO.PoseObservationType;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -85,23 +84,12 @@ public class Vision extends SubsystemBase {
           tagPoses.add(tagPose.get());
         }
       }
+      // TODO: Extract methods from rather long pieces of code, such as the following loop
 
       // Loop over pose observations
       for (var observation : inputs[cameraIndex].poseObservations) {
         // Check whether to reject pose
-        boolean rejectPose =
-            observation.tagCount() == 0 // Must have at least one tag
-                || (observation.tagCount() == 1
-                    && observation.ambiguity()
-                        > VisionConstants.MAX_AMBIGUITY) // Cannot be high ambiguity
-                || Math.abs(observation.pose().getZ())
-                    > VisionConstants.MAX_Z_ERROR // Must have realistic Z coordinate
-
-                // Must be within the field boundaries
-                || observation.pose().getX() < 0.0
-                || observation.pose().getX() > VisionConstants.APRIL_TAG_LAYOUT.getFieldLength()
-                || observation.pose().getY() < 0.0
-                || observation.pose().getY() > VisionConstants.APRIL_TAG_LAYOUT.getFieldWidth();
+        boolean rejectPose = shouldRejectPose(observation);
 
         // Add pose to log
         robotPoses.add(observation.pose());
@@ -121,10 +109,6 @@ public class Vision extends SubsystemBase {
             Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
         double linearStdDev = VisionConstants.LINEAR_STD_DEV_BASELINE * stdDevFactor;
         double angularStdDev = VisionConstants.ANGULAR_STD_DEV_BASELINE * stdDevFactor;
-        if (observation.type() == PoseObservationType.MEGATAG_2) {
-          linearStdDev *= VisionConstants.LINEAR_STD_DEV_MEGATAG2_FACTOR;
-          angularStdDev *= VisionConstants.ANGULAR_STD_DEV_MEGATAG2_FACTOR;
-        }
         if (cameraIndex < VisionConstants.CAMERA_STD_DEV_FACTORS.length) {
           linearStdDev *= VisionConstants.CAMERA_STD_DEV_FACTORS[cameraIndex];
           angularStdDev *= VisionConstants.CAMERA_STD_DEV_FACTORS[cameraIndex];
@@ -169,5 +153,19 @@ public class Vision extends SubsystemBase {
         Pose2d visionRobotPoseMeters,
         double timestampSeconds,
         Matrix<N3, N1> visionMeasurementStdDevs);
+  }
+
+  private boolean shouldRejectPose(VisionIO.PoseObservation observation) {
+    return observation.tagCount() == 0 // Must have at least one tag
+        || (observation.tagCount() == 1
+            && observation.ambiguity() > VisionConstants.MAX_AMBIGUITY) // Cannot be high ambiguity
+        || Math.abs(observation.pose().getZ())
+            > VisionConstants.MAX_Z_ERROR // Must have realistic Z coordinate
+
+        // Must be within the field boundaries
+        || observation.pose().getX() < 0.0
+        || observation.pose().getX() > VisionConstants.APRIL_TAG_LAYOUT.getFieldLength()
+        || observation.pose().getY() < 0.0
+        || observation.pose().getY() > VisionConstants.APRIL_TAG_LAYOUT.getFieldWidth();
   }
 }

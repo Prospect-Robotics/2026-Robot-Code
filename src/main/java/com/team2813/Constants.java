@@ -9,7 +9,6 @@ package com.team2813;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-
 import java.util.function.BooleanSupplier;
 
 /**
@@ -52,5 +51,8 @@ public final class Constants {
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
-  public static final BooleanSupplier onRed = () -> DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red;
+  public static final BooleanSupplier onRed =
+      () ->
+          DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+              == DriverStation.Alliance.Red;
 }

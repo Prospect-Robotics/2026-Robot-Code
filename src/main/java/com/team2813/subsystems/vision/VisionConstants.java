@@ -60,9 +60,4 @@ public class VisionConstants {
         1.0, // Camera 0
         1.0 // Camera 1
       };
-
-  // Multipliers to apply for MegaTag 2 observations
-  public static final double LINEAR_STD_DEV_MEGATAG2_FACTOR = 0.5; // More stable than full 3D solve
-  public static final double ANGULAR_STD_DEV_MEGATAG2_FACTOR =
-      Double.POSITIVE_INFINITY; // No rotation data available
 }

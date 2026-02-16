@@ -7,6 +7,8 @@
 
 package com.team2813;
 
+import static com.team2813.Constants.onRed;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
 import com.team2813.subsystems.drive.AllTunerConstants;
@@ -24,15 +26,12 @@ import com.team2813.subsystems.shooter.ShooterIOSim;
 import com.team2813.subsystems.vision.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
-import static com.team2813.Constants.onRed;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
