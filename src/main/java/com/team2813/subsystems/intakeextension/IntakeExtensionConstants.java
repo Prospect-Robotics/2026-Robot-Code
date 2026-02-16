@@ -28,8 +28,7 @@ public class IntakeExtensionConstants {
   public static final Distance PULLEY_RADIUS = Inches.of(0.5);
 
   public static final double DISTANCE_METERS_TO_MOTOR_ROTATIONS =
-      IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING
-          / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS.in(Meters));
+      EXTENDER_MOTOR_TO_EXTENDER_GEARING / (2.0 * Math.PI * PULLEY_RADIUS.in(Meters));
 
   public static final Distance EXTENDED_POSITION = Inches.of(10.75);
   public static final Distance RETRACTED_POSITION = Inches.of(0);
@@ -54,16 +53,9 @@ public class IntakeExtensionConstants {
     }
   }
 
-  public static Angle getExtendOutSetpoint() {
-    Logger.recordOutput("IntakeExtension/Setpoint", ExtenderPositions.OUT);
-    return Rotations.of(
-        ExtenderPositions.OUT.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-  }
-
-  public static Angle getExtendInSetpoint() {
-    Logger.recordOutput("IntakeExtension/Setpoint", ExtenderPositions.IN);
-    return Rotations.of(
-        ExtenderPositions.IN.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
+  public static Angle toMotorSetpoint(ExtenderPositions position) {
+    Logger.recordOutput("IntakeExtension/Setpoint", position);
+    return Rotations.of(position.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
 
   // Controls how fast the extension moves during manual control

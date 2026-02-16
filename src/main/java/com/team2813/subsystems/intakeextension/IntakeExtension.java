@@ -42,13 +42,13 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   public void extend() {
-    extenderAtPosition = false;
-    io.setExtensionSetpoint(IntakeExtensionConstants.getExtendOutSetpoint());
+    io.setExtensionSetpoint(
+        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
   }
 
   public void retract() {
-    extenderAtPosition = false;
-    io.setExtensionSetpoint(IntakeExtensionConstants.getExtendInSetpoint());
+    io.setExtensionSetpoint(
+        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {
