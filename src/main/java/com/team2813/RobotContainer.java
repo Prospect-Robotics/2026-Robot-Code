@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.photonvision.simulation.VisionSystemSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -118,21 +119,26 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOSim());
 
+        VisionSystemSim visionSim = new VisionSystemSim("main");
+
         vision =
             new Vision(
                 drive::addVisionMeasurement,
                 new VisionIOPhotonVisionSim(
                     VisionConstants.LEFT_COLOR_CAMERA_NAME,
                     VisionConstants.ROBOT_TO_LEFT_CAM,
-                    drive::getPose),
+                    drive::getPose,
+                    visionSim),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.RIGHT_COLOR_CAMERA_NAME,
                     VisionConstants.ROBOT_TO_RIGHT_CAM,
-                    drive::getPose),
+                    drive::getPose,
+                    visionSim),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.MIDDLE_MONO_CAMERA_NAME,
                     VisionConstants.ROBOT_TO_MID_CAM,
-                    drive::getPose));
+                    drive::getPose,
+                    visionSim));
         shooter = new Shooter(new ShooterIOSim());
 
         break;

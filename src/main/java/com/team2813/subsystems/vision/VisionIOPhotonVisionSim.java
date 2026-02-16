@@ -18,7 +18,7 @@ import org.photonvision.simulation.VisionSystemSim;
 
 /** IO implementation for physics sim using PhotonVision simulator. */
 public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
-  private static VisionSystemSim visionSim;
+  private VisionSystemSim visionSim;
 
   private final Supplier<Pose2d> poseSupplier;
   private final PhotonCameraSim cameraSim;
@@ -30,14 +30,19 @@ public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
    * @param poseSupplier Supplier for the robot pose to use in simulation.
    */
   public VisionIOPhotonVisionSim(
-      String name, Transform3d robotToCamera, Supplier<Pose2d> poseSupplier) {
+      String name,
+      Transform3d robotToCamera,
+      Supplier<Pose2d> poseSupplier,
+      VisionSystemSim visionSystemSim) {
     super(name, robotToCamera);
     this.poseSupplier = poseSupplier;
 
     // Initialize vision sim
-    if (visionSim == null) {
-      visionSim = new VisionSystemSim("main");
-      visionSim.addAprilTags(APRIL_TAG_LAYOUT);
+    if (this.visionSim == null) {
+      this.visionSim = new VisionSystemSim("main");
+      this.visionSim.addAprilTags(APRIL_TAG_LAYOUT);
+    } else {
+      this.visionSim = visionSystemSim;
     }
 
     // Add sim camera
