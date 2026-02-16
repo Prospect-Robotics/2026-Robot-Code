@@ -63,9 +63,9 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    *
-   * @param robotConstants The tuner constants for the robot.
+   * @param tunerConstants The tuner constants for the robot.
    */
-  public RobotContainer(AllTunerConstants robotConstants) {
+  public RobotContainer(AllTunerConstants tunerConstants) {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -73,12 +73,12 @@ public class RobotContainer {
         // a CANcoder
         drive =
             new Drive(
-                robotConstants,
-                new GyroIOPigeon2(),
-                new ModuleIOTalonFX(robotConstants.frontLeft()),
-                new ModuleIOTalonFX(robotConstants.frontRight()),
-                new ModuleIOTalonFX(robotConstants.backLeft()),
-                new ModuleIOTalonFX(robotConstants.backRight()));
+                tunerConstants,
+                new GyroIOPigeon2(tunerConstants),
+                new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
+                new ModuleIOTalonFX(tunerConstants.frontRight(), tunerConstants),
+                new ModuleIOTalonFX(tunerConstants.backLeft(), tunerConstants),
+                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants));
 
         hopper = new Hopper(new HopperIOReal());
 
@@ -92,12 +92,12 @@ public class RobotContainer {
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
-                robotConstants,
+                tunerConstants,
                 new GyroIO() {},
-                new ModuleIOSim(robotConstants.frontLeft()),
-                new ModuleIOSim(robotConstants.frontRight()),
-                new ModuleIOSim(robotConstants.backLeft()),
-                new ModuleIOSim(robotConstants.backRight()));
+                new ModuleIOSim(tunerConstants.frontLeft()),
+                new ModuleIOSim(tunerConstants.frontRight()),
+                new ModuleIOSim(tunerConstants.backLeft()),
+                new ModuleIOSim(tunerConstants.backRight()));
 
         hopper = new Hopper(new HopperIOSim());
 
@@ -112,7 +112,7 @@ public class RobotContainer {
         // Replayed robot, disable IO implementations
         drive =
             new Drive(
-                robotConstants,
+                tunerConstants,
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
