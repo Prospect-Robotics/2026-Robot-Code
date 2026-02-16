@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 3.9767760342368046
+        "x": 3.5251957295373675,
+        "y": 4.3093594306049825
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.990264532410275,
-        "y": 3.913101280328675
+        "x": 2.5889372218366336,
+        "y": 4.257436952299193
       },
       "isLocked": false,
       "linkedName": "center"
     },
     {
       "anchor": {
-        "x": 1.5755666666666666,
-        "y": 3.840111111111111
+        "x": 1.545504151838672,
+        "y": 4.2017674970344006
       },
       "prevControl": {
-        "x": 2.4931041304285277,
-        "y": 3.9267619139220797
+        "x": 2.0607236255983943,
+        "y": 4.228370668765833
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "shoot 8 balls+climb",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

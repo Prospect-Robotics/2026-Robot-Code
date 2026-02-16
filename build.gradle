@@ -70,6 +70,16 @@ task(replayWatch, type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    // currently needed for lib2813's testing library; only pulls in deps for testing
+    maven {
+        url = 'https://maven.revrobotics.com/'
+    }
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
@@ -92,6 +102,7 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testImplementation 'com.team2813.lib2813:testing:2.0.0-rc-2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 3.9767760342368046
+        "x": 3.5251957295373675,
+        "y": 4.3093594306049825
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8199269391310082,
-        "y": 1.7332058889747133
+        "x": 2.4452670281984172,
+        "y": 3.0856098724594156
       },
       "isLocked": false,
       "linkedName": "center"
     },
     {
       "anchor": {
-        "x": 0.4679885877318113,
-        "y": 0.6386019971469341
+        "x": 0.52338078291815,
+        "y": 0.6835112692763936
       },
       "prevControl": {
-        "x": 0.22704232742203492,
-        "y": 0.5719319165805099
+        "x": 0.3713423241277761,
+        "y": 0.48505647077394426
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.21517539700812
+    "rotation": 90.68206039317265
   },
   "reversed": false,
-  "folder": "shoot 8 balls+outpost intakeExtension+shoot",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

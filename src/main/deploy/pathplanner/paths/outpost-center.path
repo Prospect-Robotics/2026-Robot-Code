@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4679885877318113,
-        "y": 0.6386019971469341
+        "x": 0.52338078291815,
+        "y": 0.6835112692763936
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.585541183615292,
-        "y": 1.7536691866416885
+        "x": 2.6409333788016305,
+        "y": 1.798578458771148
       },
       "isLocked": false,
       "linkedName": "outpost"
     },
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 3.9767760342368046
+        "x": 3.5251957295373675,
+        "y": 4.3093594306049825
       },
       "prevControl": {
-        "x": 2.038970582958017,
-        "y": 1.9969768126611875
+        "x": 2.0297155279019465,
+        "y": 2.3295602090293652
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "shoot 8 balls+outpost intakeExtension+shoot",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.21517539700812
+    "rotation": 90.68206039317265
   },
   "useDefaultConstraints": true
 }

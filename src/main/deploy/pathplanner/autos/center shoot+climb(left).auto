@@ -7,18 +7,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left-outpost"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "outpost-center"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "center-climb left"
           }
         }
