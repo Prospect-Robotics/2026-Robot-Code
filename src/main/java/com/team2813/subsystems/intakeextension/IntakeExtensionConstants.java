@@ -66,6 +66,6 @@ public class IntakeExtensionConstants {
         ExtenderPositions.IN.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
 
-  // controls how fast the extension moves during manual control
+  // Controls how fast the extension moves during manual control
   public static final double MANUAL_SPEED_FACTOR = 3.0;
 }
