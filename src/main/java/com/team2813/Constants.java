@@ -8,6 +8,12 @@
 package com.team2813;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Meters;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
 import java.util.function.BooleanSupplier;
 
@@ -20,6 +26,9 @@ public final class Constants {
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
+  public static double SIM_TIME_PERIOD =
+      0.02; // Update physics simulations every 20ms (like the actual bot).
+
   public enum Mode {
     /** Running on a real robot. */
     REAL,
@@ -30,6 +39,11 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static final Transform3d FRONT_CAMERA_POSITION =
+      new Transform3d(
+          new Translation3d(Meters.of(-0.054564), Meters.of(0), Meters.of(0.501754)),
+          new Rotation3d(Degree.of(0), Degree.of(-29.5), Degree.of(0)));
 
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.

@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 3.9767760342368046
+        "x": 3.5251957295373675,
+        "y": 4.3093594306049825
       },
       "prevControl": {
-        "x": 2.596290433307939,
-        "y": 4.520644108823509
+        "x": 2.5870353782518687,
+        "y": 4.853227505191687
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "midleft-intake-shoot-climb",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
