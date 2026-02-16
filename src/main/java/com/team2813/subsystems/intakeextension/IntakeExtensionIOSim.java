@@ -2,6 +2,7 @@ package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
@@ -9,6 +10,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import org.littletonrobotics.junction.Logger;
 
 public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
@@ -33,7 +35,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
             IntakeExtensionConstants.PULLEY_RADIUS.in(Meters),
             IntakeExtensionConstants.UNEXTENDED_POSITION.in(Meters),
             IntakeExtensionConstants.EXTENDED_POSITION.in(Meters),
-            true,
+            false,
             0); // Start unextended
 
     extensionSetpoint = Rotation.of(0);
@@ -51,19 +53,31 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     inputs.extenderMotorSetpoint = extensionSetpoint;
   }
 
+  @Override
+  public void setExtensionSetpoint(Angle setpoint) {
+    extensionSetpoint = setpoint;
+    extenderMotor.setControl(new PositionVoltage(setpoint));
+  }
+
   public void updateSimulation() {
     extenderSim.setInput(extenderMotorSimState.getMotorVoltage());
 
     extenderSim.update(0.02);
 
     extenderMotorSimState.setRotorVelocity(
-        extenderSim.getOutput(1)
+        (extenderSim.getVelocityMetersPerSecond()
             / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS.in(Meters))
-            * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING);
+            * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING));
     extenderMotorSimState.setRawRotorPosition(
         Units.radiansToRotations(
-            extenderSim.getOutput(0)
+            extenderSim.getPositionMeters()
                 / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS.in(Meters))
                 * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING));
+
+    Logger.recordOutput(
+        "IntakeExtensionSim/extensionVelocity",
+        MetersPerSecond.of(extenderSim.getVelocityMetersPerSecond()));
+    Logger.recordOutput(
+        "IntakeExtensionSim/extensionSetpoint", Meters.of(extenderSim.getPositionMeters()));
   }
 }
