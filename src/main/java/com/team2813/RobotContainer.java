@@ -170,7 +170,7 @@ public class RobotContainer {
                     drive::getPose,
                     visionSim));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-        intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
+        intakeRoller = new IntakeRoller(new IntakeRollerIOSim(driveSimulation));
 
         shooter = new Shooter(new ShooterIOSim());
 
