@@ -3,8 +3,6 @@ package com.team2813.subsystems.intakeextension;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -57,19 +55,7 @@ public class IntakeExtension extends SubsystemBase {
     io.setExtenderVoltage(extensionVoltage);
   }
 
-  public void stopExtender() {
+  public void stopMotor() {
     io.setExtenderVoltage(Volts.of(0));
-  }
-
-  public Command extendCommand() {
-    return new InstantCommand(this::extend, this);
-  }
-
-  public Command retractCommand() {
-    return new InstantCommand(this::retract, this);
-  }
-
-  public Command stopExtenderCommand() {
-    return new InstantCommand(this::stopExtender, this);
   }
 }

@@ -38,6 +38,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -167,37 +169,38 @@ public class RobotContainer {
             () -> -driveController.getLeftX(),
             () -> -driveController.getRightX()));
 
+    // Feeder and Vectoring Bindings
     driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
     driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
 
+    // Shooter Bindings
     driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
     driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
+    // Intake Roller Bindings
+    operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
+    operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+
+    // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
         new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
 
-    operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
-
-    operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+    // Either the intakeExtender reaches the setpoint, or the operator interrupts by moving the left joystick left/right
+    BooleanSupplier extensionCommandCancellingCondition = () -> (Math.abs(operatorController.getLeftY()) > 0.3) || intakeExtension.isExtenderAtPosition();
 
     operatorController
         .a()
         .onTrue(
             (new StartEndCommand(
-                    intakeExtension::extend, intakeExtension::stopExtender, intakeExtension))
-                .until(
-                    () ->
-                        ((Math.abs(operatorController.getLeftY()) > 0.3)
-                            || intakeExtension.isExtenderAtPosition())));
+                    intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
+                .until(extensionCommandCancellingCondition));
+
     operatorController
         .b()
         .onTrue(
             (new StartEndCommand(
-                    intakeExtension::retract, intakeExtension::stopExtender, intakeExtension))
-                .until(
-                    () ->
-                        ((Math.abs(operatorController.getLeftY()) > 0.3)
-                            || intakeExtension.isExtenderAtPosition())));
+                    intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
+                .until(extensionCommandCancellingCondition));
   }
 
   /**
