@@ -184,26 +184,25 @@ public class RobotContainer {
     intakeExtension.setDefaultCommand(
         new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
 
-    // Either the intakeExtender reaches the setpoint, or the operator interrupts by moving the left
-    // joystick left/right
-    BooleanSupplier extensionCommandCancellingCondition =
+
+    BooleanSupplier extensionInterruptionCondition =
         () ->
-            (Math.abs(operatorController.getLeftY()) > 0.3)
-                || intakeExtension.isExtenderAtPosition();
+            (intakeExtension.isExtenderAtPosition()  // Either the intakeExtender reaches the setpoint.
+                || Math.abs(operatorController.getLeftY()) > 0.3); // Or the operator interrupts by moving the left joystick left/right.
 
     operatorController
         .a()
         .onTrue(
             (new StartEndCommand(
                     intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionCommandCancellingCondition));
+                .until(extensionInterruptionCondition));
 
     operatorController
         .b()
         .onTrue(
             (new StartEndCommand(
                     intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionCommandCancellingCondition));
+                .until(extensionInterruptionCondition));
   }
 
   /**
