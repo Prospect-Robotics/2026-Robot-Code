@@ -119,11 +119,20 @@ public class Vision extends SubsystemBase {
         Matrix<N3, N1> visionMeasurementStdDevs);
   }
 
+  /**
+   * Processes the observations from each camera, sending accepted observations to the consumer and logging all observations.
+   *
+   *
+   * @param cameraIndex - the index of the camera to process observations for
+   * @param robotPoses - the list of robot poses to add all observations from selected camera to
+   * @param robotPosesAccepted - the list of robot poses to add accepted observations from selected camera to
+   * @param robotPosesRejected - the list of robot poses to add rejected observations from selected camera to
+   */
   private void processObservations(
-          int cameraIndex,
-          List<Pose3d> robotPoses,
-          List<Pose3d> robotPosesAccepted,
-          List<Pose3d> robotPosesRejected) {
+      int cameraIndex,
+      List<Pose3d> robotPoses,
+      List<Pose3d> robotPosesAccepted,
+      List<Pose3d> robotPosesRejected) {
     // Loop over pose observations
     for (var observation : inputs[cameraIndex].poseObservations) {
       // Check whether to reject pose
@@ -144,7 +153,7 @@ public class Vision extends SubsystemBase {
 
       // Calculate standard deviations
       double stdDevFactor =
-              Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
+          Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
       double linearStdDev = VisionConstants.LINEAR_STD_DEV_BASELINE * stdDevFactor;
       double angularStdDev = VisionConstants.ANGULAR_STD_DEV_BASELINE * stdDevFactor;
       if (cameraIndex < VisionConstants.CAMERA_STD_DEV_FACTORS.length) {
@@ -154,13 +163,20 @@ public class Vision extends SubsystemBase {
 
       // Send vision observation
       consumer.accept(
-              observation.pose().toPose2d(),
-              observation.timestamp(),
-              VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
+          observation.pose().toPose2d(),
+          observation.timestamp(),
+          VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
     }
   }
 
-  private boolean shouldRejectPose(VisionIO.PoseObservation observation) {
+
+  /**
+   * Determines whether to reject a vision pose observation based on various criteria such as ambiguity, Z coordinate, and field boundaries.
+   *
+   * @param observation
+   * @return - true if the pose observation should be rejected, false otherwise
+   */
+  private static boolean shouldRejectPose(VisionIO.PoseObservation observation) {
     return observation.tagCount() == 0 // Must have at least one tag
         || (observation.tagCount() == 1
             && observation.ambiguity() > VisionConstants.MAX_AMBIGUITY) // Cannot be high ambiguity
