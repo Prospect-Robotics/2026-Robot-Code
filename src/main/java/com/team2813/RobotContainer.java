@@ -213,27 +213,18 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX()));
 
-    controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
-
-    controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
-    controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
-
-    controller
+    driveController
         .y()
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
-                () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
                 this::getBotToHub));
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
