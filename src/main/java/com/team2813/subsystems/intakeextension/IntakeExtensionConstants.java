@@ -44,27 +44,6 @@ public class IntakeExtensionConstants {
     }
   }
 
-  static {
-    Preferences.initFloat("Intake/INTAKE_MOTOR_VOLTAGE", 5);
-    Preferences.initFloat("Intake/OUTTAKE_MOTOR_VOLTAGE", -5);
-  }
-
-  public static Voltage getIntakeMotorVoltage() {
-    return Volts.of(Preferences.getDouble("Intake/INTAKE_MOTOR_VOLTAGE", 5));
-  }
-
-  public static Voltage getOuttakeMotorVoltage() {
-    return Volts.of(Preferences.getDouble("Intake/OUTTAKE_MOTOR_VOLTAGE", -5));
-  }
-
-  //  public static Voltage getExtenderInVoltage() {
-  //    return Volts.of(Preferences.getDouble("Intake/EXTENDER_IN_VOLTAGE", 5));
-  //  }
-  //
-  //  public static Voltage getExtenderOutVoltage() {
-  //    return Volts.of(Preferences.getDouble("Intake/EXTENDER_OUT_VOLTAGE", -5));
-  //  }
-
   public static Angle getExtendOutSetpoint() {
     return Rotations.of(ExtenderPositions.OUT.getPosition().div(INCHES_PER_ROTATION).magnitude());
   }

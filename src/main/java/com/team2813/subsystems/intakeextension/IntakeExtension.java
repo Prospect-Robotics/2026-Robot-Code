@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
+/**
+ * Code that controls the extension of the intake and the front plate of the hopper via a rack and pinion gear.
+ */
 public class IntakeExtension extends SubsystemBase {
   private final IntakeExtensionIO io;
   private final IntakeExtensionIOInputsAutoLogged replayedInputs =
