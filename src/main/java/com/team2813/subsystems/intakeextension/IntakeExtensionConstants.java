@@ -60,6 +60,6 @@ public class IntakeExtensionConstants {
     return Rotations.of(ExtenderPositions.IN.getPosition().div(INCHES_PER_ROTATION).magnitude());
   }
 
-  // controls how fast the extension moves during manual control
+  // Controls how fast the extension moves during manual control
   public static final double MANUAL_SPEED_FACTOR = 3.0;
 }
