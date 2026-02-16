@@ -54,6 +54,11 @@ public final class Constants {
   public static final int LEFT_FEEDER_MOTOR_ID = 23;
   public static final int RIGHT_FEEDER_MOTOR_ID = 24;
 
+  // Motor runs the robot intake.
+  public static final int INTAKE_MOTOR_CAN_ID = 26;
+  // Motor controls the extension of the front of the hopper plate.
+  public static final int EXTENDER_MOTOR_CAN_ID = 27;
+
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.

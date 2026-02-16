@@ -9,6 +9,7 @@ package com.team2813;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
+import com.team2813.commands.IntakeExtensionDefaultCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -17,6 +18,14 @@ import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
 import com.team2813.subsystems.hopper.*;
+import com.team2813.subsystems.intakeextension.IntakeExtension;
+import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
+import com.team2813.subsystems.intakeextension.IntakeExtensionIOReal;
+import com.team2813.subsystems.intakeextension.IntakeExtensionIOSim;
+import com.team2813.subsystems.intakeroller.IntakeRoller;
+import com.team2813.subsystems.intakeroller.IntakeRollerIO;
+import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
+import com.team2813.subsystems.intakeroller.IntakeRollerIOSim;
 import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
@@ -24,8 +33,10 @@ import com.team2813.subsystems.shooter.ShooterIOSim;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -38,9 +49,14 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
+
+  private final IntakeExtension intakeExtension;
+  private final IntakeRoller intakeRoller;
+
   private final Shooter shooter;
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driveController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -67,24 +83,10 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOReal());
 
+        intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
+        intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
+
         shooter = new Shooter(new ShooterIOReal());
-        // The ModuleIOTalonFXS implementation provides an example implementation for
-        // TalonFXS controller connected to a CANdi with a PWM encoder. The
-        // implementations
-        // of ModuleIOTalonFX, ModuleIOTalonFXS, and ModuleIOSpark (from the Spark
-        // swerve
-        // template) can be freely intermixed to support alternative hardware
-        // arrangements.
-        // Please see the AdvantageKit template documentation for more information:
-        // https://docs.advantagekit.org/getting-started/template-projects/talonfx-swerve-template#custom-module-implementations
-        //
-        // drive =
-        // new Drive(
-        // new GyroIOPigeon2(),
-        // new ModuleIOTalonFXS(tunerConstants.frontLeft()),
-        // new ModuleIOTalonFXS(tunerConstants.frontRight()),
-        // new ModuleIOTalonFXS(TunerConstants.BackLeft),
-        // new ModuleIOTalonFXS(tunerConstants.backRight()));
         break;
 
       case SIM:
@@ -99,6 +101,9 @@ public class RobotContainer {
                 new ModuleIOSim(tunerConstants.backRight()));
 
         hopper = new Hopper(new HopperIOSim());
+
+        intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
+        intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
         shooter = new Shooter(new ShooterIOSim());
 
@@ -116,6 +121,9 @@ public class RobotContainer {
                 new ModuleIO() {});
 
         hopper = new Hopper(new HopperIO() {});
+
+        intakeExtension = new IntakeExtension(new IntakeExtensionIO() {});
+        intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
 
@@ -156,15 +164,46 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX()));
 
-    controller.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    controller.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
+    // Feeder and Vectoring Bindings
+    driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
+    driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
 
-    controller.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
-    controller.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+    // Shooter Bindings
+    driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+    driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+
+    // Intake Roller Bindings
+    operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
+    operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+
+    // Intake Extension Bindings
+    intakeExtension.setDefaultCommand(
+        new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
+
+    BooleanSupplier extensionInterruptionCondition =
+        () ->
+            (intakeExtension
+                    .isExtenderAtPosition() // Either the intakeExtender reaches the setpoint.
+                || Math.abs(operatorController.getLeftY())
+                    > 0.3); // Or the operator interrupts by moving the left joystick left/right.
+
+    operatorController
+        .a()
+        .onTrue(
+            (new StartEndCommand(
+                    intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
+                .until(extensionInterruptionCondition));
+
+    operatorController
+        .b()
+        .onTrue(
+            (new StartEndCommand(
+                    intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
+                .until(extensionInterruptionCondition));
   }
 
   /**
