@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
+import org.littletonrobotics.junction.Logger;
 
 public class IntakeExtensionConstants {
 
@@ -22,15 +23,16 @@ public class IntakeExtensionConstants {
       new TalonFXConfiguration()
           .withSlot0(new Slot0Configs().withKP(2).withKI(0.001).withKD(0.000))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(EXTENDER_MOTOR_TO_EXTENDER_GEARING));
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1));
 
-  public static final Distance PULLEY_RADIUS = Meters.of(0.0889);
+  public static final Distance PULLEY_RADIUS = Inches.of(0.5);
 
-  public static final Distance INCHES_PER_ROTATION = Inches.of(Math.PI);
+  public static final double DISTANCE_METERS_TO_MOTOR_ROTATIONS =
+      IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING
+          / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS.in(Meters));
 
   public static final Distance EXTENDED_POSITION = Inches.of(10.75);
-  public static final Distance UNEXTENDED_POSITION = Inches.of(0);
+  public static final Distance RETRACTED_POSITION = Inches.of(0);
 
   public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.2);
 
@@ -39,7 +41,7 @@ public class IntakeExtensionConstants {
     // the way back.
 
     OUT(EXTENDED_POSITION.plus(ANTI_STALL_DISTANCE)),
-    IN(UNEXTENDED_POSITION.minus(ANTI_STALL_DISTANCE));
+    IN(RETRACTED_POSITION.minus(ANTI_STALL_DISTANCE));
 
     private final Distance position;
 
@@ -53,11 +55,15 @@ public class IntakeExtensionConstants {
   }
 
   public static Angle getExtendOutSetpoint() {
-    return Rotations.of(ExtenderPositions.OUT.getPosition().div(INCHES_PER_ROTATION).magnitude());
+    Logger.recordOutput("IntakeExtension/Setpoint", ExtenderPositions.OUT);
+    return Rotations.of(
+        ExtenderPositions.OUT.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
 
   public static Angle getExtendInSetpoint() {
-    return Rotations.of(ExtenderPositions.IN.getPosition().div(INCHES_PER_ROTATION).magnitude());
+    Logger.recordOutput("IntakeExtension/Setpoint", ExtenderPositions.IN);
+    return Rotations.of(
+        ExtenderPositions.IN.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
 
   // controls how fast the extension moves during manual control

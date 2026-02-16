@@ -14,10 +14,6 @@ public interface IntakeExtensionIO {
     public Current extenderMotorCurrent = Amps.of(0);
     public Angle extenderMotorPosition = Rotation.of(0);
     public Angle extenderMotorSetpoint = Rotation.of(0);
-
-    public Voltage intakeMotorVoltage = Volts.of(0);
-    public AngularVelocity intakeMotorRPS = RotationsPerSecond.of(0);
-    public Current intakeMotorCurrent = Amps.of(0);
   }
 
   default void updateState(IntakeExtensionIOInputs inputs) {}

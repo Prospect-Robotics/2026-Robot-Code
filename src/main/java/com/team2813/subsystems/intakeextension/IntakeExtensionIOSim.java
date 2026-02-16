@@ -7,7 +7,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import org.littletonrobotics.junction.Logger;
@@ -33,7 +32,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
             IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING,
             IntakeExtensionConstants.WEIGHT_OF_EXTENDER_CARRIAGE.in(Kilograms),
             IntakeExtensionConstants.PULLEY_RADIUS.in(Meters),
-            IntakeExtensionConstants.UNEXTENDED_POSITION.in(Meters),
+            IntakeExtensionConstants.RETRACTED_POSITION.in(Meters),
             IntakeExtensionConstants.EXTENDED_POSITION.in(Meters),
             false,
             0); // Start unextended
@@ -66,18 +65,17 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
     extenderMotorSimState.setRotorVelocity(
         (extenderSim.getVelocityMetersPerSecond()
-            / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS.in(Meters))
-            * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING));
+            * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS));
     extenderMotorSimState.setRawRotorPosition(
-        Units.radiansToRotations(
-            extenderSim.getPositionMeters()
-                / (2.0 * Math.PI * IntakeExtensionConstants.PULLEY_RADIUS.in(Meters))
-                * IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING));
+        extenderSim.getPositionMeters()
+            * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
 
     Logger.recordOutput(
-        "IntakeExtensionSim/extensionVelocity",
+        "IntakeExtensionSim/extensionSimVelocity",
         MetersPerSecond.of(extenderSim.getVelocityMetersPerSecond()));
     Logger.recordOutput(
-        "IntakeExtensionSim/extensionSetpoint", Meters.of(extenderSim.getPositionMeters()));
+        "IntakeExtensionSim/extensionSimLength", Meters.of(extenderSim.getPositionMeters()));
+    Logger.recordOutput("IntakeExtensionSim/hasHitLowerLimit", extenderSim.hasHitLowerLimit());
+    Logger.recordOutput("IntakeExtensionSim/hasHitUpperLimit", extenderSim.hasHitUpperLimit());
   }
 }
