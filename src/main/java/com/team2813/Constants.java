@@ -69,11 +69,12 @@ public final class Constants {
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
-  //  public static final BooleanSupplier onRed =
-  //      () ->
-  //          DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
-  //              == DriverStation.Alliance.Red;
-
+  /**
+   * Returns true if the robot is on the red alliance.
+   * <p>Defaults to blue if no alliance is present.</p>
+   *
+   * @return - true if the robot is on the red alliance, false otherwise.
+   */
   public static boolean onRed() {
     return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
         == DriverStation.Alliance.Red;
