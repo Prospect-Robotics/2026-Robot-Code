@@ -31,7 +31,7 @@ public class IntakeExtension extends SubsystemBase {
             .abs(Rotation);
 
     // Is the error between the setpoint greater than half a rotation.
-    extenderAtPosition = error <= 0.5;
+    extenderAtPosition = error <= 0.4;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.processInputs("IntakeExtension", replayedInputs);
@@ -42,11 +42,13 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   public void extend() {
+    extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
   }
 
   public void retract() {
+    extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
   }
