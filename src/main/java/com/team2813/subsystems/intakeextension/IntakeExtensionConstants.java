@@ -58,6 +58,10 @@ public class IntakeExtensionConstants {
     return Rotations.of(position.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
 
+  public static Distance toIntakeExtensionPosition(Angle motorPosition) {
+    return Meters.of(motorPosition.in(Rotations) / DISTANCE_METERS_TO_MOTOR_ROTATIONS);
+  }
+
   // Controls how fast the extension moves during manual control
   public static final double MANUAL_SPEED_FACTOR = 3.0;
 }
