@@ -26,10 +26,13 @@ public class Vision extends SubsystemBase {
   private final VisionIO[] io;
   private final VisionIOInputsAutoLogged[] inputs;
   private final Alert[] disconnectedAlerts;
+  private final Runnable updateVSim;
 
-  public Vision(VisionConsumer consumer, VisionIO... io) {
+  public Vision(VisionConsumer consumer, Runnable updateVSim, VisionIO... io) {
     this.consumer = consumer;
     this.io = io;
+    this.updateVSim = updateVSim;
+
     // Initialize inputs
     this.inputs = new VisionIOInputsAutoLogged[io.length];
     for (int i = 0; i < inputs.length; i++) {
@@ -201,5 +204,10 @@ public class Vision extends SubsystemBase {
         || observation.pose().getX() > VisionConstants.APRIL_TAG_LAYOUT.getFieldLength()
         || observation.pose().getY() < 0.0
         || observation.pose().getY() > VisionConstants.APRIL_TAG_LAYOUT.getFieldWidth();
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    updateVSim.run();
   }
 }

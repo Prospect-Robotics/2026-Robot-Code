@@ -71,7 +71,8 @@ public final class Constants {
 
   /**
    * Returns true if the robot is on the red alliance.
-   * <p>Defaults to blue if no alliance is present.</p>
+   *
+   * <p>Defaults to blue if no alliance is present.
    *
    * @return - true if the robot is on the red alliance, false otherwise.
    */

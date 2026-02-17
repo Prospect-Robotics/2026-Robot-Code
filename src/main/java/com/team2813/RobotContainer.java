@@ -98,6 +98,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
+                () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
                 new VisionIOPhotonVision(
@@ -129,6 +130,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
+                () -> visionSim.update(drive.getPose()),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.LEFT_COLOR_CAMERA_NAME,
                     VisionConstants.ROBOT_TO_LEFT_CAM,
@@ -167,6 +169,7 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
+                () -> {},
                 new VisionIO() {},
                 new VisionIO() {},
                 new VisionIO() {});
