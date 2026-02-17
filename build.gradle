@@ -137,16 +137,23 @@ tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
 }
 
-// Create version file
+// Generates a BuildConstants file.
+// See https://docs.wpilib.org/en/stable/docs/software/advanced-gradlerio/deploy-git-data.html
 project.compileJava.dependsOn(createVersionFile)
 gversion {
-    srcDir       = "src/main/java/"
+
+    // Generate the BuildConstants source file inside build/. Files there will
+    // be ignored by git (due to .gitignore) and Spotless (due to our Spotless
+    // 'exclude' rules). Note that annotation processors (like @AutoLog) put
+    // generated sources under build/generated/sources/annotationProcessor/.
+    srcDir       = "build/generated/sources/gversion/"
     classPackage = "com.team2813"
     className    = "BuildConstants"
     dateFormat   = "yyyy-MM-dd HH:mm:ss z"
     timeZone     = "America/Los_Angeles"
     indent       = "  "
 }
+sourceSets.main.java.srcDirs += gversion.srcDir
 
 // Create commit with working changes on event branches
 task(eventDeploy) {
@@ -188,7 +195,6 @@ spotless {
         target fileTree(".") {
             include "**/*.java"
             exclude "**/build/**", "**/build-*/**"
-            exclude "src/main/java/com/team2813/BuildConstants.java"
         }
         toggleOffOn()
         googleJavaFormat()
