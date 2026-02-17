@@ -7,6 +7,8 @@
 
 package com.team2813;
 
+import static com.team2813.Constants.onRed;
+import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -33,6 +35,7 @@ import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
+import com.team2813.subsystems.vision.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -48,6 +51,7 @@ import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.photonvision.simulation.VisionSystemSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -61,6 +65,7 @@ public class RobotContainer {
   private SwerveDriveSimulation driveSimulation = null;
 
   private final Hopper hopper;
+  private final Vision vision;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -72,6 +77,9 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+
+  private static final Pose2d BLUE_HUB_POSITION = new Pose2d(4.580, 4.000, Rotation2d.kZero);
+  private static final Pose2d RED_HUB_POSITION = new Pose2d(11.812, 4.000, Rotation2d.kZero);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -96,6 +104,16 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOReal());
 
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                () -> {},
+                new VisionIOPhotonVision(
+                    VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
+                new VisionIOPhotonVision(
+                    VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
+                new VisionIOPhotonVision(
+                    VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
@@ -129,6 +147,28 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIOSim());
 
+        VisionSystemSim visionSim = new VisionSystemSim("main");
+        visionSim.addAprilTags(APRIL_TAG_LAYOUT);
+
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                () -> visionSim.update(drive.getPose()),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.ROBOT_TO_LEFT_CAM,
+                    drive::getPose,
+                    visionSim),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.ROBOT_TO_RIGHT_CAM,
+                    drive::getPose,
+                    visionSim),
+                new VisionIOPhotonVisionSim(
+                    VisionConstants.MIDDLE_MONO_CAMERA_NAME,
+                    VisionConstants.ROBOT_TO_MID_CAM,
+                    drive::getPose,
+                    visionSim));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
@@ -150,6 +190,13 @@ public class RobotContainer {
 
         hopper = new Hopper(new HopperIO() {});
 
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                () -> {},
+                new VisionIO() {},
+                new VisionIO() {},
+                new VisionIO() {});
         intakeExtension = new IntakeExtension(new IntakeExtensionIO() {});
         intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
@@ -196,6 +243,15 @@ public class RobotContainer {
             () -> -driveController.getLeftY(),
             () -> -driveController.getLeftX(),
             () -> -driveController.getRightX()));
+
+    driveController
+        .y()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                this::getBotToHub));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
@@ -252,7 +308,17 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
-
+  
+  private Rotation2d getBotToHub() {
+    Pose2d hub;
+    if (onRed()) {
+      hub = RED_HUB_POSITION;
+    } else {
+      hub = BLUE_HUB_POSITION;
+    }
+    return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
+  }
+  
   /**
    * Resets the simulation.
    *
