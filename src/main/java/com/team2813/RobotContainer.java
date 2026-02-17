@@ -182,16 +182,11 @@ public class RobotContainer {
                 }));
 
     // Feeder and Vectoring Bindings
-    driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
-
-    // Shooter Bindings
-    driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
-    driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+    
 
     // Intake Roller Bindings
-    operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
-    operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
