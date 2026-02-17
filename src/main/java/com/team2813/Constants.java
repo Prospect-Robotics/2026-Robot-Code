@@ -13,6 +13,7 @@ import static edu.wpi.first.units.Units.Meters;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 
 /**
@@ -67,4 +68,16 @@ public final class Constants {
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
+
+  /**
+   * Returns true if the robot is on the red alliance.
+   *
+   * <p>Defaults to blue if no alliance is present.
+   *
+   * @return - true if the robot is on the red alliance, false otherwise.
+   */
+  public static boolean onRed() {
+    return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+        == DriverStation.Alliance.Red;
+  }
 }
