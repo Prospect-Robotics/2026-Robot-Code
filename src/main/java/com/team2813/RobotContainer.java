@@ -284,7 +284,7 @@ public class RobotContainer {
 
   private Rotation2d getBotToHub() {
     Pose2d hub;
-    if (onRed.getAsBoolean()) {
+    if (onRed()) {
       hub = RED_HUB_POSITION;
     } else {
       hub = BLUE_HUB_POSITION;

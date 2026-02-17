@@ -67,6 +67,7 @@ public class Vision extends SubsystemBase {
     List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
     // Loop over cameras
+    // TODO: merge the two for loops into one loop, in a future PR
     for (int cameraIndex = 0; cameraIndex < io.length; cameraIndex++) {
       // Update disconnected alert
       disconnectedAlerts[cameraIndex].set(!inputs[cameraIndex].connected);
@@ -83,7 +84,14 @@ public class Vision extends SubsystemBase {
         tagPose.ifPresent(tagPoses::add);
       }
 
-      processObservations(cameraIndex, robotPoses, robotPosesAccepted, robotPosesRejected);
+      // Process observations, sending accepted poses to consumer and adding all poses to log
+      processObservations(
+          cameraIndex,
+          inputs[cameraIndex].poseObservations,
+          robotPoses,
+          robotPosesAccepted,
+          robotPosesRejected,
+          consumer);
 
       // Log camera metadata
       Logger.recordOutput(
@@ -124,19 +132,22 @@ public class Vision extends SubsystemBase {
    * logging all observations.
    *
    * @param cameraIndex - the index of the camera to process observations for
+   * @param observations - the list of pose observations from the selected camera
    * @param robotPoses - the list of robot poses to add all observations from selected camera to
    * @param robotPosesAccepted - the list of robot poses to add accepted observations from selected
    *     camera to
    * @param robotPosesRejected - the list of robot poses to add rejected observations from selected
    *     camera to
    */
-  private void processObservations(
+  private static void processObservations(
       int cameraIndex,
+      VisionIO.PoseObservation[] observations,
       List<Pose3d> robotPoses,
       List<Pose3d> robotPosesAccepted,
-      List<Pose3d> robotPosesRejected) {
+      List<Pose3d> robotPosesRejected,
+      VisionConsumer consumer) {
     // Loop over pose observations
-    for (var observation : inputs[cameraIndex].poseObservations) {
+    for (var observation : observations) {
       // Check whether to reject pose
       boolean rejectPose = shouldRejectPose(observation);
 
@@ -175,7 +186,7 @@ public class Vision extends SubsystemBase {
    * Determines whether to reject a vision pose observation based on various criteria such as
    * ambiguity, Z coordinate, and field boundaries.
    *
-   * @param observation
+   * @param observation - the vision pose observation to evaluate for rejection
    * @return - true if the pose observation should be rejected, false otherwise
    */
   private static boolean shouldRejectPose(VisionIO.PoseObservation observation) {

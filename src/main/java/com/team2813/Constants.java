@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-import java.util.function.BooleanSupplier;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -70,8 +69,13 @@ public final class Constants {
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
-  public static final BooleanSupplier onRed =
-      () ->
-          DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
-              == DriverStation.Alliance.Red;
+  //  public static final BooleanSupplier onRed =
+  //      () ->
+  //          DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+  //              == DriverStation.Alliance.Red;
+
+  public static boolean onRed() {
+    return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+        == DriverStation.Alliance.Red;
+  }
 }

@@ -21,6 +21,7 @@ public class VisionConstants {
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   // Camera names, must match names configured on coprocessor
+  // TODO: Add configs for cameras on the new robot, when we add them.
   public static final String LEFT_COLOR_CAMERA_NAME = "left_color";
   public static final String RIGHT_COLOR_CAMERA_NAME = "right_color";
   public static final String MIDDLE_MONO_CAMERA_NAME = "middle_monochrome";
