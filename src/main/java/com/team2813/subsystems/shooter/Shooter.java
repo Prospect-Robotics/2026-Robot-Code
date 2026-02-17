@@ -53,6 +53,7 @@ public class Shooter extends SubsystemBase {
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
   public Command sysIDRoutine() {
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
@@ -62,7 +63,7 @@ public class Shooter extends SubsystemBase {
                 null,
                 (state) -> Logger.recordOutput("Shooter/SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setShooterMotorVoltage, null, this));
-    // Note: I may need to use this::setShooterMotorVoltage rather than io::setShooterMotorVoltage.
+    // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than io::setShooterMotorVoltage.
 
     return new SequentialCommandGroup(
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward),
