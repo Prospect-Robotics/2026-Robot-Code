@@ -1,7 +1,9 @@
 package com.team2813.subsystems.intakeextension;
 
+import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.toIntakeExtensionPosition;
 import static edu.wpi.first.units.Units.*;
 
+import com.team2813.subsystems.SimulationVisualizer;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -35,6 +37,13 @@ public class IntakeExtension extends SubsystemBase {
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.processInputs("IntakeExtension", replayedInputs);
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    SimulationVisualizer.getInstance()
+        .updateIntakeExtensionPosition(
+            toIntakeExtensionPosition(replayedInputs.extenderMotorPosition));
   }
 
   public boolean isExtenderAtPosition() {
