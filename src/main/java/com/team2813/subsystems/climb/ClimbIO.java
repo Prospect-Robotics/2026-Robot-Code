@@ -7,7 +7,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
 public interface ClimbIO {
-     class ClimbIOInputs {
+  class ClimbIOInputs {
     public Voltage climbMotor1Voltage = Volts.of(0);
     public AngularVelocity climbMotor1RPS = RotationsPerSecond.of(0);
     public Current climbMotor1Current = Amps.of(0);

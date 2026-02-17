@@ -2,12 +2,10 @@ package com.team2813.subsystems.climb;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-
 import edu.wpi.first.units.measure.Voltage;
 
-
 public class ClimbIOSim implements ClimbIO {
-    private final TalonFX ClimbMotor1;
+  private final TalonFX ClimbMotor1;
   private final TalonFXSimState ClimbMotor1SimState;
 
   private final TalonFX ClimbMotor2;
@@ -21,22 +19,13 @@ public class ClimbIOSim implements ClimbIO {
 
     ClimbMotor1.getConfigurator().apply(ClimbConstants.CLIMB_MOTOR_1_CONFIG);
     ClimbMotor2.getConfigurator().apply(ClimbConstants.CLIMB_MOTOR_2_CONFIG);
-
-    
   }
 
   @Override
-  public void updateState(ClimbIOInputs inputs) {
-   
-  }
+  public void updateState(ClimbIOInputs inputs) {}
 
-  public void updateSimulation() {
-    
-  }
+  public void updateSimulation() {}
 
   @Override
-  public void setMotorVoltage(Voltage intakeVoltage, Voltage extenderVoltage) {
-    
-  }
-
+  public void setMotorVoltage(Voltage intakeVoltage, Voltage extenderVoltage) {}
 }
