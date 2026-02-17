@@ -231,7 +231,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .x()
+        .y()
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -239,7 +239,6 @@ public class RobotContainer {
                 }));
 
     // Feeder and Vectoring Bindings
-    
 
     // Intake Roller Bindings
     driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
