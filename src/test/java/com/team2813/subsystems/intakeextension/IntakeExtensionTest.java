@@ -9,15 +9,11 @@ import edu.wpi.first.wpilibj.simulation.SimHooks;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.ClearEnvironmentVariable;
 
 @InitWPILib
+@ClearEnvironmentVariable(key = "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE")
 public class IntakeExtensionTest {
-  @BeforeAll
-  public static void verifyNotInReplayMode() {
-    assertTrue(
-        Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
-  }
-  
   @Test
   public void testIntakeExtension() {
     // create an intake extension subsystem
@@ -41,8 +37,6 @@ public class IntakeExtensionTest {
 
   @Test
   public void testIntakeRetraction() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
     // create an intake extension subsystem
 
     IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
@@ -64,8 +58,6 @@ public class IntakeExtensionTest {
 
   @Test
   public void testIntakeExtensionAtPosition() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
     // create an intake extension subsystem
 
     IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
