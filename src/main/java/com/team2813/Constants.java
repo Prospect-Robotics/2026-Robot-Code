@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  * (log replay from a file).
  */
 public final class Constants {
-  private static Mode getSimMode() {
+  static Mode getSimMode() {
     // The environment variable "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE" is set to "true" when running
     // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
     // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
