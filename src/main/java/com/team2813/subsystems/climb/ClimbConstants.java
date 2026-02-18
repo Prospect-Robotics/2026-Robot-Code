@@ -12,25 +12,26 @@ import edu.wpi.first.wpilibj.Preferences;
 import java.util.function.Supplier;
 
 public class ClimbConstants {
-  public static final double CLIMB_MOTOR_1_GEARING = 9.0; // reduction
+  public static final double LEFT_CLIMB_MOTOR_GEARING = 9.0; // reduction
 
-  public static final TalonFXConfiguration CLIMB_MOTOR_1_CONFIG =
+  public static final TalonFXConfiguration LEFT_CLIMB_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(CLIMB_MOTOR_1_GEARING));
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(LEFT_CLIMB_MOTOR_GEARING));
 
-  public static final double CLIMB_MOTOR_2_GEARING = 9.0; // reduction
+  public static final double RIGHT_CLIMB_MOTOR_GEARING = 9.0; // reduction
 
-  public static final TalonFXConfiguration CLIMB_MOTOR_2_CONFIG =
+  public static final TalonFXConfiguration RIGHT_CLIMB_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(CLIMB_MOTOR_2_GEARING));
+          .withFeedback(
+              new FeedbackConfigs().withSensorToMechanismRatio(RIGHT_CLIMB_MOTOR_GEARING));
 
-  public static Voltage getClimbMotor1Voltage() {
+  public static Voltage getLeftClimbMotorVoltage() {
     return Volts.of(Preferences.getDouble("Climb/CLIMB_MOTOR_1_VOLTAGE", 5));
   }
 
-  public static Voltage getClimbMotor2Voltage() {
+  public static Voltage getRightClimbMotorVoltage() {
     return Volts.of(Preferences.getDouble("Climb/CLIMB_MOTOR_2_VOLTAGE", -5));
   }
 

@@ -8,13 +8,13 @@ import edu.wpi.first.units.measure.Voltage;
 
 public interface ClimbIO {
   class ClimbIOInputs {
-    public Voltage climbMotor1Voltage = Volts.of(0);
-    public AngularVelocity climbMotor1RPS = RotationsPerSecond.of(0);
-    public Current climbMotor1Current = Amps.of(0);
+    public Voltage leftClimbMotorVoltage = Volts.of(0);
+    public AngularVelocity leftClimbMotorRPS = RotationsPerSecond.of(0);
+    public Current leftClimbMotorCurrent = Amps.of(0);
 
-    public Voltage climbMotor2Voltage = Volts.of(0);
-    public AngularVelocity climbMotor2RPS = RotationsPerSecond.of(0);
-    public Current climbMotor2Current = Amps.of(0);
+    public Voltage rightClimbMotorVoltage = Volts.of(0);
+    public AngularVelocity rightClimbMotorRPS = RotationsPerSecond.of(0);
+    public Current rightClimbMotorCurrent = Amps.of(0);
   }
 
   default void updateState(ClimbIOInputs inputs) {}

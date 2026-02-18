@@ -5,20 +5,20 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.units.measure.Voltage;
 
 public class ClimbIOSim implements ClimbIO {
-  private final TalonFX ClimbMotor1;
-  private final TalonFXSimState ClimbMotor1SimState;
+  private final TalonFX leftClimbMotor;
+  private final TalonFXSimState leftClimbMotorSimState;
 
-  private final TalonFX ClimbMotor2;
-  private final TalonFXSimState ClimbMotor2SimState;
+  private final TalonFX rightClimbMotor;
+  private final TalonFXSimState rightClimbMotorSimState;
 
   public ClimbIOSim() {
-    ClimbMotor1 = new TalonFX(0);
-    ClimbMotor2 = new TalonFX(0);
-    ClimbMotor1SimState = ClimbMotor1.getSimState();
-    ClimbMotor2SimState = ClimbMotor2.getSimState();
+    leftClimbMotor = new TalonFX(0);
+    rightClimbMotor = new TalonFX(0);
+    leftClimbMotorSimState = leftClimbMotor.getSimState();
+    rightClimbMotorSimState = rightClimbMotor.getSimState();
 
-    ClimbMotor1.getConfigurator().apply(ClimbConstants.CLIMB_MOTOR_1_CONFIG);
-    ClimbMotor2.getConfigurator().apply(ClimbConstants.CLIMB_MOTOR_2_CONFIG);
+    leftClimbMotor.getConfigurator().apply(ClimbConstants.LEFT_CLIMB_MOTOR_CONFIG);
+    rightClimbMotor.getConfigurator().apply(ClimbConstants.RIGHT_CLIMB_MOTOR_CONFIG);
   }
 
   @Override
