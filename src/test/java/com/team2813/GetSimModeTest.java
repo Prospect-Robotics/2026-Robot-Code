@@ -30,4 +30,15 @@ public class GetSimModeTest {
   public void envSetToCapitalTrueTest() {
     assertThat(Constants.getSimMode()).isEqualTo(Constants.Mode.REPLAY);
   }
+
+  @Test
+  @SetEnvironmentVariable(
+      key = "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE",
+      value =
+          "V2h5IGRpZCB5b3UgZ28gdGhyb3VnaCBhbGwgb2YgdGhlIGVmZm9ydCB0byBkZWNv\n"
+              + "ZGUgdGhpcz8/Pwo=\n"
+              + "=71AM\n")
+  public void randomEnvTest() {
+    assertThat(Constants.getSimMode()).isEqualTo(Constants.Mode.SIM);
+  }
 }
