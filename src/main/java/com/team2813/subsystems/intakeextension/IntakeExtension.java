@@ -4,6 +4,7 @@ import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.t
 import static edu.wpi.first.units.Units.*;
 
 import com.team2813.subsystems.SimulationVisualizer;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -66,5 +67,9 @@ public class IntakeExtension extends SubsystemBase {
 
   public void stopMotor() {
     io.setExtenderVoltage(Volts.of(0));
+  }
+
+  public Angle getSetpoint() {
+    return replayedInputs.extenderMotorSetpoint;
   }
 }
