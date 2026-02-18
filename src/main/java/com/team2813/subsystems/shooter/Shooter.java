@@ -27,8 +27,7 @@ public class Shooter extends SubsystemBase {
     io.setMotorVoltage(Volts.of(0), Volts.of(0));
   }
 
-  // Waits before starting the kicker to allow the shooter flywheel to get up to speed.][\
-
+  // Waits before starting the kicker to allow the shooter flywheel to get up to speed.
   public Command intakeCommand() {
     return new SequentialCommandGroup(
         new InstantCommand(
