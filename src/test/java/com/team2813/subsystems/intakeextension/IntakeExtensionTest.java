@@ -3,11 +3,8 @@ package com.team2813.subsystems.intakeextension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.ClearEnvironmentVariable;
 
