@@ -34,8 +34,7 @@ public final class Constants {
     }
   }
 
-  public static final Mode simMode = getSimMode();
-  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : getSimMode();
 
   public static double SIM_TIME_PERIOD =
       0.02; // Update physics simulations every 20ms (like the actual bot).
