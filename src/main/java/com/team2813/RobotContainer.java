@@ -267,8 +267,8 @@ public class RobotContainer {
     driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
 
     // Shooter Bindings
-    driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
-    driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
+    driveController.leftTrigger().whileTrue(shooter.intakeCommand());
+    driveController.rightTrigger().whileTrue(shooter.outakeCommand());
 
     // Intake Roller Bindings
     operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
@@ -308,7 +308,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
-  
+
   private Rotation2d getBotToHub() {
     Pose2d hub;
     if (onRed()) {
@@ -318,7 +318,7 @@ public class RobotContainer {
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
-  
+
   /**
    * Resets the simulation.
    *

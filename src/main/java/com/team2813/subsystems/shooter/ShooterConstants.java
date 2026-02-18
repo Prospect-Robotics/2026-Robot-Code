@@ -28,13 +28,14 @@ public class ShooterConstants {
 
     // Kicker motors.
     Preferences.initDouble(KICKER_INTAKE_PREFERENCE_NT, 3);
-    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, 3);
+    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, -3);
   }
 
   // Reminder: this is the left shooter motor when robot is viewed from behind.
   public static final TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 
   // Right shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
