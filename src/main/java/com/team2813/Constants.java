@@ -27,7 +27,7 @@ public final class Constants {
     // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
     // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
     // not going to happen due to the long, specific name, and if it does, that is their problem :3.
-    if ("true".equals(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
+    if (Boolean.parseBoolean(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
       return Mode.REPLAY;
     } else {
       return Mode.SIM;
