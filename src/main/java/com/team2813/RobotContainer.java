@@ -308,7 +308,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
-  
+
   private Rotation2d getBotToHub() {
     Pose2d hub;
     if (onRed()) {
@@ -318,7 +318,7 @@ public class RobotContainer {
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
-  
+
   /**
    * Resets the simulation.
    *

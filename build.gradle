@@ -68,6 +68,7 @@ def includeDesktopSupport = true
 task(replayWatch, type: JavaExec) {
     mainClass = "org.littletonrobotics.junction.ReplayWatch"
     classpath = sourceSets.main.runtimeClasspath
+    environment("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE", "true")
 }
 
 repositories {
