@@ -7,6 +7,7 @@ import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 @InitWPILib
