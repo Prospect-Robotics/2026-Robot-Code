@@ -24,6 +24,7 @@ public final class Main {
    */
   public static void main(String... args) {
     logEnv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE");
+    System.out.printf("Current Mode: %s%n", Constants.currentMode);
     RobotBase.startRobot(Robot::new);
   }
 
