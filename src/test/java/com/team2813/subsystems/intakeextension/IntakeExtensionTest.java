@@ -11,10 +11,14 @@ import org.junit.jupiter.api.Test;
 
 @InitWPILib
 public class IntakeExtensionTest {
+  @BeforeAll
+  public static void verifyNotInReplayMode() {
+    assertTrue(
+        Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
+  }
+  
   @Test
   public void testIntakeExtension() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
     // create an intake extension subsystem
 
     IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
