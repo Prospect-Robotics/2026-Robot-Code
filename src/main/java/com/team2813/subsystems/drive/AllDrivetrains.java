@@ -1,11 +1,10 @@
 package com.team2813.subsystems.drive;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import java.util.Map;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 public class AllDrivetrains {
   private static final String SIMULATOR_SERIAL_NUM = "";
@@ -49,8 +48,7 @@ public class AllDrivetrains {
 
   public static AllTunerConstants forRoboRIO() {
     String sNumber = RobotController.getSerialNumber();
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("Metadata");
-    table.getStringTopic("RoboRIO Serial Number").publish().set(sNumber);
+    Logger.recordMetadata("SerialNumber", sNumber);
 
     var tunerConstantsSupplier = SERIAL_NUMBER_TO_TUNER_CONSTANTS.get(sNumber);
     if (tunerConstantsSupplier == null) {
@@ -59,7 +57,7 @@ public class AllDrivetrains {
       return defaultDrivetrain();
     }
     AllTunerConstants tunerConstants = tunerConstantsSupplier.get();
-    table.getStringTopic("Drivetrain").publish().set(tunerConstants.drivetrainName());
+    Logger.recordMetadata("Drivetrain", tunerConstants.drivetrainName());
     return tunerConstants;
   }
 
