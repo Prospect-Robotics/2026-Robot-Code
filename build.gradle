@@ -98,7 +98,6 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    // TODO: When JUnit 6.1 releases, consider using JUnit 6 instead of junit-pioneer
     testImplementation 'org.junit-pioneer:junit-pioneer:2.3.0'
     testImplementation 'com.google.truth:truth:1.4.4'
     testImplementation libs.lib2813.testing
