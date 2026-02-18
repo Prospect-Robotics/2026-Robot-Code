@@ -111,6 +111,9 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    // see https://github.com/junit-pioneer/junit-pioneer/issues/509
+    jvmArgs('--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED')
 }
 
 // Simulation configuration (e.g. environment variables).
