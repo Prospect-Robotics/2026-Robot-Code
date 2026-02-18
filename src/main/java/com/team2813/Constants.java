@@ -69,6 +69,9 @@ public final class Constants {
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
+  // climb motors
+  public static final int LEFTCLIMB_MOTOR_ID = 0;
+  public static final int RIGHTCLIMB_MOTOR_ID = 0;
   /**
    * Returns true if the robot is on the red alliance.
    *

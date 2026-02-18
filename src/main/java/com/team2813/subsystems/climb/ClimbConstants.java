@@ -1,55 +1,35 @@
 package com.team2813.subsystems.climb;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Pounds;
 
-import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.InvertedValue;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.Preferences;
-import java.util.function.Supplier;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
 
 public class ClimbConstants {
-  public static final double CLIMB_MOTOR_1_GEARING = 9.0; // reduction
+  // Gotten from design and fab.
+  public static final double LEFTMOTOR_TO_CLIMB_GEARING = 9;
 
-  public static final TalonFXConfiguration CLIMB_MOTOR_1_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(CLIMB_MOTOR_1_GEARING));
+  // NOTE: Takes arm weight into account.
+  public static final Mass LEFTCLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
 
-  public static final double CLIMB_MOTOR_2_GEARING = 9.0; // reduction
+  // Correct calculation for Inches of travel per 1 Motor Rotation:
+  // (2 * pi * Spool Radius) / Gearing
+  // NOTE to daniel: Will need to recalculate this with the new CLIMB_SPOOL_RADIUS
+  public static final double LEFTCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0.681933; // 0.272049
 
-  public static final TalonFXConfiguration CLIMB_MOTOR_2_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(CLIMB_MOTOR_2_GEARING));
+  // Guess what, I asked design again.
+  public static final Distance LEFTCLIMB_SPOOL_RADIUS = Inches.of(0.8755);
 
-  public static Voltage getClimbMotor1Voltage() {
-    return Volts.of(Preferences.getDouble("Climb/CLIMB_MOTOR_1_VOLTAGE", 5));
-  }
+  public static final Distance LEFTCLIMB_MIN_HEIGHT = Inches.of(0.0);
+  public static final Distance LEFTCLIMB_MAX_HEIGHT =
+      Inches.of(28.0); // This is the max height of the first stage, which we simulate.
 
-  public static Voltage getClimbMotor2Voltage() {
-    return Volts.of(Preferences.getDouble("Climb/CLIMB_MOTOR_2_VOLTAGE", -5));
-  }
-
-  public enum Position implements Supplier<Angle> {
-    BOTTOM_OUT_HOOK(0),
-    BOTTOM_IN_HOOK(0),
-    TOP_IN_HOOK(0),
-    TOP_OUT_HOOK(0),
-    AUTO_IN_HOOK(0);
-
-    private final Angle position;
-
-    Position(double position) {
-      this.position = Rotations.of(position);
-    }
-
-    @Override
-    public Angle get() {
-      return position;
-    }
-  }
+  public static final double LEFTCLIMB_kG = 0.0; // 0.29
+  public static final double LEFTCLIMB_kS = 0.0; // 0.11
+  public static final double LEFTCLIMB_kV = 0.0; // 0.1
+  public static final double LEFTCLIMB_kA = 0.0;
+  public static final double LEFTCLIMB_kP = 0.1;
+  public static final double LEFTCLIMB_kI = 0.0;
+  public static final double LEFTCLIMB_kD = 0.0;
 }

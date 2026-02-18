@@ -1,31 +1,120 @@
 package com.team2813.subsystems.climb;
 
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import org.littletonrobotics.junction.Logger;
 
 public class ClimbIOSim implements ClimbIO {
-  private final TalonFX ClimbMotor1;
-  private final TalonFXSimState ClimbMotor1SimState;
 
-  private final TalonFX ClimbMotor2;
-  private final TalonFXSimState ClimbMotor2SimState;
+  // Physics sim for the elevator.
+  private final ElevatorSim climbSim =
+      new ElevatorSim(
+          DCMotor.getKrakenX60(1),
+          ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING,
+          ClimbConstants.LEFTCLIMB_CARRIAGE_WEIGHT.in(Kilograms),
+          ClimbConstants.LEFTCLIMB_SPOOL_RADIUS.in(Meter),
+          ClimbConstants.LEFTCLIMB_MIN_HEIGHT.in(Meter),
+          ClimbConstants.LEFTCLIMB_MAX_HEIGHT.in(Meter),
+          true,
+          ClimbConstants.LEFTCLIMB_MIN_HEIGHT.in(Meter));
 
-  public ClimbIOSim() {
-    ClimbMotor1 = new TalonFX(0);
-    ClimbMotor2 = new TalonFX(0);
-    ClimbMotor1SimState = ClimbMotor1.getSimState();
-    ClimbMotor2SimState = ClimbMotor2.getSimState();
+  private TalonFX motor;
+  private TalonFXSimState motorSim;
 
-    ClimbMotor1.getConfigurator().apply(ClimbConstants.CLIMB_MOTOR_1_CONFIG);
-    ClimbMotor2.getConfigurator().apply(ClimbConstants.CLIMB_MOTOR_2_CONFIG);
+  // Used for actually moving the motor to a given position with PID applied to a voltage input.
+  private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
+
+  public ClimbIOSim() {}
+
+  @Override
+  public void setMotor(TalonFX motor) {
+    this.motorSim = motor.getSimState();
+    this.motor = motor;
   }
 
   @Override
-  public void updateState(ClimbIOInputs inputs) {}
+  public void updateState(ClimbIOInputs inputs) {
+    updateSim();
 
-  public void updateSimulation() {}
+    inputs.leftCarriagePositionInches = Meters.of(climbSim.getPositionMeters()).in(Inches);
+    inputs.leftMotorCurrent = motor.getStatorCurrent().getValueAsDouble();
+    inputs.leftMotorRotations = motor.getPosition().getValueAsDouble();
+    inputs.leftMotorVoltage = motor.getMotorVoltage().getValueAsDouble();
+    inputs.leftMotorVelocityRotsPerSecond = motor.getVelocity().getValueAsDouble();
+  }
+
+  private void updateSim() {
+    motorSim.setSupplyVoltage(Volts.of(12));
+    double motorInverted = -1.0; // -1 for inverted, 1 for forward motor.
+
+    // Apply the voltage to the sim elevator that we apply to the sim motor.
+    // Negating the sim motor value since it is set to use negative value when pushing
+    // the cartrage UP.
+    climbSim.setInputVoltage(motorInverted * motorSim.getMotorVoltage());
+    climbSim.update(0.02); // Same update cycle as an actual robot, 20 ms.
+
+    // Logs to "Real Outputs" NT
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", motorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/climbSim/position (meters)", climbSim.getPositionMeters());
+    Logger.recordOutput("Simulated Climb/climbSim/hitsUpperLimit", climbSim.hasHitUpperLimit());
+    Logger.recordOutput("Simulated Climb/climbSim/hitsLowerLimit", climbSim.hasHitLowerLimit());
+
+    motorSim.setRawRotorPosition(motorInverted * getMotorRotations(climbSim.getPositionMeters()));
+
+    // angular velocity = linear velocity / radius, taken also from 5414
+    motorSim.setRotorVelocity(
+        motorInverted
+            * ((climbSim.getVelocityMetersPerSecond()
+                    / ClimbConstants.LEFTCLIMB_SPOOL_RADIUS.in(Meters))
+                // radians/sec to rotations/sec
+                / (2.0 * Math.PI))
+            * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING);
+  }
 
   @Override
-  public void setMotorVoltage(Voltage intakeVoltage, Voltage extenderVoltage) {}
+  public void setMotorSetpoint(Angle setpoint) {
+    motor.setControl(positionControl.withPosition(setpoint));
+  }
+
+  @Override
+  public void setMotorVoltage(Voltage voltage) {
+    motor.setVoltage(voltage.in(Volts));
+  }
+
+  @Override
+  public Angle getMotorPosition() {
+    return motor.getPosition().getValue();
+  }
+
+  /**
+   * @return The height of the first stage of the elevator.
+   */
+  @Override
+  public Distance getCarriagePosition() {
+    return Meters.of(climbSim.getPositionMeters());
+  }
+
+  /**
+   * Source: 5414 Pearadox Converts the elevators position (meters) to motor rotations based on the
+   * elevator spool radius and motor gearing.
+   *
+   * @param elevatorPosition
+   * @return
+   */
+  private static double getMotorRotations(double elevatorPosition) {
+    // angular displacement in radians = linear displacement / radius
+    return Units.radiansToRotations(
+            elevatorPosition / ClimbConstants.LEFTCLIMB_SPOOL_RADIUS.in(Meters))
+        // multiply by gear ratio
+        * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING;
+  }
 }
