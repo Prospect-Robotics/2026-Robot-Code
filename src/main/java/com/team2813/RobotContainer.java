@@ -223,6 +223,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption("Shooter SysID Routine", shooter.sysIDRoutine());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -308,7 +309,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
-  
+
   private Rotation2d getBotToHub() {
     Pose2d hub;
     if (onRed()) {
@@ -318,7 +319,7 @@ public class RobotContainer {
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
-  
+
   /**
    * Resets the simulation.
    *
