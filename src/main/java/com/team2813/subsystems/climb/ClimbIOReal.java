@@ -61,7 +61,8 @@ public class ClimbIOReal implements ClimbIO {
 
   private static Distance motorRotationToCarriagePosition(Angle motorPosition) {
     return Inches.of(
-            motorPosition.in(Rotations) * ClimbConstants.LEFTCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
+            motorPosition.in(Rotations)
+                * ClimbConstants.INNERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
         .times(2);
   }
 }

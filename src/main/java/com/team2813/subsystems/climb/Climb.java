@@ -106,7 +106,7 @@ public class Climb extends SubsystemBase {
       // NOTE: Divide by 2 because the motor controls the first stage only, not the second stage
       return Rotations.of(
           (getPosition().in(Inches) / 2)
-              / ClimbConstants.LEFTCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
+              / ClimbConstants.INNERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
     }
   }
 }

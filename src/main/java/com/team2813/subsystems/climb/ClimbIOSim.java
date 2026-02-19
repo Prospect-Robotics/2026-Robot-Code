@@ -16,16 +16,27 @@ import org.littletonrobotics.junction.Logger;
 public class ClimbIOSim implements ClimbIO {
 
   // Physics sim for the elevator.
-  private final ElevatorSim climbSim =
+  private final ElevatorSim innerClimbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
           ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING,
-          ClimbConstants.LEFTCLIMB_CARRIAGE_WEIGHT.in(Kilograms),
-          ClimbConstants.LEFTCLIMB_SPOOL_RADIUS.in(Meter),
-          ClimbConstants.LEFTCLIMB_MIN_HEIGHT.in(Meter),
-          ClimbConstants.LEFTCLIMB_MAX_HEIGHT.in(Meter),
+          ClimbConstants.INNERCLIMB_CARRIAGE_WEIGHT.in(Kilograms),
+          ClimbConstants.INNERCLIMB_SPOOL_RADIUS.in(Meter),
+          ClimbConstants.INNERCLIMB_MIN_HEIGHT.in(Meter),
+          ClimbConstants.INNERCLIMB_MAX_HEIGHT.in(Meter),
           true,
-          ClimbConstants.LEFTCLIMB_MIN_HEIGHT.in(Meter));
+          ClimbConstants.INNERCLIMB_MIN_HEIGHT.in(Meter));
+
+  private final ElevatorSim outerClimbSim =
+      new ElevatorSim(
+          DCMotor.getKrakenX60(1),
+          ClimbConstants.RIGHTMOTOR_TO_CLIMB_GEARING,
+          ClimbConstants.OUTERCLIMB_CARRIAGE_WEIGHT.in(Kilograms),
+          ClimbConstants.OUTERCLIMB_SPOOL_RADIUS.in(Meter),
+          ClimbConstants.OUTERCLIMB_MIN_HEIGHT.in(Meter),
+          ClimbConstants.OUTERCLIMB_MAX_HEIGHT.in(Meter),
+          true,
+          ClimbConstants.OUTERCLIMB_MIN_HEIGHT.in(Meter));
 
   private TalonFX motor;
   private TalonFXSimState motorSim;
@@ -45,11 +56,17 @@ public class ClimbIOSim implements ClimbIO {
   public void updateState(ClimbIOInputs inputs) {
     updateSim();
 
-    inputs.leftCarriagePositionInches = Meters.of(climbSim.getPositionMeters()).in(Inches);
+    inputs.leftCarriagePositionInches = Meters.of(innerClimbSim.getPositionMeters()).in(Inches);
     inputs.leftMotorCurrent = motor.getStatorCurrent().getValueAsDouble();
     inputs.leftMotorRotations = motor.getPosition().getValueAsDouble();
     inputs.leftMotorVoltage = motor.getMotorVoltage().getValueAsDouble();
     inputs.leftMotorVelocityRotsPerSecond = motor.getVelocity().getValueAsDouble();
+
+    inputs.rightCarriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
+    inputs.rightMotorCurrent = motor.getStatorCurrent().getValueAsDouble();
+    inputs.rightMotorRotations = motor.getPosition().getValueAsDouble();
+    inputs.rightMotorVoltage = motor.getMotorVoltage().getValueAsDouble();
+    inputs.rightMotorVelocityRotsPerSecond = motor.getVelocity().getValueAsDouble();
   }
 
   private void updateSim() {
@@ -59,22 +76,33 @@ public class ClimbIOSim implements ClimbIO {
     // Apply the voltage to the sim elevator that we apply to the sim motor.
     // Negating the sim motor value since it is set to use negative value when pushing
     // the cartrage UP.
-    climbSim.setInputVoltage(motorInverted * motorSim.getMotorVoltage());
-    climbSim.update(0.02); // Same update cycle as an actual robot, 20 ms.
+    innerClimbSim.setInputVoltage(motorInverted * motorSim.getMotorVoltage());
+    innerClimbSim.update(0.02); // Same update cycle as an actual robot, 20 ms.
 
     // Logs to "Real Outputs" NT
     Logger.recordOutput("Simulated Climb/motorSim/Voltage", motorSim.getMotorVoltage());
-    Logger.recordOutput("Simulated Climb/climbSim/position (meters)", climbSim.getPositionMeters());
-    Logger.recordOutput("Simulated Climb/climbSim/hitsUpperLimit", climbSim.hasHitUpperLimit());
-    Logger.recordOutput("Simulated Climb/climbSim/hitsLowerLimit", climbSim.hasHitLowerLimit());
+    Logger.recordOutput(
+        "Simulated Climb/climbSim/position (meters)", innerClimbSim.getPositionMeters());
+    Logger.recordOutput(
+        "Simulated Climb/climbSim/hitsUpperLimit", innerClimbSim.hasHitUpperLimit());
+    Logger.recordOutput(
+        "Simulated Climb/climbSim/hitsLowerLimit", innerClimbSim.hasHitLowerLimit());
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", motorSim.getMotorVoltage());
+    Logger.recordOutput(
+        "Simulated Climb/climbSim/position (meters)", outerClimbSim.getPositionMeters());
+    Logger.recordOutput(
+        "Simulated Climb/climbSim/hitsUpperLimit", outerClimbSim.hasHitUpperLimit());
+    Logger.recordOutput(
+        "Simulated Climb/climbSim/hitsLowerLimit", outerClimbSim.hasHitLowerLimit());
 
-    motorSim.setRawRotorPosition(motorInverted * getMotorRotations(climbSim.getPositionMeters()));
+    motorSim.setRawRotorPosition(
+        motorInverted * getMotorRotations(innerClimbSim.getPositionMeters()));
 
     // angular velocity = linear velocity / radius, taken also from 5414
     motorSim.setRotorVelocity(
         motorInverted
-            * ((climbSim.getVelocityMetersPerSecond()
-                    / ClimbConstants.LEFTCLIMB_SPOOL_RADIUS.in(Meters))
+            * ((innerClimbSim.getVelocityMetersPerSecond()
+                    / ClimbConstants.INNERCLIMB_SPOOL_RADIUS.in(Meters))
                 // radians/sec to rotations/sec
                 / (2.0 * Math.PI))
             * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING);
@@ -100,7 +128,7 @@ public class ClimbIOSim implements ClimbIO {
    */
   @Override
   public Distance getCarriagePosition() {
-    return Meters.of(climbSim.getPositionMeters());
+    return Meters.of(innerClimbSim.getPositionMeters());
   }
 
   /**
@@ -113,7 +141,7 @@ public class ClimbIOSim implements ClimbIO {
   private static double getMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
     return Units.radiansToRotations(
-            elevatorPosition / ClimbConstants.LEFTCLIMB_SPOOL_RADIUS.in(Meters))
+            elevatorPosition / ClimbConstants.INNERCLIMB_SPOOL_RADIUS.in(Meters))
         // multiply by gear ratio
         * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING;
   }
