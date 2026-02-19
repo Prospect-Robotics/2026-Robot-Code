@@ -4,7 +4,11 @@ import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
@@ -52,6 +56,26 @@ public class Shooter extends SubsystemBase {
                 ShooterConstants.getShooterOuttakeVoltage(),
                 ShooterConstants.getKickerOuttakeVoltage()),
         this::stop);
+  }
+
+  // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
+  public Command sysIDRoutine() {
+    SysIdRoutine sysIdRoutine =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null,
+                null,
+                null,
+                (state) -> Logger.recordOutput("Shooter/SysIDTestState", state.toString())),
+            new SysIdRoutine.Mechanism(io::setShooterMotorVoltage, null, this));
+    // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than io::setShooterMotorVoltage.
+
+    return new SequentialCommandGroup(
+        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward),
+        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
+        sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
+        sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
   // Used for auto calculated motor speed.
