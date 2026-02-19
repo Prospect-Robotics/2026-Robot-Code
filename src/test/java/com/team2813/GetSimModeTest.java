@@ -51,10 +51,7 @@ public class GetSimModeTest {
   @Test
   @SetEnvironmentVariable(
       key = "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE",
-      value =
-          "V2h5IGRpZCB5b3UgZ28gdGhyb3VnaCBhbGwgb2YgdGhlIGVmZm9ydCB0byBkZWNv\n"
-              + "ZGUgdGhpcz8/Pwo=\n"
-              + "=71AM\n")
+      value = "random_invalid_env_value")
   @Order(2)
   public void randomEnv() {
     assertThat(Constants.getSimMode()).isEqualTo(Constants.Mode.SIM);
