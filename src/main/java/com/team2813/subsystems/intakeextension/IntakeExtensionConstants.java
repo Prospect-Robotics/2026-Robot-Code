@@ -10,7 +10,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
-import org.littletonrobotics.junction.Logger;
 
 public class IntakeExtensionConstants {
 
@@ -51,17 +50,10 @@ public class IntakeExtensionConstants {
     public Distance getPosition() {
       return position;
     }
-  }
 
-  // TODO: Migrate these conversion methods to a more suitable location than a Constants Class, such as the Extender Positions enum or IntakeExtension.java
-
-  public static Angle toMotorSetpoint(ExtenderPositions position) {
-    Logger.recordOutput("IntakeExtension/Setpoint", position);
-    return Rotations.of(position.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-  }
-
-  public static Distance toIntakeExtensionPosition(Angle motorPosition) {
-    return Meters.of(motorPosition.in(Rotations) / DISTANCE_METERS_TO_MOTOR_ROTATIONS);
+    public Angle toMotorSetpoint() {
+      return Rotations.of(position.in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
+    }
   }
 
   // Controls how fast the extension moves during manual control

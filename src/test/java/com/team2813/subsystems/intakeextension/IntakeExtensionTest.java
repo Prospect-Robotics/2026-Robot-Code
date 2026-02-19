@@ -17,7 +17,7 @@ public class IntakeExtensionTest {
     assertTrue(
         Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
   }
-  
+
   @Test
   public void testIntakeExtension() {
     // create an intake extension subsystem
@@ -29,13 +29,12 @@ public class IntakeExtensionTest {
 
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
+      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
 
     assertEquals(
         intakeExtension.getSetpoint().magnitude(),
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT)
-            .magnitude(),
+        IntakeExtensionConstants.ExtenderPositions.OUT.toMotorSetpoint().magnitude(),
         0.01);
   }
 
@@ -52,13 +51,12 @@ public class IntakeExtensionTest {
 
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
+      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
 
     assertEquals(
         intakeExtension.getSetpoint().magnitude(),
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN)
-            .magnitude(),
+        IntakeExtensionConstants.ExtenderPositions.IN.toMotorSetpoint().magnitude(),
         0.01);
   }
 
@@ -76,7 +74,7 @@ public class IntakeExtensionTest {
     // run periodic at the equivalent of 50 cycles (1 second) to let the intake reach the setpoint
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
+      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
 
     assertTrue(intakeExtension.isExtenderAtPosition());

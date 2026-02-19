@@ -48,4 +48,8 @@ public class IntakeRoller extends SubsystemBase {
   public Command outtakeCommand() {
     return new StartEndCommand(this::outtake, this::stop, this);
   }
+
+  public double getIntakeRollerVoltage() {
+    return replayedInputs.intakeMotorVoltage.in(Volts);
+  }
 }

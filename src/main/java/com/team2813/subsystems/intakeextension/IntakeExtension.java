@@ -1,10 +1,11 @@
 package com.team2813.subsystems.intakeextension;
 
-import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.toIntakeExtensionPosition;
+import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS;
 import static edu.wpi.first.units.Units.*;
 
 import com.team2813.subsystems.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
@@ -52,13 +53,11 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   public void extend() {
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
+    io.setExtensionSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT.toMotorSetpoint());
   }
 
   public void retract() {
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+    io.setExtensionSetpoint(IntakeExtensionConstants.ExtenderPositions.IN.toMotorSetpoint());
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {
@@ -71,5 +70,9 @@ public class IntakeExtension extends SubsystemBase {
 
   public Angle getSetpoint() {
     return replayedInputs.extenderMotorSetpoint;
+  }
+
+  public static Distance toIntakeExtensionPosition(Angle motorPosition) {
+    return Meters.of(motorPosition.in(Rotations) / DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
 }

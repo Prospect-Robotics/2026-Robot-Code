@@ -271,8 +271,9 @@ public class RobotContainer {
     driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
     // Intake Roller Bindings
-    operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
-    operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+    // TODO: revert back to left and right bumper on operator
+    operatorController.x().whileTrue(intakeRoller.intakeCommand());
+    operatorController.y().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(

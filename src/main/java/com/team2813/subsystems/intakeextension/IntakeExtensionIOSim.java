@@ -60,7 +60,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
     // With the new motor voltage, step forward the simulation by 20ms. This will update the
     // position and velocity of the simulated mechanism.
-    extenderSim.update(0.02);
+    extenderSim.update(Constants.SIM_TIME_PERIOD);
 
     // No the simulated physical movement of the mechanism is fed back into the motor simulation so
     // that its simulated PID controler can give us new simulated motor voltage next time around.
