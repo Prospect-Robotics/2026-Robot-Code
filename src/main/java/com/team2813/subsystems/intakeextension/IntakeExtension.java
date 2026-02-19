@@ -3,12 +3,8 @@ package com.team2813.subsystems.intakeextension;
 import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.toIntakeExtensionPosition;
 import static edu.wpi.first.units.Units.*;
 
-<<<<<<< HEAD
 import com.team2813.util.SimulationVisualizer;
-=======
-import com.team2813.subsystems.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
->>>>>>> origin/HEAD
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
