@@ -2,7 +2,6 @@ package com.team2813.subsystems.intakeroller;
 
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
@@ -52,7 +51,7 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
 
   @Override
   public void setIntakeMotorVoltage(Voltage intakeMotorVoltage) {
-    intakeMotor.setControl(new VoltageOut(0).withOutput(intakeMotorVoltage.in(Volts)));
+    intakeMotor.setVoltage(intakeMotorVoltage.in(Volts));
     intakeFlywheelSim.setInputVoltage(intakeMotor.getMotorVoltage().getValue().in(Volts));
   }
 }
