@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +18,21 @@ public class IntakeExtensionTest {
     assertTrue(
         Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
   }
-  
+
+  private void runPeriodic(IntakeExtension intakeExtension, double seconds) {
+    SimHooks.pauseTiming();
+    try {
+      // calculate the minimum number of cycles to run for at least `seconds` seconds
+      int nCycles = (int) Math.ceil(seconds / TimedRobot.kDefaultPeriod);
+      for (int i = 0; i < nCycles; i++) {
+        intakeExtension.periodic();
+        SimHooks.stepTiming(TimedRobot.kDefaultPeriod);
+      }
+    } finally {
+      SimHooks.resumeTiming();
+    }
+  }
+
   @Test
   public void testIntakeExtension() {
     // create an intake extension subsystem
@@ -27,10 +42,7 @@ public class IntakeExtensionTest {
     // extend the intake
     intakeExtension.extend();
 
-    for (int i = 0; i < 50; i++) {
-      intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
-    }
+    runPeriodic(intakeExtension, 1);
 
     assertEquals(
         intakeExtension.getSetpoint().magnitude(),
@@ -50,10 +62,7 @@ public class IntakeExtensionTest {
     // retract the intake
     intakeExtension.retract();
 
-    for (int i = 0; i < 50; i++) {
-      intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
-    }
+    runPeriodic(intakeExtension, 1);
 
     assertEquals(
         intakeExtension.getSetpoint().magnitude(),
@@ -73,11 +82,8 @@ public class IntakeExtensionTest {
     // extend the intake
     intakeExtension.extend();
 
-    // run periodic at the equivalent of 50 cycles (1 second) to let the intake reach the setpoint
-    for (int i = 0; i < 50; i++) {
-      intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
-    }
+    // run periodic for 1 second to let the intake reach the setpoint
+    runPeriodic(intakeExtension, 1);
 
     assertTrue(intakeExtension.isExtenderAtPosition());
   }
