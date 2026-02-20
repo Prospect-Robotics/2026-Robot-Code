@@ -7,7 +7,7 @@
 
 package com.team2813;
 
-import com.team2813.subsystems.SimulationVisualizer;
+import com.team2813.util.SimulationVisualizer;
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import edu.wpi.first.wpilibj2.command.Command;
