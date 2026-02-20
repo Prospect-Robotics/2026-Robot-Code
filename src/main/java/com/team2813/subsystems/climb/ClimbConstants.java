@@ -26,13 +26,17 @@ public class ClimbConstants {
 
   public static final Mass INNER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
   public static final Mass OUTER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
+
+  // NOTE: These may be the same value, because it seems both motors have the same gearbox.
   public static final double INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
   public static final double OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
+
   public static final Distance INNER_CLIMB_SPOOL_RADIUS = Inches.of(0);
   public static final Distance OUTER_CLIMB_SPOOL_RADIUS = Inches.of(0);
 
   public static final Distance INNER_CLIMB_MIN_HEIGHT = Inches.of(0);
   public static final Distance INNER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
+
   public static final Distance OUTER_CLIMB_MIN_HEIGHT = Inches.of(0);
   public static final Distance OUTER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
 }
