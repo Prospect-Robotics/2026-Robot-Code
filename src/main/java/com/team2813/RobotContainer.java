@@ -266,7 +266,7 @@ public class RobotContainer {
     // Feeder and Vectoring Bindings
 
     // Intake Roller Bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    operatorController.rightBumper().whileTrue(intakeRoller.intakeCommand());
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings

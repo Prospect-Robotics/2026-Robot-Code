@@ -39,8 +39,8 @@ public class IntakeRollerTest {
 
     // verify that the motor output voltage is set to the intake voltage
     assertTrue(
-        intakeRoller.getIntakeRollerVoltage() < 0,
-        "Intake roller voltage should be negative for intake");
+        intakeRoller.getIntakeRollerVoltage() > 0,
+        "Intake roller voltage should be positive for intake");
   }
 
   @Test
@@ -62,8 +62,8 @@ public class IntakeRollerTest {
 
     // verify that the motor output voltage is set to the outtake voltage
     assertTrue(
-        intakeRoller.getIntakeRollerVoltage() > 0,
-        "Intake roller voltage should be positive for outtake");
+        intakeRoller.getIntakeRollerVoltage() < 0,
+        "Intake roller voltage should be negative for outtake");
   }
 
   @Test

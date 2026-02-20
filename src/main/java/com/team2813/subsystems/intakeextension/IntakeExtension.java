@@ -54,14 +54,12 @@ public class IntakeExtension extends SubsystemBase {
 
   public void extend() {
     extenderAtPosition = false;
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
+    io.setExtensionSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT.toMotorSetpoint());
   }
 
   public void retract() {
     extenderAtPosition = false;
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+    io.setExtensionSetpoint(IntakeExtensionConstants.ExtenderPositions.IN.toMotorSetpoint());
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {
