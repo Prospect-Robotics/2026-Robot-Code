@@ -15,7 +15,8 @@ public class IntakeRollerConstants {
 
   public static final TalonFXConfiguration INTAKE_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withFeedback(
               new FeedbackConfigs().withSensorToMechanismRatio(INTAKE_MOTOR_TO_INTAKE_GEARING));
 
@@ -25,15 +26,15 @@ public class IntakeRollerConstants {
   public static final double INTAKE_SIM_MOI = 0.00011331; // In kg*m^2
 
   static {
-    Preferences.initFloat(INTAKE_PREFERENCE_NT, 5);
-    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -5);
+    Preferences.initFloat(INTAKE_PREFERENCE_NT, 8);
+    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -8);
   }
 
   public static Voltage getIntakeVoltage() {
-    return Volts.of(Preferences.getFloat(INTAKE_PREFERENCE_NT, 5));
+    return Volts.of(Preferences.getFloat(INTAKE_PREFERENCE_NT, 8));
   }
 
   public static Voltage getOuttakeVoltage() {
-    return Volts.of(Preferences.getFloat(OUTTAKE_PREFERENCE_NT, -5));
+    return Volts.of(Preferences.getFloat(OUTTAKE_PREFERENCE_NT, -8));
   }
 }

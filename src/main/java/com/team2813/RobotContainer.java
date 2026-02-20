@@ -256,7 +256,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .x()
+        .y()
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -272,8 +272,8 @@ public class RobotContainer {
     driveController.rightTrigger().whileTrue(shooter.outakeCommand());
 
     // Intake Roller Bindings
-    operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
-    operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
