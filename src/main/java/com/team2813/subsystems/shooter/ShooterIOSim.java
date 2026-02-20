@@ -1,28 +1,33 @@
 package com.team2813.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class ShooterIOSim implements ShooterIO {
-  private TalonFX mainShooterMotor;
-  private TalonFXSimState mainShooterSimState;
+  private final TalonFX mainShooterMotor;
+  private final TalonFXSimState mainShooterSimState;
 
-  private TalonFX followerShooterMotor;
-  private TalonFXSimState followerShooterSimState;
+  private final TalonFX followerShooterMotor;
+  private final TalonFXSimState followerShooterSimState;
 
-  private FlywheelSim shooterSim;
+  private final VelocityVoltage shooterVelocityControl;
 
-  private TalonFX kickerMotor;
-  private TalonFXSimState kickerSimState;
+  private final FlywheelSim shooterSim;
 
-  private FlywheelSim kickerSim;
+  private final TalonFX kickerMotor;
+  private final TalonFXSimState kickerSimState;
+
+  private final FlywheelSim kickerSim;
 
   public ShooterIOSim() {
     mainShooterMotor = new TalonFX(Constants.MAIN_SHOOTER_MOTOR_ID);
@@ -32,6 +37,8 @@ public class ShooterIOSim implements ShooterIO {
     followerShooterMotor = new TalonFX(Constants.FOLLOWER_SHOOTER_MOTOR_ID);
     followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
     followerShooterSimState = followerShooterMotor.getSimState();
+
+    shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
 
     shooterSim =
         new FlywheelSim(
@@ -90,6 +97,11 @@ public class ShooterIOSim implements ShooterIO {
 
     kickerSimState.setRotorAcceleration(kickerSim.getAngularAcceleration());
     kickerSimState.setRotorVelocity(kickerSim.getAngularVelocity());
+  }
+
+  @Override
+  public void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {
+    mainShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
   }
 
   @Override
