@@ -84,6 +84,6 @@ public class IntakeRollerTest {
     }
 
     // verify that the motor output voltage is set to 0
-    assertEquals(0, intakeRoller.getIntakeRollerVoltage(), 0.05);
+    assertEquals(0, intakeRoller.getIntakeRollerVoltage(), 0.01);
   }
 }
