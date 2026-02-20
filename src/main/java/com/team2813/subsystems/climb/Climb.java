@@ -99,7 +99,7 @@ public class Climb extends SubsystemBase {
     public Angle getInnerPositionAngle() {
       return Rotations.of(
           (getInnerPosition().in(Inches) / 2)
-              / ClimbConstants.INNERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
+              / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
     }
   }
 
@@ -121,7 +121,7 @@ public class Climb extends SubsystemBase {
     public Angle getOuterPositionAngle() {
       return Rotations.of(
           (getOuterPosition().in(Inches) / 2)
-              / ClimbConstants.OUTERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
+              / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
     }
   }
 }

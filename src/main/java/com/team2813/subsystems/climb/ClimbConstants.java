@@ -11,28 +11,28 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 
 public class ClimbConstants {
-  public static final double LEFTMOTOR_TO_CLIMB_GEARING = 9;
-  public static final double RIGHTMOTOR_TO_CLIMB_GEARING = 9;
-  public static final TalonFXConfiguration LEFTMOTOR_TO_CLIMB_CONFIG =
+  public static final double LEFT_MOTOR_TO_CLIMB_GEARING = 9;
+  public static final double RIGHT_MOTOR_TO_CLIMB_GEARING = 9;
+  public static final TalonFXConfiguration LEFT_MOTOR_TO_CLIMB_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(LEFTMOTOR_TO_CLIMB_GEARING));
-  public static final TalonFXConfiguration RIGHTMOTOR_TO_CLIMB_CONFIG =
+              new FeedbackConfigs().withSensorToMechanismRatio(LEFT_MOTOR_TO_CLIMB_GEARING));
+  public static final TalonFXConfiguration RIGHT_MOTOR_TO_CLIMB_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(RIGHTMOTOR_TO_CLIMB_GEARING));
+              new FeedbackConfigs().withSensorToMechanismRatio(RIGHT_MOTOR_TO_CLIMB_GEARING));
 
-  public static final Mass INNERCLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
-  public static final Mass OUTERCLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
-  public static final double INNERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
-  public static final double OUTERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
-  public static final Distance INNERCLIMB_SPOOL_RADIUS = Inches.of(0);
-  public static final Distance OUTERCLIMB_SPOOL_RADIUS = Inches.of(0);
+  public static final Mass INNER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
+  public static final Mass OUTER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(0);
+  public static final double INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
+  public static final double OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
+  public static final Distance INNER_CLIMB_SPOOL_RADIUS = Inches.of(0);
+  public static final Distance OUTER_CLIMB_SPOOL_RADIUS = Inches.of(0);
 
-  public static final Distance INNERCLIMB_MIN_HEIGHT = Inches.of(0);
-  public static final Distance INNERCLIMB_MAX_HEIGHT = Inches.of(28.0);
-  public static final Distance OUTERCLIMB_MIN_HEIGHT = Inches.of(0);
-  public static final Distance OUTERCLIMB_MAX_HEIGHT = Inches.of(28.0);
+  public static final Distance INNER_CLIMB_MIN_HEIGHT = Inches.of(0);
+  public static final Distance INNER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
+  public static final Distance OUTER_CLIMB_MIN_HEIGHT = Inches.of(0);
+  public static final Distance OUTER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
 }

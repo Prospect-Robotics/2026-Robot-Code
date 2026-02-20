@@ -19,24 +19,24 @@ public class ClimbIOSim implements ClimbIO {
   private final ElevatorSim innerClimbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
-          ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING,
-          ClimbConstants.INNERCLIMB_CARRIAGE_WEIGHT.in(Kilograms),
-          ClimbConstants.INNERCLIMB_SPOOL_RADIUS.in(Meter),
-          ClimbConstants.INNERCLIMB_MIN_HEIGHT.in(Meter),
-          ClimbConstants.INNERCLIMB_MAX_HEIGHT.in(Meter),
+          ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING,
+          ClimbConstants.INNER_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
+          ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meter),
+          ClimbConstants.INNER_CLIMB_MIN_HEIGHT.in(Meter),
+          ClimbConstants.INNER_CLIMB_MAX_HEIGHT.in(Meter),
           true,
-          ClimbConstants.INNERCLIMB_MIN_HEIGHT.in(Meter));
+          ClimbConstants.INNER_CLIMB_MIN_HEIGHT.in(Meter));
 
   private final ElevatorSim outerClimbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
-          ClimbConstants.RIGHTMOTOR_TO_CLIMB_GEARING,
-          ClimbConstants.OUTERCLIMB_CARRIAGE_WEIGHT.in(Kilograms),
-          ClimbConstants.OUTERCLIMB_SPOOL_RADIUS.in(Meter),
-          ClimbConstants.OUTERCLIMB_MIN_HEIGHT.in(Meter),
-          ClimbConstants.OUTERCLIMB_MAX_HEIGHT.in(Meter),
+          ClimbConstants.RIGHT_MOTOR_TO_CLIMB_GEARING,
+          ClimbConstants.OUTER_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
+          ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meter),
+          ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter),
+          ClimbConstants.OUTER_CLIMB_MAX_HEIGHT.in(Meter),
           true,
-          ClimbConstants.OUTERCLIMB_MIN_HEIGHT.in(Meter));
+          ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter));
 
   private TalonFX leftMotor;
   private TalonFXSimState leftMotorSim;
@@ -47,9 +47,9 @@ public class ClimbIOSim implements ClimbIO {
 
   public ClimbIOSim() {
     leftMotor = new TalonFX(0);
-    leftMotor.getConfigurator().apply(ClimbConstants.LEFTMOTOR_TO_CLIMB_CONFIG);
+    leftMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
     rightMotor = new TalonFX(0);
-    rightMotor.getConfigurator().apply(ClimbConstants.RIGHTMOTOR_TO_CLIMB_CONFIG);
+    rightMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
   }
 
   @Override
@@ -102,10 +102,10 @@ public class ClimbIOSim implements ClimbIO {
     leftMotorSim.setRotorVelocity(
         motorInverted
             * ((innerClimbSim.getVelocityMetersPerSecond()
-                    / ClimbConstants.INNERCLIMB_SPOOL_RADIUS.in(Meters))
+                    / ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meters))
                 // radians/sec to rotations/sec
                 / (2.0 * Math.PI))
-            * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING);
+            * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING);
 
     rightMotorSim.setSupplyVoltage(Volts.of(12));
 
@@ -138,10 +138,10 @@ public class ClimbIOSim implements ClimbIO {
     leftMotorSim.setRotorVelocity(
         motorInverted
             * ((innerClimbSim.getVelocityMetersPerSecond()
-                    / ClimbConstants.OUTERCLIMB_SPOOL_RADIUS.in(Meters))
+                    / ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meters))
                 // radians/sec to rotations/sec
                 / (2.0 * Math.PI))
-            * ClimbConstants.RIGHTMOTOR_TO_CLIMB_GEARING);
+            * ClimbConstants.RIGHT_MOTOR_TO_CLIMB_GEARING);
   }
 
   @Override
@@ -197,16 +197,16 @@ public class ClimbIOSim implements ClimbIO {
   private static double getLeftMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
     return Units.radiansToRotations(
-            elevatorPosition / ClimbConstants.INNERCLIMB_SPOOL_RADIUS.in(Meters))
+            elevatorPosition / ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meters))
         // multiply by gear ratio
-        * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING;
+        * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING;
   }
 
   private static double getRightMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
     return Units.radiansToRotations(
-            elevatorPosition / ClimbConstants.OUTERCLIMB_SPOOL_RADIUS.in(Meters))
+            elevatorPosition / ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meters))
         // multiply by gear ratio
-        * ClimbConstants.LEFTMOTOR_TO_CLIMB_GEARING;
+        * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING;
   }
 }

@@ -16,9 +16,9 @@ public class ClimbIOReal implements ClimbIO {
 
   public ClimbIOReal() {
     leftMotor = new TalonFX(0);
-    leftMotor.getConfigurator().apply(ClimbConstants.LEFTMOTOR_TO_CLIMB_CONFIG);
+    leftMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
     rightMotor = new TalonFX(0);
-    rightMotor.getConfigurator().apply(ClimbConstants.RIGHTMOTOR_TO_CLIMB_CONFIG);
+    rightMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
   }
 
   @Override
@@ -80,14 +80,14 @@ public class ClimbIOReal implements ClimbIO {
   private static Distance leftMotorRotationToCarriagePosition(Angle motorPosition) {
     return Inches.of(
             motorPosition.in(Rotations)
-                * ClimbConstants.INNERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
+                * ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
         .times(2);
   }
 
   private static Distance rightMotorRotationToCarriagePosition(Angle motorPosition) {
     return Inches.of(
             motorPosition.in(Rotations)
-                * ClimbConstants.OUTERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
+                * ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
         .times(2);
   }
 }
