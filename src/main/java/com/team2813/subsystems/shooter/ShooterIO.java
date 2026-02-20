@@ -37,6 +37,8 @@ public interface ShooterIO {
     setKickerMotorVoltage(kickerVoltage);
   }
 
+  default void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {}
+
   default void setShooterMotorVoltage(Voltage shooterMotorVoltage) {}
 
   default void setKickerMotorVoltage(Voltage kickerMotorVoltage) {}
