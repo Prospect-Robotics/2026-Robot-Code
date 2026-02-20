@@ -35,7 +35,7 @@ public class IntakeExtension extends SubsystemBase {
             .abs(Rotation);
 
     // Is the error between the setpoint greater than half a rotation.
-    extenderAtPosition = error <= 0.4;
+    extenderAtPosition = error <= 0.5;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.processInputs("IntakeExtension", replayedInputs);
