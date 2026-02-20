@@ -4,12 +4,6 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,39 +16,21 @@ public class Climb extends SubsystemBase {
   private final ClimbIO io;
   private final ClimbIOInputsAutoLogged replayedInputs = new ClimbIOInputsAutoLogged();
 
-  private ClimbHeight currentClimbSetpoint = ClimbHeight.DOWN;
-
+  private InnerClimbHeight currentInnerClimbSetpoint = InnerClimbHeight.DOWN;
+  private OuterClimbHeight currentOuterClimbSetpoint = OuterClimbHeight.DOWN;
   /**
-   * @param io The hardware implementation for the elevator, either sim or real.
+   * @param io The hardware implementation for the climb, either sim or real.
    */
   public Climb(ClimbIO io) {
-    var slot0Config =
-        new Slot0Configs() // Motor PID and gain values.
-            .withKP(ClimbConstants.LEFTCLIMB_kP)
-            .withKI(ClimbConstants.LEFTCLIMB_kI)
-            .withKD(ClimbConstants.LEFTCLIMB_kD)
-            .withKS(ClimbConstants.LEFTCLIMB_kS)
-            .withKV(ClimbConstants.LEFTCLIMB_kV)
-            .withKA(ClimbConstants.LEFTCLIMB_kA)
-            .withKG(ClimbConstants.LEFTCLIMB_kG);
-    var motorConfig =
-        new TalonFXConfiguration()
-            .withSlot0(slot0Config)
-            // .withMotorOutput(new
-            // MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
-            // Invert motor rotation.
-            .withMotorOutput(
-                new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
-    var motor = new TalonFX(com.team2813.Constants.LEFTCLIMB_MOTOR_ID);
-    motor.setNeutralMode(NeutralModeValue.Brake);
-    motor.getConfigurator().apply(motorConfig);
-
-    io.setMotor(motor);
     this.io = io;
   }
 
-  public void stopClimb() {
-    io.setMotorVoltage(Volts.of(0));
+  public void stopInnerClimb() {
+    io.setLeftMotorVoltage(Volts.of(0));
+  }
+
+  public void stopOuterClimb() {
+    io.setRightMotorVoltage(Volts.of(0));
   }
 
   @Override
@@ -66,9 +42,19 @@ public class Climb extends SubsystemBase {
     // instead.
     Logger.processInputs("Climb", replayedInputs);
     Logger.recordOutput(
-        "Climb/Carriage Setpoint (inches)", currentClimbSetpoint.getPosition().in(Inches));
+        "Climb/Carriage Setpoint (inches)",
+        currentInnerClimbSetpoint.getInnerPosition().in(Inches));
     Logger.recordOutput(
-        "Climb/Motor Setpoint (rotations)", currentClimbSetpoint.getPositionAngle().in(Rotations));
+        "Climb/Motor Setpoint (rotations)",
+        currentInnerClimbSetpoint.getInnerPositionAngle().in(Rotations));
+
+    Logger.processInputs("Climb", replayedInputs);
+    Logger.recordOutput(
+        "Climb/Carriage Setpoint (inches)",
+        currentOuterClimbSetpoint.getOuterPosition().in(Inches));
+    Logger.recordOutput(
+        "Climb/Motor Setpoint (rotations)",
+        currentOuterClimbSetpoint.getOuterPositionAngle().in(Rotations));
   }
 
   @Override
@@ -77,36 +63,65 @@ public class Climb extends SubsystemBase {
         .updateElevatorHeight(Inches.of(replayedInputs.leftCarriagePositionInches));
   }
 
-  public void setClimbPosition(ClimbHeight heightSetpoint) {
-    currentClimbSetpoint = heightSetpoint;
-    io.setMotorSetpoint(heightSetpoint.getPositionAngle());
+  public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {
+    currentInnerClimbSetpoint = heightSetpoint;
+    io.setLeftMotorSetpoint(heightSetpoint.getInnerPositionAngle());
   }
 
-  public Command setClimbPositionCommand(ClimbHeight height) {
-    return new InstantCommand(() -> setClimbPosition(height));
+  public void setOuterClimbPosition(OuterClimbHeight heightSetpoint) {
+    currentOuterClimbSetpoint = heightSetpoint;
+    io.setRightMotorSetpoint(heightSetpoint.getOuterPositionAngle());
   }
 
-  public enum ClimbHeight {
-    // Positions taken from offseason bot code, inturn taken from onshape.
-    UP(Inches.of(56.0)),
-    MIDDLE(Inches.of(28.0)),
+  public Command setInnerClimbPositionCommand(InnerClimbHeight height) {
+    return new InstantCommand(() -> setInnerClimbPosition(height));
+  }
+
+  public Command setOuterClimbPositionCommand(OuterClimbHeight height) {
+    return new InstantCommand(() -> setOuterClimbPosition(height));
+  }
+
+  public enum InnerClimbHeight {
+    UP(Inches.of(0.0)),
+    MIDDLE(Inches.of(0.0)),
     DOWN(Inches.of(0.0));
 
     public final Distance position;
 
-    ClimbHeight(Distance position) {
+    InnerClimbHeight(Distance position) {
       this.position = position;
     }
 
-    public Distance getPosition() {
+    public Distance getInnerPosition() {
       return position;
     }
 
-    public Angle getPositionAngle() {
-      // NOTE: Divide by 2 because the motor controls the first stage only, not the second stage
+    public Angle getInnerPositionAngle() {
       return Rotations.of(
-          (getPosition().in(Inches) / 2)
+          (getInnerPosition().in(Inches) / 2)
               / ClimbConstants.INNERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
+    }
+  }
+
+  public enum OuterClimbHeight {
+    UP(Inches.of(0.0)),
+    MIDDLE(Inches.of(0.0)),
+    DOWN(Inches.of(0.0));
+
+    public final Distance position;
+
+    OuterClimbHeight(Distance position) {
+      this.position = position;
+    }
+
+    public Distance getOuterPosition() {
+      return position;
+    }
+
+    public Angle getOuterPositionAngle() {
+      return Rotations.of(
+          (getOuterPosition().in(Inches) / 2)
+              / ClimbConstants.OUTERCLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION);
     }
   }
 }

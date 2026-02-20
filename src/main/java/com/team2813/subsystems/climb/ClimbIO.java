@@ -2,7 +2,6 @@ package com.team2813.subsystems.climb;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
@@ -27,9 +26,6 @@ public interface ClimbIO {
     public double rightMotorVoltage = 0.0;
   }
 
-  /** Sets the TalonFX motor configuraiton in the IO implementation. */
-  default void setMotor(TalonFX motor) {}
-
   /**
    * Updates Advantage kit autologged input data, as well as any other necessary states (like in
    * sim)
@@ -43,26 +39,37 @@ public interface ClimbIO {
    *
    * @param setpoint Position for the motor to go to.
    */
-  default void setMotorSetpoint(Angle setpoint) {}
+  default void setLeftMotorSetpoint(Angle setpoint) {}
+
+  default void setRightMotorSetpoint(Angle setpoint) {}
 
   /**
    * @param voltage Voltage to apply to the motor.
    */
-  default void setMotorVoltage(Voltage voltage) {}
+  default void setLeftMotorVoltage(Voltage voltage) {}
 
+  default void setRightMotorVoltage(Voltage voltage) {}
   /**
    * @return The angle of the motor.
    */
-  default Angle getMotorPosition() {
+  default Angle getLeftMotorPosition() {
+    return Rotations.of(0);
+  }
+
+  default Angle getRightMotorPosition() {
     return Rotations.of(0);
   }
 
   /**
    * Needs to be calculated based off of the motor rotational position, gearing, and spool radius,
    *
-   * @return The position of the elevator's carriage.
+   * @return The position of the climbs carriage.
    */
-  default Distance getCarriagePosition() {
+  default Distance getInnerCarriagePosition() {
+    return Meters.of(0);
+  }
+
+  default Distance getOuterCarriagePosition() {
     return Meters.of(0);
   }
 }
