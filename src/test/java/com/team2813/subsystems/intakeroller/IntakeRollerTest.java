@@ -30,9 +30,9 @@ public class IntakeRollerTest {
     DriverStationSim.notifyNewData();
 
     // run the intake command for a few cycles
+    intakeRoller.intake();
 
     for (int i = 0; i < 50; i++) {
-      intakeRoller.intake();
       intakeRoller.periodic();
       SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
@@ -54,8 +54,8 @@ public class IntakeRollerTest {
     DriverStationSim.notifyNewData();
 
     // run the outtake command for a few cycles
+    intakeRoller.outtake();
     for (int i = 0; i < 50; i++) {
-      intakeRoller.outtake();
       intakeRoller.periodic();
       SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
