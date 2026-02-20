@@ -3,7 +3,7 @@ package com.team2813.subsystems.intakeextension;
 import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS;
 import static edu.wpi.first.units.Units.*;
 
-import com.team2813.subsystems.SimulationVisualizer;
+import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
@@ -35,7 +35,7 @@ public class IntakeExtension extends SubsystemBase {
             .abs(Rotation);
 
     // Is the error between the setpoint greater than half a rotation.
-    extenderAtPosition = error <= 0.5;
+    extenderAtPosition = error <= 0.4;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.processInputs("IntakeExtension", replayedInputs);
@@ -53,11 +53,15 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   public void extend() {
-    io.setExtensionSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT.toMotorSetpoint());
+    extenderAtPosition = false;
+    io.setExtensionSetpoint(
+        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
   }
 
   public void retract() {
-    io.setExtensionSetpoint(IntakeExtensionConstants.ExtenderPositions.IN.toMotorSetpoint());
+    extenderAtPosition = false;
+    io.setExtensionSetpoint(
+        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {

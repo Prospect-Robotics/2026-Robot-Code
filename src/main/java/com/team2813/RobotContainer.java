@@ -223,6 +223,7 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption("Shooter SysID Routine", shooter.sysIDRoutine());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -255,7 +256,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .x()
+        .y()
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -263,17 +264,10 @@ public class RobotContainer {
                 }));
 
     // Feeder and Vectoring Bindings
-    driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
-
-    // Shooter Bindings
-    driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
-    driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
     // Intake Roller Bindings
-    // TODO: revert back to left and right bumper on operator
-    operatorController.x().whileTrue(intakeRoller.intakeCommand());
-    operatorController.y().whileTrue(intakeRoller.outtakeCommand());
+    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
