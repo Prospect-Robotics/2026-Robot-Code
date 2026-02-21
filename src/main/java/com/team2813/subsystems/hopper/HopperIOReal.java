@@ -12,8 +12,7 @@ public class HopperIOReal implements HopperIO {
   private final TalonFX mainRollerMotor; // Right magazine motor.
   private final TalonFX followerRollerMotor; // Left magazine motor.
 
-  private final TalonFX rightFeederMotor; // Right motor when seen from the back (shooter side).
-  private final TalonFX leftFeederMotor; // Left motor when seen from the back (shooter side).
+  private final TalonFX feederMotor; // Runs the indexer.
 
   public HopperIOReal() {
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
@@ -24,11 +23,9 @@ public class HopperIOReal implements HopperIO {
     followerRollerMotor.setControl(
         new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Aligned));
 
-    rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
-    rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
+    feederMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
+    feederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
 
-    leftFeederMotor = new TalonFX(Constants.LEFT_FEEDER_MOTOR_ID);
-    leftFeederMotor.getConfigurator().apply(HopperConstants.LEFT_FEEDER_MOTOR_CONFIG);
   }
 
   @Override
@@ -41,20 +38,15 @@ public class HopperIOReal implements HopperIO {
     inputs.followerRollerMotorRPS = followerRollerMotor.getRotorVelocity().getValue();
     inputs.followerRollerMotorCurrent = followerRollerMotor.getStatorCurrent().getValue();
 
-    inputs.rightFeederVoltage = rightFeederMotor.getMotorVoltage().getValue();
-    inputs.rightFeederRPS = rightFeederMotor.getRotorVelocity().getValue();
-    inputs.rightFeederCurrent = rightFeederMotor.getStatorCurrent().getValue();
-
-    inputs.leftFeederVoltage = leftFeederMotor.getMotorVoltage().getValue();
-    inputs.leftFeederRPS = leftFeederMotor.getRotorVelocity().getValue();
-    inputs.leftFeederCurrent = leftFeederMotor.getStatorCurrent().getValue();
+    inputs.feederVoltage = feederMotor.getMotorVoltage().getValue();
+    inputs.feederRPS = feederMotor.getRotorVelocity().getValue();
+    inputs.feederCurrent = feederMotor.getStatorCurrent().getValue();
   }
 
   @Override
   public void setMotorVoltage(
-      Voltage rollerVoltage, Voltage rightFeederVoltage, Voltage leftFeederVoltage) {
+      Voltage rollerVoltage, Voltage feederVoltage) {
     mainRollerMotor.setVoltage(rollerVoltage.in(Volts));
-    rightFeederMotor.setVoltage(rightFeederVoltage.in(Volts));
-    leftFeederMotor.setVoltage(leftFeederVoltage.in(Volts));
+    feederMotor.setVoltage(feederVoltage.in(Volts));
   }
 }
