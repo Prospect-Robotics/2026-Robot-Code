@@ -1,5 +1,8 @@
 import edu.wpi.first.gradlerio.GradleRIOPlugin
 import groovy.json.JsonSlurper
+import groovy.time.TimeCategory
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id "java"
@@ -113,23 +116,6 @@ dependencies {
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 }
 
-tasks.withType(Test).configureEach {
-    useJUnitPlatform()
-    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
-    testLogging {
-        events "passed", "skipped", "failed", "standardOut", "standardError"
-
-        showStandardStreams = true
-        exceptionFormat = "full"
-        showExceptions = true
-        showCauses = true
-        showStackTraces = true
-    }
-    // see https://github.com/junit-pioneer/junit-pioneer/issues/509
-    jvmArgs('--add-opens', 'java.base/java.util=ALL-UNNAMED',
-            '--add-opens', 'java.base/java.lang=ALL-UNNAMED')
-}
-
 // Simulation configuration (e.g. environment variables).
 //
 // The sim GUI is *disabled* by default to support running
@@ -156,6 +142,67 @@ jar {
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+
+    // Display test results as tests run, and a summary at the end.
+    // See https://stackoverflow.com/a/36130467/95725
+    testLogging {
+        // Set default options (i.e. for log level LIFECYCLE)
+        exceptionFormat TestExceptionFormat.FULL
+        showExceptions true
+        showCauses true
+        showStackTraces true
+        setShowStandardStreams false
+        events = [
+            TestLogEvent.FAILED,
+            TestLogEvent.SKIPPED
+        ]
+
+        // Set options for log level DEBUG and INFO
+        debug {
+            events = [
+                TestLogEvent.STARTED,
+                TestLogEvent.FAILED,
+                TestLogEvent.PASSED,
+                TestLogEvent.SKIPPED,
+                TestLogEvent.STANDARD_ERROR,
+                TestLogEvent.STANDARD_OUT
+            ]
+            exceptionFormat TestExceptionFormat.FULL
+            setShowStandardStreams true
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+    }
+
+    afterSuite { TestDescriptor desc, TestResult result ->
+        def isOuterMostSuite = !desc.parent
+        if (isOuterMostSuite) {
+            def summary = "${result.resultType}"
+            def logLevel = LogLevel.WARN
+            if (result.failedTestCount > 0) {
+                summary = "❗${summary}❗"
+            } else {
+                summary = "💚 ${summary} 💚"
+                logLevel = LogLevel.LIFECYCLE
+            }
+            def message = "\nTest results: ${summary} " +
+                    "(${result.testCount} tests, " +
+                    "${result.successfulTestCount} passed, " +
+                    "${result.failedTestCount} failed, " +
+                    "${result.skippedTestCount} skipped) " +
+                    "in ${TimeCategory.minus(new Date(result.endTime), new Date(result.startTime))}\n"
+            logger.log(logLevel, message)
+        }
+    }
+
+    // see https://github.com/junit-pioneer/junit-pioneer/issues/509
+    jvmArgs('--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED')
+}
 
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile).configureEach {
