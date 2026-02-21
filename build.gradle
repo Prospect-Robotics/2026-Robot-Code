@@ -107,6 +107,15 @@ dependencies {
 test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+
+        showStandardStreams = true
+        exceptionFormat = "full"
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+    }
 }
 
 // Simulation configuration (e.g. environment variables).
