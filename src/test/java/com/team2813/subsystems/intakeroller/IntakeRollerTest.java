@@ -31,11 +31,12 @@ public class IntakeRollerTest {
 
     // run the intake command for a few cycles
     intakeRoller.intake();
-
+    SimHooks.pauseTiming();
     for (int i = 0; i < 50; i++) {
       intakeRoller.periodic();
       SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
+    SimHooks.resumeTiming();
 
     // verify that the motor output voltage is set to the intake voltage
     assertTrue(
@@ -54,11 +55,13 @@ public class IntakeRollerTest {
     DriverStationSim.notifyNewData();
 
     // run the outtake command for a few cycles
+    SimHooks.pauseTiming();
     intakeRoller.outtake();
     for (int i = 0; i < 50; i++) {
       intakeRoller.periodic();
       SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
+    SimHooks.resumeTiming();
 
     // verify that the motor output voltage is set to the outtake voltage
     assertTrue(
