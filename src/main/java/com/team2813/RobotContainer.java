@@ -239,7 +239,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Operator controls
     // Operator Intake roller Bindings
-    operatorController.povLeft().whileTrue(intakeRoller.intakeCommand());
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
