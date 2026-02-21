@@ -8,12 +8,11 @@ import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.util.function.BooleanConsumer;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-import org.ironmaple.simulation.IntakeSimulation;
-import org.ironmaple.simulation.drivesims.AbstractDriveTrainSimulation;
 
 public class IntakeRollerIOSim implements IntakeRollerIO {
-  private static final int HOPPER_FUEL_CAPACITY = 46;
+  // private static final int HOPPER_FUEL_CAPACITY = 46;
 
   private TalonFX intakeMotor;
   private TalonFXSimState intakeSimState;
@@ -22,9 +21,11 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
   // See
   // https://shenzhen-robotics-alliance.github.io/maple-sim/simulating-intake/#over-the-bumper-otb-intakes
   // for description on how this intake simulation is set up.
-  private final IntakeSimulation intakeSimulation;
+  // private final IntakeSimulation intakeSimulation;
 
-  public IntakeRollerIOSim(AbstractDriveTrainSimulation driveTrainSimulation) {
+  BooleanConsumer runFuelIntake = (intakeActivated) -> {};
+
+  public IntakeRollerIOSim(BooleanConsumer runFuelIntake) {
     intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
     intakeMotor.getConfigurator().apply(IntakeRollerConstants.INTAKE_MOTOR_CONFIG);
 
@@ -38,20 +39,22 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
                 IntakeRollerConstants.INTAKE_MOTOR_TO_INTAKE_GEARING),
             DCMotor.getKrakenX60(1));
 
-    intakeSimulation =
-        IntakeSimulation.OverTheBumperIntake(
-            // Specify the type of game pieces that the intake can collect
-            "Fuel",
-            // Specify the drivetrain to which this intake is attached
-            driveTrainSimulation,
-            // Width of the intake
-            Meters.of(0.7), // TODO(vdikov): Confirm in CAD
-            // The extension length of the intake beyond the robot's frame (when activated)
-            Meters.of(0.2), // TODO(vdikov): Confirm in CAD
-            // The intake is mounted on the back side of the chassis
-            IntakeSimulation.IntakeSide.FRONT,
-            // The intake can hold up to 1 note
-            HOPPER_FUEL_CAPACITY);
+    this.runFuelIntake = runFuelIntake;
+
+    // intakeSimulation =
+    //     IntakeSimulation.OverTheBumperIntake(
+    //         // Specify the type of game pieces that the intake can collect
+    //         "Fuel",
+    //         // Specify the drivetrain to which this intake is attached
+    //         driveTrainSimulation,
+    //         // Width of the intake
+    //         Meters.of(0.7), // TODO(vdikov): Confirm in CAD
+    //         // The extension length of the intake beyond the robot's frame (when activated)
+    //         Meters.of(0.2), // TODO(vdikov): Confirm in CAD
+    //         // The intake is mounted on the back side of the chassis
+    //         IntakeSimulation.IntakeSide.FRONT,
+    //         // The intake can hold up to 1 note
+    //         HOPPER_FUEL_CAPACITY);
   }
 
   @Override
@@ -63,6 +66,9 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
     inputs.intakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
     inputs.intakeMotorRPS = intakeMotor.getVelocity().getValue();
     inputs.intakeMotorCurrent = intakeMotor.getStatorCurrent().getValue();
+
+    // Logger.recordOutput("IntakeRoller/Sim/IntakeHasFuel",
+    // intakeSimulation.getGamePiecesAmount());
   }
 
   public void updateSimulation() {
@@ -75,6 +81,10 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
 
   @Override
   public void setIntakeMotorVoltage(Voltage intakeMotorVoltage) {
+    // TODO(vdikov): Actually, pay attention to the voltage sign when determining whether to signal
+    // running intake.
+    runFuelIntake.accept(Math.abs(intakeMotorVoltage.in(Volts)) > 0.5);
+
     intakeMotor.setVoltage(intakeMotorVoltage.in(Volts));
     intakeFlywheelSim.setInputVoltage(intakeMotorVoltage.in(Volts));
   }

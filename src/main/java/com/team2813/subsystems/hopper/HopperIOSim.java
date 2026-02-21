@@ -9,8 +9,10 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import java.util.function.Consumer;
 
 public class HopperIOSim implements HopperIO {
 
@@ -35,8 +37,10 @@ public class HopperIOSim implements HopperIO {
   private final TalonFXSimState leftFeederMotorSimState;
 
   private FlywheelSim leftFeederModuleSim;
+  private Consumer<AngularVelocity> getShooterAngularVelocity;
 
-  public HopperIOSim() {
+  public HopperIOSim(Consumer<AngularVelocity> getShooterAngularVelocity) {
+    this.getShooterAngularVelocity = getShooterAngularVelocity;
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
     mainRollerMotor.getConfigurator().apply(HopperConstants.ROLLER_MOTOR_CONFIG);
     mainRollerMotorSimState = mainRollerMotor.getSimState();
@@ -68,6 +72,12 @@ public class HopperIOSim implements HopperIO {
   @Override
   public void updateState(HopperIOInputs inputs) {
     updateSimulation();
+    // TODO(vdikov): There're a lot of things that we need to fix here
+    // For one, the rotor velocity is (perhaps?) not the same as the flywheel velocity.
+    // Second, even if the flywheel is cranked up, that does not mean that there's
+    // a fuel ready to be fired. That second part might need to be fixed in FuelProcessingSim by
+    // adding some processing delays.
+    getShooterAngularVelocity.accept(mainRollerMotor.getRotorVelocity().getValue());
 
     mainRollerMotorSimState.setSupplyVoltage(Volts.of(12));
     followerRollerMotorSimState.setSupplyVoltage(Volts.of(12));

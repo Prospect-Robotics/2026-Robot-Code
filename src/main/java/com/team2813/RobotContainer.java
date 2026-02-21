@@ -22,6 +22,7 @@ import com.team2813.subsystems.drive.GyroIOSim;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
+import com.team2813.subsystems.fuelprocessingsim.FuelProcessingSim;
 import com.team2813.subsystems.hopper.*;
 import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
@@ -63,6 +64,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private SwerveDriveSimulation driveSimulation = null;
+  private FuelProcessingSim fuelProcessingSim = null;
 
   private final Hopper hopper;
   private final Vision vision;
@@ -126,6 +128,7 @@ public class RobotContainer {
             new SwerveDriveSimulation(
                 Drive.createMapleSimConfig(tunerConstants), new Pose2d(12, 2, new Rotation2d()));
         SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
+        fuelProcessingSim = new FuelProcessingSim(driveSimulation);
 
         drive =
             new Drive(
@@ -145,7 +148,7 @@ public class RobotContainer {
                     Amps.of(tunerConstants.backRight().SlipCurrent)),
                 driveSimulation::setSimulationWorldPose);
 
-        hopper = new Hopper(new HopperIOSim());
+        hopper = new Hopper(new HopperIOSim(fuelProcessingSim::launchFuel));
 
         VisionSystemSim visionSim = new VisionSystemSim("main");
         visionSim.addAprilTags(APRIL_TAG_LAYOUT);
@@ -170,7 +173,7 @@ public class RobotContainer {
                     drive::getPose,
                     visionSim));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-        intakeRoller = new IntakeRoller(new IntakeRollerIOSim(driveSimulation));
+        intakeRoller = new IntakeRoller(new IntakeRollerIOSim(fuelProcessingSim::runFuelIntake));
 
         shooter = new Shooter(new ShooterIOSim());
 
@@ -268,12 +271,14 @@ public class RobotContainer {
     driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
 
     // Shooter Bindings
-    driveController.leftTrigger().whileTrue(shooter.intakeCommand());
-    driveController.rightTrigger().whileTrue(shooter.outakeCommand());
+    // driveController.leftTrigger().onTrue(shooter.intakeCommand()).onFalse(shooter.stopCommand());
+    // driveController.rightTrigger().onTrue(shooter.outakeCommand()).onFalse(shooter.stopCommand());
 
     // Intake Roller Bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
-    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
+    // operatorController.leftBumper().whileTrue(intakeRoller.intakeCommand());
+    // operatorController.rightBumper().whileTrue(intakeRoller.outtakeCommand());
+    driveController.leftTrigger().whileTrue(intakeRoller.intakeCommand());
+    driveController.rightTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
