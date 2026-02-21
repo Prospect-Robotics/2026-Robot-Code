@@ -23,17 +23,6 @@ public final class Constants {
   public static double SIM_TIME_PERIOD =
       0.02; // Update physics simulations every 20ms (like the actual bot).
 
-  public enum Mode {
-    /** Running on a real robot. */
-    REAL,
-
-    /** Running a physics simulator. */
-    SIM,
-
-    /** Replaying from a log file. */
-    REPLAY
-  }
-
   public static final Transform3d FRONT_CAMERA_POSITION =
       new Transform3d(
           new Translation3d(Meters.of(-0.054564), Meters.of(0), Meters.of(0.501754)),

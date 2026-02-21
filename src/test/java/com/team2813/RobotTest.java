@@ -19,56 +19,56 @@ public class RobotTest {
     @ClearEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME)
     public void unsetEnvInSimulation() {
       setRuntimeType(RuntimeType.kSimulation);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.SIM);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.SIM);
     }
 
     @Test
     @ClearEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME)
     public void unsetEnvWithRealRobot() {
       setRuntimeType(RuntimeType.kRoboRIO);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.REAL);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.REAL);
     }
 
     @Test
     @SetEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME, value = "false")
     public void falseEnvInSimulation() {
       setRuntimeType(RuntimeType.kSimulation);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.SIM);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.SIM);
     }
 
     @Test
     @SetEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME, value = "false")
     public void falseEnvWithRealRobot() {
       setRuntimeType(RuntimeType.kRoboRIO);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.REAL);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.REAL);
     }
 
     @Test
     @SetEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME, value = "true")
     public void trueEnvInSimulation() {
       setRuntimeType(RuntimeType.kSimulation);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.REPLAY);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.REPLAY);
     }
 
     @Test
     @SetEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME, value = "True")
     public void capitalTrueEnvInSimulation() {
       setRuntimeType(RuntimeType.kSimulation);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.REPLAY);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.REPLAY);
     }
 
     @Test
     @SetEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME, value = "true")
     public void trueEnvWithRealRobot() {
       setRuntimeType(RuntimeType.kRoboRIO);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.REAL);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.REAL);
     }
 
     @Test
     @SetEnvironmentVariable(key = LOG_REPLAY_ENABLE_ENV_NAME, value = "random_invalid_env_value")
     public void randomEnvInSimulation() {
       setRuntimeType(RuntimeType.kSimulation);
-      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Constants.Mode.SIM);
+      assertThat(Robot.getCurrentModeFromEnv()).isEqualTo(Mode.SIM);
     }
   }
 

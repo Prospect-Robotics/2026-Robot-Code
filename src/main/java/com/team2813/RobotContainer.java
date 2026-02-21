@@ -55,7 +55,7 @@ import org.photonvision.simulation.VisionSystemSim;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final Constants.Mode mode;
+  private final Mode mode;
 
   // Subsystems
   private final Drive drive;
@@ -81,7 +81,7 @@ public class RobotContainer {
    *
    * @param tunerConstants The tuner constants for the robot.
    */
-  public RobotContainer(AllTunerConstants tunerConstants, Constants.Mode mode) {
+  public RobotContainer(AllTunerConstants tunerConstants, Mode mode) {
     this.mode = mode;
     switch (mode) {
       case REAL:

@@ -29,7 +29,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final RobotContainer robotContainer;
-  private final Constants.Mode mode;
+  private final Mode mode;
 
   public Robot() {
     // Record metadata
@@ -97,7 +97,7 @@ public class Robot extends LoggedRobot {
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    if (mode != Constants.Mode.REAL) {
+    if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
 
@@ -167,28 +167,27 @@ public class Robot extends LoggedRobot {
   @Override
   public void simulationPeriodic() {}
 
-  /** Gets the {@link Constants.Mode} that the robot should use. */
-  static Constants.Mode getCurrentModeFromEnv() {
-    return isReal() ? Constants.Mode.REAL : getSimMode();
+  /** Gets the {@link Mode} that the robot should use. */
+  static Mode getCurrentModeFromEnv() {
+    return isReal() ? Mode.REAL : getSimMode();
   }
 
   /**
-   * Gets the {@link Constants.Mode} that the robot should use in simulation. This method will never
-   * return {@link Constants.Mode#REAL}, as that is never appropriate for robot simulation. If the
-   * gradle {@code replayWatch} task is run, this will return {@link Constants.Mode#REPLAY}
-   * automatically.
+   * Gets the {@link Mode} that the robot should use in simulation. This method will never return
+   * {@link Mode#REAL}, as that is never appropriate for robot simulation. If the gradle {@code
+   * replayWatch} task is run, this will return {@link Mode#REPLAY} automatically.
    *
-   * @return The {@link Constants.Mode} that the robot should use if it is being simulated.
+   * @return The {@link Mode} that the robot should use if it is being simulated.
    */
-  private static Constants.Mode getSimMode() {
+  private static Mode getSimMode() {
     // The environment variable "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE" is set to "true" when running
     // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
     // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
     // not going to happen due to the long, specific name, and if it does, that is their problem :3.
     if (Boolean.parseBoolean(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
-      return Constants.Mode.REPLAY;
+      return Mode.REPLAY;
     } else {
-      return Constants.Mode.SIM;
+      return Mode.SIM;
     }
   }
 }

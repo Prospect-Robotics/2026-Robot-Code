@@ -14,7 +14,7 @@ public class RobotContainerTest {
   public void canCreateRobotAndRunPeriodic(CommandTester tester) {
     // create a robot container
     RobotContainer robotContainer =
-        new RobotContainer(AllDrivetrains.rebuiltDrivetrain(), Constants.Mode.SIM);
+        new RobotContainer(AllDrivetrains.rebuiltDrivetrain(), Mode.SIM);
     // Run one periodic cycle
     tester.runUntilComplete(Commands.none());
   }
