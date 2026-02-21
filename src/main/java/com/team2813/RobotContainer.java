@@ -282,10 +282,13 @@ public class RobotContainer {
             () -> -driveController.getLeftX(),
             () -> -driveController.getRightX()));
 
-    // Driver Intake roller Bindings
+    // Driver intake roller bindings
     driveController
         .rightBumper()
         .whileTrue(new ParallelCommandGroup(intakeRoller.intakeCommand(), hopper.intakeCommand()));
+
+    // Operator intake roller bindings.
+    operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
