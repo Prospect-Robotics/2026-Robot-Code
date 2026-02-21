@@ -47,8 +47,8 @@ public final class Constants {
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.
   // Roller Motors. Aliases: Magazine motors
-  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Right roller motor.
-  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 22; // Left roller motor.
+  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Top roller motor.
+  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 15; // Bottom roller motor.
 
   // Feeder Motors. Aliases: Vectoring motors
   public static final int FEEDER_MOTOR_ID = 24;

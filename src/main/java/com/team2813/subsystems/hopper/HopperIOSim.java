@@ -35,7 +35,7 @@ public class HopperIOSim implements HopperIO {
 
     followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
     followerRollerMotor.setControl(
-        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Aligned));
+        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
 
     // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value
@@ -72,7 +72,6 @@ public class HopperIOSim implements HopperIO {
     inputs.feederVoltage = feederMotor.getMotorVoltage().getValue();
     inputs.feederRPS = feederMotor.getRotorVelocity().getValue();
     inputs.feederCurrent = feederMotor.getStatorCurrent().getValue();
-
   }
 
   public void updateSimulation() {
@@ -89,8 +88,7 @@ public class HopperIOSim implements HopperIO {
   }
 
   @Override
-  public void setMotorVoltage(
-      Voltage rollerVoltage, Voltage feederVoltage) {
+  public void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {
     // Rollers
     mainRollerMotor.setVoltage(rollerVoltage.in(Volts));
     // Don't set the voltage of the follower motor, as this will be done automatically by the

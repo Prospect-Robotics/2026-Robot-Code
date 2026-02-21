@@ -39,6 +39,5 @@ public interface HopperIO {
    * @param rollerVoltage Voltage to apply to the roller motor.
    * @param feederVoltage Voltage to apply to the feeder motor.
    */
-  default void setMotorVoltage(
-      Voltage rollerVoltage, Voltage feederVoltage) {}
+  default void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {}
 }

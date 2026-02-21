@@ -50,6 +50,4 @@ public class HopperConstants {
   public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
-
-
 }
