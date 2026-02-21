@@ -1,12 +1,13 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
-
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
+
+import static edu.wpi.first.units.Units.*;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
@@ -76,8 +77,15 @@ public class Shooter extends SubsystemBase {
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
-  // Used for auto calculated motor speed.
-  public void setShooterMotorVoltage(Voltage voltage) {
-    io.setShooterMotorVoltage(voltage);
+  /**
+   * @param distanceFromHubCenterSupplier A {@link Supplier} that contains the distance from the hub
+   *     center, either red/blue will work, as long as it is consistent.
+   * @return
+   */
+  public AngularVelocity calculateMotorVelocity(Supplier<Distance> distanceFromHubCenterSupplier) {
+    var distanceFromHub =
+        distanceFromHubCenterSupplier.get().plus(ShooterConstants.EXTRA_HUB_AIMING_DISTANCE);
+
+    return RotationsPerSecond.of(0);
   }
 }

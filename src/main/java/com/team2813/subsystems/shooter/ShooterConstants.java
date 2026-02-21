@@ -1,5 +1,6 @@
 package com.team2813.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
@@ -8,6 +9,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Preferences;
 
@@ -20,6 +22,13 @@ public class ShooterConstants {
 
   public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
   public static final double KICKER_SIM_MOI = 0.0000535531; // in kilograms*meters squared.
+
+  /*
+  Because shooting a ton of fuel will slow the flywheel,
+  we will aim about a 1/4 of a hub farther than the center of the hub
+  to counteract this speed loss.
+   */
+  public static final Distance EXTRA_HUB_AIMING_DISTANCE = Inches.of(10.425);
 
   static {
     // Shooter motors.
