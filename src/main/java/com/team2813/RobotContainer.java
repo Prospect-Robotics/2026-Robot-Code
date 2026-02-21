@@ -272,7 +272,7 @@ public class RobotContainer {
 
     // Feeder controls
     operatorController.rightTrigger().whileTrue(hopper.intakeCommand());
-    operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
+    operatorController.povLeft().whileTrue(hopper.outtakeCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
