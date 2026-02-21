@@ -25,9 +25,7 @@ public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
    * @param visionSim The simulated vision system to add the camera to.
    */
   public VisionIOPhotonVisionSim(
-      String name,
-      Transform3d robotToCamera,
-      VisionSystemSim visionSim) {
+      String name, Transform3d robotToCamera, VisionSystemSim visionSim) {
     super(name, robotToCamera);
 
     // Add sim camera
