@@ -54,11 +54,11 @@
         },
         {
           "axis": "y",
-          "degrees": -17.5
+          "degrees": -15
         },
         {
           "axis": "z",
-          "degrees": 160.0
+          "degrees": -160.0
         }
       ],
       "position": [
@@ -77,11 +77,11 @@
         },
         {
           "axis": "y",
-          "degrees": -17.5
+          "degrees": -15
         },
         {
           "axis": "z",
-          "degrees": -160.0
+          "degrees": -90.0
         }
       ],
       "position": [
