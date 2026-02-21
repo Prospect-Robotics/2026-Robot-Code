@@ -100,11 +100,14 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 () -> {},
                 new VisionIOPhotonVision(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
+                    VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT),
                 new VisionIOPhotonVision(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
+                    VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT),
                 new VisionIOPhotonVision(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
+                    VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
+                    VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
@@ -132,19 +135,16 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 () -> visionSim.update(drive.getPose()),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_LEFT_CAM,
-                    drive::getPose,
+                    VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT,
                     visionSim),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_RIGHT_CAM,
-                    drive::getPose,
+                    VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT,
                     visionSim),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_MID_CAM,
-                    drive::getPose,
+                    VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
+                    VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT,
                     visionSim));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
