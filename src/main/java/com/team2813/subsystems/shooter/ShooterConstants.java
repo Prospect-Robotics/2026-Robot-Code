@@ -23,18 +23,19 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 5);
+    Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
 
     // Kicker motors.
-    Preferences.initDouble(KICKER_INTAKE_PREFERENCE_NT, 3);
-    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, 3);
+    Preferences.initDouble(KICKER_INTAKE_PREFERENCE_NT, 5);
+    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, -3);
   }
 
   // Reminder: this is the left shooter motor when robot is viewed from behind.
   public static final TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 
   // Right shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
@@ -49,7 +50,7 @@ public class ShooterConstants {
   public static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
 
   public static Voltage getShooterIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(SHOOTER_INTAKE_PREFERENCE_NT, 5));
+    return Volts.of(Preferences.getDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
@@ -57,7 +58,7 @@ public class ShooterConstants {
   }
 
   public static Voltage getKickerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(KICKER_INTAKE_PREFERENCE_NT, 3));
+    return Volts.of(Preferences.getDouble(KICKER_INTAKE_PREFERENCE_NT, 5));
   }
 
   public static Voltage getKickerOuttakeVoltage() {
