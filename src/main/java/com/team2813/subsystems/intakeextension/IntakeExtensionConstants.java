@@ -56,7 +56,8 @@ public class IntakeExtensionConstants {
     }
   }
 
-  // TODO: Migrate these conversion methods to a more suitable location than a Constants Class, such as the Extender Positions enum or IntakeExtension.java
+  // TODO: Migrate these conversion methods to a more suitable location than a Constants Class, such
+  // as the Extender Positions enum or IntakeExtension.java
 
   public static Angle toMotorSetpoint(ExtenderPositions position) {
     Logger.recordOutput("IntakeExtension/Setpoint", position);

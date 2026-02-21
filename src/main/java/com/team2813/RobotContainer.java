@@ -286,7 +286,6 @@ public class RobotContainer {
     return autoChooser.get();
   }
 
-
   private Rotation2d getBotToHub() {
     Pose2d hub;
     if (onRed()) {
