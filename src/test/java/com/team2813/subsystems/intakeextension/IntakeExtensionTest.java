@@ -1,11 +1,11 @@
 package com.team2813.subsystems.intakeextension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
-import edu.wpi.first.wpilibj.simulation.SimHooks;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,6 @@ public class IntakeExtensionTest {
 
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
     }
 
     assertEquals(
@@ -52,7 +51,6 @@ public class IntakeExtensionTest {
 
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
     }
 
     assertEquals(
@@ -70,13 +68,17 @@ public class IntakeExtensionTest {
 
     IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
 
+    // The intake should start at the retracted position, so the extender should be at position
+    assertTrue(intakeExtension.isExtenderAtPosition());
+
     // extend the intake
     intakeExtension.extend();
+    // With new setpoint set by extend(), the extender should no longer be at position.
+    assertFalse(intakeExtension.isExtenderAtPosition());
 
     // run periodic at the equivalent of 50 cycles (1 second) to let the intake reach the setpoint
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(0.02);
     }
 
     assertTrue(intakeExtension.isExtenderAtPosition());

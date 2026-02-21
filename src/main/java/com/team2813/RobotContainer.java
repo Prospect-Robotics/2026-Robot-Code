@@ -9,7 +9,6 @@ package com.team2813;
 
 import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
-import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
@@ -18,7 +17,6 @@ import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
 import com.team2813.subsystems.drive.GyroIOPigeon2;
-import com.team2813.subsystems.drive.GyroIOSim;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
@@ -37,7 +35,6 @@ import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
 import com.team2813.subsystems.vision.*;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -48,9 +45,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.BooleanSupplier;
-import org.ironmaple.simulation.SimulatedArena;
-import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.photonvision.simulation.VisionSystemSim;
 
@@ -63,8 +57,6 @@ import org.photonvision.simulation.VisionSystemSim;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private SwerveDriveSimulation driveSimulation = null;
-
   private final Hopper hopper;
   private final Vision vision;
 
@@ -100,8 +92,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.frontRight(), tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.backLeft(), tunerConstants),
-                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants),
-                (robotPose) -> {});
+                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants));
 
         hopper = new Hopper(new HopperIOReal());
 
@@ -110,11 +101,14 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 () -> {},
                 new VisionIOPhotonVision(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
+                    VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT),
                 new VisionIOPhotonVision(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
+                    VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT),
                 new VisionIOPhotonVision(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
+                    VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
+                    VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
@@ -123,28 +117,14 @@ public class RobotContainer {
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
-        driveSimulation =
-            new SwerveDriveSimulation(
-                Drive.createMapleSimConfig(tunerConstants), new Pose2d(12, 2, new Rotation2d()));
-        SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
-
         drive =
             new Drive(
                 tunerConstants,
-                new GyroIOSim(driveSimulation.getGyroSimulation()),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[0],
-                    Amps.of(tunerConstants.frontLeft().SlipCurrent)),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[1],
-                    Amps.of(tunerConstants.frontRight().SlipCurrent)),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[2],
-                    Amps.of(tunerConstants.backLeft().SlipCurrent)),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[3],
-                    Amps.of(tunerConstants.backRight().SlipCurrent)),
-                driveSimulation::setSimulationWorldPose);
+                new GyroIO() {},
+                new ModuleIOSim(tunerConstants.frontLeft()),
+                new ModuleIOSim(tunerConstants.frontRight()),
+                new ModuleIOSim(tunerConstants.backLeft()),
+                new ModuleIOSim(tunerConstants.backRight()));
 
         hopper = new Hopper(new HopperIOSim());
 
@@ -156,19 +136,16 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 () -> visionSim.update(drive.getPose()),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_LEFT_CAM,
-                    drive::getPose,
+                    VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT,
                     visionSim),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_RIGHT_CAM,
-                    drive::getPose,
+                    VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT,
                     visionSim),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_MID_CAM,
-                    drive::getPose,
+                    VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
+                    VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT,
                     visionSim));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
@@ -186,8 +163,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
-                new ModuleIO() {},
-                (robotPose) -> {});
+                new ModuleIO() {});
 
         hopper = new Hopper(new HopperIO() {});
 
@@ -317,39 +293,5 @@ public class RobotContainer {
       hub = BLUE_HUB_POSITION;
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
-  }
-
-  /**
-   * Resets the simulation.
-   *
-   * <p>Borrowed from
-   * https://github.com/Pearadox/2025RobotCode/blob/main/src/main/java/frc/robot/RobotContainer.java#L394.
-   */
-  public void resetSimulation() {
-    if (Constants.currentMode != Constants.Mode.SIM) return;
-
-    drive.setPose(new Pose2d(12, 2, new Rotation2d()));
-    SimulatedArena.getInstance().resetFieldForAuto();
-    // AlgaeHandler.getInstance().reset();
-  }
-
-  /**
-   * Updates Simulated Arena; to be called from Robot.simulationPeriodic()
-   *
-   * <p>Borrowed from
-   * https://github.com/Pearadox/2025RobotCode/blob/main/src/main/java/frc/robot/RobotContainer.java#L402
-   */
-  public void displaySimFieldToAdvantageScope() {
-    if (Constants.currentMode != Constants.Mode.SIM) return;
-
-    SimulatedArena.getInstance().simulationPeriodic();
-    // The pose by maplesim, including collisions with the field.
-    // See https://www.chiefdelphi.com/t/simulated-robot-goes-through-walls-with-maplesim/508663.
-    Logger.recordOutput(
-        "FieldSimulation/Pose", new Pose3d(driveSimulation.getSimulatedDriveTrainPose()));
-    Logger.recordOutput(
-        "FieldSimulation/Fuel", SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
-    // Logger.recordOutput(
-    //         "FieldSimulation/Staged Algae", AlgaeHandler.getInstance().periodic());
   }
 }
