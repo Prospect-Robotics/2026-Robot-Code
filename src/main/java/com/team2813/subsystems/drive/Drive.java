@@ -17,7 +17,6 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
-import com.team2813.Constants;
 import com.team2813.Constants.Mode;
 import com.team2813.util.LocalADStarAK;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
@@ -65,6 +64,8 @@ public class Drive extends SubsystemBase {
   private static final double WHEEL_COF = 1.2;
 
   static final Lock odometryLock = new ReentrantLock();
+
+  private final Mode mode;
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
@@ -120,12 +121,14 @@ public class Drive extends SubsystemBase {
 
   // TODO: Remove the last four params, and replace with a Function<SwerveModuleConstants, ModueIO>
   public Drive(
+      Mode mode,
       AllTunerConstants tunerConstants,
       GyroIO gyroIO,
       ModuleIO flModuleIO,
       ModuleIO frModuleIO,
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
+    this.mode = mode;
     this.allTunerConstants = tunerConstants;
     this.gyroIO = gyroIO;
     modules[0] = new Module(flModuleIO, 0, tunerConstants.frontLeft());
@@ -249,7 +252,7 @@ public class Drive extends SubsystemBase {
     }
 
     // Update gyro alert
-    gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+    gyroDisconnectedAlert.set(!gyroInputs.connected && mode != Mode.SIM);
   }
 
   /**
