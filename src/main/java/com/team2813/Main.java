@@ -23,11 +23,6 @@ public final class Main {
    * <p>If you change your main robot class, change the parameter type.
    */
   public static void main(String... args) {
-    logEnv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE");
     RobotBase.startRobot(Robot::new);
-  }
-
-  private static void logEnv(String env) {
-    System.out.printf("%s=\"%s\"%n", env, System.getenv(env));
   }
 }
