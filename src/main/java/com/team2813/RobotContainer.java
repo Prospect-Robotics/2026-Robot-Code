@@ -266,8 +266,13 @@ public class RobotContainer {
             (new StartEndCommand(
                     intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
                 .until(extensionInterruptionCondition));
+
     // Stop Pos
     operatorController.y().onTrue(new InstantCommand(drive::stopWithX));
+
+    // Feeder controls
+    operatorController.rightTrigger().whileTrue(hopper.intakeCommand());
+    operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
