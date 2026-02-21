@@ -9,8 +9,8 @@ import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
 
 public class HopperIOReal implements HopperIO {
-  private final TalonFX mainRollerMotor; // Right magazine motor.
-  private final TalonFX followerRollerMotor; // Left magazine motor.
+  private final TalonFX mainRollerMotor; // Top magazine motor.
+  private final TalonFX followerRollerMotor; // Bottom magazine motor.
 
   private final TalonFX feederMotor; // Runs the indexer.
 
