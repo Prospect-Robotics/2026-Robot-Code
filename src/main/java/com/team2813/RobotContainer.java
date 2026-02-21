@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -212,43 +213,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Drive commands
-    // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX()));
-
-    driveController
-        .y()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -driveController.getLeftY(),
-                () -> -driveController.getLeftX(),
-                this::getBotToHub));
-
-    // Reset robot orientation, but keeps its position on the field.
-    driveController
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
-                }));
-
-    // Feeder and Vectoring Bindings
-    driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
-
-    // Shooter Bindings
-    driveController.leftTrigger().whileTrue(shooter.intakeCommand());
-    driveController.rightTrigger().whileTrue(shooter.outakeCommand());
-
-    // Intake Roller Bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    // Operator controls
+    // Operator Intake roller Bindings
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
@@ -275,6 +241,39 @@ public class RobotContainer {
             (new StartEndCommand(
                     intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
                 .until(extensionInterruptionCondition));
+
+    // Stop Pos
+    operatorController.y().onTrue(new InstantCommand(drive::stopWithX));
+
+    // Feeder controls
+    operatorController.rightTrigger().whileTrue(hopper.intakeCommand());
+    operatorController.povLeft().whileTrue(hopper.outtakeCommand());
+
+    // Driver controls
+    // Default command, normal field-relative drive
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX()));
+
+    // Driver intake roller bindings
+    driveController
+        .rightBumper()
+        .whileTrue(new ParallelCommandGroup(intakeRoller.intakeCommand(), hopper.intakeCommand()));
+
+    // Operator intake roller bindings.
+    operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
+
+    // Reset robot orientation, but keeps its position on the field.
+    driveController
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+                }));
   }
 
   /**
