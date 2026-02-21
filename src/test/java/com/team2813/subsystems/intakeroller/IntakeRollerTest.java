@@ -77,11 +77,13 @@ public class IntakeRollerTest {
     DriverStationSim.notifyNewData();
 
     // run the stop command for a few cycles
+    SimHooks.pauseTiming();
     intakeRoller.stop();
     for (int i = 0; i < 50; i++) {
       intakeRoller.periodic();
       SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
+    SimHooks.resumeTiming();
 
     // verify that the motor output voltage is set to 0
     assertEquals(0, intakeRoller.getIntakeRollerVoltage(), 0.01);
