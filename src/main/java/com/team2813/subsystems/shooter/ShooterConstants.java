@@ -3,6 +3,7 @@ package com.team2813.subsystems.shooter;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -35,7 +36,13 @@ public class ShooterConstants {
   public static final TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withSlot0(
+              new Slot0Configs()
+                  .withKS(0.079361)
+                  .withKV(0.018418)
+                  .withKA(0.0012587)
+                  .withKP(1.9106e-9));
 
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
