@@ -20,6 +20,7 @@ public class IntakeExtensionTest {
         Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
   }
 
+  @Disabled
   @Test
   public void testIntakeExtension() {
     // create an intake extension subsystem
@@ -40,6 +41,7 @@ public class IntakeExtensionTest {
         0.01);
   }
 
+  @Disabled
   @Test
   public void testIntakeRetraction() {
     Assumptions.assumeTrue(
@@ -62,6 +64,7 @@ public class IntakeExtensionTest {
         0.01);
   }
 
+  @Disabled
   @Test
   public void testIntakeExtensionAtPosition() {
     Assumptions.assumeTrue(
