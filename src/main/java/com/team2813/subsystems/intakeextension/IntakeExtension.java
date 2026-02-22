@@ -6,7 +6,7 @@ import static edu.wpi.first.units.Units.*;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -61,6 +61,19 @@ public class IntakeExtension extends SubsystemBase {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+  }
+
+  /**
+   * @return
+   */
+  public Command walleMode() {
+    return new RepeatCommand(
+            new SequentialCommandGroup(
+                    new StartEndCommand(this::retract, this::stopMotor, this)
+                        .until(this::isExtenderAtPosition),
+                    new StartEndCommand(this::extend, this::stopMotor, this))
+                .until(this::isExtenderAtPosition))
+        .finallyDo(this::stopMotor);
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {

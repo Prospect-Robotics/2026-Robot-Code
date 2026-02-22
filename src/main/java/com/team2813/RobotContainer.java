@@ -241,6 +241,8 @@ public class RobotContainer {
                     intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
                 .until(extensionInterruptionCondition));
 
+    operatorController.povUp().whileTrue(intakeExtension.walleMode());
+
     // Stop Pos
     operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
 
