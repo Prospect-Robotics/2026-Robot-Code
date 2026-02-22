@@ -14,21 +14,21 @@ public class HopperConstants {
 
   static {
     // Roller motors.
-    Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 5);
-    Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -5);
+    Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 8);
+    Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8);
 
     // Feeder/Vectoring motors.
-    Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 3);
-    Preferences.initFloat("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -3);
+    Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 8);
+    Preferences.initFloat("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -8);
   }
 
   // Roller Motor Configs
   public static Voltage getRollerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/ROLLER_INTAKE_VOLTAGE", 5)); // 5 is the backup.
+    return Volts.of(Preferences.getDouble("Hopper/ROLLER_INTAKE_VOLTAGE", 8)); // 5 is the backup.
   }
 
   public static Voltage getRollerOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/ROLLER_OUTTAKE_VOLTAGE", -5));
+    return Volts.of(Preferences.getDouble("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8));
   }
 
   public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
@@ -40,11 +40,11 @@ public class HopperConstants {
 
   // Feeder Motor Configs
   public static Voltage getFeederIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_INTAKE_VOLTAGE", 3));
+    return Volts.of(Preferences.getDouble("Hopper/FEEDER_INTAKE_VOLTAGE", 8));
   }
 
   public static Voltage getFeederOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -3));
+    return Volts.of(Preferences.getDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -8));
   }
 
   public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =

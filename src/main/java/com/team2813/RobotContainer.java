@@ -29,10 +29,7 @@ import com.team2813.subsystems.intakeroller.IntakeRoller;
 import com.team2813.subsystems.intakeroller.IntakeRollerIO;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOSim;
-import com.team2813.subsystems.shooter.Shooter;
-import com.team2813.subsystems.shooter.ShooterIO;
-import com.team2813.subsystems.shooter.ShooterIOReal;
-import com.team2813.subsystems.shooter.ShooterIOSim;
+import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -246,7 +243,7 @@ public class RobotContainer {
     operatorController.y().onTrue(new InstantCommand(drive::stopWithX));
 
     // Feeder controls
-    operatorController.rightTrigger().whileTrue(hopper.intakeCommand());
+    operatorController.rightTrigger().whileTrue(shooter.intakeCommand());
     operatorController.povLeft().whileTrue(hopper.outtakeCommand());
 
     // Driver controls
@@ -261,7 +258,14 @@ public class RobotContainer {
     // Driver intake roller bindings
     driveController
         .rightBumper()
-        .whileTrue(new ParallelCommandGroup(intakeRoller.intakeCommand(), hopper.intakeCommand()));
+        .whileTrue(
+            new ParallelCommandGroup(
+                intakeRoller.intakeCommand(),
+                hopper.intakeCommand(),
+                new StartEndCommand(
+                    () -> shooter.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()),
+                    shooter::stop,
+                    shooter)));
 
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());

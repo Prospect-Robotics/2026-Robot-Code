@@ -2,6 +2,7 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -12,6 +13,7 @@ public interface ShooterIO {
   @AutoLog
   class ShooterIOInputs {
     public Voltage mainShooterMotorVoltage = Volts.of(0);
+    public Angle mainShooterMotorAngle = Rotations.of(0);
     public AngularVelocity mainShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current mainShooterMotorCurrent = Amps.of(0);
 

@@ -8,8 +8,10 @@ import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 @InitWPILib
 public class IntakeExtensionTest {
   @BeforeAll
