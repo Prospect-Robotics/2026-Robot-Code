@@ -2,7 +2,6 @@ package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.Rotations;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.ChassisReference;
@@ -69,23 +68,5 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
         MOTOR_DIRECTION
             * extenderSimPositionsInM
             * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-
-    System.out.println(
-        "Motor Voltage: "
-            + String.format("%5.2f", extenderMotorSimState.getMotorVoltage())
-            + ", Motor position (rot): "
-            + String.format("%5.2f", extenderMotor.getPosition().getValue().in(Rotations))
-            + ", Elev Sim Position (m): "
-            + String.format("%8.5f", extenderSimPositionsInM)
-            + ", Elev Sim Velocity (m/s): "
-            + String.format("%5.2f", extenderSim.getVelocityMetersPerSecond())
-            + ", Gear ratio: "
-            + IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS
-            + ", MMM: "
-            + String.format(
-                "%5.2f",
-                MOTOR_DIRECTION
-                    * extenderSimPositionsInM
-                    * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS));
   }
 }

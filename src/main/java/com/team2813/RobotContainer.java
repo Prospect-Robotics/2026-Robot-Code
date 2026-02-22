@@ -20,7 +20,10 @@ import com.team2813.subsystems.drive.GyroIOPigeon2;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
-import com.team2813.subsystems.hopper.*;
+import com.team2813.subsystems.hopper.Hopper;
+import com.team2813.subsystems.hopper.HopperIO;
+import com.team2813.subsystems.hopper.HopperIOReal;
+import com.team2813.subsystems.hopper.HopperIOSim;
 import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIOReal;
@@ -33,7 +36,12 @@ import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
-import com.team2813.subsystems.vision.*;
+import com.team2813.subsystems.vision.Vision;
+import com.team2813.subsystems.vision.VisionConstants;
+import com.team2813.subsystems.vision.VisionIO;
+import com.team2813.subsystems.vision.VisionIOPhotonVision;
+import com.team2813.subsystems.vision.VisionIOPhotonVisionSim;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -218,7 +226,8 @@ public class RobotContainer {
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
+        new IntakeExtensionDefaultCommand(
+            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
