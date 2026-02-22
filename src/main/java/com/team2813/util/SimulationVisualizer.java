@@ -43,10 +43,12 @@ public class SimulationVisualizer {
    * to the robot center)
    */
   LoggedMechanismRoot2d intakeExtensionRoot =
-      intakeExtensionCanvas.getRoot("Intake Extension", 
-      1 + 0.34, // 1m is just the center of the mech2d canvas; 0.34m is the offset of hopper front from robot center
-      0.1  // placeholder value for now: 0.1m off robot base.
-      );
+      intakeExtensionCanvas.getRoot(
+          "Intake Extension",
+          1 + 0.34, // 1m is just the center of the mech2d canvas; 0.34m is the offset of hopper
+          // front from robot center
+          0.1 // placeholder value for now: 0.1m off robot base.
+          );
 
   /**
    * Ligament representing the intake extension, extending to the left from the root. Length is
