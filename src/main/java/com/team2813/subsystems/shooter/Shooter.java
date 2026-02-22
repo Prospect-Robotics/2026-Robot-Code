@@ -31,8 +31,11 @@ public class Shooter extends SubsystemBase {
   // Waits before starting the kicker to allow the shooter flywheel to get up to speed.
   public Command intakeCommand() {
     return new SequentialCommandGroup(
-            new InstantCommand(
-                () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
+            new ParallelCommandGroup(
+                new InstantCommand(
+                    () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
+                new InstantCommand(
+                    () -> io.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()))),
             new WaitCommand(Seconds.of(2)),
             new StartEndCommand(
                 () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
@@ -64,7 +67,7 @@ public class Shooter extends SubsystemBase {
                 null,
                 null,
                 null,
-                (state) -> Logger.recordOutput("Shooter/SysIDTestState", state.toString())),
+                (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setShooterMotorVoltage, null, this));
     // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than
     // io::setShooterMotorVoltage.
@@ -74,6 +77,10 @@ public class Shooter extends SubsystemBase {
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+  }
+
+  public void setKickerMotorVoltage(Voltage kickerMotorVoltage) {
+    io.setKickerMotorVoltage(kickerMotorVoltage);
   }
 
   // Used for auto calculated motor speed.
