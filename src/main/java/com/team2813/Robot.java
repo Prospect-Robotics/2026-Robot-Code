@@ -162,7 +162,5 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {
-    Logger.recordOutput("RobotPose", new Pose2d());
-  }
+  public void simulationPeriodic() {}
 }
