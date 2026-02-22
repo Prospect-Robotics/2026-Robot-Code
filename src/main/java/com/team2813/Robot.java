@@ -10,8 +10,8 @@ package com.team2813;
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.util.SimulationVisualizer;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -155,7 +155,10 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+    // Do not spam the logs with "Button x on port y not available" log messages.
+    DriverStation.silenceJoystickConnectionWarning(true);
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
