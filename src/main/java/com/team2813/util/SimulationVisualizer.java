@@ -1,6 +1,6 @@
 package com.team2813.util;
 
-import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,15 +36,17 @@ public class SimulationVisualizer {
   private Distance intakeExtensionPosition = Inches.of(0);
 
   /** The Mech2d Canvas to draw the intake on (Size of the robot in inches) */
-  LoggedMechanism2d intakeExtensionCanvas =
-      new LoggedMechanism2d(51.5, 30, new Color8Bit("#00FF00"));
+  LoggedMechanism2d intakeExtensionCanvas = new LoggedMechanism2d(2, 1, new Color8Bit("#008cff"));
 
   /**
    * Root node of the intake extension mechanism, located at the pivot point of the intake (relative
    * to the robot center)
    */
   LoggedMechanismRoot2d intakeExtensionRoot =
-      intakeExtensionCanvas.getRoot("Intake Extension", 15.067, 6.765);
+      intakeExtensionCanvas.getRoot("Intake Extension", 
+      1 + 0.34, // 1m is just the center of the mech2d canvas; 0.34m is the offset of hopper front from robot center
+      0.1  // placeholder value for now: 0.1m off robot base.
+      );
 
   /**
    * Ligament representing the intake extension, extending to the left from the root. Length is
@@ -54,10 +56,10 @@ public class SimulationVisualizer {
       intakeExtensionRoot.append(
           new LoggedMechanismLigament2d(
               "Intake Extension",
-              intakeExtensionPosition.magnitude(),
+              intakeExtensionPosition.in(Meters),
               0,
               10.0,
-              new Color8Bit("#FF0000")));
+              new Color8Bit("#ff9900")));
 
   /** Update the simulation visualizer with the current position of the intake extension. */
   public void periodic() {
@@ -75,8 +77,6 @@ public class SimulationVisualizer {
    */
   public void updateIntakeExtensionPosition(Distance position) {
     intakeExtensionPosition = position;
-    intakeExtensionLigament.setLength(
-        -intakeExtensionPosition.in(
-            Inches)); // Negative in order to make the ligament extend to the left
+    intakeExtensionLigament.setLength(intakeExtensionPosition.in(Meters));
   }
 }
