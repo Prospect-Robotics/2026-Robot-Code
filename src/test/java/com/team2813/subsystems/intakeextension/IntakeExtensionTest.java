@@ -1,23 +1,27 @@
 package com.team2813.subsystems.intakeextension;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
+import edu.wpi.first.hal.HAL;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+// import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
+// @Disabled
 @InitWPILib
 public class IntakeExtensionTest {
   @BeforeAll
   public static void verifyNotInReplayMode() {
     assertTrue(
         Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
+
+    assertTrue(HAL.initialize(500, 0)); // initialize the HAL, crash if failed
   }
 
   @Disabled
@@ -35,10 +39,12 @@ public class IntakeExtensionTest {
     }
 
     assertEquals(
-        intakeExtension.getSetpoint().magnitude(),
+        intakeExtension.getPosition().in(Rotations),
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT)
-            .magnitude(),
-        0.01);
+            .in(Rotations),
+        0.4);
+
+    intakeExtension.close();
   }
 
   @Disabled
@@ -57,11 +63,18 @@ public class IntakeExtensionTest {
       intakeExtension.periodic();
     }
 
+    System.out.println(
+        "Intake Motor Position: " + intakeExtension.getPosition().in(Rotations) + " rotations");
+    System.out.println(
+        "Intake Motor Setpoint: " + intakeExtension.getSetpoint().in(Rotations) + " rotations");
+
     assertEquals(
-        intakeExtension.getSetpoint().magnitude(),
+        intakeExtension.getPosition().in(Rotations),
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN)
-            .magnitude(),
-        0.01);
+            .in(Rotations),
+        0.4);
+
+    intakeExtension.close();
   }
 
   @Disabled
@@ -81,11 +94,28 @@ public class IntakeExtensionTest {
     // With new setpoint set by extend(), the extender should no longer be at position.
     assertFalse(intakeExtension.isExtenderAtPosition());
 
+    System.out.println(
+        "Intake Motor Position (rot): " + intakeExtension.getPosition().in(Rotations));
+    System.out.println(
+        "Intake Motor Setpoint (rot): " + intakeExtension.getSetpoint().in(Rotations));
+
     // run periodic at the equivalent of 50 cycles (1 second) to let the intake reach the setpoint
     for (int i = 0; i < 50; i++) {
+      System.out.print(
+          "Intake Motor Position (rot): "
+              + String.format("%5.2f", intakeExtension.getPosition().in(Rotations))
+              + ", ");
+
       intakeExtension.periodic();
     }
 
+    System.out.println(
+        "Intake Motor Position (rot): " + intakeExtension.getPosition().in(Rotations));
+    System.out.println(
+        "Intake Motor Setpoint (rot): " + intakeExtension.getSetpoint().in(Rotations));
+
     assertTrue(intakeExtension.isExtenderAtPosition());
+
+    intakeExtension.close();
   }
 }
