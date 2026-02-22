@@ -2,6 +2,9 @@ package com.team2813.util;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -24,6 +27,8 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
  */
 public class SimulationVisualizer {
 
+  private static final Angle INDEXER_PITCH_ANGLE =
+      Degrees.of(4.75); // Pitch down relative to y axis.
   private static final SimulationVisualizer instance = new SimulationVisualizer();
 
   private SimulationVisualizer() {}
@@ -67,6 +72,17 @@ public class SimulationVisualizer {
   public void periodic() {
     SmartDashboard.putData("Intake Extension Visualization", intakeExtensionCanvas);
     Logger.recordOutput("Intake Extension Visualization", intakeExtensionCanvas);
+
+    double x = intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
+    double z = -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
+
+    // Component Simulation for the 3D robot.
+    Logger.recordOutput(
+        "Component Positions",
+        new Pose3d[] {
+          // Hopper and indexer
+          new Pose3d(x, 0, z, new Rotation3d(0, 0, 0)),
+        });
   }
 
   /**
