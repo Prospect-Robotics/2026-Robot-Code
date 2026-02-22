@@ -27,7 +27,8 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
  */
 public class SimulationVisualizer {
 
-  private static final Angle INDEXER_PITCH_ANGLE = Degrees.of(4.75);  // Pitch down relative to y axis.
+  private static final Angle INDEXER_PITCH_ANGLE =
+      Degrees.of(4.75); // Pitch down relative to y axis.
   private static final SimulationVisualizer instance = new SimulationVisualizer();
 
   private SimulationVisualizer() {}
