@@ -48,11 +48,11 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
     Logger.processInputs("Kicker", replayedInputs);
   }
 
-  private void startShoot() {
+  private void shoot() {
     io.setMotorVoltage(Volts.of(shootVoltage));
   }
 
-  private void startResistFuel() {
+  private void resistFuel() {
     io.setMotorVoltage(Volts.of(resistFuelVoltage));
   }
 
@@ -66,8 +66,8 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
    *
    * @return The command to shoot fuel
    */
-  public Command shoot() {
-    return new StartEndCommand(this::startShoot, this::stop, this);
+  public Command shootCommand() {
+    return new StartEndCommand(this::shoot, this::stop, this);
   }
 
   /**
@@ -76,8 +76,8 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
    *
    * @return The command to resist fuel
    */
-  public Command resistFuel() {
-    return new StartEndCommand(this::startResistFuel, this::stop, this);
+  public Command resistFuelCommand() {
+    return new StartEndCommand(this::resistFuel, this::stop, this);
   }
 
   /**
