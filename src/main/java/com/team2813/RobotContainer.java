@@ -239,7 +239,7 @@ public class RobotContainer {
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
 
-    operatorController.leftTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
