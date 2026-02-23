@@ -14,6 +14,10 @@ import static edu.wpi.first.units.Units.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
 import com.team2813.commands.IntakeExtensionDefaultCommand;
+import com.team2813.subsystems.climb.Climb;
+import com.team2813.subsystems.climb.ClimbIO;
+import com.team2813.subsystems.climb.ClimbIOReal;
+import com.team2813.subsystems.climb.ClimbIOSim;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -66,6 +70,7 @@ public class RobotContainer {
 
   private final Hopper hopper;
   private final Vision vision;
+  private final Climb climb;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -118,6 +123,7 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
         shooter = new Shooter(new ShooterIOReal());
+        climb = new Climb(new ClimbIOReal());
         break;
 
       case SIM:
@@ -174,6 +180,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOSim());
 
+        climb = new Climb(new ClimbIOSim());
         break;
 
       default:
@@ -201,7 +208,7 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
-
+        climb = new Climb(new ClimbIO() {});
         break;
     }
 
