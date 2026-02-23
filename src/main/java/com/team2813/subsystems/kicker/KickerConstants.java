@@ -1,11 +1,14 @@
 package com.team2813.subsystems.kicker;
 
+import static edu.wpi.first.units.Units.KilogramSquareMeters;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
+import edu.wpi.first.units.measure.MomentOfInertia;
 
 class KickerConstants {
-  static final double KICKER_SIM_MOI = 0.0000535531; // in kilograms*meters squared.
+  static final MomentOfInertia KICKER_SIM_MOI = KilogramSquareMeters.of(0.0000535531);
   static final String SHOOT_PREFERENCE_NT = "Kicker/SHOOT_VOLTAGE";
   static final String RESIST_FUEL_PREFERENCE_NT = "Kicker/RESIST_FUEL_VOLTAGE";
 

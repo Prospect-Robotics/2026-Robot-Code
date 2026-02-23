@@ -1,5 +1,6 @@
 package com.team2813.subsystems.kicker;
 
+import static edu.wpi.first.units.Units.KilogramSquareMeters;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -20,7 +21,8 @@ public class KickerIOSim implements KickerIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(1),
-                KickerConstants.KICKER_SIM_MOI, // "Moment of Inertia" taken from OnShape.
+                KickerConstants.KICKER_SIM_MOI.in(
+                    KilogramSquareMeters), // "Moment of Inertia" taken from OnShape.
                 KickerConstants.KICKER_MOTOR_TO_FLYWHEEL_GEARING),
             DCMotor.getKrakenX60(1));
   }
