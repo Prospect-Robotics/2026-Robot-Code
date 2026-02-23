@@ -251,7 +251,14 @@ public class RobotContainer {
             () -> -driveController.getRightX()));
 
     // Driver intake roller bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    driveController
+        .rightBumper()
+        .whileTrue(
+            new ParallelCommandGroup(
+                intakeRoller.intakeCommand(),
+                new StartEndCommand(
+                        intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
+                    .until(extensionInterruptionCondition)));
 
     // hub shot command
     driveController
