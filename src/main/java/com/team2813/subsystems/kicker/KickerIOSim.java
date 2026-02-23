@@ -47,6 +47,7 @@ public class KickerIOSim implements KickerIO {
     TalonFXSimState simState = motor.getSimState();
     simState.setRotorAcceleration(flywheelSim.getAngularAcceleration());
     simState.setRotorVelocity(flywheelSim.getAngularVelocity());
+    simState.setSupplyVoltage(Volts.of(12));
   }
 
   @Override
