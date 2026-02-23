@@ -3,6 +3,8 @@ package com.team2813.subsystems.intakeextension;
 import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.toIntakeExtensionPosition;
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.team2813.Constants;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
@@ -14,13 +16,19 @@ import org.littletonrobotics.junction.Logger;
  * pinion gear.
  */
 public class IntakeExtension extends SubsystemBase {
+  private final TalonFX extenderMotor;
   private final IntakeExtensionIO io;
   private final IntakeExtensionIOInputsAutoLogged replayedInputs =
       new IntakeExtensionIOInputsAutoLogged();
   private boolean extenderAtPosition = true;
 
   public IntakeExtension(IntakeExtensionIO io) {
+    extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);
+    extenderMotor.getConfigurator().apply(IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG);
+    extenderMotor.setPosition(Rotation.of(0)); // intake should be fully retracted on bootup
+
     this.io = io;
+    this.io.setMotor(extenderMotor);
   }
 
   @Override
