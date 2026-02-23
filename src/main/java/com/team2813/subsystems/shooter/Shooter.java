@@ -27,29 +27,6 @@ public class Shooter extends SubsystemBase {
     io.setMotorVoltages(Volts.of(0), Volts.of(0));
   }
 
-  // Waits before starting the kicker to allow the shooter flywheel to get up to speed.
-  //  public Command intakeCommand() {
-  //    return new SequentialCommandGroup(
-  //            new ParallelCommandGroup(
-  //                new InstantCommand(
-  //                    () ->
-  // io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
-  //                new InstantCommand(
-  //                    () ->
-  // io.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()))),
-  //            new WaitCommand(Seconds.of(2)),
-  //            new StartEndCommand(
-  //                () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
-  //                this::stop,
-  //                this))
-  //        .finallyDo(this::stop);
-  //    /*
-  //    Note: I still use StartEndCommand because it only calls the first Runnable once,
-  //     rather than repeatedly like RunCommand.
-  //     Thus I believe it will save on hardware calls, but it could just be over engineering.
-  //     */
-  //  }\
-
   public Command spoolShooterInstantIntakeCommand() {
     return new InstantCommand(
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()), this);
