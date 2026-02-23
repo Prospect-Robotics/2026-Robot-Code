@@ -14,7 +14,7 @@ public class RobotContainerTest {
     Assumptions.assumeTrue(
         Constants.simMode == Constants.Mode.SIM, "The sim mode must be sim to run tests!");
     // create a robot container
-    RobotContainer robotContainer = new RobotContainer(AllDrivetrains.drWomp());
+    RobotContainer robotContainer = new RobotContainer(AllDrivetrains.rebuiltDrivetrain());
     // Run one periodic cycle
     tester.runUntilComplete(Commands.none());
   }

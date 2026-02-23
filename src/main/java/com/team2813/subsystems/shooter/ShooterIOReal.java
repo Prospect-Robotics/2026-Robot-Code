@@ -33,6 +33,7 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public void updateState(ShooterIOInputs inputs) {
     inputs.mainShooterMotorVoltage = mainShooterMotor.getMotorVoltage().getValue();
+    inputs.mainShooterMotorAngle = mainShooterMotor.getPosition().getValue();
     inputs.mainShooterMotorRotPerSec = mainShooterMotor.getVelocity().getValue();
     inputs.mainShooterMotorCurrent = mainShooterMotor.getStatorCurrent().getValue();
 

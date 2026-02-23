@@ -22,13 +22,9 @@ public interface HopperIO {
     public Current followerRollerMotorCurrent = Amps.of(0);
 
     // Feeder/Vector
-    public Voltage rightFeederVoltage = Volts.of(0);
-    public AngularVelocity rightFeederRPS = RotationsPerSecond.of(0);
-    public Current rightFeederCurrent = Amps.of(0);
-
-    public Voltage leftFeederVoltage = Volts.of(0);
-    public AngularVelocity leftFeederRPS = RotationsPerSecond.of(0);
-    public Current leftFeederCurrent = Amps.of(0);
+    public Voltage feederVoltage = Volts.of(0);
+    public AngularVelocity feederRPS = RotationsPerSecond.of(0);
+    public Current feederCurrent = Amps.of(0);
   }
 
   /**
@@ -41,10 +37,7 @@ public interface HopperIO {
 
   /**
    * @param rollerVoltage Voltage to apply to the roller motor.
-   * @param rightFeederVoltage Voltage to apply to the right feeder motor.
-   * @param leftFeederVoltage Voltage to apply to the left feeder motor.
-   *     <p>Motor side (left/right) is based on when robot is viewed from behind).
+   * @param feederVoltage Voltage to apply to the feeder motor.
    */
-  default void setMotorVoltage(
-      Voltage rollerVoltage, Voltage rightFeederVoltage, Voltage leftFeederVoltage) {}
+  default void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {}
 }
