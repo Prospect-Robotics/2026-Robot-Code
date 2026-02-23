@@ -35,6 +35,9 @@ public class SimulationVisualizer {
   /** The position of the intake extension. Default at 0 (fully retracted) */
   private Distance intakeExtensionPosition = Inches.of(0);
 
+  private Distance outerClimbPosition = Inches.of(0);
+  private Distance innerClimbPosition = Inches.of(0);
+
   /** The Mech2d Canvas to draw the intake on (Size of the robot in inches) */
   LoggedMechanism2d intakeExtensionCanvas =
       new LoggedMechanism2d(51.5, 30, new Color8Bit("#00FF00"));
@@ -80,7 +83,7 @@ public class SimulationVisualizer {
             Inches)); // Negative in order to make the ligament extend to the left
   }
 
-  public void updateElevatorHeight(Distance of) {
+  public void updateElevatorHeight(Distance elevatorHeight) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'updateElevatorHeight'");
   }

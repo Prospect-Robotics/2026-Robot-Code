@@ -24,17 +24,17 @@ public class ClimbIOReal implements ClimbIO {
   @Override
   public void updateState(ClimbIOInputs inputs) {
 
-    inputs.leftCarriagePositionInches = getInnerCarriagePosition().in(Inches);
-    inputs.leftMotorRotations = leftMotor.getPosition().getValueAsDouble();
-    inputs.leftMotorVelocityRotsPerSecond = leftMotor.getVelocity().getValueAsDouble();
-    inputs.leftMotorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
-    inputs.leftMotorVoltage = leftMotor.getMotorVoltage().getValueAsDouble();
+    inputs.innerCarriagePositionInches = getInnerCarriagePosition().in(Inches);
+    inputs.innerMotorRotations = leftMotor.getPosition().getValueAsDouble();
+    inputs.innerMotorVelocityRotsPerSecond = leftMotor.getVelocity().getValueAsDouble();
+    inputs.innerMotorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
+    inputs.innerMotorVoltage = leftMotor.getMotorVoltage().getValueAsDouble();
 
-    inputs.rightCarriagePositionInches = getOuterCarriagePosition().in(Inches);
-    inputs.rightMotorRotations = rightMotor.getPosition().getValueAsDouble();
-    inputs.rightMotorVelocityRotsPerSecond = rightMotor.getVelocity().getValueAsDouble();
-    inputs.rightMotorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
-    inputs.rightMotorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();
+    inputs.outerCarriagePositionInches = getOuterCarriagePosition().in(Inches);
+    inputs.outerMotorRotations = rightMotor.getPosition().getValueAsDouble();
+    inputs.outerMotorVelocityRotsPerSecond = rightMotor.getVelocity().getValueAsDouble();
+    inputs.outerMotorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
+    inputs.outerMotorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();
   }
 
   @Override

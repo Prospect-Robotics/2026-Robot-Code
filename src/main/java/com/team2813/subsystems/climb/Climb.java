@@ -60,7 +60,7 @@ public class Climb extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     com.team2813.subsystems.SimulationVisualizer.getInstance()
-        .updateElevatorHeight(Inches.of(replayedInputs.leftCarriagePositionInches));
+        .updateElevatorHeight(Inches.of(replayedInputs.innerCarriagePositionInches));
   }
 
   public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {

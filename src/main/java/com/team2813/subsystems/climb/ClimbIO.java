@@ -11,19 +11,19 @@ public interface ClimbIO {
 
   @AutoLog
   class ClimbIOInputs {
-    public double leftCarriagePositionInches = 0.0;
+    public double innerCarriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
-    public double leftMotorRotations = 0.0;
-    public double leftMotorVelocityRotsPerSecond = 0.0;
-    public double leftMotorCurrent = 0.0;
-    public double leftMotorVoltage = 0.0;
+    public double innerMotorRotations = 0.0;
+    public double innerMotorVelocityRotsPerSecond = 0.0;
+    public double innerMotorCurrent = 0.0;
+    public double innerMotorVoltage = 0.0;
 
-    public double rightCarriagePositionInches = 0.0;
+    public double outerCarriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
-    public double rightMotorRotations = 0.0;
-    public double rightMotorVelocityRotsPerSecond = 0.0;
-    public double rightMotorCurrent = 0.0;
-    public double rightMotorVoltage = 0.0;
+    public double outerMotorRotations = 0.0;
+    public double outerMotorVelocityRotsPerSecond = 0.0;
+    public double outerMotorCurrent = 0.0;
+    public double outerMotorVoltage = 0.0;
   }
 
   /**
