@@ -13,7 +13,7 @@ public class RobotContainerTest {
   @Test
   public void canCreateRobotAndRunPeriodic(CommandTester tester) {
     // create a robot container
-    RobotContainer robotContainer = new RobotContainer(AllDrivetrains.drWomp());
+    RobotContainer robotContainer = new RobotContainer(AllDrivetrains.rebuiltDrivetrain());
     // Run one periodic cycle
     tester.runUntilComplete(Commands.none());
   }

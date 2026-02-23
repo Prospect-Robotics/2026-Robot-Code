@@ -64,13 +64,11 @@ public final class Constants {
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.
   // Roller Motors. Aliases: Magazine motors
-  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Right roller motor.
-  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 22; // Left roller motor.
+  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Top roller motor.
+  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 15; // Bottom roller motor.
 
-  // When robot front is facing away, this is the right feeder motor.
   // Feeder Motors. Aliases: Vectoring motors
-  public static final int LEFT_FEEDER_MOTOR_ID = 23;
-  public static final int RIGHT_FEEDER_MOTOR_ID = 24;
+  public static final int FEEDER_MOTOR_ID = 24;
 
   // Motor runs the robot intake.
   public static final int INTAKE_MOTOR_CAN_ID = 26;
@@ -80,8 +78,8 @@ public final class Constants {
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.
-  public static final int MAIN_SHOOTER_MOTOR_ID = 19; // Left shooter motor.
-  public static final int FOLLOWER_SHOOTER_MOTOR_ID = 20; // Right shooter motor.
+  public static final int MAIN_SHOOTER_MOTOR_ID = 19; // Right shooter motor.
+  public static final int FOLLOWER_SHOOTER_MOTOR_ID = 20; // Left shooter motor.
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;

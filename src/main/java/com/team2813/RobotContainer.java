@@ -34,6 +34,7 @@ import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
 import com.team2813.subsystems.vision.*;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -212,48 +213,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Drive commands
-    // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX()));
-
-    driveController
-        .y()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -driveController.getLeftY(),
-                () -> -driveController.getLeftX(),
-                this::getBotToHub));
-
-    // Reset robot orientation, but keeps its position on the field.
-    driveController
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
-                }));
-
-    // Feeder and Vectoring Bindings
-    driveController.leftBumper().onTrue(hopper.intakeCommand()).onFalse(hopper.stopCommand());
-    driveController.rightBumper().onTrue(hopper.outtakeCommand()).onFalse(hopper.stopCommand());
-
-    // Shooter Bindings
-    driveController.leftTrigger().whileTrue(shooter.intakeCommand());
-    driveController.rightTrigger().whileTrue(shooter.outakeCommand());
-
-    // Intake Roller Bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
-    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
+    // Operator controls
+    // Operator Intake roller Bindings
+    operatorController.leftBumper().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
+        new IntakeExtensionDefaultCommand(
+            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
@@ -263,18 +230,52 @@ public class RobotContainer {
                     > 0.3); // Or the operator interrupts by moving the left joystick left/right.
 
     operatorController
-        .a()
+        .leftStick()
         .onTrue(
             (new StartEndCommand(
                     intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
                 .until(extensionInterruptionCondition));
 
     operatorController
-        .b()
+        .rightStick()
         .onTrue(
             (new StartEndCommand(
                     intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
                 .until(extensionInterruptionCondition));
+
+    // Stop Pos
+    operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
+
+    // Feeder controls
+    operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
+    operatorController.povLeft().whileTrue(hopper.intakeCommand());
+
+    // Operator intake roller bindings.
+    operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
+
+    // Driver controls
+    // Default command, normal field-relative drive
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX()));
+
+    // Driver intake roller bindings
+    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+
+    // hub shot command
+    driveController.rightTrigger().whileTrue(shooter.intakeCommand());
+
+    // Reset robot orientation, but keeps its position on the field.
+    driveController
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+                }));
   }
 
   /**

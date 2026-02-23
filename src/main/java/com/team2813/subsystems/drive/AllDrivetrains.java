@@ -14,11 +14,13 @@ public class AllDrivetrains {
   private static final Map<String, Supplier<AllTunerConstants>> SERIAL_NUMBER_TO_TUNER_CONSTANTS =
       Map.of(
           SIMULATOR_SERIAL_NUM,
-          AllDrivetrains::defaultDrivetrain,
+          AllDrivetrains::rebuiltDrivetrain,
           DR_WOMP_SERIAL_NUM,
-          AllDrivetrains::drWomp);
+          AllDrivetrains::drWompDrivetrain,
+          REBUILT_SERIAL_NUM,
+          AllDrivetrains::rebuiltDrivetrain);
 
-  public static AllTunerConstants drWomp() {
+  private static AllTunerConstants drWompDrivetrain() {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "Dr. Womp",
@@ -32,7 +34,7 @@ public class AllDrivetrains {
     return robotConstants;
   }
 
-  private static AllTunerConstants defaultDrivetrain() {
+  public static AllTunerConstants rebuiltDrivetrain() {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "REBUILT",
@@ -54,7 +56,7 @@ public class AllDrivetrains {
     if (tunerConstantsSupplier == null) {
       DriverStation.reportError(
           String.format("no tuner constants for serial number '%s'", sNumber), false);
-      return defaultDrivetrain();
+      return rebuiltDrivetrain();
     }
     AllTunerConstants tunerConstants = tunerConstantsSupplier.get();
     Logger.recordMetadata("Drivetrain", tunerConstants.drivetrainName());
