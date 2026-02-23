@@ -18,12 +18,29 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
- * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics sim) and "replay"
- * (log replay from a file).
+ * on a roboRIO.
  */
 public final class Constants {
-  public static final Mode simMode = Mode.SIM;
-  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  /**
+   * Gets the {@link Mode} that the robot should use in simulation. This method will never return
+   * {@link Mode#REAL}, as that is never appropriate for robot simulation. If the gradle {@code
+   * replayWatch} task is run, this will return {@link Mode#REPLAY} automatically.
+   *
+   * @return The {@link Mode} that the robot should use if it is being simulated.
+   */
+  static Mode getSimMode() {
+    // The environment variable "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE" is set to "true" when running
+    // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
+    // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
+    // not going to happen due to the long, specific name, and if it does, that is their problem :3.
+    if (Boolean.parseBoolean(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
+      return Mode.REPLAY;
+    } else {
+      return Mode.SIM;
+    }
+  }
+
+  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : getSimMode();
 
   public static double SIM_TIME_PERIOD =
       0.02; // Update physics simulations every 20ms (like the actual bot).
