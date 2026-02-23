@@ -82,8 +82,8 @@ public class Climb extends SubsystemBase {
   }
 
   public enum InnerClimbHeight {
-    UP(Inches.of(0.0)),
-    MIDDLE(Inches.of(0.0)),
+    UP(Inches.of(9.75)),
+    MIDDLE(Inches.of(4.875)),
     DOWN(Inches.of(0.0));
 
     public final Distance position;
@@ -104,8 +104,8 @@ public class Climb extends SubsystemBase {
   }
 
   public enum OuterClimbHeight {
-    UP(Inches.of(0.0)),
-    MIDDLE(Inches.of(0.0)),
+    UP(Inches.of(11)),
+    MIDDLE(Inches.of(5.5)),
     DOWN(Inches.of(0.0));
 
     public final Distance position;
