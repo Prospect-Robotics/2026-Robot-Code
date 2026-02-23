@@ -43,7 +43,6 @@ public class ShooterIOSim implements ShooterIO {
 
     mainShooterSimState.setSupplyVoltage(Volts.of(12));
     followerShooterSimState.setSupplyVoltage(Volts.of(12));
-    kickerSimState.setSupplyVoltage(Volts.of(12));
 
     inputs.mainShooterMotorVoltage = mainShooterMotor.getMotorVoltage().getValue();
     inputs.mainShooterMotorRotPerSec = mainShooterMotor.getVelocity().getValue();
@@ -57,7 +56,6 @@ public class ShooterIOSim implements ShooterIO {
   public void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
     shooterSim.update(Constants.SIM_TIME_PERIOD);
-    kickerSim.update(Constants.SIM_TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.

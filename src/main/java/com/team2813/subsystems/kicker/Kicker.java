@@ -2,6 +2,7 @@ package com.team2813.subsystems.kicker;
 
 import static edu.wpi.first.units.Units.Volts;
 
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +26,7 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
 
   private static String createAlertMessage(String preference) {
     return String.format(
-        "The %s was changed in preferences! Once you are done tuning, please update the code!",
+        "[KICKER] The %s was changed in preferences! Once you are done tuning, please update the code!",
         preference);
   }
 
@@ -81,10 +82,23 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   }
 
   /**
+   * Creates a command to run the kicker with a custom voltage. This command will run indefinitely,
+   * and must be canceled or interrupted to stop the kicker.
+   *
+   * @param voltageToRun The voltage to run the kicker at. Positive voltage runs the kicker in the
+   *     direction of shooting.
+   * @return A command to run the kicker at the desired voltage.
+   */
+  public Command customVoltageCommand(Voltage voltageToRun) {
+    return new StartEndCommand(() -> io.setMotorVoltage(voltageToRun), this::stop, this);
+  }
+
+  /**
    * Refresh all values from preferences. This will also put alerts onto NetworkTables if the value
    * from preferences does not match the value in code to encourage keeping the code up-to-date.
    */
-  public void updatePreferences() {
+  // note: if we update preferences somewhere else, we may need to change the visibility of this.
+  private void updatePreferences() {
     shootVoltage = Preferences.getDouble(KickerConstants.SHOOT_PREFERENCE_NT, shootVoltage);
     shootVoltageWarning.set(shootVoltage != KickerConstants.SHOOT_VOLTAGE);
     resistFuelVoltage =
