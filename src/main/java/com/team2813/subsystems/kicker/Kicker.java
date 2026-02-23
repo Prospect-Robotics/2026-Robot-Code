@@ -102,7 +102,7 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
 
   private static String createAlertMessage(String preference) {
     return String.format(
-        "[KICKER] The %s was changed in preferences! Once you are done tuning, please update the code!",
+        "[KICKER] The %s was changed in Preferences! Once you are done tuning, please update the code!",
         preference);
   }
 
