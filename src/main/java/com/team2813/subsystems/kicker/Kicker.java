@@ -24,12 +24,6 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   private final Alert resistFuelVoltageWarning =
       new Alert(createAlertMessage("resist fuel voltage"), Alert.AlertType.kInfo);
 
-  private static String createAlertMessage(String preference) {
-    return String.format(
-        "[KICKER] The %s was changed in preferences! Once you are done tuning, please update the code!",
-        preference);
-  }
-
   public Kicker(KickerIO io) {
     this.io = Objects.requireNonNull(io, "io");
     this.replayedInputs = new KickerIOInputsAutoLogged();
@@ -104,6 +98,12 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
     resistFuelVoltage =
         Preferences.getDouble(KickerConstants.RESIST_FUEL_PREFERENCE_NT, resistFuelVoltage);
     resistFuelVoltageWarning.set(resistFuelVoltage != KickerConstants.RESIST_FUEL_VOLTAGE);
+  }
+
+  private static String createAlertMessage(String preference) {
+    return String.format(
+        "[KICKER] The %s was changed in preferences! Once you are done tuning, please update the code!",
+        preference);
   }
 
   @Override
