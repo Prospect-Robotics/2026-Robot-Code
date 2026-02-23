@@ -11,7 +11,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 public class IntakeExtensionIOSim implements IntakeExtensionIO {
-  TalonFX extenderMotor;
   private TalonFXSimState extenderMotorSimState;
   private ElevatorSim extenderSim;
 
@@ -30,7 +29,6 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
   @Override
   public void setMotor(TalonFX motor) {
-    extenderMotor = motor;
     extenderMotorSimState = motor.getSimState();
     extenderMotorSimState.Orientation =
         IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG.MotorOutput.Inverted
@@ -42,7 +40,6 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
   @Override
   public void updateState(IntakeExtensionIOInputs inputs) {
-    // extenderMotorSimState = extenderMotor.getSimState();
     // Continue supplying the simulated motor with 12V voltage.
     extenderMotorSimState.setSupplyVoltage(12);
 
