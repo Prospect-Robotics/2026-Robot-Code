@@ -76,6 +76,6 @@ public class IntakeExtensionTest {
 
     // TODO: Jazl, please debug this, it seems the PID, and kSVA constants for the Intake have not
     // been merged properly.
-    //    assertTrue(intakeExtension.isExtenderAtPosition());
+    assertTrue(intakeExtension.isExtenderAtPosition());
   }
 }
