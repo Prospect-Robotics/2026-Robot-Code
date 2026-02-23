@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Objects;
 import org.littletonrobotics.junction.Logger;
 
+/**
+ * The kicker wheel that brings fuel that has gone through the indexer into the shooter. {@link
+ * #shootCommand()} should be used when fuel needs to be brought into the shooter, while {@link
+ * #resistFuelCommand()} should be used when you want to resist the flow of fuel into the shooter.
+ */
 public class Kicker extends SubsystemBase implements AutoCloseable {
   private final KickerIO io;
   private final KickerIOInputsAutoLogged replayedInputs;
