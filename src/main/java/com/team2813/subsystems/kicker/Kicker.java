@@ -56,8 +56,9 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   }
 
   /**
-   * Creates a command to shoot fuel. This command will run indefinitely, and must be canceled or
-   * interrupted to stop the kicker.
+   * Creates a command to shoot fuel. This should be used to bring fuel into the shooter when the
+   * shooter is spooled up. This command will run indefinitely, and must be canceled or interrupted
+   * to stop the kicker.
    *
    * @return The command to shoot fuel
    */
