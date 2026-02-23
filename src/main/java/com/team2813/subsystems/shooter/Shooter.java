@@ -29,37 +29,24 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
-    io.setMotorVoltages(Volts.of(0), Volts.of(0));
+    io.setShooterMotorVoltage(Volts.of(0));
   }
 
-  // Waits before starting the kicker to allow the shooter flywheel to get up to speed.
-  public Command intakeCommand() {
-    return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                new InstantCommand(
-                    () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
-                new InstantCommand(
-                    () -> io.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()))),
-            new WaitCommand(Seconds.of(2)),
-            new StartEndCommand(
-                () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
-                this::stop,
-                this))
-        .finallyDo(this::stop);
-    /*
-    Note: I still use StartEndCommand because it only calls the first Runnable once,
-     rather than repeatedly like RunCommand.
-     Thus I believe it will save on hardware calls, but it could just be over engineering.
-     */
+  public Command spoolShooterInstantIntakeCommand() {
+    return new InstantCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()), this);
+  }
+
+  public Command spoolShooterIntakewardCommand() {
+    return new StartEndCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),
+        this::stop,
+        this);
   }
 
   public Command outakeCommand() {
     return new StartEndCommand(
-        () ->
-            io.setMotorVoltages(
-                ShooterConstants.getShooterOuttakeVoltage(),
-                ShooterConstants.getKickerOuttakeVoltage()),
-        this::stop);
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
@@ -83,19 +70,8 @@ public class Shooter extends SubsystemBase {
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
-  public void setKickerMotorVoltage(Voltage kickerMotorVoltage) {
-    io.setKickerMotorVoltage(kickerMotorVoltage);
-  }
-
-  /**
-   * @param distanceFromHubCenterSupplier A {@link Supplier} that contains the distance from the hub
-   *     center, either red/blue will work, as long as it is consistent.
-   * @return
-   */
-  public AngularVelocity calculateMotorVelocity(Supplier<Distance> distanceFromHubCenterSupplier) {
-    var distanceFromHub =
-        distanceFromHubCenterSupplier.get().plus(ShooterConstants.EXTRA_HUB_AIMING_DISTANCE);
-
-    return RotationsPerSecond.of(0);
+  // Used for auto calculated motor speed.
+  public void setShooterMotorVoltage(Voltage voltage) {
+    io.setShooterMotorVoltage(voltage);
   }
 }

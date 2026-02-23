@@ -6,7 +6,7 @@ import static edu.wpi.first.units.Units.*;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -61,6 +61,22 @@ public class IntakeExtension extends SubsystemBase {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+  }
+
+  /**
+   * Makes the intake extension repeatedly extend and retract in order to push balls toward the
+   * shooter.
+   *
+   * @return A {@link RepeatCommand} that does the above.
+   */
+  public Command wallEMode() {
+    return new RepeatCommand(
+            new SequentialCommandGroup(
+                    new StartEndCommand(this::retract, this::stopMotor, this)
+                        .until(this::isExtenderAtPosition),
+                    new StartEndCommand(this::extend, this::stopMotor, this))
+                .until(this::isExtenderAtPosition))
+        .finallyDo(this::stopMotor);
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {
