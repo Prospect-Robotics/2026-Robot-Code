@@ -19,7 +19,13 @@ import org.littletonrobotics.junction.Logger;
 public class Kicker extends SubsystemBase implements AutoCloseable {
   private final KickerIO io;
   private final KickerIOInputsAutoLogged replayedInputs;
+  /**
+   * @see #shootCommand()
+   */
   private double shootVoltage = KickerConstants.SHOOT_VOLTAGE;
+  /**
+   * @see #resistFuelCommand()
+   */
   private double resistFuelVoltage = KickerConstants.RESIST_FUEL_VOLTAGE;
   // note: could put alerts in a kicker-specific location, but it will be easier for seeing alerts
   // to put them all in the same place
