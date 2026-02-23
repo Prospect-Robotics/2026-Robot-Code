@@ -226,19 +226,8 @@ public class RobotContainer {
 
     operatorController
         .leftStick()
-        .onTrue(
-            (new StartEndCommand(
-                    intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionInterruptionCondition));
-
-    operatorController
-        .rightStick()
-        .onTrue(
-            (new StartEndCommand(
-                    intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionInterruptionCondition));
-
-    operatorController.povUp().whileTrue(intakeExtension.wallEMode());
+        .whileTrue(
+            new ParallelCommandGroup(intakeExtension.wallEMode(), intakeRoller.intakeCommand()));
 
     // Stop Pos
     operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
