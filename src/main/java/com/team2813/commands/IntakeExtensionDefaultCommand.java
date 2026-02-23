@@ -20,8 +20,13 @@ public class IntakeExtensionDefaultCommand extends Command {
   @Override
   public void execute() {
     double val = movement.getAsDouble();
-    // manual control is being used
-    intakeExtension.setExtenderVoltage(
-        Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR));
+    if (Math.abs(val) > 0.1) {
+      // Set the voltage, potentially disabling the PID controller
+      intakeExtension.setExtenderVoltage(
+          Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR));
+    } else if (!intakeExtension.isPidControlEnabled()) {
+      // Manual control was initiated, but has stopped; stop the motor
+      intakeExtension.stopMotor();
+    }
   }
 }

@@ -18,6 +18,7 @@ public class IntakeExtension extends SubsystemBase {
   private final IntakeExtensionIOInputsAutoLogged replayedInputs =
       new IntakeExtensionIOInputsAutoLogged();
   private boolean extenderAtPosition = true;
+  private boolean pidControlEnabled = false;
 
   public IntakeExtension(IntakeExtensionIO io) {
     this.io = io;
@@ -55,12 +56,14 @@ public class IntakeExtension extends SubsystemBase {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
+    pidControlEnabled = true;
   }
 
   public void retract() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+    pidControlEnabled = true;
   }
 
   /**
@@ -92,13 +95,19 @@ public class IntakeExtension extends SubsystemBase {
 
   public void setExtenderVoltage(Voltage extensionVoltage) {
     io.setExtenderVoltage(extensionVoltage);
+    pidControlEnabled = false;
   }
 
   public void stopMotor() {
     io.setExtenderVoltage(Volts.of(0));
+    pidControlEnabled = false;
   }
 
   public Angle getSetpoint() {
     return replayedInputs.extenderMotorSetpoint;
+  }
+
+  public boolean isPidControlEnabled() {
+    return pidControlEnabled;
   }
 }
