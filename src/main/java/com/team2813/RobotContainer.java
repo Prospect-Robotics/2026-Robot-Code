@@ -29,19 +29,14 @@ import com.team2813.subsystems.intakeroller.IntakeRoller;
 import com.team2813.subsystems.intakeroller.IntakeRollerIO;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOSim;
-import com.team2813.subsystems.shooter.Shooter;
-import com.team2813.subsystems.shooter.ShooterIO;
-import com.team2813.subsystems.shooter.ShooterIOReal;
-import com.team2813.subsystems.shooter.ShooterIOSim;
+import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.BooleanSupplier;
@@ -231,19 +226,8 @@ public class RobotContainer {
 
     operatorController
         .leftStick()
-        .onTrue(
-            (new StartEndCommand(
-                    intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionInterruptionCondition));
-
-    operatorController
-        .rightStick()
-        .onTrue(
-            (new StartEndCommand(
-                    intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionInterruptionCondition));
-
-    operatorController.povUp().whileTrue(intakeExtension.wallEMode());
+        .whileTrue(
+            new ParallelCommandGroup(intakeExtension.wallEMode(), intakeRoller.intakeCommand()));
 
     // Stop Pos
     operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
@@ -255,6 +239,8 @@ public class RobotContainer {
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
 
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
@@ -265,10 +251,20 @@ public class RobotContainer {
             () -> -driveController.getRightX()));
 
     // Driver intake roller bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    driveController
+        .rightBumper()
+        .whileTrue(
+            new ParallelCommandGroup(
+                intakeRoller.intakeCommand(),
+                new StartEndCommand(
+                        intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
+                    .until(extensionInterruptionCondition)));
 
     // hub shot command
-    driveController.rightTrigger().whileTrue(shooter.intakeCommand());
+    driveController
+        .rightTrigger()
+        .whileTrue(
+            new ParallelCommandGroup(shooter.runKickerIntakewardCommand(), hopper.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
