@@ -6,8 +6,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 class KickerConstants {
   static final double KICKER_SIM_MOI = 0.0000535531; // in kilograms*meters squared.
-  static final String SHOOT_PREFERENCE_NT = "Kicker/KICKER_SHOOT_VOLTAGE";
-  static final String RESIST_FUEL_PREFERENCE_NT = "Kicker/KICKER_RESIST_VOLTAGE";
+  static final String SHOOT_PREFERENCE_NT = "Kicker/SHOOT_VOLTAGE";
+  static final String RESIST_FUEL_PREFERENCE_NT = "Kicker/RESIST_FUEL_VOLTAGE";
 
   static final TalonFXConfiguration KICKER_MOTOR_CONFIG =
       new TalonFXConfiguration()
