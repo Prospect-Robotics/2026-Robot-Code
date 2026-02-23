@@ -21,29 +21,47 @@ public class VisionConstants {
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   // Camera names, must match names configured on coprocessor
-  // TODO: Add configs for cameras on the new robot, when we add them.
-  public static final String LEFT_COLOR_CAMERA_NAME = "left_color";
-  public static final String RIGHT_COLOR_CAMERA_NAME = "right_color";
-  public static final String MIDDLE_MONO_CAMERA_NAME = "middle_monochrome";
+  // See documentation/images/camera_position.png for a diagram of the camera position layout on the
+  // robot.
+  public static final String RED_BACK_LEFT_COLOR_CAMERA_NAME = "red_back_left_color";
+  public static final String GREEN_BACK_RIGHT_COLOR_CAMERA_NAME = "green_back_right_color";
+  public static final String BLUE_FRONT_MONO_CAMERA_NAME = "blue_front_monochrome";
 
   // Robot to camera transforms
-  public static final Transform3d ROBOT_TO_LEFT_CAM =
+  //
+  // Translation in X,Y,Z (X: front-back (+:front)), (Y: left-right (+:left), (Z: up-down (+:up))
+  // Rotations: rotations are defined around {x, y, z} axes in that order, which corresponds to
+  // {roll, pitch, yaw} respectively.
+  //
+  // Here're some shorthand reminders:
+  //  - we want to never have a roll in the camera, since that confuses all other math.
+  //  - pitching the camera up by 15 degrees is represented with negative 15 degrees (-15) in the
+  //    y/pitch rotation component.
+  //  - turning the camera left by 20 degrees is represented with negative 20 degrees (-20) in the
+  //    z/yaw rotation component.
+  //  - turning the camera right by 20 degrees is represented with positive 20 degrees (+20) in the
+  //    z/yaw rotation component.
+  //
+  // For further details, please consult with
+  // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#wpilib-coordinate-system
+  // or
+  // https://docs.photonvision.org/en/v2026.2.2/docs/apriltag-pipelines/coordinate-systems.html#camera-coordinate-frame for reference to the robot coordinate system.
+  // Both referneces define the same coordinate convention, so use whichever is easier to understand
+  // for you.
+  public static final Transform3d RED_BACK_LEFT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Centimeters.of(31), Centimeters.of(21), Centimeters.of(20)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-20), Degrees.of(-30)));
+          new Translation3d(Centimeters.of(-26), Centimeters.of(26), Centimeters.of(23)),
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-160)));
 
-  public static final Transform3d ROBOT_TO_RIGHT_CAM =
+  public static final Transform3d GREEN_BACK_RIGHT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Centimeters.of(29), Centimeters.of(-23), Centimeters.of(13)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-20), Degrees.of(20)));
+          new Translation3d(Centimeters.of(-26), Centimeters.of(-26), Centimeters.of(23)),
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-90)));
 
-  public static final Transform3d ROBOT_TO_MID_CAM =
+  public static final Transform3d BLUE_FRONT_CAM_FROM_ROBOT =
       new Transform3d(
-          // Field of translation in X,Y,Z (X: front-back (+:front)), (Y: left-right (+:left), (Z:
-          // up-down (+:up))
-          // Rotations: Roll, pitch, yaw (applied in that order.
-          new Translation3d(Inches.of(15), Inches.of(0), Inches.of(3.25)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(0)));
+          new Translation3d(Centimeters.of(-5.5), Centimeters.of(0), Centimeter.of(50.1)),
+          new Rotation3d(Degrees.of(0), Degrees.of(-17.5), Degrees.of(0)));
 
   // Basic filtering thresholds
   public static final double MAX_AMBIGUITY = 0.3;
@@ -60,6 +78,6 @@ public class VisionConstants {
       new double[] {
         1.0, // Camera 0
         1.0, // Camera 1
-        1.0 // Camera 2
+        1.0, // Camera 2
       };
 }

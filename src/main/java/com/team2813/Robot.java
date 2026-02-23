@@ -7,8 +7,10 @@
 
 package com.team2813;
 
-import com.team2813.subsystems.SimulationVisualizer;
 import com.team2813.subsystems.drive.AllDrivetrains;
+import com.team2813.subsystems.drive.AllTunerConstants;
+import com.team2813.util.SimulationVisualizer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -65,13 +67,16 @@ public class Robot extends LoggedRobot {
         break;
     }
 
+    // Get the constants for the current drivetrain and log them.
+    // This call needs to be before the call to Logger.start().
+    AllTunerConstants tunerConstants = AllDrivetrains.forRoboRIO();
+
     // Start AdvantageKit logger
     Logger.start();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-
-    robotContainer = new RobotContainer(AllDrivetrains.forRoboRIO());
+    robotContainer = new RobotContainer(tunerConstants);
   }
 
   /** This function is called periodically during all modes. */
@@ -98,9 +103,7 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {
-    robotContainer.resetSimulation();
-  }
+  public void disabledInit() {}
 
   /** This function is called periodically when disabled. */
   @Override
@@ -151,11 +154,12 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+    // Do not spam the logs with "Button x on port y not available" log messages.
+    DriverStation.silenceJoystickConnectionWarning(true);
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {
-    robotContainer.displaySimFieldToAdvantageScope();
-  }
+  public void simulationPeriodic() {}
 }

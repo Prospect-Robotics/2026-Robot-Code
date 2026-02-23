@@ -21,7 +21,10 @@ public class IntakeExtensionConstants {
 
   public static final TalonFXConfiguration EXTENDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withSlot0(new Slot0Configs().withKP(2).withKI(0.001).withKD(0.000))
+          .withSlot0(
+              // Values chosen after some consultation with Gemini:
+              // https://share.google/aimode/Ha33a7FUqS9EhAzI4
+              new Slot0Configs().withKS(0.25).withKV(0.25).withKP(10).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1));
 
@@ -33,7 +36,7 @@ public class IntakeExtensionConstants {
   public static final Distance EXTENDED_POSITION = Inches.of(10.75);
   public static final Distance RETRACTED_POSITION = Inches.of(0);
 
-  public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.2);
+  public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.25);
 
   public enum ExtenderPositions {
     // Added 0.2 in the direction of motion to prevent stalling and ensure the intake retracts all
@@ -53,6 +56,9 @@ public class IntakeExtensionConstants {
     }
   }
 
+  // TODO: Migrate these conversion methods to a more suitable location than a Constants Class, such
+  // as the Extender Positions enum or IntakeExtension.java
+
   public static Angle toMotorSetpoint(ExtenderPositions position) {
     Logger.recordOutput("IntakeExtension/Setpoint", position);
     return Rotations.of(position.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
@@ -63,5 +69,5 @@ public class IntakeExtensionConstants {
   }
 
   // Controls how fast the extension moves during manual control
-  public static final double MANUAL_SPEED_FACTOR = 3.0;
+  public static final double MANUAL_SPEED_FACTOR = 5.0;
 }

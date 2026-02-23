@@ -3,9 +3,10 @@ package com.team2813.subsystems.intakeextension;
 import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.toIntakeExtensionPosition;
 import static edu.wpi.first.units.Units.*;
 
-import com.team2813.subsystems.SimulationVisualizer;
+import com.team2813.util.SimulationVisualizer;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -33,7 +34,7 @@ public class IntakeExtension extends SubsystemBase {
             .abs(Rotation);
 
     // Is the error between the setpoint greater than half a rotation.
-    extenderAtPosition = error <= 0.5;
+    extenderAtPosition = error <= 0.4;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.processInputs("IntakeExtension", replayedInputs);
@@ -51,13 +52,31 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   public void extend() {
+    extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
   }
 
   public void retract() {
+    extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+  }
+
+  /**
+   * Makes the intake extension repeatedly extend and retract in order to push balls toward the
+   * shooter.
+   *
+   * @return A {@link RepeatCommand} that does the above.
+   */
+  public Command wallEMode() {
+    return new RepeatCommand(
+            new SequentialCommandGroup(
+                    new StartEndCommand(this::retract, this::stopMotor, this)
+                        .until(this::isExtenderAtPosition),
+                    new StartEndCommand(this::extend, this::stopMotor, this))
+                .until(this::isExtenderAtPosition))
+        .finallyDo(this::stopMotor);
   }
 
   public void setExtenderVoltage(Voltage extensionVoltage) {
@@ -66,5 +85,9 @@ public class IntakeExtension extends SubsystemBase {
 
   public void stopMotor() {
     io.setExtenderVoltage(Volts.of(0));
+  }
+
+  public Angle getSetpoint() {
+    return replayedInputs.extenderMotorSetpoint;
   }
 }

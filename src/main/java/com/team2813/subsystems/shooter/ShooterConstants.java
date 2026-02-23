@@ -3,6 +3,7 @@ package com.team2813.subsystems.shooter;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -23,20 +24,27 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 5);
+    Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
 
     // Kicker motors.
-    Preferences.initDouble(KICKER_INTAKE_PREFERENCE_NT, 3);
-    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, 3);
+    Preferences.initDouble(KICKER_INTAKE_PREFERENCE_NT, 5);
+    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, -3);
   }
 
-  // Reminder: this is the left shooter motor when robot is viewed from behind.
+  // Reminder: this is the right shooter motor when robot is viewed from behind.
   public static final TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withSlot0(
+              new Slot0Configs()
+                  .withKS(0.079361)
+                  .withKV(0.018418)
+                  .withKA(0.0012587)
+                  .withKP(1.9106e-9));
 
-  // Right shooter motor.
+  // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
       new Follower(Constants.MAIN_SHOOTER_MOTOR_ID, MotorAlignmentValue.Opposed);
 
@@ -49,7 +57,7 @@ public class ShooterConstants {
   public static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
 
   public static Voltage getShooterIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(SHOOTER_INTAKE_PREFERENCE_NT, 5));
+    return Volts.of(Preferences.getDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
@@ -57,7 +65,7 @@ public class ShooterConstants {
   }
 
   public static Voltage getKickerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(KICKER_INTAKE_PREFERENCE_NT, 3));
+    return Volts.of(Preferences.getDouble(KICKER_INTAKE_PREFERENCE_NT, 5));
   }
 
   public static Voltage getKickerOuttakeVoltage() {

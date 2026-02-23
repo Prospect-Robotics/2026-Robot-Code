@@ -1,11 +1,10 @@
 package com.team2813.subsystems.drive;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import java.util.Map;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 public class AllDrivetrains {
   private static final String SIMULATOR_SERIAL_NUM = "";
@@ -15,11 +14,13 @@ public class AllDrivetrains {
   private static final Map<String, Supplier<AllTunerConstants>> SERIAL_NUMBER_TO_TUNER_CONSTANTS =
       Map.of(
           SIMULATOR_SERIAL_NUM,
-          AllDrivetrains::defaultDrivetrain,
+          AllDrivetrains::rebuiltDrivetrain,
           DR_WOMP_SERIAL_NUM,
-          AllDrivetrains::drWomp);
+          AllDrivetrains::drWompDrivetrain,
+          REBUILT_SERIAL_NUM,
+          AllDrivetrains::rebuiltDrivetrain);
 
-  public static AllTunerConstants drWomp() {
+  private static AllTunerConstants drWompDrivetrain() {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "Dr. Womp",
@@ -33,7 +34,7 @@ public class AllDrivetrains {
     return robotConstants;
   }
 
-  private static AllTunerConstants defaultDrivetrain() {
+  public static AllTunerConstants rebuiltDrivetrain() {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "REBUILT",
@@ -49,17 +50,16 @@ public class AllDrivetrains {
 
   public static AllTunerConstants forRoboRIO() {
     String sNumber = RobotController.getSerialNumber();
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("Metadata");
-    table.getStringTopic("RoboRIO Serial Number").publish().set(sNumber);
+    Logger.recordMetadata("SerialNumber", sNumber);
 
     var tunerConstantsSupplier = SERIAL_NUMBER_TO_TUNER_CONSTANTS.get(sNumber);
     if (tunerConstantsSupplier == null) {
       DriverStation.reportError(
           String.format("no tuner constants for serial number '%s'", sNumber), false);
-      return defaultDrivetrain();
+      return rebuiltDrivetrain();
     }
     AllTunerConstants tunerConstants = tunerConstantsSupplier.get();
-    table.getStringTopic("Drivetrain").publish().set(tunerConstants.drivetrainName());
+    Logger.recordMetadata("Drivetrain", tunerConstants.drivetrainName());
     return tunerConstants;
   }
 

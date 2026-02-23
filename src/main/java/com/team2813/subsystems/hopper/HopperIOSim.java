@@ -25,16 +25,8 @@ public class HopperIOSim implements HopperIO {
 
   // Feeder Motor simulation declaration
   // Right motor when seen from the back (shooter side).
-  private final TalonFX rightFeederMotor;
-  private final TalonFXSimState rightFeederMotorSimState;
-
-  private FlywheelSim rightFeederModuleSim;
-
-  // Left motor when seen from the back (shooter side).
-  private final TalonFX leftFeederMotor;
-  private final TalonFXSimState leftFeederMotorSimState;
-
-  private FlywheelSim leftFeederModuleSim;
+  private final TalonFX feederMotor;
+  private final TalonFXSimState feederMotorSimState;
 
   public HopperIOSim() {
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
@@ -43,7 +35,7 @@ public class HopperIOSim implements HopperIO {
 
     followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
     followerRollerMotor.setControl(
-        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Aligned));
+        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
 
     // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value
@@ -56,13 +48,9 @@ public class HopperIOSim implements HopperIO {
                 HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
             DCMotor.getKrakenX60(2));
 
-    rightFeederMotor = new TalonFX(Constants.RIGHT_FEEDER_MOTOR_ID);
-    rightFeederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
-    rightFeederMotorSimState = rightFeederMotor.getSimState();
-
-    leftFeederMotor = new TalonFX(Constants.LEFT_FEEDER_MOTOR_ID);
-    leftFeederMotor.getConfigurator().apply(HopperConstants.LEFT_FEEDER_MOTOR_CONFIG);
-    leftFeederMotorSimState = leftFeederMotor.getSimState();
+    feederMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
+    feederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
+    feederMotorSimState = feederMotor.getSimState();
   }
 
   @Override
@@ -71,8 +59,7 @@ public class HopperIOSim implements HopperIO {
 
     mainRollerMotorSimState.setSupplyVoltage(Volts.of(12));
     followerRollerMotorSimState.setSupplyVoltage(Volts.of(12));
-    rightFeederMotorSimState.setSupplyVoltage(Volts.of(12));
-    leftFeederMotorSimState.setSupplyVoltage(Volts.of(12));
+    feederMotorSimState.setSupplyVoltage(Volts.of(12));
 
     inputs.mainRollerMotorVoltage = mainRollerMotor.getMotorVoltage().getValue();
     inputs.mainRollerMotorRPS = mainRollerMotor.getRotorVelocity().getValue();
@@ -82,13 +69,9 @@ public class HopperIOSim implements HopperIO {
     inputs.followerRollerMotorRPS = followerRollerMotor.getRotorVelocity().getValue();
     inputs.followerRollerMotorCurrent = followerRollerMotor.getStatorCurrent().getValue();
 
-    inputs.rightFeederVoltage = rightFeederMotor.getMotorVoltage().getValue();
-    inputs.rightFeederRPS = rightFeederMotor.getRotorVelocity().getValue();
-    inputs.rightFeederCurrent = rightFeederMotor.getStatorCurrent().getValue();
-
-    inputs.leftFeederVoltage = leftFeederMotor.getMotorVoltage().getValue();
-    inputs.leftFeederRPS = leftFeederMotor.getRotorVelocity().getValue();
-    inputs.leftFeederCurrent = leftFeederMotor.getStatorCurrent().getValue();
+    inputs.feederVoltage = feederMotor.getMotorVoltage().getValue();
+    inputs.feederRPS = feederMotor.getRotorVelocity().getValue();
+    inputs.feederCurrent = feederMotor.getStatorCurrent().getValue();
   }
 
   public void updateSimulation() {
@@ -105,8 +88,7 @@ public class HopperIOSim implements HopperIO {
   }
 
   @Override
-  public void setMotorVoltage(
-      Voltage rollerVoltage, Voltage rightFeederVoltage, Voltage leftFeederVoltage) {
+  public void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {
     // Rollers
     mainRollerMotor.setVoltage(rollerVoltage.in(Volts));
     // Don't set the voltage of the follower motor, as this will be done automatically by the
@@ -114,7 +96,6 @@ public class HopperIOSim implements HopperIO {
     rollerSim.setInputVoltage(rollerVoltage.in(Volts));
 
     // Feeders
-    rightFeederMotor.setVoltage(rightFeederVoltage.in(Volts));
-    leftFeederMotor.setVoltage(leftFeederVoltage.in(Volts));
+    feederMotor.setVoltage(feederVoltage.in(Volts));
   }
 }
