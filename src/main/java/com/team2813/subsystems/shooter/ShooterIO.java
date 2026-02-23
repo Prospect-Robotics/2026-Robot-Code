@@ -20,10 +20,6 @@ public interface ShooterIO {
     public Voltage followerShooterMotorVoltage = Volts.of(0);
     public AngularVelocity followerShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current followerShooterMotorCurrent = Amps.of(0);
-
-    public Voltage kickerMotorVoltage = Volts.of(0);
-    public AngularVelocity kickerMotorRotPerSec = RotationsPerSecond.of(0);
-    public Current kickerMotorCurrent = Amps.of(0);
   }
 
   /**
@@ -34,12 +30,5 @@ public interface ShooterIO {
    */
   default void updateState(ShooterIOInputs inputs) {}
 
-  default void setMotorVoltages(Voltage shooterVoltage, Voltage kickerVoltage) {
-    setShooterMotorVoltage(shooterVoltage);
-    setKickerMotorVoltage(kickerVoltage);
-  }
-
   default void setShooterMotorVoltage(Voltage shooterMotorVoltage) {}
-
-  default void setKickerMotorVoltage(Voltage kickerMotorVoltage) {}
 }

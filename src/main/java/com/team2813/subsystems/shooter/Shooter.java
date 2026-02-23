@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
-    io.setMotorVoltages(Volts.of(0), Volts.of(0));
+    io.setShooterMotorVoltage(Volts.of(0));
   }
 
   public Command spoolShooterInstantIntakeCommand() {
@@ -39,20 +39,9 @@ public class Shooter extends SubsystemBase {
         this);
   }
 
-  public Command runKickerIntakewardCommand() {
-    return new StartEndCommand(
-        () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
-        this::stop,
-        this);
-  }
-
   public Command outakeCommand() {
     return new StartEndCommand(
-        () ->
-            io.setMotorVoltages(
-                ShooterConstants.getShooterOuttakeVoltage(),
-                ShooterConstants.getKickerOuttakeVoltage()),
-        this::stop);
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
@@ -74,10 +63,6 @@ public class Shooter extends SubsystemBase {
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
-  }
-
-  public void setKickerMotorVoltage(Voltage kickerMotorVoltage) {
-    io.setKickerMotorVoltage(kickerMotorVoltage);
   }
 
   // Used for auto calculated motor speed.

@@ -29,6 +29,10 @@ import com.team2813.subsystems.intakeroller.IntakeRoller;
 import com.team2813.subsystems.intakeroller.IntakeRollerIO;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOSim;
+import com.team2813.subsystems.kicker.Kicker;
+import com.team2813.subsystems.kicker.KickerIO;
+import com.team2813.subsystems.kicker.KickerIOReal;
+import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
 import edu.wpi.first.math.MathUtil;
@@ -59,6 +63,7 @@ public class RobotContainer {
   private final IntakeRoller intakeRoller;
 
   private final Shooter shooter;
+  private final Kicker kicker;
   // Controller
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -108,6 +113,7 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
         shooter = new Shooter(new ShooterIOReal());
+        kicker = new Kicker(new KickerIOReal());
         break;
 
       case SIM:
@@ -146,6 +152,7 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
         shooter = new Shooter(new ShooterIOSim());
+        kicker = new Kicker(new KickerIOSim());
 
         break;
 
@@ -173,6 +180,7 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
+        kicker = new Kicker(new KickerIO() {});
 
         break;
     }
@@ -263,8 +271,7 @@ public class RobotContainer {
     // hub shot command
     driveController
         .rightTrigger()
-        .whileTrue(
-            new ParallelCommandGroup(shooter.runKickerIntakewardCommand(), hopper.intakeCommand()));
+        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
