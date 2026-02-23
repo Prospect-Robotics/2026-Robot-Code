@@ -4,23 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.team2813.Constants;
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.ClearEnvironmentVariable;
 
 @Disabled
 @InitWPILib
+@ClearEnvironmentVariable(key = "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE")
 public class IntakeExtensionTest {
-  @BeforeAll
-  public static void verifyNotInReplayMode() {
-    assertTrue(
-        Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
-  }
-
-  @Disabled
   @Test
   public void testIntakeExtension() {
     // create an intake extension subsystem
@@ -44,8 +36,6 @@ public class IntakeExtensionTest {
   @Disabled
   @Test
   public void testIntakeRetraction() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
     // create an intake extension subsystem
 
     IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
@@ -67,8 +57,6 @@ public class IntakeExtensionTest {
   @Disabled
   @Test
   public void testIntakeExtensionAtPosition() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
     // create an intake extension subsystem
 
     IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
