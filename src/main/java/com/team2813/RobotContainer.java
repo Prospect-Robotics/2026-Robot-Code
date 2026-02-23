@@ -34,6 +34,7 @@ import com.team2813.subsystems.shooter.ShooterIO;
 import com.team2813.subsystems.shooter.ShooterIOReal;
 import com.team2813.subsystems.shooter.ShooterIOSim;
 import com.team2813.subsystems.vision.*;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -218,7 +219,8 @@ public class RobotContainer {
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
+        new IntakeExtensionDefaultCommand(
+            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
