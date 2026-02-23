@@ -23,7 +23,7 @@ public class ShooterIOSim implements ShooterIO {
   private final VelocityVoltage shooterVelocityControl;
 
   private final FlywheelSim shooterSim;
-  
+
   public ShooterIOSim() {
     mainShooterMotor = new TalonFX(Constants.MAIN_SHOOTER_MOTOR_ID);
     mainShooterMotor.getConfigurator().apply(ShooterConstants.MAIN_SHOOTER_MOTOR_CONFIG);
