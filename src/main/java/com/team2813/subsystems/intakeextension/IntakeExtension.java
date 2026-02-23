@@ -64,9 +64,10 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   /**
-   * @return
+   * Makes the intake extension repeatedly extend and retract in order to push balls toward the shooter.
+   * @return A {@link RepeatCommand} that does the above.
    */
-  public Command walleMode() {
+  public Command wallEMode() {
     return new RepeatCommand(
             new SequentialCommandGroup(
                     new StartEndCommand(this::retract, this::stopMotor, this)
