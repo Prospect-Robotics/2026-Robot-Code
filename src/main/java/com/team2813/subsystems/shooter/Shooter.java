@@ -1,6 +1,5 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.units.measure.Voltage;
@@ -29,24 +28,45 @@ public class Shooter extends SubsystemBase {
   }
 
   // Waits before starting the kicker to allow the shooter flywheel to get up to speed.
-  public Command intakeCommand() {
-    return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                new InstantCommand(
-                    () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
-                new InstantCommand(
-                    () -> io.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()))),
-            new WaitCommand(Seconds.of(2)),
-            new StartEndCommand(
-                () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
-                this::stop,
-                this))
-        .finallyDo(this::stop);
-    /*
-    Note: I still use StartEndCommand because it only calls the first Runnable once,
-     rather than repeatedly like RunCommand.
-     Thus I believe it will save on hardware calls, but it could just be over engineering.
-     */
+  //  public Command intakeCommand() {
+  //    return new SequentialCommandGroup(
+  //            new ParallelCommandGroup(
+  //                new InstantCommand(
+  //                    () ->
+  // io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
+  //                new InstantCommand(
+  //                    () ->
+  // io.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()))),
+  //            new WaitCommand(Seconds.of(2)),
+  //            new StartEndCommand(
+  //                () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
+  //                this::stop,
+  //                this))
+  //        .finallyDo(this::stop);
+  //    /*
+  //    Note: I still use StartEndCommand because it only calls the first Runnable once,
+  //     rather than repeatedly like RunCommand.
+  //     Thus I believe it will save on hardware calls, but it could just be over engineering.
+  //     */
+  //  }\
+
+  public Command spoolShooterInstantIntakeCommand() {
+    return new InstantCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()));
+  }
+
+  public Command spoolShooterIntakewardCommand() {
+    return new StartEndCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),
+        this::stop,
+        this);
+  }
+
+  public Command runKickerIntakewardCommand() {
+    return new StartEndCommand(
+        () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
+        this::stop,
+        this);
   }
 
   public Command outakeCommand() {
