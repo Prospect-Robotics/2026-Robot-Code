@@ -19,7 +19,8 @@ public class IntakeExtensionTest {
     assertTrue(
         Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
   }
-@Disabled
+
+  @Disabled
   @Test
   public void testIntakeExtension() {
     // create an intake extension subsystem

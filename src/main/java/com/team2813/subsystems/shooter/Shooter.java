@@ -1,5 +1,6 @@
 package com.team2813.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.*;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -10,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
-
-import static edu.wpi.first.units.Units.*;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIO io;
