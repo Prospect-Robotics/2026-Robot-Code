@@ -268,6 +268,18 @@ public class RobotContainer {
                         intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
                     .until(extensionInterruptionCondition)));
 
+    driveController
+            .leftBumper()
+                    .whileTrue(
+                            new ParallelCommandGroup(
+                                    intakeRoller.intakeCommand(),
+                                    new StartEndCommand(
+                                            intakeExtension::retract, intakeExtension::stopMotor, intakeExtension
+                                    )
+                                            .until(extensionInterruptionCondition)
+                            )
+                    );
+
     // hub shot command
     driveController
         .rightTrigger()

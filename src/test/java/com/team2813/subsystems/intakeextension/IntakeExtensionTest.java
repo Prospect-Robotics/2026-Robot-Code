@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.ClearEnvironmentVariable;
 
-@Disabled
+//@Disabled
 @InitWPILib
 @ClearEnvironmentVariable(key = "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE")
 public class IntakeExtensionTest {
@@ -33,7 +33,7 @@ public class IntakeExtensionTest {
         0.01);
   }
 
-  @Disabled
+
   @Test
   public void testIntakeRetraction() {
     // create an intake extension subsystem
@@ -54,7 +54,7 @@ public class IntakeExtensionTest {
         0.01);
   }
 
-  @Disabled
+
   @Test
   public void testIntakeExtensionAtPosition() {
     // create an intake extension subsystem
