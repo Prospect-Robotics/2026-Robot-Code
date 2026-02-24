@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
+import com.team2813.util.SimulationVisualizer;
+
 /** Class that holds control logic and public interface for the elevator. */
 public class Climb extends SubsystemBase {
   private final ClimbIO io;
@@ -59,8 +61,8 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    com.team2813.subsystems.SimulationVisualizer.getInstance()
-        .updateElevatorHeight(Inches.of(replayedInputs.innerCarriagePositionInches));
+    // SimulationVisualizer.getInstance()
+    //     .updateElevatorHeight(Inches.of(replayedInputs.innerCarriagePositionInches));
   }
 
   public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {

@@ -48,8 +48,10 @@ public class ClimbIOSim implements ClimbIO {
   public ClimbIOSim() {
     leftMotor = new TalonFX(0);
     leftMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
+    leftMotorSim = leftMotor.getSimState();
     rightMotor = new TalonFX(0);
     rightMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
+    rightMotorSim = rightMotor.getSimState(); 
   }
 
   @Override
