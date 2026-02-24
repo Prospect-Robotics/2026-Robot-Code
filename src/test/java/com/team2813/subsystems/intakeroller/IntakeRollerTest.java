@@ -3,93 +3,77 @@ package com.team2813.subsystems.intakeroller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.team2813.Constants;
-import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
+import edu.wpi.first.hal.HAL;
+import edu.wpi.first.wpilibj.RuntimeType;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-@InitWPILib
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IntakeRollerTest {
-  @BeforeAll
-  public static void verifySim() {
-    // verify that we're in sim mode before running tests
-    assertTrue(
-        Constants.currentMode == Constants.Mode.SIM,
-        "Must be in sim mode to run IntakeRoller tests");
+
+  private IntakeRoller intakeRoller;
+
+  @BeforeEach
+  public void setUp() {
+    // Initialize HAL fresh for each test to avoid static state leakage
+    HAL.initialize(500, 1);
+    DriverStationSim.setEnabled(true);
+    DriverStationSim.setAutonomous(false);
+    DriverStationSim.notifyNewData();
+    SimHooks.setHALRuntimeType(RuntimeType.kSimulation.value);
+
+    intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
+  }
+
+  @AfterEach
+  public void tearDown() {
+    intakeRoller = null;
+    // Shutdown HAL to clear all static device state
+    HAL.shutdown();
   }
 
   @Test
+  @Order(1)
   public void intakeRollerIntakeTest() {
-    // create an intake roller subsystem
-    IntakeRoller intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
-
-    // ensure hardware limits are disabled
-    DriverStationSim.setEnabled(true);
-    DriverStationSim.setAutonomous(false);
-    DriverStationSim.notifyNewData();
-
-    // run the intake command for a few cycles
     intakeRoller.intake();
-    SimHooks.pauseTiming();
+
     for (int i = 0; i < 50; i++) {
       intakeRoller.periodic();
-      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
-    SimHooks.resumeTiming();
 
-    // verify that the motor output voltage is set to the intake voltage
-    assertTrue(
-        intakeRoller.getIntakeRollerVoltage() > 0,
-        "Intake roller voltage should be positive for intake");
+    assertEquals(
+        intakeRoller.getIntakeRollerVoltage(),
+            8,
+            0.01,
+            "Intake roller voltage should be at least 5V for intake");
   }
 
   @Test
+  @Order(2)
   public void intakeRollerOuttakeTest() {
-    // create an intake roller subsystem
-    IntakeRoller intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
-
-    // to ensure hardware limits on disabled mode disabled
-    DriverStationSim.setEnabled(true);
-    DriverStationSim.setAutonomous(false);
-    DriverStationSim.notifyNewData();
-
-    // run the outtake command for a few cycles
-    SimHooks.pauseTiming();
     intakeRoller.outtake();
+
     for (int i = 0; i < 50; i++) {
       intakeRoller.periodic();
-      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
-    SimHooks.resumeTiming();
 
-    // verify that the motor output voltage is set to the outtake voltage
-    assertTrue(
-        intakeRoller.getIntakeRollerVoltage() < 0,
-        "Intake roller voltage should be negative for outtake");
+    assertEquals(
+        intakeRoller.getIntakeRollerVoltage(),
+        -8,
+        0.01,
+        "Intake roller voltage should be at most -8V for outtake");
   }
 
   @Test
+  @Order(3)
   public void intakeRollerStopTest() {
-    // create an intake roller subsystem
-    IntakeRoller intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
-
-    // ensure that hardware limits are disabled
-    DriverStationSim.setEnabled(true);
-    DriverStationSim.setAutonomous(false);
-    DriverStationSim.notifyNewData();
-
-    // run the stop command for a few cycles
-    SimHooks.pauseTiming();
     intakeRoller.stop();
+
     for (int i = 0; i < 50; i++) {
       intakeRoller.periodic();
-      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
-    SimHooks.resumeTiming();
 
-    // verify that the motor output voltage is set to 0
     assertEquals(0, intakeRoller.getIntakeRollerVoltage(), 0.01);
   }
 }
