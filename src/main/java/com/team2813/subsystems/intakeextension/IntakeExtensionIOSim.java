@@ -65,8 +65,9 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
     // TalonFX simulation doesn't run the internal PID controller, so we simulate it ourselves
     // using a WPILib PIDController with the same gains.
-    double currentPositionRotations = extenderSim.getPositionMeters()
-        * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS;
+    double currentPositionRotations =
+        extenderSim.getPositionMeters()
+            * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS;
     double setpointRotations = extensionSetpoint.in(Rotations);
 
     // Calculate PID output voltage
@@ -104,8 +105,10 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     inputs.extenderMotorVoltage = extenderMotor.getMotorVoltage().getValue();
     inputs.extenderMotorRPS = extenderMotor.getRotorVelocity().getValue();
     inputs.extenderMotorCurrent = extenderMotor.getStatorCurrent().getValue();
-    inputs.extenderMotorPosition = Rotations.of(
-        extenderSim.getPositionMeters() * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
+    inputs.extenderMotorPosition =
+        Rotations.of(
+            extenderSim.getPositionMeters()
+                * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
     inputs.extenderMotorSetpoint = extensionSetpoint;
   }
 

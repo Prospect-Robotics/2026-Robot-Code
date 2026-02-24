@@ -260,7 +260,7 @@ public class RobotContainer {
 
     // Driver intake roller bindings
     driveController
-        .x()
+        .rightBumper()
         .whileTrue(
             new ParallelCommandGroup(
                 intakeRoller.intakeCommand(),
@@ -268,29 +268,19 @@ public class RobotContainer {
                         intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
                     .until(extensionInterruptionCondition)));
 
-    driveController
-        .y()
-        .whileTrue(
-            new ParallelCommandGroup(
-                intakeRoller.outtakeCommand(),
-                new StartEndCommand(
-                        intakeExtension::retract, intakeExtension::stopMotor, intakeExtension)
-                    .until(extensionInterruptionCondition)));
-
     // hub shot command
     driveController
         .rightTrigger()
         .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
 
-    //    // Reset robot orientation, but keeps its position on the field.
-    //    driveController
-    //        .y()
-    //        .onTrue(
-    //            new InstantCommand(
-    //                () -> {
-    //                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new
-    // Rotation2d()));
-    //                }));
+    // Reset robot orientation, but keeps its position on the field.
+    driveController
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+                }));
   }
 
   /**
