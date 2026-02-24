@@ -1,7 +1,6 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.*;
@@ -25,37 +24,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
-    io.setMotorVoltages(Volts.of(0), Volts.of(0));
+    io.setShooterMotorVoltage(Volts.of(0));
   }
 
-  // Waits before starting the kicker to allow the shooter flywheel to get up to speed.
-  public Command intakeCommand() {
-    return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                new InstantCommand(
-                    () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage())),
-                new InstantCommand(
-                    () -> io.setKickerMotorVoltage(ShooterConstants.getKickerOuttakeVoltage()))),
-            new WaitCommand(Seconds.of(2)),
-            new StartEndCommand(
-                () -> io.setKickerMotorVoltage(ShooterConstants.getKickerIntakeVoltage()),
-                this::stop,
-                this))
-        .finallyDo(this::stop);
-    /*
-    Note: I still use StartEndCommand because it only calls the first Runnable once,
-     rather than repeatedly like RunCommand.
-     Thus I believe it will save on hardware calls, but it could just be over engineering.
-     */
+  public Command spoolShooterIntakewardCommand() {
+    return new StartEndCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),
+        this::stop,
+        this);
   }
 
   public Command outakeCommand() {
     return new StartEndCommand(
-        () ->
-            io.setMotorVoltages(
-                ShooterConstants.getShooterOuttakeVoltage(),
-                ShooterConstants.getKickerOuttakeVoltage()),
-        this::stop);
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
@@ -77,10 +58,6 @@ public class Shooter extends SubsystemBase {
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
-  }
-
-  public void setKickerMotorVoltage(Voltage kickerMotorVoltage) {
-    io.setKickerMotorVoltage(kickerMotorVoltage);
   }
 
   // Used for auto calculated motor speed.
