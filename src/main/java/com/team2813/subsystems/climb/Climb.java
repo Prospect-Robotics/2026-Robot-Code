@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +19,10 @@ public class Climb extends SubsystemBase {
 
   private InnerClimbHeight currentInnerClimbSetpoint = InnerClimbHeight.DOWN;
   private OuterClimbHeight currentOuterClimbSetpoint = OuterClimbHeight.DOWN;
+
+  private final SimulationVisualizer defaultSimulationVisualizerInstance =
+      SimulationVisualizer.getInstance();
+
   /**
    * @param io The hardware implementation for the climb, either sim or real.
    */
@@ -59,8 +64,10 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    com.team2813.subsystems.SimulationVisualizer.getInstance()
-        .updateElevatorHeight(Inches.of(replayedInputs.innerCarriagePositionInches));
+    defaultSimulationVisualizerInstance.updateInnerClimbHeight(
+        Inches.of(replayedInputs.innerCarriagePositionInches));
+    defaultSimulationVisualizerInstance.updateOuterClimbHeight(
+        Inches.of(replayedInputs.outerCarriagePositionInches));
   }
 
   public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {
