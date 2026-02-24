@@ -7,6 +7,8 @@ import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.*;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -18,10 +20,32 @@ public class IntakeExtension extends SubsystemBase {
   private final IntakeExtensionIOInputsAutoLogged replayedInputs =
       new IntakeExtensionIOInputsAutoLogged();
   private boolean extenderAtPosition = true;
-  private boolean pidControlEnabled = false;
 
   public IntakeExtension(IntakeExtensionIO io) {
     this.io = io;
+  }
+
+  /**
+   * Allows manual control of this intake extension using a controller.
+   *
+   * @param controller supplier that supplies the value of the controller.
+   */
+  public void setManualOverrideController(DoubleSupplier controller) {
+    Supplier<Voltage> voltageSupplier =
+        () -> {
+          double val = controller.getAsDouble();
+          return Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR);
+        };
+
+    setDefaultCommand(setExtenderVoltageCommand(voltageSupplier));
+  }
+
+  /**
+   * Creates a command that sets the voltage to the intake extension motor using values from the
+   * provided supplier.
+   */
+  private Command setExtenderVoltageCommand(Supplier<Voltage> voltageSupplier) {
+    return Commands.run(() -> io.setExtenderVoltage(voltageSupplier.get()), this);
   }
 
   @Override
@@ -52,18 +76,24 @@ public class IntakeExtension extends SubsystemBase {
     return extenderAtPosition;
   }
 
-  public void extend() {
+  public Command extendCommand() {
+    return new StartEndCommand(this::extend, this::stopMotor, this);
+  }
+
+  public Command retractCommand() {
+    return new StartEndCommand(this::retract, this::stopMotor, this);
+  }
+
+  void extend() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
-    pidControlEnabled = true;
   }
 
-  public void retract() {
+  void retract() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
-    pidControlEnabled = true;
   }
 
   /**
@@ -88,26 +118,16 @@ public class IntakeExtension extends SubsystemBase {
             new SequentialCommandGroup(
                     new StartEndCommand(this::halfRetract, this::stopMotor, this)
                         .until(this::isExtenderAtPosition),
-                    new StartEndCommand(this::extend, this::stopMotor, this))
+                    extendCommand())
                 .until(this::isExtenderAtPosition))
         .finallyDo(this::stopMotor);
   }
 
-  public void setExtenderVoltage(Voltage extensionVoltage) {
-    io.setExtenderVoltage(extensionVoltage);
-    pidControlEnabled = false;
-  }
-
   public void stopMotor() {
     io.setExtenderVoltage(Volts.of(0));
-    pidControlEnabled = false;
   }
 
   public Angle getSetpoint() {
     return replayedInputs.extenderMotorSetpoint;
-  }
-
-  public boolean isPidControlEnabled() {
-    return pidControlEnabled;
   }
 }

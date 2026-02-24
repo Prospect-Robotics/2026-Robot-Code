@@ -12,7 +12,6 @@ import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
-import com.team2813.commands.IntakeExtensionDefaultCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -40,7 +39,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.BooleanSupplier;
@@ -221,9 +222,8 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
-    intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(
-            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
+    intakeExtension.setManualOverrideController(
+        () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
@@ -265,9 +265,7 @@ public class RobotContainer {
         .whileTrue(
             new ParallelCommandGroup(
                 intakeRoller.intakeCommand(),
-                new StartEndCommand(
-                        intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
-                    .until(extensionInterruptionCondition)));
+                intakeExtension.extendCommand().until(extensionInterruptionCondition)));
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
