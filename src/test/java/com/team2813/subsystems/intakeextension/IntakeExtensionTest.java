@@ -1,80 +1,93 @@
 package com.team2813.subsystems.intakeextension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static edu.wpi.first.units.Units.Rotations;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import com.team2813.Constants;
-import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
+import edu.wpi.first.hal.HAL;
+import edu.wpi.first.wpilibj.RuntimeType;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-@InitWPILib
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IntakeExtensionTest {
-  @BeforeAll
-  public static void verifyNotInReplayMode() {
-    assertTrue(
-        Constants.currentMode != Constants.Mode.REPLAY, "Must not be in replay mode to run tests");
+
+  private IntakeExtension intakeExtension;
+
+  @BeforeEach
+  public void setUp() {
+    // Initialize HAL fresh for each test to avoid static state leakage
+    HAL.initialize(500, 1);
+    DriverStationSim.setEnabled(true);
+    DriverStationSim.notifyNewData();
+    SimHooks.setHALRuntimeType(RuntimeType.kSimulation.value);
+
+    intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
+  }
+
+  @AfterEach
+  public void tearDown() {
+    if (intakeExtension != null) {
+      intakeExtension.close();
+      intakeExtension = null;
+    }
+    // Shutdown HAL to clear all static device state
+    HAL.shutdown();
   }
 
   @Test
-  public void testIntakeExtension() {
-    // create an intake extension subsystem
-
-    IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-
-    // extend the intake
+  @Order(1)
+  public void testIntakeExtensionExtend() {
     intakeExtension.extend();
 
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
 
     assertEquals(
-        intakeExtension.getSetpoint().magnitude(),
-        IntakeExtensionConstants.ExtenderPositions.OUT.toMotorSetpoint().magnitude(),
+        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT)
+            .in(Rotations),
+        intakeExtension.getSetpoint().in(Rotations),
         0.01);
   }
 
   @Test
-  public void testIntakeRetraction() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
-    // create an intake extension subsystem
-
-    IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-
-    // retract the intake
+  @Order(2)
+  public void testIntakeExtensionRetract() {
     intakeExtension.retract();
 
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
     }
 
     assertEquals(
-        intakeExtension.getSetpoint().magnitude(),
-        IntakeExtensionConstants.ExtenderPositions.IN.toMotorSetpoint().magnitude(),
+        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN)
+            .in(Rotations),
+        intakeExtension.getSetpoint().in(Rotations),
         0.01);
   }
 
   @Test
-  public void testIntakeExtensionAtPosition() {
-    Assumptions.assumeTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run tests");
-    // create an intake extension subsystem
-
-    IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-
-    // extend the intake
+  @Order(3)
+  public void testIntakeExtensionIsAtPositionExtend() {
     intakeExtension.extend();
 
-    // run periodic at the equivalent of 50 cycles (1 second) to let the intake reach the setpoint
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
-      SimHooks.stepTiming(Constants.SIM_TIME_PERIOD);
+    }
+
+    assertTrue(
+        "Extender should be at position after extending", intakeExtension.isExtenderAtPosition());
+  }
+
+  @Test
+  @Order(4)
+  public void testIntakeExtensionIsAtPositionRetract() {
+    intakeExtension.retract();
+
+    for (int i = 0; i < 50; i++) {
+      intakeExtension.periodic();
     }
 
     assertTrue(intakeExtension.isExtenderAtPosition());

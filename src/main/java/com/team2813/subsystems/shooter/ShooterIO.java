@@ -2,6 +2,7 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
@@ -12,16 +13,13 @@ public interface ShooterIO {
   @AutoLog
   class ShooterIOInputs {
     public Voltage mainShooterMotorVoltage = Volts.of(0);
+    public Angle mainShooterMotorAngle = Rotations.of(0);
     public AngularVelocity mainShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current mainShooterMotorCurrent = Amps.of(0);
 
     public Voltage followerShooterMotorVoltage = Volts.of(0);
     public AngularVelocity followerShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current followerShooterMotorCurrent = Amps.of(0);
-
-    public Voltage kickerMotorVoltage = Volts.of(0);
-    public AngularVelocity kickerMotorRotPerSec = RotationsPerSecond.of(0);
-    public Current kickerMotorCurrent = Amps.of(0);
   }
 
   /**
@@ -32,12 +30,7 @@ public interface ShooterIO {
    */
   default void updateState(ShooterIOInputs inputs) {}
 
-  default void setMotorVoltage(Voltage shooterVoltage, Voltage kickerVoltage) {
-    setShooterMotorVoltage(shooterVoltage);
-    setKickerMotorVoltage(kickerVoltage);
-  }
+  default void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {}
 
   default void setShooterMotorVoltage(Voltage shooterMotorVoltage) {}
-
-  default void setKickerMotorVoltage(Voltage kickerMotorVoltage) {}
 }

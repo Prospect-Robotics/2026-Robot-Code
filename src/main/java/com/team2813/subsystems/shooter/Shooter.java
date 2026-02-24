@@ -1,12 +1,9 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
 
@@ -26,30 +23,25 @@ public class Shooter extends SubsystemBase {
     Logger.processInputs("Shooter", replayedInputs);
   }
 
-  public void intake() {
-    io.setMotorVoltage(
-        ShooterConstants.getShooterIntakeVoltage(), ShooterConstants.getKickerIntakeVoltage());
-  }
-
-  public void outtake() {
-    io.setMotorVoltage(
-        ShooterConstants.getShooterOuttakeVoltage(), ShooterConstants.getKickerOuttakeVoltage());
-  }
-
   public void stop() {
-    io.setMotorVoltage(Volts.of(0), Volts.of(0));
+    io.setShooterMotorVoltage(Volts.of(0));
   }
 
-  public Command intakeCommand() {
-    return new InstantCommand(this::intake, this);
+  public Command spoolShooterInstantIntakeCommand() {
+    return new InstantCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()), this);
+  }
+
+  public Command spoolShooterIntakewardCommand() {
+    return new StartEndCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),
+        this::stop,
+        this);
   }
 
   public Command outakeCommand() {
-    return new InstantCommand(this::outtake, this);
-  }
-
-  public Command stopCommand() {
-    return new InstantCommand(this::stop, this);
+    return new StartEndCommand(
+        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
@@ -61,7 +53,7 @@ public class Shooter extends SubsystemBase {
                 null,
                 null,
                 null,
-                (state) -> Logger.recordOutput("Shooter/SysIDTestState", state.toString())),
+                (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setShooterMotorVoltage, null, this));
     // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than
     // io::setShooterMotorVoltage.

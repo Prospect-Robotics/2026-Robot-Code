@@ -18,12 +18,29 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
- * on a roboRIO. Change the value of "simMode" to switch between "sim" (physics sim) and "replay"
- * (log replay from a file).
+ * on a roboRIO.
  */
 public final class Constants {
-  public static final Mode simMode = Mode.SIM;
-  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  /**
+   * Gets the {@link Mode} that the robot should use in simulation. This method will never return
+   * {@link Mode#REAL}, as that is never appropriate for robot simulation. If the gradle {@code
+   * replayWatch} task is run, this will return {@link Mode#REPLAY} automatically.
+   *
+   * @return The {@link Mode} that the robot should use if it is being simulated.
+   */
+  static Mode getSimMode() {
+    // The environment variable "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE" is set to "true" when running
+    // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
+    // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
+    // not going to happen due to the long, specific name, and if it does, that is their problem :3.
+    if (Boolean.parseBoolean(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
+      return Mode.REPLAY;
+    } else {
+      return Mode.SIM;
+    }
+  }
+
+  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : getSimMode();
 
   public static double SIM_TIME_PERIOD =
       0.02; // Update physics simulations every 20ms (like the actual bot).
@@ -47,13 +64,11 @@ public final class Constants {
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.
   // Roller Motors. Aliases: Magazine motors
-  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Right roller motor.
-  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 22; // Left roller motor.
+  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Top roller motor.
+  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 15; // Bottom roller motor.
 
-  // When robot front is facing away, this is the right feeder motor.
   // Feeder Motors. Aliases: Vectoring motors
-  public static final int LEFT_FEEDER_MOTOR_ID = 23;
-  public static final int RIGHT_FEEDER_MOTOR_ID = 24;
+  public static final int FEEDER_MOTOR_ID = 24;
 
   // Motor runs the robot intake.
   public static final int INTAKE_MOTOR_CAN_ID = 26;
@@ -63,8 +78,8 @@ public final class Constants {
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.
-  public static final int MAIN_SHOOTER_MOTOR_ID = 19; // Left shooter motor.
-  public static final int FOLLOWER_SHOOTER_MOTOR_ID = 20; // Right shooter motor.
+  public static final int MAIN_SHOOTER_MOTOR_ID = 19; // Right shooter motor.
+  public static final int FOLLOWER_SHOOTER_MOTOR_ID = 20; // Left shooter motor.
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;

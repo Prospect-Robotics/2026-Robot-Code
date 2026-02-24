@@ -16,7 +16,8 @@ public class IntakeRollerTest {
   public static void verifySim() {
     // verify that we're in sim mode before running tests
     assertTrue(
-        Constants.simMode == Constants.Mode.SIM, "Must be in sim mode to run IntakeRoller tests");
+        Constants.currentMode == Constants.Mode.SIM,
+        "Must be in sim mode to run IntakeRoller tests");
   }
 
   @Test

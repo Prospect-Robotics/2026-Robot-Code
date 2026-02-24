@@ -9,7 +9,6 @@ package com.team2813;
 
 import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
-import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.commands.DriveCommands;
@@ -18,7 +17,6 @@ import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
 import com.team2813.subsystems.drive.GyroIOPigeon2;
-import com.team2813.subsystems.drive.GyroIOSim;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
@@ -31,25 +29,21 @@ import com.team2813.subsystems.intakeroller.IntakeRoller;
 import com.team2813.subsystems.intakeroller.IntakeRollerIO;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOSim;
-import com.team2813.subsystems.shooter.Shooter;
-import com.team2813.subsystems.shooter.ShooterIO;
-import com.team2813.subsystems.shooter.ShooterIOReal;
-import com.team2813.subsystems.shooter.ShooterIOSim;
+import com.team2813.subsystems.kicker.Kicker;
+import com.team2813.subsystems.kicker.KickerIO;
+import com.team2813.subsystems.kicker.KickerIOReal;
+import com.team2813.subsystems.kicker.KickerIOSim;
+import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.BooleanSupplier;
-import org.ironmaple.simulation.SimulatedArena;
-import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.photonvision.simulation.VisionSystemSim;
 
@@ -62,8 +56,6 @@ import org.photonvision.simulation.VisionSystemSim;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private SwerveDriveSimulation driveSimulation = null;
-
   private final Hopper hopper;
   private final Vision vision;
 
@@ -71,6 +63,7 @@ public class RobotContainer {
   private final IntakeRoller intakeRoller;
 
   private final Shooter shooter;
+  private final Kicker kicker;
   // Controller
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -99,8 +92,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.frontRight(), tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.backLeft(), tunerConstants),
-                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants),
-                (robotPose) -> {});
+                new ModuleIOTalonFX(tunerConstants.backRight(), tunerConstants));
 
         hopper = new Hopper(new HopperIOReal());
 
@@ -109,41 +101,31 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 () -> {},
                 new VisionIOPhotonVision(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_LEFT_CAM),
+                    VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT),
                 new VisionIOPhotonVision(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME, VisionConstants.ROBOT_TO_RIGHT_CAM),
+                    VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT),
                 new VisionIOPhotonVision(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME, VisionConstants.ROBOT_TO_MID_CAM));
+                    VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
+                    VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOReal());
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
         shooter = new Shooter(new ShooterIOReal());
+        kicker = new Kicker(new KickerIOReal());
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
-        driveSimulation =
-            new SwerveDriveSimulation(
-                Drive.createMapleSimConfig(tunerConstants), new Pose2d(12, 2, new Rotation2d()));
-        SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
-
         drive =
             new Drive(
                 tunerConstants,
-                new GyroIOSim(driveSimulation.getGyroSimulation()),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[0],
-                    Amps.of(tunerConstants.frontLeft().SlipCurrent)),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[1],
-                    Amps.of(tunerConstants.frontRight().SlipCurrent)),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[2],
-                    Amps.of(tunerConstants.backLeft().SlipCurrent)),
-                new ModuleIOSim(
-                    driveSimulation.getModules()[3],
-                    Amps.of(tunerConstants.backRight().SlipCurrent)),
-                driveSimulation::setSimulationWorldPose);
+                new GyroIO() {},
+                new ModuleIOSim(tunerConstants.frontLeft()),
+                new ModuleIOSim(tunerConstants.frontRight()),
+                new ModuleIOSim(tunerConstants.backLeft()),
+                new ModuleIOSim(tunerConstants.backRight()));
 
         hopper = new Hopper(new HopperIOSim());
 
@@ -155,24 +137,22 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 () -> visionSim.update(drive.getPose()),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.LEFT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_LEFT_CAM,
-                    drive::getPose,
+                    VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
+                    VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT,
                     visionSim),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.RIGHT_COLOR_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_RIGHT_CAM,
-                    drive::getPose,
+                    VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
+                    VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT,
                     visionSim),
                 new VisionIOPhotonVisionSim(
-                    VisionConstants.MIDDLE_MONO_CAMERA_NAME,
-                    VisionConstants.ROBOT_TO_MID_CAM,
-                    drive::getPose,
+                    VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
+                    VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT,
                     visionSim));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
         shooter = new Shooter(new ShooterIOSim());
+        kicker = new Kicker(new KickerIOSim());
 
         break;
 
@@ -185,8 +165,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
-                new ModuleIO() {},
-                (robotPose) -> {});
+                new ModuleIO() {});
 
         hopper = new Hopper(new HopperIO() {});
 
@@ -201,6 +180,7 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
+        kicker = new Kicker(new KickerIO() {});
 
         break;
     }
@@ -236,42 +216,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Drive commands
-    // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -driveController.getLeftY(),
-            () -> -driveController.getLeftX(),
-            () -> -driveController.getRightX()));
-
-    driveController
-        .y()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -driveController.getLeftY(),
-                () -> -driveController.getLeftX(),
-                this::getBotToHub));
-
-    // Reset robot orientation, but keeps its position on the field.
-    driveController
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
-                }));
-
-    // Feeder and Vectoring Bindings
-
-    // Intake Roller Bindings
-    operatorController.rightBumper().whileTrue(intakeRoller.intakeCommand());
-    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
+    // Operator controls
+    // Operator Intake roller Bindings
+    operatorController.leftBumper().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
     intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(intakeExtension, () -> -operatorController.getLeftY()));
+        new IntakeExtensionDefaultCommand(
+            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
@@ -281,18 +233,54 @@ public class RobotContainer {
                     > 0.3); // Or the operator interrupts by moving the left joystick left/right.
 
     operatorController
-        .a()
-        .onTrue(
-            (new StartEndCommand(
-                    intakeExtension::extend, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionInterruptionCondition));
+        .leftStick()
+        .whileTrue(
+            new ParallelCommandGroup(intakeExtension.wallEMode(), intakeRoller.intakeCommand()));
 
-    operatorController
-        .b()
+    // Stop Pos
+    operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
+
+    // Feeder controls
+    operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
+    operatorController.povLeft().whileTrue(hopper.intakeCommand());
+
+    // Operator intake roller bindings.
+    operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
+
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+
+    // Driver controls
+    // Default command, normal field-relative drive
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -driveController.getLeftY(),
+            () -> -driveController.getLeftX(),
+            () -> -driveController.getRightX()));
+
+    // Driver intake roller bindings
+    driveController
+        .rightBumper()
+        .whileTrue(
+            new ParallelCommandGroup(
+                intakeRoller.intakeCommand(),
+                new StartEndCommand(
+                        intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
+                    .until(extensionInterruptionCondition)));
+
+    // hub shot command
+    driveController
+        .rightTrigger()
+        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
+
+    // Reset robot orientation, but keeps its position on the field.
+    driveController
+        .y()
         .onTrue(
-            (new StartEndCommand(
-                    intakeExtension::retract, intakeExtension::stopMotor, intakeExtension))
-                .until(extensionInterruptionCondition));
+            new InstantCommand(
+                () -> {
+                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+                }));
   }
 
   /**
@@ -312,39 +300,5 @@ public class RobotContainer {
       hub = BLUE_HUB_POSITION;
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
-  }
-
-  /**
-   * Resets the simulation.
-   *
-   * <p>Borrowed from
-   * https://github.com/Pearadox/2025RobotCode/blob/main/src/main/java/frc/robot/RobotContainer.java#L394.
-   */
-  public void resetSimulation() {
-    if (Constants.currentMode != Constants.Mode.SIM) return;
-
-    drive.setPose(new Pose2d(12, 2, new Rotation2d()));
-    SimulatedArena.getInstance().resetFieldForAuto();
-    // AlgaeHandler.getInstance().reset();
-  }
-
-  /**
-   * Updates Simulated Arena; to be called from Robot.simulationPeriodic()
-   *
-   * <p>Borrowed from
-   * https://github.com/Pearadox/2025RobotCode/blob/main/src/main/java/frc/robot/RobotContainer.java#L402
-   */
-  public void displaySimFieldToAdvantageScope() {
-    if (Constants.currentMode != Constants.Mode.SIM) return;
-
-    SimulatedArena.getInstance().simulationPeriodic();
-    // The pose by maplesim, including collisions with the field.
-    // See https://www.chiefdelphi.com/t/simulated-robot-goes-through-walls-with-maplesim/508663.
-    Logger.recordOutput(
-        "FieldSimulation/Pose", new Pose3d(driveSimulation.getSimulatedDriveTrainPose()));
-    Logger.recordOutput(
-        "FieldSimulation/Fuel", SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel"));
-    // Logger.recordOutput(
-    //         "FieldSimulation/Staged Algae", AlgaeHandler.getInstance().periodic());
   }
 }
