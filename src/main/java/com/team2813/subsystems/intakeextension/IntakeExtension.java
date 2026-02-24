@@ -37,6 +37,7 @@ public class IntakeExtension extends SubsystemBase {
     extenderAtPosition = error <= 0.4;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
+    Logger.recordOutput("IntakExtension/PositionInRotations", replayedInputs.extenderMotorPosition.in(Rotations));
     Logger.processInputs("IntakeExtension", replayedInputs);
   }
 
@@ -89,5 +90,13 @@ public class IntakeExtension extends SubsystemBase {
 
   public Angle getSetpoint() {
     return replayedInputs.extenderMotorSetpoint;
+  }
+
+  public Angle getPosition() {
+    return replayedInputs.extenderMotorPosition;
+  }
+
+  public void close() {
+    io.close();
   }
 }
