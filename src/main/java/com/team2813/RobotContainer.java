@@ -271,9 +271,9 @@ public class RobotContainer {
     driveController
         .leftBumper()
         .whileTrue(
-                new StartEndCommand(
-                        intakeExtension::retract, intakeExtension::stopMotor, intakeExtension)
-                    .until(extensionInterruptionCondition));
+            new StartEndCommand(
+                    intakeExtension::retract, intakeExtension::stopMotor, intakeExtension)
+                .until(extensionInterruptionCondition));
 
     // hub shot command
     driveController
