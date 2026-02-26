@@ -8,22 +8,27 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 
 public class ClimbConstants {
-  public static final double LEFT_MOTOR_TO_CLIMB_GEARING = 9;
-  public static final double RIGHT_MOTOR_TO_CLIMB_GEARING = 9;
-  public static final TalonFXConfiguration LEFT_MOTOR_TO_CLIMB_CONFIG =
+  public static final double INNER_MOTOR_TO_CLIMB_GEARING = 9;
+  public static final double OUTER_MOTOR_TO_CLIMB_GEARING = 9;
+
+  public static final TalonFXConfiguration INNER_MOTOR_TO_CLIMB_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(LEFT_MOTOR_TO_CLIMB_GEARING));
-  public static final TalonFXConfiguration RIGHT_MOTOR_TO_CLIMB_CONFIG =
+              new FeedbackConfigs().withSensorToMechanismRatio(INNER_MOTOR_TO_CLIMB_GEARING))
+          .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
+
+  public static final TalonFXConfiguration OUTER_MOTOR_TO_CLIMB_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(RIGHT_MOTOR_TO_CLIMB_GEARING));
+              new FeedbackConfigs().withSensorToMechanismRatio(OUTER_MOTOR_TO_CLIMB_GEARING))
+          .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   public static final Mass INNER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(4);
   public static final Mass OUTER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(4);

@@ -2,7 +2,6 @@ package com.team2813.subsystems.climb;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
-import static edu.wpi.first.units.Units.Volts;
 
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
@@ -31,11 +30,11 @@ public class Climb extends SubsystemBase {
   }
 
   public void stopInnerClimb() {
-    io.setInnerMotorVoltage(Volts.of(0));
+    io.stopInnerMotor();
   }
 
   public void stopOuterClimb() {
-    io.setOuterMotorVoltage(Volts.of(0));
+    io.stopOuterMotor();
   }
 
   @Override

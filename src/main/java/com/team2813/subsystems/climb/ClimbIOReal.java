@@ -6,19 +6,19 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Voltage;
 
 public class ClimbIOReal implements ClimbIO {
 
   private TalonFX innerMotor;
   private TalonFX outerMotor;
+
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
   public ClimbIOReal() {
     innerMotor = new TalonFX(0);
-    innerMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
+    innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
     outerMotor = new TalonFX(0);
-    outerMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
+    outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
   }
 
   @Override
@@ -48,13 +48,13 @@ public class ClimbIOReal implements ClimbIO {
   }
 
   @Override
-  public void setInnerMotorVoltage(Voltage voltage) {
-    innerMotor.setVoltage(voltage.magnitude());
+  public void stopInnerMotor() {
+    innerMotor.disable();
   }
 
   @Override
-  public void setOuterMotorVoltage(Voltage voltage) {
-    outerMotor.setVoltage(voltage.magnitude());
+  public void stopOuterMotor() {
+    outerMotor.disable();
   }
 
   @Override

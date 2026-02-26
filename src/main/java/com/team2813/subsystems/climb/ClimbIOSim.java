@@ -9,7 +9,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import org.littletonrobotics.junction.Logger;
 
@@ -19,7 +18,7 @@ public class ClimbIOSim implements ClimbIO {
   private final ElevatorSim innerClimbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
-          ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING,
+          ClimbConstants.INNER_MOTOR_TO_CLIMB_GEARING,
           ClimbConstants.INNER_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
           ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meter),
           ClimbConstants.INNER_CLIMB_MIN_HEIGHT.in(Meter),
@@ -30,7 +29,7 @@ public class ClimbIOSim implements ClimbIO {
   private final ElevatorSim outerClimbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
-          ClimbConstants.RIGHT_MOTOR_TO_CLIMB_GEARING,
+          ClimbConstants.OUTER_MOTOR_TO_CLIMB_GEARING,
           ClimbConstants.OUTER_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
           ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meter),
           ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter),
@@ -47,10 +46,10 @@ public class ClimbIOSim implements ClimbIO {
 
   public ClimbIOSim() {
     innerMotor = new TalonFX(0);
-    innerMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
+    innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
     innerMotorSim = innerMotor.getSimState();
     outerMotor = new TalonFX(0);
-    outerMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
+    outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
     outerMotorSim = outerMotor.getSimState();
   }
 
@@ -107,7 +106,7 @@ public class ClimbIOSim implements ClimbIO {
                     / ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meters))
                 // radians/sec to rotations/sec
                 / (2.0 * Math.PI))
-            * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING);
+            * ClimbConstants.INNER_MOTOR_TO_CLIMB_GEARING);
 
     outerMotorSim.setSupplyVoltage(Volts.of(12));
 
@@ -143,7 +142,7 @@ public class ClimbIOSim implements ClimbIO {
                     / ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meters))
                 // radians/sec to rotations/sec
                 / (2.0 * Math.PI))
-            * ClimbConstants.RIGHT_MOTOR_TO_CLIMB_GEARING);
+            * ClimbConstants.OUTER_MOTOR_TO_CLIMB_GEARING);
   }
 
   @Override
@@ -157,13 +156,13 @@ public class ClimbIOSim implements ClimbIO {
   }
 
   @Override
-  public void setInnerMotorVoltage(Voltage voltage) {
-    innerMotor.setVoltage(voltage.in(Volts));
+  public void stopInnerMotor() {
+    innerMotor.disable();
   }
 
   @Override
-  public void setOuterMotorVoltage(Voltage voltage) {
-    outerMotor.setVoltage(voltage.in(Volts));
+  public void stopOuterMotor() {
+    outerMotor.disable();
   }
 
   @Override
@@ -201,7 +200,7 @@ public class ClimbIOSim implements ClimbIO {
     return Units.radiansToRotations(
             elevatorPosition / ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meters))
         // multiply by gear ratio
-        * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING;
+        * ClimbConstants.INNER_MOTOR_TO_CLIMB_GEARING;
   }
 
   private static double getRightMotorRotations(double elevatorPosition) {
@@ -209,6 +208,6 @@ public class ClimbIOSim implements ClimbIO {
     return Units.radiansToRotations(
             elevatorPosition / ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meters))
         // multiply by gear ratio
-        * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING;
+        * ClimbConstants.INNER_MOTOR_TO_CLIMB_GEARING;
   }
 }

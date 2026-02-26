@@ -4,7 +4,6 @@ import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ClimbIO {
@@ -43,21 +42,10 @@ public interface ClimbIO {
 
   default void setOuterMotorSetpoint(Angle setpoint) {}
 
-  /**
-   * @param voltage Voltage to apply to the motor.
-   */
-  default void setInnerMotorVoltage(Voltage voltage) {}
-
-  default void setOuterMotorVoltage(Voltage voltage) {}
-
-  /**
-   * Runs a brake request on the inner climb motor, stopping it and preventing movement.
-   */
+  /** Runs a brake request on the inner climb motor, stopping it and preventing movement. */
   default void stopInnerMotor() {}
 
-  /**
-   * Runs a brake request on the outer climb motor, stopping it and preventing movement.
-   */
+  /** Runs a brake request on the outer climb motor, stopping it and preventing movement. */
   default void stopOuterMotor() {}
 
   /**
