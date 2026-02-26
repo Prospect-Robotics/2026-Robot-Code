@@ -187,9 +187,9 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});
-        climb = new Climb(new ClimbIO() {});
         kicker = new Kicker(new KickerIO() {});
 
+        climb = new Climb(new ClimbIO() {});
         break;
     }
 
