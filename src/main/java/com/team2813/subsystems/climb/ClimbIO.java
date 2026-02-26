@@ -49,6 +49,17 @@ public interface ClimbIO {
   default void setInnerMotorVoltage(Voltage voltage) {}
 
   default void setOuterMotorVoltage(Voltage voltage) {}
+
+  /**
+   * Runs a brake request on the inner climb motor, stopping it and preventing movement.
+   */
+  default void stopInnerMotor() {}
+
+  /**
+   * Runs a brake request on the outer climb motor, stopping it and preventing movement.
+   */
+  default void stopOuterMotor() {}
+
   /**
    * @return The angle of the motor.
    */

@@ -38,20 +38,20 @@ public class ClimbIOSim implements ClimbIO {
           true,
           ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter));
 
-  private TalonFX leftMotor;
-  private TalonFXSimState leftMotorSim;
-  private TalonFX rightMotor;
-  private TalonFXSimState rightMotorSim;
+  private TalonFX innerMotor;
+  private TalonFXSimState innerMotorSim;
+  private TalonFX outerMotor;
+  private TalonFXSimState outerMotorSim;
   // Used for actually moving the motor to a given position with PID applied to a voltage input.
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
   public ClimbIOSim() {
-    leftMotor = new TalonFX(0);
-    leftMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
-    leftMotorSim = leftMotor.getSimState();
-    rightMotor = new TalonFX(0);
-    rightMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
-    rightMotorSim = rightMotor.getSimState();
+    innerMotor = new TalonFX(0);
+    innerMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
+    innerMotorSim = innerMotor.getSimState();
+    outerMotor = new TalonFX(0);
+    outerMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
+    outerMotorSim = outerMotor.getSimState();
   }
 
   @Override
@@ -59,37 +59,37 @@ public class ClimbIOSim implements ClimbIO {
     updateSim();
 
     inputs.innerCarriagePositionInches = Meters.of(innerClimbSim.getPositionMeters()).in(Inches);
-    inputs.innerMotorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
-    inputs.innerMotorRotations = leftMotor.getPosition().getValueAsDouble();
-    inputs.innerMotorVoltage = leftMotor.getMotorVoltage().getValueAsDouble();
-    inputs.innerMotorVelocityRotsPerSecond = leftMotor.getVelocity().getValueAsDouble();
+    inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
+    inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
+    inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
+    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getVelocity().getValueAsDouble();
 
     inputs.outerCarriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
-    inputs.outerMotorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
-    inputs.outerMotorRotations = rightMotor.getPosition().getValueAsDouble();
-    inputs.outerMotorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();
-    inputs.outerMotorVelocityRotsPerSecond = rightMotor.getVelocity().getValueAsDouble();
+    inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
+    inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
+    inputs.outerMotorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
+    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValueAsDouble();
   }
 
   private void updateSim() {
-    leftMotorSim.setSupplyVoltage(Volts.of(12));
+    innerMotorSim.setSupplyVoltage(Volts.of(12));
     double motorInverted = -1.0; // -1 for inverted, 1 for forward motor.
 
     // Apply the voltage to the sim elevator that we apply to the sim motor.
     // Negating the sim motor value since it is set to use negative value when pushing
     // the cartrage UP.
-    innerClimbSim.setInputVoltage(motorInverted * leftMotorSim.getMotorVoltage());
+    innerClimbSim.setInputVoltage(motorInverted * innerMotorSim.getMotorVoltage());
     innerClimbSim.update(0.02); // Same update cycle as an actual robot, 20 ms.
 
     // Logs to "Real Outputs" NT
-    Logger.recordOutput("Simulated Climb/motorSim/Voltage", leftMotorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", innerMotorSim.getMotorVoltage());
     Logger.recordOutput(
         "Simulated Climb/climbSim/position (meters)", innerClimbSim.getPositionMeters());
     Logger.recordOutput(
         "Simulated Climb/climbSim/hitsUpperLimit", innerClimbSim.hasHitUpperLimit());
     Logger.recordOutput(
         "Simulated Climb/climbSim/hitsLowerLimit", innerClimbSim.hasHitLowerLimit());
-    Logger.recordOutput("Simulated Climb/motorSim/Voltage", leftMotorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", innerMotorSim.getMotorVoltage());
     Logger.recordOutput(
         "Simulated Climb/climbSim/position (meters)", outerClimbSim.getPositionMeters());
     Logger.recordOutput(
@@ -97,11 +97,11 @@ public class ClimbIOSim implements ClimbIO {
     Logger.recordOutput(
         "Simulated Climb/climbSim/hitsLowerLimit", outerClimbSim.hasHitLowerLimit());
 
-    leftMotorSim.setRawRotorPosition(
+    innerMotorSim.setRawRotorPosition(
         motorInverted * getLeftMotorRotations(innerClimbSim.getPositionMeters()));
 
     // angular velocity = linear velocity / radius, taken also from 5414
-    leftMotorSim.setRotorVelocity(
+    innerMotorSim.setRotorVelocity(
         motorInverted
             * ((innerClimbSim.getVelocityMetersPerSecond()
                     / ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meters))
@@ -109,23 +109,23 @@ public class ClimbIOSim implements ClimbIO {
                 / (2.0 * Math.PI))
             * ClimbConstants.LEFT_MOTOR_TO_CLIMB_GEARING);
 
-    rightMotorSim.setSupplyVoltage(Volts.of(12));
+    outerMotorSim.setSupplyVoltage(Volts.of(12));
 
     // Apply the voltage to the sim elevator that we apply to the sim motor.
     // Negating the sim motor value since it is set to use negative value when pushing
     // the cartrage UP.
-    outerClimbSim.setInputVoltage(motorInverted * rightMotorSim.getMotorVoltage());
+    outerClimbSim.setInputVoltage(motorInverted * outerMotorSim.getMotorVoltage());
     outerClimbSim.update(0.02); // Same update cycle as an actual robot, 20 ms.
 
     // Logs to "Real Outputs" NT
-    Logger.recordOutput("Simulated Climb/motorSim/Voltage", rightMotorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", outerMotorSim.getMotorVoltage());
     Logger.recordOutput(
         "Simulated Climb/climbSim/position (meters)", outerClimbSim.getPositionMeters());
     Logger.recordOutput(
         "Simulated Climb/climbSim/hitsUpperLimit", outerClimbSim.hasHitUpperLimit());
     Logger.recordOutput(
         "Simulated Climb/climbSim/hitsLowerLimit", outerClimbSim.hasHitLowerLimit());
-    Logger.recordOutput("Simulated Climb/motorSim/Voltage", rightMotorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", outerMotorSim.getMotorVoltage());
     Logger.recordOutput(
         "Simulated Climb/climbSim/position (meters)", outerClimbSim.getPositionMeters());
     Logger.recordOutput(
@@ -133,11 +133,11 @@ public class ClimbIOSim implements ClimbIO {
     Logger.recordOutput(
         "Simulated Climb/climbSim/hitsLowerLimit", outerClimbSim.hasHitLowerLimit());
 
-    leftMotorSim.setRawRotorPosition(
+    innerMotorSim.setRawRotorPosition(
         motorInverted * getRightMotorRotations(outerClimbSim.getPositionMeters()));
 
     // angular velocity = linear velocity / radius, taken also from 5414
-    leftMotorSim.setRotorVelocity(
+    innerMotorSim.setRotorVelocity(
         motorInverted
             * ((innerClimbSim.getVelocityMetersPerSecond()
                     / ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meters))
@@ -148,32 +148,32 @@ public class ClimbIOSim implements ClimbIO {
 
   @Override
   public void setInnerMotorSetpoint(Angle setpoint) {
-    leftMotor.setControl(positionControl.withPosition(setpoint));
+    innerMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
   public void setOuterMotorSetpoint(Angle setpoint) {
-    rightMotor.setControl(positionControl.withPosition(setpoint));
+    outerMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
   public void setInnerMotorVoltage(Voltage voltage) {
-    leftMotor.setVoltage(voltage.in(Volts));
+    innerMotor.setVoltage(voltage.in(Volts));
   }
 
   @Override
   public void setOuterMotorVoltage(Voltage voltage) {
-    rightMotor.setVoltage(voltage.in(Volts));
+    outerMotor.setVoltage(voltage.in(Volts));
   }
 
   @Override
   public Angle getInnerMotorPosition() {
-    return leftMotor.getPosition().getValue();
+    return innerMotor.getPosition().getValue();
   }
 
   @Override
   public Angle getOuterMotorPosition() {
-    return rightMotor.getPosition().getValue();
+    return outerMotor.getPosition().getValue();
   }
 
   /**

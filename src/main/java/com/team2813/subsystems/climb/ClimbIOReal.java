@@ -10,71 +10,71 @@ import edu.wpi.first.units.measure.Voltage;
 
 public class ClimbIOReal implements ClimbIO {
 
-  private TalonFX leftMotor;
-  private TalonFX rightMotor;
+  private TalonFX innerMotor;
+  private TalonFX outerMotor;
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
   public ClimbIOReal() {
-    leftMotor = new TalonFX(0);
-    leftMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
-    rightMotor = new TalonFX(0);
-    rightMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
+    innerMotor = new TalonFX(0);
+    innerMotor.getConfigurator().apply(ClimbConstants.LEFT_MOTOR_TO_CLIMB_CONFIG);
+    outerMotor = new TalonFX(0);
+    outerMotor.getConfigurator().apply(ClimbConstants.RIGHT_MOTOR_TO_CLIMB_CONFIG);
   }
 
   @Override
   public void updateState(ClimbIOInputs inputs) {
 
     inputs.innerCarriagePositionInches = getInnerCarriagePosition().in(Inches);
-    inputs.innerMotorRotations = leftMotor.getPosition().getValueAsDouble();
-    inputs.innerMotorVelocityRotsPerSecond = leftMotor.getVelocity().getValueAsDouble();
-    inputs.innerMotorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
-    inputs.innerMotorVoltage = leftMotor.getMotorVoltage().getValueAsDouble();
+    inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
+    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getVelocity().getValueAsDouble();
+    inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
+    inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
 
     inputs.outerCarriagePositionInches = getOuterCarriagePosition().in(Inches);
-    inputs.outerMotorRotations = rightMotor.getPosition().getValueAsDouble();
-    inputs.outerMotorVelocityRotsPerSecond = rightMotor.getVelocity().getValueAsDouble();
-    inputs.outerMotorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
-    inputs.outerMotorVoltage = rightMotor.getMotorVoltage().getValueAsDouble();
+    inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
+    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValueAsDouble();
+    inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
+    inputs.outerMotorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
   }
 
   @Override
   public void setInnerMotorSetpoint(Angle setpoint) {
-    leftMotor.setControl(positionControl.withPosition(setpoint));
+    innerMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
   public void setOuterMotorSetpoint(Angle setpoint) {
-    rightMotor.setControl(positionControl.withPosition(setpoint));
+    outerMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
   public void setInnerMotorVoltage(Voltage voltage) {
-    leftMotor.setVoltage(voltage.magnitude());
+    innerMotor.setVoltage(voltage.magnitude());
   }
 
   @Override
   public void setOuterMotorVoltage(Voltage voltage) {
-    rightMotor.setVoltage(voltage.magnitude());
+    outerMotor.setVoltage(voltage.magnitude());
   }
 
   @Override
   public Angle getInnerMotorPosition() {
-    return leftMotor.getPosition().getValue();
+    return innerMotor.getPosition().getValue();
   }
 
   @Override
   public Angle getOuterMotorPosition() {
-    return rightMotor.getPosition().getValue();
+    return outerMotor.getPosition().getValue();
   }
 
   @Override
   public Distance getInnerCarriagePosition() {
-    return leftMotorRotationToCarriagePosition(leftMotor.getPosition().getValue());
+    return leftMotorRotationToCarriagePosition(innerMotor.getPosition().getValue());
   }
 
   @Override
   public Distance getOuterCarriagePosition() {
-    return rightMotorRotationToCarriagePosition(rightMotor.getPosition().getValue());
+    return rightMotorRotationToCarriagePosition(outerMotor.getPosition().getValue());
   }
 
   private static Distance leftMotorRotationToCarriagePosition(Angle motorPosition) {
