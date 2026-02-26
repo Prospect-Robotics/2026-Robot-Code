@@ -39,24 +39,24 @@ public interface ClimbIO {
    *
    * @param setpoint Position for the motor to go to.
    */
-  default void setLeftMotorSetpoint(Angle setpoint) {}
+  default void setInnerMotorSetpoint(Angle setpoint) {}
 
-  default void setRightMotorSetpoint(Angle setpoint) {}
+  default void setOuterMotorSetpoint(Angle setpoint) {}
 
   /**
    * @param voltage Voltage to apply to the motor.
    */
-  default void setLeftMotorVoltage(Voltage voltage) {}
+  default void setInnerMotorVoltage(Voltage voltage) {}
 
-  default void setRightMotorVoltage(Voltage voltage) {}
+  default void setOuterMotorVoltage(Voltage voltage) {}
   /**
    * @return The angle of the motor.
    */
-  default Angle getLeftMotorPosition() {
+  default Angle getInnerMotorPosition() {
     return Rotations.of(0);
   }
 
-  default Angle getRightMotorPosition() {
+  default Angle getOuterMotorPosition() {
     return Rotations.of(0);
   }
 

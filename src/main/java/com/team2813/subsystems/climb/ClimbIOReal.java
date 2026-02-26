@@ -38,32 +38,32 @@ public class ClimbIOReal implements ClimbIO {
   }
 
   @Override
-  public void setLeftMotorSetpoint(Angle setpoint) {
+  public void setInnerMotorSetpoint(Angle setpoint) {
     leftMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
-  public void setRightMotorSetpoint(Angle setpoint) {
+  public void setOuterMotorSetpoint(Angle setpoint) {
     rightMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
-  public void setLeftMotorVoltage(Voltage voltage) {
+  public void setInnerMotorVoltage(Voltage voltage) {
     leftMotor.setVoltage(voltage.magnitude());
   }
 
   @Override
-  public void setRightMotorVoltage(Voltage voltage) {
+  public void setOuterMotorVoltage(Voltage voltage) {
     rightMotor.setVoltage(voltage.magnitude());
   }
 
   @Override
-  public Angle getLeftMotorPosition() {
+  public Angle getInnerMotorPosition() {
     return leftMotor.getPosition().getValue();
   }
 
   @Override
-  public Angle getRightMotorPosition() {
+  public Angle getOuterMotorPosition() {
     return rightMotor.getPosition().getValue();
   }
 
