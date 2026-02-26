@@ -118,8 +118,9 @@ public class RobotContainer {
         intakeRoller = new IntakeRoller(new IntakeRollerIOReal());
 
         shooter = new Shooter(new ShooterIOReal());
-        climb = new Climb(new ClimbIOReal());
         kicker = new Kicker(new KickerIOReal());
+
+        climb = new Climb(new ClimbIOReal());
         break;
 
       case SIM:
@@ -275,6 +276,19 @@ public class RobotContainer {
                 new StartEndCommand(
                         intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
                     .until(extensionInterruptionCondition)));
+
+
+    // FIXME: Test climb bindings! Remove later!
+    driveController.povUp().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
+    driveController
+        .povDown()
+        .onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.DOWN));
+
+    driveController.povLeft().onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.UP));
+    driveController
+        .povRight()
+        .onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.DOWN));
+    // END CLIMB BINDINGS.
 
     // hub shot command
     driveController
