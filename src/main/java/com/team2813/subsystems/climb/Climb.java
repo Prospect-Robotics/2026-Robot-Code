@@ -29,14 +29,6 @@ public class Climb extends SubsystemBase {
     this.io = io;
   }
 
-  public void stopInnerClimb() {
-    io.stopInnerMotor();
-  }
-
-  public void stopOuterClimb() {
-    io.stopOuterMotor();
-  }
-
   @Override
   public void periodic() {
     io.updateState(replayedInputs);
@@ -67,6 +59,14 @@ public class Climb extends SubsystemBase {
         Inches.of(replayedInputs.innerCarriagePositionInches));
     defaultSimulationVisualizerInstance.updateOuterClimbHeight(
         Inches.of(replayedInputs.outerCarriagePositionInches));
+  }
+
+  public void stopInnerClimb() {
+    io.stopInnerMotor();
+  }
+
+  public void stopOuterClimb() {
+    io.stopOuterMotor();
   }
 
   public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {
