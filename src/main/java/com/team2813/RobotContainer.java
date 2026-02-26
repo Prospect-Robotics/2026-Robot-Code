@@ -277,7 +277,6 @@ public class RobotContainer {
                         intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
                     .until(extensionInterruptionCondition)));
 
-
     // FIXME: Test climb bindings! Remove later!
     driveController.povUp().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
     driveController
