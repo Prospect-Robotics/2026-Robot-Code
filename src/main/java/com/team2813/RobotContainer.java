@@ -278,10 +278,8 @@ public class RobotContainer {
                     .until(extensionInterruptionCondition)));
 
     // FIXME: Test climb bindings! Remove later!
-    driveController.povUp().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
-    driveController
-        .povDown()
-        .onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.DOWN));
+    driveController.y().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
+    driveController.a().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.DOWN));
 
     driveController.povLeft().onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.UP));
     driveController
@@ -295,13 +293,13 @@ public class RobotContainer {
         .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
-    driveController
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
-                }));
+    // driveController
+    //     .y()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+    //             }));
   }
 
   /**

@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 
@@ -15,9 +16,9 @@ public class ClimbIOReal implements ClimbIO {
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
   public ClimbIOReal() {
-    innerMotor = new TalonFX(0);
+    innerMotor = new TalonFX(Constants.LEFTCLIMB_MOTOR_ID);
     innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
-    outerMotor = new TalonFX(0);
+    outerMotor = new TalonFX(Constants.RIGHTCLIMB_MOTOR_ID);
     outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
   }
 
@@ -26,13 +27,13 @@ public class ClimbIOReal implements ClimbIO {
 
     inputs.innerCarriagePositionInches = getInnerCarriagePosition().in(Inches);
     inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
-    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getVelocity().getValueAsDouble();
+    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getVelocity().getValue();
     inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
     inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
 
     inputs.outerCarriagePositionInches = getOuterCarriagePosition().in(Inches);
     inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
-    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValueAsDouble();
+    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValue();
     inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
     inputs.outerMotorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
   }
@@ -78,16 +79,12 @@ public class ClimbIOReal implements ClimbIO {
   }
 
   private static Distance leftMotorRotationToCarriagePosition(Angle motorPosition) {
-    return Inches.of(
-            motorPosition.in(Rotations)
-                * ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
-        .times(2);
+    return ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.times(
+        motorPosition.in(Rotations));
   }
 
   private static Distance rightMotorRotationToCarriagePosition(Angle motorPosition) {
-    return Inches.of(
-            motorPosition.in(Rotations)
-                * ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION)
-        .times(2);
+    return ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.times(
+        motorPosition.in(Rotations));
   }
 }

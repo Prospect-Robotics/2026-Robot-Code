@@ -1,44 +1,54 @@
 package com.team2813.subsystems.climb;
 
 import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Millimeters;
-import static edu.wpi.first.units.Units.Pounds;
+// import static edu.wpi.first.units.Units.Millimeters;
 
-import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Mass;
 
 public class ClimbConstants {
+  // Gearing ratio = (36t:12t) * (40t:20t) * (36t:24t) = 9:1
+  // Gear chains looked up from the CAD model of the climb gearbox.
   public static final double INNER_MOTOR_TO_CLIMB_GEARING = 9;
   public static final double OUTER_MOTOR_TO_CLIMB_GEARING = 9;
 
   public static final TalonFXConfiguration INNER_MOTOR_TO_CLIMB_CONFIG =
       new TalonFXConfiguration()
+          .withSlot0(
+              // TODO(stefan): Tune these values on the real robot.
+              // Currently, they look good in Sim.
+              new Slot0Configs().withKS(0.25).withKV(0.05).withKP(1.0).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(INNER_MOTOR_TO_CLIMB_GEARING))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   public static final TalonFXConfiguration OUTER_MOTOR_TO_CLIMB_CONFIG =
       new TalonFXConfiguration()
+          .withSlot0(
+              // TODO(stefan): Tune these values on the real robot.
+              // Currently, they look good in Sim.
+              new Slot0Configs().withKS(0.25).withKV(0.05).withKP(1.0).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(OUTER_MOTOR_TO_CLIMB_GEARING))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
-  public static final Mass INNER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(4);
-  public static final Mass OUTER_CLIMB_CARRIAGE_WEIGHT = Pounds.of(4);
-
   // NOTE: These may be the same value, because it seems both motors have the same gearbox.
-  public static final double INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
-  public static final double OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION = 0;
+  // The spool for the climb is just a hex shaft with size of 1/2" (distance between two opposite
+  // flat surfaces).
+  // This corresponds to sqrt(3) circumference of the hex shaft. I.e., one full rotation of the
+  // shaft
+  // spools sqrt(3)" worth of cable.
+  // Due to 9:1 gearbox reduction, one rotation of the motor produces 1/9 of a shaft rotation, or
+  // sqrt(3)/9 inches of climb height change.
+  public static final Distance INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION =
+      Inches.of(Math.sqrt(3) / INNER_MOTOR_TO_CLIMB_GEARING);
+  public static final Distance OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION =
+      INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION;
 
-  public static final Distance INNER_CLIMB_SPOOL_RADIUS = Millimeters.of(13.75);
-  public static final Distance OUTER_CLIMB_SPOOL_RADIUS = Millimeters.of(13.75);
+  public static final Distance INNER_CLIMB_SPOOL_RADIUS = Inches.of(0.25);
+  public static final Distance OUTER_CLIMB_SPOOL_RADIUS = INNER_CLIMB_SPOOL_RADIUS;
 
   public static final Distance INNER_CLIMB_MIN_HEIGHT = Inches.of(0);
   public static final Distance INNER_CLIMB_MAX_HEIGHT = Inches.of(28.0);

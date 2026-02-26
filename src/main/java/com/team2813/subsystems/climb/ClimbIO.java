@@ -3,6 +3,7 @@ package com.team2813.subsystems.climb;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -13,14 +14,14 @@ public interface ClimbIO {
     public double innerCarriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
     public double innerMotorRotations = 0.0;
-    public double innerMotorVelocityRotsPerSecond = 0.0;
+    public AngularVelocity innerMotorVelocityRotsPerSecond = RotationsPerSecond.of(0.0);
     public double innerMotorCurrent = 0.0;
     public double innerMotorVoltage = 0.0;
 
     public double outerCarriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
     public double outerMotorRotations = 0.0;
-    public double outerMotorVelocityRotsPerSecond = 0.0;
+    public AngularVelocity outerMotorVelocityRotsPerSecond = RotationsPerSecond.of(0.0);
     public double outerMotorCurrent = 0.0;
     public double outerMotorVoltage = 0.0;
   }
