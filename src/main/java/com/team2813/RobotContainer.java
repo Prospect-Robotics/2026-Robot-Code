@@ -233,11 +233,11 @@ public class RobotContainer {
                     > 0.3); // Or the operator interrupts by moving the left joystick left/right.
 
     operatorController
-        .leftStick()
+        .b()
         .whileTrue(
             new ParallelCommandGroup(intakeExtension.wallEMode(), intakeRoller.intakeCommand()));
 
-    // Stop Pos
+    // Defensive Stop.
     operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
 
     // Feeder controls
@@ -246,6 +246,7 @@ public class RobotContainer {
 
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
+    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
 
@@ -268,6 +269,9 @@ public class RobotContainer {
                         intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
                     .until(extensionInterruptionCondition)));
 
+    // Runs the Kicker Wheels toward the shooter.
+    driveController.leftTrigger().whileTrue(kicker.shootCommand());
+
     // hub shot command
     driveController
         .rightTrigger()
@@ -278,9 +282,8 @@ public class RobotContainer {
         .y()
         .onTrue(
             new InstantCommand(
-                () -> {
-                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
-                }));
+                () ->
+                    drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()))));
   }
 
   /**
