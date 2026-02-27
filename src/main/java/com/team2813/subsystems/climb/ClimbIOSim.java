@@ -89,13 +89,13 @@ public class ClimbIOSim implements ClimbIO {
     innerClimbSim.update(Constants.SIM_TIME_PERIOD); // Same update cycle as an actual robot, 20 ms.
 
     // Logs to "Real Outputs" NT
-    Logger.recordOutput("Simulated Climb/motorSim/Voltage", innerMotorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/Inner/motorSim/Voltage", innerMotorSim.getMotorVoltage());
     Logger.recordOutput(
-        "Simulated Climb/climbSim/position (meters)", innerClimbSim.getPositionMeters());
+        "Simulated Climb/Inner/climbSim/position (meters)", innerClimbSim.getPositionMeters());
     Logger.recordOutput(
-        "Simulated Climb/climbSim/hitsUpperLimit", innerClimbSim.hasHitUpperLimit());
+        "Simulated Climb/Inner/climbSim/hitsUpperLimit", innerClimbSim.hasHitUpperLimit());
     Logger.recordOutput(
-        "Simulated Climb/climbSim/hitsLowerLimit", innerClimbSim.hasHitLowerLimit());
+        "Simulated Climb/Inner/climbSim/hitsLowerLimit", innerClimbSim.hasHitLowerLimit());
 
     innerMotorSim.setRawRotorPosition(getLeftMotorRotations(innerClimbSim.getPositionMeters()));
 
@@ -110,14 +110,23 @@ public class ClimbIOSim implements ClimbIO {
     // Negating the sim motor value since it is set to use negative value when pushing
     // the cartrage UP.
     outerClimbSim.setInput(outerMotorSim.getMotorVoltage());
-    outerClimbSim.update(0.02); // Same update cycle as an actual robot, 20 ms.
+    outerClimbSim.update(Constants.SIM_TIME_PERIOD); // Same update cycle as an actual robot, 20 ms.
 
-    outerMotorSim.setRawRotorPosition(getRightMotorRotations(outerClimbSim.getPositionMeters()));
+    // Logs to "Real Outputs" NT
+    Logger.recordOutput("Simulated Climb/Outer/motorSim/Voltage", outerMotorSim.getMotorVoltage());
+    Logger.recordOutput(
+        "Simulated Climb/Outer/climbSim/position (meters)", outerClimbSim.getPositionMeters());
+    Logger.recordOutput(
+        "Simulated Climb/Outer/climbSim/hitsUpperLimit", outerClimbSim.hasHitUpperLimit());
+    Logger.recordOutput(
+        "Simulated Climb/Outer/climbSim/hitsLowerLimit", outerClimbSim.hasHitLowerLimit());
 
     // angular velocity = linear velocity / radius, taken also from 5414
     outerMotorSim.setRotorVelocity(
         outerClimbSim.getVelocityMetersPerSecond()
             / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Meters));
+
+    outerMotorSim.setRawRotorPosition(getRightMotorRotations(outerClimbSim.getPositionMeters()));
   }
 
   @Override

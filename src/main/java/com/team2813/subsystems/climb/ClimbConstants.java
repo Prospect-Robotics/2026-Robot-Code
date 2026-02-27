@@ -45,10 +45,10 @@ public class ClimbConstants {
   public static final Distance INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION =
       Inches.of(Math.sqrt(3) / INNER_MOTOR_TO_CLIMB_GEARING);
   public static final Distance OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION =
-      INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION;
+      Inches.of(Math.sqrt(3) / OUTER_MOTOR_TO_CLIMB_GEARING);
 
   public static final Distance INNER_CLIMB_SPOOL_RADIUS = Inches.of(0.25);
-  public static final Distance OUTER_CLIMB_SPOOL_RADIUS = INNER_CLIMB_SPOOL_RADIUS;
+  public static final Distance OUTER_CLIMB_SPOOL_RADIUS = Inches.of(0.25);
 
   public static final Distance INNER_CLIMB_MIN_HEIGHT = Inches.of(0);
   public static final Distance INNER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
