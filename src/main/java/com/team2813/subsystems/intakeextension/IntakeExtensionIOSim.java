@@ -1,5 +1,7 @@
 package com.team2813.subsystems.intakeextension;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -9,8 +11,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-
-import static edu.wpi.first.units.Units.*;
 
 public class IntakeExtensionIOSim implements IntakeExtensionIO {
   private final TalonFX extenderMotor;
