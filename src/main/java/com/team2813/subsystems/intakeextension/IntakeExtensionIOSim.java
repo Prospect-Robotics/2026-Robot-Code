@@ -1,9 +1,5 @@
 package com.team2813.subsystems.intakeextension;
 
-import static edu.wpi.first.units.Units.Kilograms;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.Rotation;
-
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -11,7 +7,10 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+
+import static edu.wpi.first.units.Units.*;
 
 public class IntakeExtensionIOSim implements IntakeExtensionIO {
   private final TalonFX extenderMotor;
@@ -85,5 +84,11 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   public void setExtensionSetpoint(Angle setpoint) {
     extensionSetpoint = setpoint;
     extenderMotor.setControl(new PositionVoltage(setpoint));
+  }
+
+  @Override
+  public void setExtenderVoltage(Voltage extensionVoltage) {
+    extenderMotor.setVoltage(extensionVoltage.in(Volts));
+    extenderSim.setInputVoltage(extensionVoltage.in(Volts));
   }
 }
