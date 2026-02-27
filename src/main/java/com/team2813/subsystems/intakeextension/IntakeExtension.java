@@ -64,11 +64,14 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   /**
-   * Moves the intake about halfway, used for Wall-E mode, as we retract to this position (rather than fully retracting).
+   * Moves the intake about halfway, used for Wall-E mode, as we retract to this position (rather
+   * than fully retracting).
    */
   public void halfRetract() {
     extenderAtPosition = false;
-    io.setExtensionSetpoint(IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.MIDDLE));
+    io.setExtensionSetpoint(
+        IntakeExtensionConstants.toMotorSetpoint(
+            IntakeExtensionConstants.ExtenderPositions.MIDDLE));
   }
 
   /**

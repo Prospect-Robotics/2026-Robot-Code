@@ -21,10 +21,9 @@ public class ShooterConstants {
 
   public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
 
-  /*
-  Because shooting a ton of fuel will slow the flywheel,
-  we will aim about a 1/4 of a hub farther than the center of the hub
-  to counteract this speed loss.
+  /**
+   * Because shooting a ton of fuel will slow the flywheel, we will aim about a 1/4 of a hub farther
+   * than the center of the hub to counteract this speed loss.
    */
   public static final Distance EXTRA_HUB_AIMING_DISTANCE = Inches.of(10.425);
 

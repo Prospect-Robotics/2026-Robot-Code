@@ -237,7 +237,7 @@ public class RobotContainer {
         .whileTrue(
             new ParallelCommandGroup(intakeExtension.wallEMode(), intakeRoller.intakeCommand()));
 
-    // Stop Pos
+    // Defensive Stop.
     operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
 
     // Feeder controls
@@ -246,6 +246,7 @@ public class RobotContainer {
 
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
+    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
 
@@ -282,8 +283,7 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () ->
-                  drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()))
-                ));
+                    drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()))));
   }
 
   /**
