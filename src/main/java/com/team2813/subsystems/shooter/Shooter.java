@@ -11,6 +11,23 @@ public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged replayedInputs;
 
+  // When either button (on elastic) is pushed, the voltage will either increase or decrease by 0.5
+  private final static String TRENCH_VOLTAGE_INCREASE_BUTTON_KEY = "TRENCH_SHOOTER_VOLTAGE_INCREASE";
+  private final static String TRENCH_VOLTAGE_DECREASE_BUTTON_KEY = "TRENCH_SHOOTER_VOLTAGE_DECREASE";
+
+  private final static String TRENCH_CURRENT_VOLTAGE_REPORTER_KEY = "TRENCH_SHOOTER_CURRENT_VOLTAGE";
+
+  // double in order to save on object initialization
+  private double currentTrenchShooterVoltage = 11;
+
+  // When either button (on elastic) is pushed, the voltage will either increase or decrease by 0.5
+  private final static String HUB_VOLTAGE_INCREASE_BUTTON_KEY = "HUB_SHOOTER_VOLTAGE_INCREASE";
+  private final static String HUB_VOLTAGE_DECREASE_BUTTON_KEY = "HUB_SHOOTER_VOLTAGE_DECREASE";
+
+  private final static String HUB_CURRENT_VOLTAGE_REPORTER_KEY = "HUB_SHOOTER_CURRENT_VOLTAGE";
+
+  private double currentHubShooterVoltage = 5.4;
+
   public Shooter(ShooterIO io) {
     this.io = io;
     this.replayedInputs = new ShooterIOInputsAutoLogged();
@@ -21,13 +38,19 @@ public class Shooter extends SubsystemBase {
     io.updateState(replayedInputs);
 
     Logger.processInputs("Shooter", replayedInputs);
+
+    Logger.recordOutput("Shooter/currentTrenchShooterVoltage", currentTrenchShooterVoltage);
+    Logger.recordOutput("Shooter/currentHubShooterVoltage", currentHubShooterVoltage);
   }
 
   public void stop() {
     io.setShooterMotorVoltage(Volts.of(0));
   }
 
-  public Command spoolShooterIntakewardCommand() {
+  /**
+   * @return A {@link StartEndCommand} that spools the shooter to shoot the fuel.
+   */
+  public Command spoolShooterCommand() {
     return new StartEndCommand(
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),
         this::stop,
