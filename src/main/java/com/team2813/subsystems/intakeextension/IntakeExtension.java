@@ -64,6 +64,14 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   /**
+   * Moves the intake about halfway, used for Wall-E mode, as we retract to this position (rather than fully retracting).
+   */
+  public void halfRetract() {
+    extenderAtPosition = false;
+    io.setExtensionSetpoint(IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.MIDDLE));
+  }
+
+  /**
    * Makes the intake extension repeatedly extend and retract in order to push balls toward the
    * shooter.
    *
@@ -72,7 +80,7 @@ public class IntakeExtension extends SubsystemBase {
   public Command wallEMode() {
     return new RepeatCommand(
             new SequentialCommandGroup(
-                    new StartEndCommand(this::retract, this::stopMotor, this)
+                    new StartEndCommand(this::halfRetract, this::stopMotor, this)
                         .until(this::isExtenderAtPosition),
                     new StartEndCommand(this::extend, this::stopMotor, this))
                 .until(this::isExtenderAtPosition))

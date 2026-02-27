@@ -268,7 +268,7 @@ public class RobotContainer {
                         intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
                     .until(extensionInterruptionCondition)));
 
-    // Runs the Kicker Wheels Inward.
+    // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
 
     // hub shot command
