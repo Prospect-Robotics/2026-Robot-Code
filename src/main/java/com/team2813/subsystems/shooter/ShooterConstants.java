@@ -40,7 +40,7 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 95);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 545);
     Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 400);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
@@ -64,7 +64,7 @@ public class ShooterConstants {
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
   public static AngularVelocity getShooterTrenchShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 95));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 545));
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {
