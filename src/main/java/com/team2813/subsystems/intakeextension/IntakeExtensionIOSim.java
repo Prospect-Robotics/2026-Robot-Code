@@ -116,7 +116,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   @Override
   public void setExtensionSetpoint(Angle setpoint) {
     extensionSetpoint = setpoint;
-    // Note: setControl is still called for compatibility, but we simulate PID ourselves
+    // In simulation we do not call setControl; PID is handled manually by simPidController using extensionSetpoint
   }
 
   @Override
