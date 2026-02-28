@@ -86,8 +86,9 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     // position and velocity of the simulated mechanism.
     extenderSim.update(0.02);
 
-    // Now the simulated physical movement of the mechanism is fed back into the motor simulation so
-    // that its simulated PID controller can give us new simulated motor voltage next time around.
+    // Now the simulated physical movement of the mechanism is fed back into the TalonFX motor
+    // simulation so its internal state and sensor readings (position/velocity) stay consistent with
+    // the ElevatorSim physics. PID control is handled by simPidController, not by the TalonFX.
     // We apply MOTOR_DIRECTION because when the motor is inverted, getPosition() will negate the
     // raw rotor position. By setting the raw rotor position with the opposite sign, getPosition()
     // will return the correct positive value for extended positions.
