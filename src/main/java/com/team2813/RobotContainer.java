@@ -9,8 +9,10 @@ package com.team2813;
 
 import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
 import com.team2813.commands.IntakeExtensionDefaultCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
@@ -207,6 +209,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    namedCommand();
   }
 
   /**
@@ -305,5 +308,23 @@ public class RobotContainer {
       hub = BLUE_HUB_POSITION;
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
+  }
+
+  private void namedCommand() {
+    NamedCommands.registerCommand(
+        "TrenchShot",
+        new ParallelCommandGroup(
+            new StartEndCommand(
+                () -> {
+                  // TODO: figure out the optimal voltage
+                  shooter.setShooterMotorVoltage(Volts.of(11.5));
+                },
+                shooter::stop,
+                shooter),
+            new SequentialCommandGroup(
+                // TODO: If we do velocity control, change this to a WaitUntilCommand so we can wait
+                // until we are close enough to the desired velocity
+                new WaitCommand(2),
+                new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
   }
 }
