@@ -74,8 +74,7 @@ public class IntakeExtensionTest {
     }
 
     assertTrue(
-        intakeExtension.isExtenderAtPosition(),
-            "Extender should be at position after extending");
+        intakeExtension.isExtenderAtPosition(), "Extender should be at position after extending");
   }
 
   @Test
@@ -86,6 +85,7 @@ public class IntakeExtensionTest {
       intakeExtension.periodic();
     }
 
-    assertTrue(intakeExtension.isExtenderAtPosition());
+    assertTrue(
+        intakeExtension.isExtenderAtPosition(), "Extender should be at position after retracting");
   }
 }
