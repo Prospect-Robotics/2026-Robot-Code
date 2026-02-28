@@ -78,7 +78,8 @@ public class IntakeExtensionTest {
     }
 
     assertTrue(
-        "Extender should be at position after extending", intakeExtension.isExtenderAtPosition());
+        intakeExtension.isExtenderAtPosition(),
+            "Extender should be at position after extending");
   }
 
   @Test
