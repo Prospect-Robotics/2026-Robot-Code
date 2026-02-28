@@ -73,7 +73,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     // Calculate PID output voltage
     double pidOutput = simPidController.calculate(currentPositionRotations, setpointRotations);
 
-    // Add feedforward (kS for static friction, kV for velocity)
+    // Add static friction feedforward (kS). Velocity feedforward (kV) is not used in this position-control simulation.
     var slot0 = IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG.Slot0;
     double feedforward = Math.signum(pidOutput) * slot0.kS;
 
