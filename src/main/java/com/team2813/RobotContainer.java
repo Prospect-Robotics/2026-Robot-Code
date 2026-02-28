@@ -9,7 +9,6 @@ package com.team2813;
 
 import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
-import static edu.wpi.first.units.Units.Volts;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
