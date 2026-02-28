@@ -31,6 +31,13 @@ public class ShooterConstants {
    */
   public static final Distance EXTRA_HUB_AIMING_DISTANCE = Inches.of(10.425);
 
+
+  /**
+   * Used for automatically running kicker and hopper while shooting.
+   * If the motor speed is within this value of Rot/s of the setpoint, {@link Shooter#isMotorVelocityWithinTolerance()} will return true.
+   */
+  public static final AngularVelocity SHOOTER_SPOOL_SPEED_TOLERANCE = RotationsPerSecond.of(6);
+
   static {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 95);

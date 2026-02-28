@@ -317,17 +317,9 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "TrenchShot",
         new ParallelCommandGroup(
-            new StartEndCommand(
-                () -> {
-                  // TODO: figure out the optimal voltage
-                  shooter.setShooterMotorVoltage(Volts.of(11.5));
-                },
-                shooter::stop,
-                shooter),
+            shooter.spoolShooterTrenchSpeedCommand(),
             new SequentialCommandGroup(
-                // TODO: If we do velocity control, change this to a WaitUntilCommand so we can wait
-                // until we are close enough to the desired velocity
-                new WaitCommand(2),
+                new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                 new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
   }
 }
