@@ -1,8 +1,8 @@
 package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.Rotations;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.RuntimeType;
