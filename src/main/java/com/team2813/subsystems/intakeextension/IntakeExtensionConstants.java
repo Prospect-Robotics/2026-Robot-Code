@@ -43,6 +43,8 @@ public class IntakeExtensionConstants {
     // the way back.
 
     OUT(EXTENDED_POSITION.plus(ANTI_STALL_DISTANCE)),
+    // About halfway in, used for walle mode, as we retract to this before fully extending.
+    MIDDLE(Inches.of(5.4)),
     IN(RETRACTED_POSITION.minus(ANTI_STALL_DISTANCE));
 
     private final Distance position;

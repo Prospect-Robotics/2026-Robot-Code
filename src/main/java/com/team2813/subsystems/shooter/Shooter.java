@@ -27,11 +27,6 @@ public class Shooter extends SubsystemBase {
     io.setShooterMotorVoltage(Volts.of(0));
   }
 
-  public Command spoolShooterInstantIntakeCommand() {
-    return new InstantCommand(
-        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()), this);
-  }
-
   public Command spoolShooterIntakewardCommand() {
     return new StartEndCommand(
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),

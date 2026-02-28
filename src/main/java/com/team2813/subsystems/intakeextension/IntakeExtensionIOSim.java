@@ -1,9 +1,6 @@
 package com.team2813.subsystems.intakeextension;
 
-import static edu.wpi.first.units.Units.Kilograms;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.Rotation;
-import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -13,6 +10,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 
 public class IntakeExtensionIOSim implements IntakeExtensionIO {
@@ -122,5 +120,11 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   @Override
   public void close() {
     extenderMotor.close();
+  }
+
+  @Override
+  public void setExtenderVoltage(Voltage extensionVoltage) {
+    extenderMotor.setVoltage(extensionVoltage.in(Volts));
+    extenderSim.setInputVoltage(extensionVoltage.in(Volts));
   }
 }
