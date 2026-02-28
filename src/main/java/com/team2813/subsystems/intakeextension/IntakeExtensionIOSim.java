@@ -71,7 +71,8 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     // Calculate PID output voltage
     double pidOutput = simPidController.calculate(currentPositionRotations, setpointRotations);
 
-    // Add static friction feedforward (kS). Velocity feedforward (kV) is not used in this position-control simulation.
+    // Add static friction feedforward (kS). Velocity feedforward (kV) is not used in this
+    // position-control simulation.
     var slot0 = IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG.Slot0;
     double feedforward = Math.signum(pidOutput) * slot0.kS;
 
@@ -114,7 +115,8 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   @Override
   public void setExtensionSetpoint(Angle setpoint) {
     extensionSetpoint = setpoint;
-    // In simulation we do not call setControl; PID is handled manually by simPidController using extensionSetpoint
+    // In simulation we do not call setControl; PID is handled manually by simPidController using
+    // extensionSetpoint
   }
 
   @Override
