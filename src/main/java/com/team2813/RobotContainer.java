@@ -273,7 +273,7 @@ public class RobotContainer {
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
 
     driveController
-        .leftBumper()
+        .b()
         .whileTrue(
             new StartEndCommand(
                     intakeExtension::retract, intakeExtension::stopMotor, intakeExtension)
