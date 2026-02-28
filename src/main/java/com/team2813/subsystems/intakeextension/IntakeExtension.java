@@ -37,15 +37,9 @@ public class IntakeExtension extends SubsystemBase {
           return Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR);
         };
 
-    setDefaultCommand(setExtenderVoltageCommand(voltageSupplier));
-  }
-
-  /**
-   * Creates a command that sets the voltage to the intake extension motor using values from the
-   * provided supplier.
-   */
-  private Command setExtenderVoltageCommand(Supplier<Voltage> voltageSupplier) {
-    return Commands.run(() -> io.setExtenderVoltage(voltageSupplier.get()), this);
+    Command setExtenderVoltageCommand =
+        Commands.run(() -> io.setExtenderVoltage(voltageSupplier.get()), this);
+    setDefaultCommand(setExtenderVoltageCommand);
   }
 
   @Override
