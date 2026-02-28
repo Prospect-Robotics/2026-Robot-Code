@@ -28,19 +28,22 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
+    currentShooterVelocitySetpoint = RotationsPerSecond.of(0);
     io.setShooterMotorVoltage(Volts.of(0));
   }
 
   public Command spoolShooterTrenchSpeedCommand() {
+    currentShooterVelocitySetpoint = ShooterConstants.getShooterTrenchShootVelocity();
     return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterTrenchShootVelocity()),
+        () -> io.setShooterMotorVelocity(currentShooterVelocitySetpoint),
         this::stop,
         this);
   }
 
   public Command spoolShooterHubSpeedCommand() {
+    currentShooterVelocitySetpoint = ShooterConstants.getShooterHubShootVelocity();
     return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
+        () -> io.setShooterMotorVelocity(currentShooterVelocitySetpoint),
         this::stop,
         this);
   }
