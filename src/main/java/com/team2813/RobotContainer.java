@@ -100,7 +100,10 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                drive::addVisionMeasurement,
+                //                drive::addVisionMeasurement,
+                (pose2d, timestamp, visionStdDev) -> {
+                  /* Disable vision*/
+                },
                 () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
