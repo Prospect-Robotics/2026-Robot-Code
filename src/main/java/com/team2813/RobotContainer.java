@@ -54,6 +54,8 @@ import org.photonvision.simulation.VisionSystemSim;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final Mode mode;
+
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
@@ -79,14 +81,16 @@ public class RobotContainer {
    *
    * @param tunerConstants The tuner constants for the robot.
    */
-  public RobotContainer(AllTunerConstants tunerConstants) {
-    switch (Constants.currentMode) {
+  public RobotContainer(AllTunerConstants tunerConstants, Mode mode) {
+    this.mode = mode;
+    switch (mode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
         // a CANcoder
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIOPigeon2(tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
@@ -120,6 +124,7 @@ public class RobotContainer {
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIO() {},
                 new ModuleIOSim(tunerConstants.frontLeft()),
@@ -160,6 +165,7 @@ public class RobotContainer {
         // Replayed robot, disable IO implementations
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIO() {},
                 new ModuleIO() {},
