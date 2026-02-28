@@ -5,34 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
-import edu.wpi.first.hal.HAL;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.junit.jupiter.api.*;
 
 @InitWPILib
 public class IntakeExtensionTest {
 
-  private IntakeExtension intakeExtension;
-
-  @BeforeEach
-  public void setUp() {
-    intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-  }
-
-  @AfterEach
-  public void tearDown() {
-    if (intakeExtension != null) {
-      try {
-        intakeExtension.close();
-      } catch (Exception e) {
-        DriverStation.reportError(
-            "Failed to close IntakeExtension IO: " + e.getMessage(), e.getStackTrace());
-      }
-      intakeExtension = null;
-    }
-    // Shutdown HAL to clear all static device state
-    HAL.shutdown();
-  }
+  @AutoClose
+  private final IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
 
   @Test
   public void testIntakeExtensionExtend() {
