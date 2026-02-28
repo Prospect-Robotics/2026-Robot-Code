@@ -77,11 +77,11 @@ public class IntakeExtension extends SubsystemBase {
   }
 
   public Command extendCommand() {
-    return new StartEndCommand(this::extend, this::stopMotor, this);
+    return Commands.startEnd(this::extend, this::stopMotor, this);
   }
 
   public Command retractCommand() {
-    return new StartEndCommand(this::retract, this::stopMotor, this);
+    return Commands.startEnd(this::retract, this::stopMotor, this);
   }
 
   void extend() {
