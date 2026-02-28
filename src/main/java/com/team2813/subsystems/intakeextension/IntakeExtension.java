@@ -13,7 +13,7 @@ import org.littletonrobotics.junction.Logger;
  * Code that controls the extension of the intake and the front plate of the hopper via a rack and
  * pinion gear.
  */
-public class IntakeExtension extends SubsystemBase {
+public class IntakeExtension extends SubsystemBase implements AutoCloseable {
   private final IntakeExtensionIO io;
   private final IntakeExtensionIOInputsAutoLogged replayedInputs =
       new IntakeExtensionIOInputsAutoLogged();
@@ -108,7 +108,8 @@ public class IntakeExtension extends SubsystemBase {
     return replayedInputs.extenderMotorPosition;
   }
 
-  public void close() {
+  @Override
+  public void close() throws Exception {
     io.close();
   }
 }

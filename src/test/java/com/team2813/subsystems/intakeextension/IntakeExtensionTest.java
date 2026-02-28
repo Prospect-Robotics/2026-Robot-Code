@@ -4,23 +4,26 @@ import static edu.wpi.first.units.Units.Rotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RuntimeType;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
 import org.junit.jupiter.api.*;
 
+@InitWPILib
 public class IntakeExtensionTest {
 
   private IntakeExtension intakeExtension;
 
   @BeforeEach
   public void setUp() {
-    // Initialize HAL fresh for each test to avoid static state leakage
-    HAL.initialize(500, 1);
-    DriverStationSim.setEnabled(true);
-    DriverStationSim.notifyNewData();
-    SimHooks.setHALRuntimeType(RuntimeType.kSimulation.value);
+//    // Initialize HAL fresh for each test to avoid static state leakage
+//    HAL.initialize(500, 1);
+//    DriverStationSim.setEnabled(true);
+//    DriverStationSim.notifyNewData();
+//    SimHooks.setHALRuntimeType(RuntimeType.kSimulation.value);
 
     intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
   }
@@ -28,8 +31,12 @@ public class IntakeExtensionTest {
   @AfterEach
   public void tearDown() {
     if (intakeExtension != null) {
-      intakeExtension.close();
-      intakeExtension = null;
+        try {
+            intakeExtension.close();
+        } catch (Exception e) {
+          DriverStation.reportError("Failed to close IntakeExtension IO: " + e.getMessage(), e.getStackTrace());
+        }
+        intakeExtension = null;
     }
     // Shutdown HAL to clear all static device state
     HAL.shutdown();
@@ -46,8 +53,8 @@ public class IntakeExtensionTest {
     assertEquals(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT)
             .in(Rotations),
-        intakeExtension.getSetpoint().in(Rotations),
-        0.01);
+        intakeExtension.getPosition().in(Rotations),
+        0.5);
   }
 
   @Test
@@ -61,8 +68,8 @@ public class IntakeExtensionTest {
     assertEquals(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN)
             .in(Rotations),
-        intakeExtension.getSetpoint().in(Rotations),
-        0.01);
+        intakeExtension.getPosition().in(Rotations),
+        0.5);
   }
 
   @Test

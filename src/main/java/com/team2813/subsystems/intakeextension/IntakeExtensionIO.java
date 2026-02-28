@@ -5,7 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
 import org.littletonrobotics.junction.AutoLog;
 
-public interface IntakeExtensionIO {
+public interface IntakeExtensionIO extends AutoCloseable {
 
   @AutoLog
   class IntakeExtensionIOInputs {
@@ -22,5 +22,6 @@ public interface IntakeExtensionIO {
 
   default void setExtensionSetpoint(Angle setpoint) {}
 
-  default void close() {}
+  @Override
+  default void close() throws Exception {}
 }
