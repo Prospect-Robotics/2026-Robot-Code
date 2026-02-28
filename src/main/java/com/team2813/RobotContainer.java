@@ -312,7 +312,7 @@ public class RobotContainer {
             new StartEndCommand(
                 () -> {
                   // TODO: figure out the optimal voltage
-                  shooter.setShooterMotorVoltage(Volts.of(10));
+                  shooter.setShooterMotorVoltage(Volts.of(11.5));
                 },
                 shooter::stop,
                 shooter),
