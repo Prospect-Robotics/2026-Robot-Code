@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.simulation.SimHooks;
 import org.junit.jupiter.api.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IntakeExtensionTest {
 
   private IntakeExtension intakeExtension;
@@ -37,7 +36,6 @@ public class IntakeExtensionTest {
   }
 
   @Test
-  @Order(1)
   public void testIntakeExtensionExtend() {
     intakeExtension.extend();
 
@@ -53,7 +51,6 @@ public class IntakeExtensionTest {
   }
 
   @Test
-  @Order(2)
   public void testIntakeExtensionRetract() {
     intakeExtension.retract();
 
@@ -69,7 +66,6 @@ public class IntakeExtensionTest {
   }
 
   @Test
-  @Order(3)
   public void testIntakeExtensionIsAtPositionExtend() {
     intakeExtension.extend();
 
@@ -83,7 +79,6 @@ public class IntakeExtensionTest {
   }
 
   @Test
-  @Order(4)
   public void testIntakeExtensionIsAtPositionRetract() {
     intakeExtension.retract();
 
