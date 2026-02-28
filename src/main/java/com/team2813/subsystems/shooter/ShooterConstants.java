@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class ShooterConstants {
 
-  public static final String SHOOTER_INTAKE_PREFERENCE_NT = "Shooter/SHOOTER_INTAKE_VOLTAGE";
+  public static final String SHOOTER_TRENCH_SHOOT_PREFERENCE_NT =
+      "Shooter/SHOOTER_TRENCH_SHOOT_VOLTAGE";
+  public static final String SHOOTER_HUB_SHOOT_PREFERENCE_NT = "Shooter/SHOOTER_HUB_SHOOT_VOLTAGE";
+
   public static final String SHOOTER_OUTTAKE_PREFERENCE_NT = "Shooter/SHOOTER_OUTTAKE_VOLTAGE";
 
   public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
@@ -29,7 +32,8 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 11);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 5.5);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
 
@@ -51,8 +55,12 @@ public class ShooterConstants {
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
-  public static Voltage getShooterIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11));
+  public static Voltage getShooterTrenchShootVoltage() {
+    return Volts.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 11));
+  }
+
+  public static Voltage getShooterHubShootVoltage() {
+    return Volts.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 5.5));
   }
 
   public static Voltage getShooterOuttakeVoltage() {

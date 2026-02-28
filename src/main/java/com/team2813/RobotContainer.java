@@ -248,7 +248,9 @@ public class RobotContainer {
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
-    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+    // Spool shooter commands
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
+    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
