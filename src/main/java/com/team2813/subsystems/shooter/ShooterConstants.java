@@ -41,7 +41,7 @@ public class ShooterConstants {
   static {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 95);
-    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 5.5);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 50);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
 
