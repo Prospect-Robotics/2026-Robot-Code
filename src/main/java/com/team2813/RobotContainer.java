@@ -282,7 +282,7 @@ public class RobotContainer {
     // hub shot command
     driveController
         .rightTrigger()
-        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
+        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand(), intakeRoller.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
