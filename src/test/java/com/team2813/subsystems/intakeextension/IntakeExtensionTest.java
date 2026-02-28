@@ -16,12 +16,6 @@ public class IntakeExtensionTest {
 
   @BeforeEach
   public void setUp() {
-    //    // Initialize HAL fresh for each test to avoid static state leakage
-    //    HAL.initialize(500, 1);
-    //    DriverStationSim.setEnabled(true);
-    //    DriverStationSim.notifyNewData();
-    //    SimHooks.setHALRuntimeType(RuntimeType.kSimulation.value);
-
     intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
   }
 
