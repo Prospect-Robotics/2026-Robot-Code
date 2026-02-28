@@ -1,7 +1,6 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -10,6 +9,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Preferences;
@@ -17,8 +17,9 @@ import edu.wpi.first.wpilibj.Preferences;
 public class ShooterConstants {
 
   public static final String SHOOTER_TRENCH_SHOOT_PREFERENCE_NT =
-      "Shooter/SHOOTER_TRENCH_SHOOT_VOLTAGE";
-  public static final String SHOOTER_HUB_SHOOT_PREFERENCE_NT = "Shooter/SHOOTER_HUB_SHOOT_VOLTAGE";
+      "Shooter/SHOOTER_TRENCH_SHOOT_VELOCITY_RPS";
+  public static final String SHOOTER_HUB_SHOOT_PREFERENCE_NT =
+      "Shooter/SHOOTER_HUB_SHOOT_VELOCITY_RPS";
 
   public static final String SHOOTER_OUTTAKE_PREFERENCE_NT = "Shooter/SHOOTER_OUTTAKE_VOLTAGE";
 
@@ -32,7 +33,7 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 11);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 95);
     Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 5.5);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
@@ -55,12 +56,12 @@ public class ShooterConstants {
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
-  public static Voltage getShooterTrenchShootVoltage() {
-    return Volts.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 11));
+  public static AngularVelocity getShooterTrenchShootVelocity() {
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 95));
   }
 
-  public static Voltage getShooterHubShootVoltage() {
-    return Volts.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 5.5));
+  public static AngularVelocity getShooterHubShootVelocity() {
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 50));
   }
 
   public static Voltage getShooterOuttakeVoltage() {

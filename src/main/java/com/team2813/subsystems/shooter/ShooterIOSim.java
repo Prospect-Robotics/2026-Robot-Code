@@ -75,7 +75,8 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {
-    mainShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
+    mainShooterMotor.setControl(
+        shooterVelocityControl.withVelocity(shooterMotorVelocity.in(RotationsPerSecond)));
   }
 
   @Override

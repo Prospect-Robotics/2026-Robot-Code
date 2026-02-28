@@ -40,7 +40,10 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {
-    mainShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
+    // Uses Rot/s rather than passing AngularVelocity because there seems to be some issue with
+    // AngularVelocity converting its value (i.e. Rot/s) to the base unit (rad/s)
+    mainShooterMotor.setControl(
+        shooterVelocityControl.withVelocity(shooterMotorVelocity.in(RotationsPerSecond)));
   }
 
   @Override

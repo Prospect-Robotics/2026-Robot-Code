@@ -29,14 +29,14 @@ public class Shooter extends SubsystemBase {
 
   public Command spoolShooterTrenchSpeedCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterTrenchShootVoltage()),
+        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterTrenchShootVelocity()),
         this::stop,
         this);
   }
 
   public Command spoolShooterHubSpeedCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterHubShootVoltage()),
+        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
         this::stop,
         this);
   }
