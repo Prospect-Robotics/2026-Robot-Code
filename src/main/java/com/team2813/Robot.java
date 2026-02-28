@@ -9,6 +9,7 @@ package com.team2813;
 
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
+import com.team2813.util.HubStatusUtil;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
@@ -97,6 +98,8 @@ public class Robot extends LoggedRobot {
     if (Constants.currentMode != Constants.Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
+
+    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
