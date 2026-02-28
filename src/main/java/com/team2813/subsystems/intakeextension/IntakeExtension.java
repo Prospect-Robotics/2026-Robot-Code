@@ -84,6 +84,14 @@ public class IntakeExtension extends SubsystemBase {
     return Commands.startEnd(this::retract, this::stopMotor, this);
   }
 
+  /**
+   * Creates a command that moves the intake about halfway, used for Wall-E mode, as we retract to
+   * this position (rather than fully retracting).
+   */
+  public Command halfRetractCommand() {
+    return Commands.startEnd(this::halfRetract, this::stopMotor, this);
+  }
+
   void extend() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
@@ -100,7 +108,7 @@ public class IntakeExtension extends SubsystemBase {
    * Moves the intake about halfway, used for Wall-E mode, as we retract to this position (rather
    * than fully retracting).
    */
-  public void halfRetract() {
+  private void halfRetract() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(
@@ -116,9 +124,7 @@ public class IntakeExtension extends SubsystemBase {
   public Command wallEMode() {
     return new RepeatCommand(
             new SequentialCommandGroup(
-                    new StartEndCommand(this::halfRetract, this::stopMotor, this)
-                        .until(this::isExtenderAtPosition),
-                    extendCommand())
+                    halfRetractCommand().until(this::isExtenderAtPosition), extendCommand())
                 .until(this::isExtenderAtPosition))
         .finallyDo(this::stopMotor);
   }
