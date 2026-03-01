@@ -40,8 +40,8 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 545);
-    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 400);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 40);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
 
@@ -52,10 +52,10 @@ public class ShooterConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs()
-                  .withKS(0.079361)
-                  .withKV(0.018418)
-                  .withKA(0.0012587)
-                  .withKP(1.9106e-9));
+                  .withKS(0.090914)
+                  .withKV(0.018361)
+                  .withKA(0.00116)
+                  .withKP(0.026868));
 
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
@@ -64,11 +64,11 @@ public class ShooterConstants {
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
   public static AngularVelocity getShooterTrenchShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 545));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90));
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 400));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 40));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
