@@ -81,6 +81,6 @@ public class Shooter extends SubsystemBase {
    */
   public boolean isMotorVelocityWithinTolerance() {
     return replayedInputs.mainShooterMotorRotPerSec.isNear(
-            replayedInputs.mainShooterSetpoint, ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
+        replayedInputs.mainShooterSetpoint, ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }

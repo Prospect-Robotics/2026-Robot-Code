@@ -120,7 +120,8 @@ public class RobotContainer {
         kicker = new Kicker(new KickerIOReal());
 
         namedCommandsRegistration(); // Registers all named commands.
-        // Creates the autoBuilder, necessary for pathplanner, must be run after namedCommandsRegistration because the registries freeze after.
+        // Creates the autoBuilder, necessary for pathplanner, must be run after
+        // namedCommandsRegistration because the registries freeze after.
         drive.initializeAutoBuilder();
         break;
 
@@ -290,7 +291,9 @@ public class RobotContainer {
     // hub shot command
     driveController
         .rightTrigger()
-        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand(), intakeRoller.intakeCommand()));
+        .whileTrue(
+            new ParallelCommandGroup(
+                kicker.shootCommand(), hopper.intakeCommand(), intakeRoller.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
