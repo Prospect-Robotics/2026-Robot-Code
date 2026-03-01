@@ -11,13 +11,9 @@ public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged replayedInputs;
 
-  private double currentShooterVelocitySetpointRPS;
-
   public Shooter(ShooterIO io) {
     this.io = io;
     this.replayedInputs = new ShooterIOInputsAutoLogged();
-
-    currentShooterVelocitySetpointRPS = 0;
   }
 
   @Override
@@ -25,17 +21,13 @@ public class Shooter extends SubsystemBase {
     io.updateState(replayedInputs);
 
     Logger.processInputs("Shooter", replayedInputs);
-
-    Logger.recordOutput("Shooter/Motor Velocity Setpoint", currentShooterVelocitySetpointRPS);
   }
 
   public void stop() {
-    currentShooterVelocitySetpointRPS = 0;
     io.setShooterMotorVoltage(Volts.of(0));
   }
 
   public Command spoolShooterTrenchSpeedCommand() {
-    currentShooterVelocitySetpointRPS = ShooterConstants.getShooterTrenchShootVelocity().in(RotationsPerSecond);
     return new StartEndCommand(
         () -> io.setShooterMotorVelocity(ShooterConstants.getShooterTrenchShootVelocity()),
         this::stop,
@@ -43,7 +35,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command spoolShooterHubSpeedCommand() {
-    currentShooterVelocitySetpointRPS = ShooterConstants.getShooterHubShootVelocity().in(RotationsPerSecond);
     return new StartEndCommand(
         () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
         this::stop,
@@ -90,6 +81,6 @@ public class Shooter extends SubsystemBase {
    */
   public boolean isMotorVelocityWithinTolerance() {
     return replayedInputs.mainShooterMotorRotPerSec.isNear(
-            RotationsPerSecond.of(currentShooterVelocitySetpointRPS), ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
+            replayedInputs.mainShooterSetpoint, ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }

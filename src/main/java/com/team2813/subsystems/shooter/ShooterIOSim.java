@@ -24,6 +24,8 @@ public class ShooterIOSim implements ShooterIO {
 
   private final FlywheelSim shooterSim;
 
+  private AngularVelocity mainShooterSetpoint = RotationsPerSecond.of(0);
+
   public ShooterIOSim() {
     mainShooterMotor = new TalonFX(Constants.MAIN_SHOOTER_MOTOR_ID);
     mainShooterMotor.getConfigurator().apply(ShooterConstants.MAIN_SHOOTER_MOTOR_CONFIG);
@@ -54,6 +56,7 @@ public class ShooterIOSim implements ShooterIO {
     inputs.mainShooterMotorVoltage = mainShooterMotor.getMotorVoltage().getValue();
     inputs.mainShooterMotorRotPerSec = mainShooterMotor.getVelocity().getValue();
     inputs.mainShooterMotorCurrent = mainShooterMotor.getStatorCurrent().getValue();
+    inputs.mainShooterSetpoint = mainShooterSetpoint;
 
     inputs.followerShooterMotorVoltage = followerShooterMotor.getMotorVoltage().getValue();
     inputs.followerShooterMotorRotPerSec = followerShooterMotor.getVelocity().getValue();
@@ -75,12 +78,14 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {
+    mainShooterSetpoint = shooterMotorVelocity;
     mainShooterMotor.setControl(
         shooterVelocityControl.withVelocity(shooterMotorVelocity.in(RotationsPerSecond)));
   }
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterMotorVoltage) {
+    mainShooterSetpoint = RotationsPerSecond.of(0);
     mainShooterMotor.setVoltage(shooterMotorVoltage.in(Volts));
     shooterSim.setInputVoltage(shooterMotorVoltage.in(Volts));
   }
