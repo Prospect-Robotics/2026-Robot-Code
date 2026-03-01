@@ -118,6 +118,10 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
+
+        namedCommandsRegistration(); // Registers all named commands.
+        // Creates the autoBuilder, necessary for pathplanner, must be run after namedCommandsRegistration because the registries freeze after.
+        drive.initializeAutoBuilder();
         break;
 
       case SIM:
@@ -158,6 +162,8 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
+        namedCommandsRegistration();
+        drive.initializeAutoBuilder();
         break;
 
       default:
@@ -186,6 +192,9 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
+        namedCommandsRegistration();
+        drive.initializeAutoBuilder();
+
         break;
     }
 
@@ -211,7 +220,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    namedCommand();
   }
 
   /**
@@ -312,7 +320,7 @@ public class RobotContainer {
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
 
-  private void namedCommand() {
+  private void namedCommandsRegistration() {
     NamedCommands.registerCommand(
         "TrenchShot",
         new ParallelCommandGroup(
