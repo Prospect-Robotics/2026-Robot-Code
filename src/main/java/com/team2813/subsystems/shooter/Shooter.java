@@ -11,11 +11,13 @@ public class Shooter extends SubsystemBase {
   private final ShooterIO io;
   private final ShooterIOInputsAutoLogged replayedInputs;
 
-  private AngularVelocity currentShooterVelocitySetpoint = RotationsPerSecond.of(0);
+  private double currentShooterVelocitySetpointRPS;
 
   public Shooter(ShooterIO io) {
     this.io = io;
     this.replayedInputs = new ShooterIOInputsAutoLogged();
+
+    currentShooterVelocitySetpointRPS = 0;
   }
 
   @Override
@@ -24,16 +26,16 @@ public class Shooter extends SubsystemBase {
 
     Logger.processInputs("Shooter", replayedInputs);
 
-    Logger.recordOutput("Shooter/Motor Velocity Setpoint", currentShooterVelocitySetpoint);
+    Logger.recordOutput("Shooter/Motor Velocity Setpoint", currentShooterVelocitySetpointRPS);
   }
 
   public void stop() {
-    currentShooterVelocitySetpoint = RotationsPerSecond.of(0);
+    currentShooterVelocitySetpointRPS = 0;
     io.setShooterMotorVoltage(Volts.of(0));
   }
 
   public Command spoolShooterTrenchSpeedCommand() {
-    currentShooterVelocitySetpoint = ShooterConstants.getShooterTrenchShootVelocity();
+    currentShooterVelocitySetpointRPS = ShooterConstants.getShooterTrenchShootVelocity().in(RotationsPerSecond);
     return new StartEndCommand(
         () -> io.setShooterMotorVelocity(ShooterConstants.getShooterTrenchShootVelocity()),
         this::stop,
@@ -41,7 +43,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command spoolShooterHubSpeedCommand() {
-    currentShooterVelocitySetpoint = ShooterConstants.getShooterHubShootVelocity();
+    currentShooterVelocitySetpointRPS = ShooterConstants.getShooterHubShootVelocity().in(RotationsPerSecond);
     return new StartEndCommand(
         () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
         this::stop,
@@ -84,10 +86,10 @@ public class Shooter extends SubsystemBase {
    *
    * @return <code>true</code> if the motor is within {@link
    *     ShooterConstants#SHOOTER_SPOOL_SPEED_TOLERANCE} of the {@link
-   *     #currentShooterVelocitySetpoint}
+   *     #currentShooterVelocitySetpointRPS}
    */
   public boolean isMotorVelocityWithinTolerance() {
     return replayedInputs.mainShooterMotorRotPerSec.isNear(
-        currentShooterVelocitySetpoint, ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
+            RotationsPerSecond.of(currentShooterVelocitySetpointRPS), ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }
