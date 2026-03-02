@@ -76,11 +76,12 @@ public class Shooter extends SubsystemBase {
    * Used for automatically running kicker and hopper motors once the shooter is spooled to speed.
    *
    * @return <code>true</code> if the motor is within {@link
-   *     ShooterConstants#SHOOTER_SPOOL_SPEED_TOLERANCE} of the {@link
-   *     #currentShooterVelocitySetpointRPS}
+   *     ShooterConstants#SHOOTER_SPOOL_SPEED_TOLERANCE} of the current motor setpoint
    */
   public boolean isMotorVelocityWithinTolerance() {
-    return replayedInputs.mainShooterMotorRotPerSec.isNear(
-        replayedInputs.mainShooterSetpoint, ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
+    return RotationsPerSecond.of(replayedInputs.mainShooterMotorRotPerSec)
+        .isNear(
+            RotationsPerSecond.of(replayedInputs.mainShooterSetpointRotsPerSec),
+            ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }
