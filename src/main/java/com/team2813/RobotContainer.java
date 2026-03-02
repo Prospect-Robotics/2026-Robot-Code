@@ -103,10 +103,7 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                //                drive::addVisionMeasurement,
-                (pose2d, timestamp, visionStdDev) -> {
-                  /* Ignore vision positioning, effectively disabling vision's effect on the robot drive */
-                },
+                drive::addVisionMeasurement,
                 () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
