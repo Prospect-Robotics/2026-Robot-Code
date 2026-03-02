@@ -9,7 +9,6 @@ package com.team2813;
 
 import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
-import static edu.wpi.first.units.Units.Volts;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -104,7 +103,10 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                drive::addVisionMeasurement,
+                //                drive::addVisionMeasurement,
+                (pose2d, timestamp, visionStdDev) -> {
+                  /* Ignore vision positioning, effectively disabling vision's effect on the robot drive */
+                },
                 () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
@@ -193,6 +195,12 @@ public class RobotContainer {
         break;
     }
 
+    // Registers all named commands.
+    namedCommandsRegistration();
+    // Creates the autoBuilder, necessary for pathplanner, must be run after
+    // namedCommandsRegistration because the registries freeze after.
+    drive.initializeAutoBuilder();
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -215,7 +223,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    namedCommand();
   }
 
   /**
@@ -257,7 +264,9 @@ public class RobotContainer {
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
-    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+    // Spool shooter commands
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
+    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -284,7 +293,9 @@ public class RobotContainer {
     // hub shot command
     driveController
         .rightTrigger()
-        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
+        .whileTrue(
+            new ParallelCommandGroup(
+                kicker.shootCommand(), hopper.intakeCommand(), intakeRoller.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
@@ -314,21 +325,13 @@ public class RobotContainer {
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
 
-  private void namedCommand() {
+  private void namedCommandsRegistration() {
     NamedCommands.registerCommand(
         "TrenchShot",
         new ParallelCommandGroup(
-            new StartEndCommand(
-                () -> {
-                  // TODO: figure out the optimal voltage
-                  shooter.setShooterMotorVoltage(Volts.of(11.5));
-                },
-                shooter::stop,
-                shooter),
+            shooter.spoolShooterTrenchSpeedCommand(),
             new SequentialCommandGroup(
-                // TODO: If we do velocity control, change this to a WaitUntilCommand so we can wait
-                // until we are close enough to the desired velocity
-                new WaitCommand(2),
+                new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                 new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
   }
 }

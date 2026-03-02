@@ -9,6 +9,7 @@ package com.team2813;
 
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
+import com.team2813.util.HubStatusUtil;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
@@ -54,7 +55,7 @@ public class Robot extends LoggedRobot {
     switch (mode) {
       case REAL:
         // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs"));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
@@ -101,6 +102,8 @@ public class Robot extends LoggedRobot {
     if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
+
+    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
