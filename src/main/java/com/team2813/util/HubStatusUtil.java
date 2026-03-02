@@ -1,8 +1,5 @@
 package com.team2813.util;
 
-import static edu.wpi.first.wpilibj.DriverStation.Alliance.Blue;
-import static edu.wpi.first.wpilibj.DriverStation.Alliance.Red;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.Optional;
 
