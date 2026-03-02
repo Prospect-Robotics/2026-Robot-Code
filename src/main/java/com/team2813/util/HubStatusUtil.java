@@ -32,18 +32,18 @@ public class HubStatusUtil {
     }
 
     // We're teleop enabled, compute.
-    double matchTime = DriverStation.getMatchTime();
+    double matchTimeInSeconds = DriverStation.getMatchTime();
     String gameData = DriverStation.getGameSpecificMessage();
-    // If we have no game data, we cannot compute, assume hub is active, as its likely early in
+    // If we have no game data, we cannot compute, assume hub is active, as it's likely early in
     // teleop.
     if (gameData.isEmpty()) {
       return true;
     }
 
-    boolean redInactiveFirst = false;
+    boolean redActiveFirst = true;
     switch (gameData.charAt(0)) {
-      case 'R' -> redInactiveFirst = true;
-      case 'B' -> redInactiveFirst = false;
+      case 'R' -> redActiveFirst = false;
+      case 'B' -> redActiveFirst = true;
       default -> {
         // If we have invalid game data, assume hub is active.
         return true;
@@ -53,23 +53,23 @@ public class HubStatusUtil {
     // Shift was is active for blue if red won auto, or red if blue won auto.
     boolean shift1Active =
         switch (alliance.get()) {
-          case Red -> !redInactiveFirst;
-          case Blue -> redInactiveFirst;
+          case Red -> redActiveFirst;
+          case Blue -> !redActiveFirst;
         };
 
-    if (matchTime > 130) {
+    if (matchTimeInSeconds > 130) {
       // Transition shift, hub is active.
       return true;
-    } else if (matchTime > 105) {
+    } else if (matchTimeInSeconds > 105) {
       // Shift 1
       return shift1Active;
-    } else if (matchTime > 80) {
+    } else if (matchTimeInSeconds > 80) {
       // Shift 2
       return !shift1Active;
-    } else if (matchTime > 55) {
+    } else if (matchTimeInSeconds > 55) {
       // Shift 3
       return shift1Active;
-    } else if (matchTime > 30) {
+    } else if (matchTimeInSeconds > 30) {
       // Shift 4
       return !shift1Active;
     } else {
