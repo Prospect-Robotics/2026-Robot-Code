@@ -52,10 +52,10 @@ public class ShooterConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs()
-                  .withKS(0.090914)
-                  .withKV(0.018361)
-                  .withKA(0.00116)
-                  .withKP(0.026868));
+                  .withKS(0.099892)
+                  .withKV(0.018408)
+                  .withKA(0.0010241)
+                  .withKP(0.026743));
 
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
