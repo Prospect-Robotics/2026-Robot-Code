@@ -105,7 +105,7 @@ public class RobotContainer {
             new Vision(
                 //                drive::addVisionMeasurement,
                 (pose2d, timestamp, visionStdDev) -> {
-                  /* Disable vision*/
+                  /* Ignore vision positioning, effectively disabling vision's effect on the robot drive */
                 },
                 () -> {},
                 new VisionIOPhotonVision(
@@ -122,11 +122,6 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
-
-        namedCommandsRegistration(); // Registers all named commands.
-        // Creates the autoBuilder, necessary for pathplanner, must be run after
-        // namedCommandsRegistration because the registries freeze after.
-        drive.initializeAutoBuilder();
         break;
 
       case SIM:
@@ -168,8 +163,6 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
-        namedCommandsRegistration();
-        drive.initializeAutoBuilder();
         break;
 
       default:
@@ -199,11 +192,14 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
-        namedCommandsRegistration();
-        drive.initializeAutoBuilder();
-
         break;
     }
+
+    // Registers all named commands.
+    namedCommandsRegistration();
+    // Creates the autoBuilder, necessary for pathplanner, must be run after
+    // namedCommandsRegistration because the registries freeze after.
+    drive.initializeAutoBuilder();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
