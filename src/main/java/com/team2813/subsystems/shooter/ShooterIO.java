@@ -16,6 +16,7 @@ public interface ShooterIO {
     public Angle mainShooterMotorAngle = Rotations.of(0);
     public AngularVelocity mainShooterMotorRotPerSec = RotationsPerSecond.of(0);
     public Current mainShooterMotorCurrent = Amps.of(0);
+    public AngularVelocity mainShooterSetpoint = RotationsPerSecond.of(0);
 
     public Voltage followerShooterMotorVoltage = Volts.of(0);
     public AngularVelocity followerShooterMotorRotPerSec = RotationsPerSecond.of(0);

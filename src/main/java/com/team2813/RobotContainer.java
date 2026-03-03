@@ -11,6 +11,7 @@ import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
@@ -39,9 +40,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.BooleanSupplier;
@@ -55,6 +54,8 @@ import org.photonvision.simulation.VisionSystemSim;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final Mode mode;
+
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
@@ -80,14 +81,16 @@ public class RobotContainer {
    *
    * @param tunerConstants The tuner constants for the robot.
    */
-  public RobotContainer(AllTunerConstants tunerConstants) {
-    switch (Constants.currentMode) {
+  public RobotContainer(AllTunerConstants tunerConstants, Mode mode) {
+    this.mode = mode;
+    switch (mode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
         // a CANcoder
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIOPigeon2(tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
@@ -99,7 +102,10 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                drive::addVisionMeasurement,
+                //                drive::addVisionMeasurement,
+                (pose2d, timestamp, visionStdDev) -> {
+                  /* Ignore vision positioning, effectively disabling vision's effect on the robot drive */
+                },
                 () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
@@ -121,6 +127,7 @@ public class RobotContainer {
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIO() {},
                 new ModuleIOSim(tunerConstants.frontLeft()),
@@ -161,6 +168,7 @@ public class RobotContainer {
         // Replayed robot, disable IO implementations
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIO() {},
                 new ModuleIO() {},
@@ -185,6 +193,12 @@ public class RobotContainer {
 
         break;
     }
+
+    // Registers all named commands.
+    namedCommandsRegistration();
+    // Creates the autoBuilder, necessary for pathplanner, must be run after
+    // namedCommandsRegistration because the registries freeze after.
+    drive.initializeAutoBuilder();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -248,7 +262,9 @@ public class RobotContainer {
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
-    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+    // Spool shooter commands
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
+    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -273,7 +289,9 @@ public class RobotContainer {
     // hub shot command
     driveController
         .rightTrigger()
-        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
+        .whileTrue(
+            new ParallelCommandGroup(
+                kicker.shootCommand(), hopper.intakeCommand(), intakeRoller.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
@@ -301,5 +319,15 @@ public class RobotContainer {
       hub = BLUE_HUB_POSITION;
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
+  }
+
+  private void namedCommandsRegistration() {
+    NamedCommands.registerCommand(
+        "TrenchShot",
+        new ParallelCommandGroup(
+            shooter.spoolShooterTrenchSpeedCommand(),
+            new SequentialCommandGroup(
+                new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
   }
 }

@@ -71,7 +71,7 @@ class IntakeExtensionConstants {
   }
 
   // Controls how fast the extension moves during manual control
-  public static final double MANUAL_SPEED_FACTOR = 5.0;
+  public static final double MANUAL_SPEED_FACTOR = 3.0;
 
   private IntakeExtensionConstants() {
     throw new AssertionError("Not instantiable");

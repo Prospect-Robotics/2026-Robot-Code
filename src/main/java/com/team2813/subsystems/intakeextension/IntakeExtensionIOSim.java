@@ -20,6 +20,8 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
   private Angle extensionSetpoint;
 
+  private PositionVoltage positionVoltage = new PositionVoltage(0);
+
   // Motor to extension direction depends on how the motor is geared with respect to the extension
   // mechanism.
   private static final double MOTOR_DIRECTION =
@@ -83,7 +85,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   @Override
   public void setExtensionSetpoint(Angle setpoint) {
     extensionSetpoint = setpoint;
-    extenderMotor.setControl(new PositionVoltage(setpoint));
+    extenderMotor.setControl(positionVoltage.withPosition(setpoint));
   }
 
   @Override
