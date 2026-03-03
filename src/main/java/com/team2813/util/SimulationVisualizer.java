@@ -107,7 +107,10 @@ public class SimulationVisualizer {
           1.06, // Slightly to the right of the inner climb root.
           0.5);
 
-  /** Ligament representing the height of the inner climb carriage. */
+  /**
+   * Ligament representing the height of the inner climb carriage. The inner climb is depicted as a
+   * blue line.
+   */
   private LoggedMechanismLigament2d innerClimbElevatorLigament =
       innerClimbElevatorRoot.append(
           new LoggedMechanismLigament2d(
@@ -115,13 +118,22 @@ public class SimulationVisualizer {
               innerClimbHeight.in(Meters),
               90, // Angled straight up, like a unit circle
               3,
-              new Color8Bit("#5500ff")));
+              new Color8Bit("#5500ff") // Blue colored.
+              ));
 
-  /** Ligament representing the height of the outer climb carriage. */
+  /**
+   * Ligament representing the height of the outer climb carriage. The outer climb is depicted as a
+   * purple line.
+   */
   private LoggedMechanismLigament2d outerClimbElevatorLigament =
       outerClimbElevatorRoot.append(
           new LoggedMechanismLigament2d(
-              "Outer Climb", outerClimbHeight.in(Meters), 90, 3, new Color8Bit("#ff00d4")));
+              "Outer Climb",
+              outerClimbHeight.in(Meters),
+              90,
+              3,
+              new Color8Bit("#ff00d4") // Purple colored.
+              ));
 
   /** Update the simulation visualizer with the current position of the intake extension. */
   public void periodic() {
