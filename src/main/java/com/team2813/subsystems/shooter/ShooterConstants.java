@@ -53,8 +53,8 @@ public class ShooterConstants {
           .withSlot0(
               new Slot0Configs()
                   .withKS(0.099892)
-                  .withKV(0.018408)
-                  .withKA(0.0010241)
+                  .withKV(0.115)
+                  .withKA(0.0020241)
                   .withKP(0.026743));
 
   // Left shooter motor.
