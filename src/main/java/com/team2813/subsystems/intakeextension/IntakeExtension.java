@@ -7,6 +7,8 @@ import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.*;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -21,6 +23,23 @@ public class IntakeExtension extends SubsystemBase {
 
   public IntakeExtension(IntakeExtensionIO io) {
     this.io = io;
+  }
+
+  /**
+   * Allows manual control of this intake extension using a controller.
+   *
+   * @param controller supplier that supplies the value of the controller.
+   */
+  public void setManualOverrideController(DoubleSupplier controller) {
+    Supplier<Voltage> voltageSupplier =
+        () -> {
+          double val = controller.getAsDouble();
+          return Volts.of(val * IntakeExtensionConstants.MANUAL_SPEED_FACTOR);
+        };
+
+    Command setExtenderVoltageCommand =
+        Commands.run(() -> io.setExtenderVoltage(voltageSupplier.get()), this);
+    setDefaultCommand(setExtenderVoltageCommand);
   }
 
   @Override
@@ -51,13 +70,29 @@ public class IntakeExtension extends SubsystemBase {
     return extenderAtPosition;
   }
 
-  public void extend() {
+  public Command extendCommand() {
+    return Commands.startEnd(this::extend, this::stopMotor, this);
+  }
+
+  public Command retractCommand() {
+    return Commands.startEnd(this::retract, this::stopMotor, this);
+  }
+
+  /**
+   * Creates a command that moves the intake about halfway, used for Wall-E mode, as we retract to
+   * this position (rather than fully retracting).
+   */
+  public Command halfRetractCommand() {
+    return Commands.startEnd(this::halfRetract, this::stopMotor, this);
+  }
+
+  void extend() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
   }
 
-  public void retract() {
+  void retract() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
@@ -67,7 +102,7 @@ public class IntakeExtension extends SubsystemBase {
    * Moves the intake about halfway, used for Wall-E mode, as we retract to this position (rather
    * than fully retracting).
    */
-  public void halfRetract() {
+  private void halfRetract() {
     extenderAtPosition = false;
     io.setExtensionSetpoint(
         IntakeExtensionConstants.toMotorSetpoint(
@@ -83,15 +118,9 @@ public class IntakeExtension extends SubsystemBase {
   public Command wallEMode() {
     return new RepeatCommand(
             new SequentialCommandGroup(
-                    new StartEndCommand(this::halfRetract, this::stopMotor, this)
-                        .until(this::isExtenderAtPosition),
-                    new StartEndCommand(this::extend, this::stopMotor, this))
+                    halfRetractCommand().until(this::isExtenderAtPosition), extendCommand())
                 .until(this::isExtenderAtPosition))
         .finallyDo(this::stopMotor);
-  }
-
-  public void setExtenderVoltage(Voltage extensionVoltage) {
-    io.setExtenderVoltage(extensionVoltage);
   }
 
   public void stopMotor() {

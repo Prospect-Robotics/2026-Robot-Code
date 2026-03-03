@@ -246,9 +246,8 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
-    intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(
-            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
+    intakeExtension.setManualOverrideController(
+        () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
@@ -292,9 +291,7 @@ public class RobotContainer {
         .whileTrue(
             new ParallelCommandGroup(
                 intakeRoller.intakeCommand(),
-                new StartEndCommand(
-                        intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
-                    .until(extensionInterruptionCondition)));
+                intakeExtension.extendCommand().until(extensionInterruptionCondition)));
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
