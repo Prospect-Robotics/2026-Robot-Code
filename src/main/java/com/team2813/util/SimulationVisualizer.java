@@ -143,15 +143,22 @@ public class SimulationVisualizer {
     SmartDashboard.putData("Climb Elevator Visualization", climbElevatorCanvas);
     Logger.recordOutput("Climb Elevator Visualization", climbElevatorCanvas);
 
-    double x = intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
-    double z = -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
+    double intakeExtensionX = intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
+    double intakeExtensionZ = -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
+
+    double innerClimbZ = innerClimbHeight.in(Meters);
+    double outerClimbZ = outerClimbHeight.in(Meters);
 
     // Component Simulation for the 3D robot.
     Logger.recordOutput(
         "Component Positions",
         new Pose3d[] {
           // Hopper and indexer
-          new Pose3d(x, 0, z, new Rotation3d(0, 0, 0)),
+          new Pose3d(intakeExtensionX, 0, intakeExtensionZ, new Rotation3d(0, 0, 0)),
+          // Inner Climb
+          new Pose3d(0, 0, innerClimbZ, new Rotation3d(0, 0, 0)),
+          // Outer Climb
+          new Pose3d(0, 0, outerClimbZ, new Rotation3d(0, 0, 0)),
         });
   }
 

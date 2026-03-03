@@ -318,7 +318,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .y()
+        .start()
         .onTrue(
             new InstantCommand(
                 () ->
