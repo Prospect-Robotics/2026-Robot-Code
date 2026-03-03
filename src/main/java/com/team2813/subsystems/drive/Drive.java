@@ -17,8 +17,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
-import com.team2813.Constants;
-import com.team2813.Constants.Mode;
+import com.team2813.Mode;
 import com.team2813.util.LocalADStarAK;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -65,6 +64,8 @@ public class Drive extends SubsystemBase {
   private static final double WHEEL_COF = 1.2;
 
   static final Lock odometryLock = new ReentrantLock();
+
+  private final Mode mode;
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
@@ -120,12 +121,14 @@ public class Drive extends SubsystemBase {
 
   // TODO: Remove the last four params, and replace with a Function<SwerveModuleConstants, ModueIO>
   public Drive(
+      Mode mode,
       AllTunerConstants tunerConstants,
       GyroIO gyroIO,
       ModuleIO flModuleIO,
       ModuleIO frModuleIO,
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
+    this.mode = mode;
     this.allTunerConstants = tunerConstants;
     this.gyroIO = gyroIO;
     modules[0] = new Module(flModuleIO, 0, tunerConstants.frontLeft());
@@ -140,41 +143,6 @@ public class Drive extends SubsystemBase {
     // Start odometry thread
     PhoenixOdometryThread.getInstance().setCanBus(tunerConstants.canBus());
     PhoenixOdometryThread.getInstance().start();
-
-    RobotConfig ppConfig =
-        new RobotConfig(
-            ROBOT_MASS_KG,
-            ROBOT_MOI,
-            new ModuleConfig(
-                tunerConstants.frontLeft().WheelRadius,
-                tunerConstants.speedAt12Volts().in(MetersPerSecond),
-                WHEEL_COF,
-                DCMotor.getKrakenX60Foc(1)
-                    .withReduction(tunerConstants.frontLeft().DriveMotorGearRatio),
-                tunerConstants.frontLeft().SlipCurrent,
-                1),
-            getModuleTranslations(tunerConstants));
-
-    // Configure AutoBuilder for PathPlanner
-    AutoBuilder.configure(
-        this::getPose,
-        this::setPose,
-        this::getChassisSpeeds,
-        this::runVelocity,
-        new PPHolonomicDriveController(
-            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
-        ppConfig,
-        () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-        this);
-    Pathfinding.setPathfinder(new LocalADStarAK());
-    PathPlannerLogging.setLogActivePathCallback(
-        (activePath) -> {
-          Logger.recordOutput("Odometry/Trajectory", activePath.toArray(new Pose2d[0]));
-        });
-    PathPlannerLogging.setLogTargetPoseCallback(
-        (targetPose) -> {
-          Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
-        });
 
     // Configure SysId
     sysId =
@@ -249,7 +217,7 @@ public class Drive extends SubsystemBase {
     }
 
     // Update gyro alert
-    gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+    gyroDisconnectedAlert.set(!gyroInputs.connected && mode != Mode.SIM);
   }
 
   /**
@@ -401,6 +369,47 @@ public class Drive extends SubsystemBase {
       new Translation2d(tunerConstants.backLeft().LocationX, tunerConstants.backLeft().LocationY),
       new Translation2d(tunerConstants.backRight().LocationX, tunerConstants.backRight().LocationY)
     };
+  }
+
+  /**
+   * Should be called post initialization of all other subsystems, after registration of named
+   * commands.
+   */
+  public void initializeAutoBuilder() {
+    RobotConfig ppConfig =
+        new RobotConfig(
+            ROBOT_MASS_KG,
+            ROBOT_MOI,
+            new ModuleConfig(
+                allTunerConstants.frontLeft().WheelRadius,
+                allTunerConstants.speedAt12Volts().in(MetersPerSecond),
+                WHEEL_COF,
+                DCMotor.getKrakenX60Foc(1)
+                    .withReduction(allTunerConstants.frontLeft().DriveMotorGearRatio),
+                allTunerConstants.frontLeft().SlipCurrent,
+                1),
+            getModuleTranslations(allTunerConstants));
+
+    // Configure AutoBuilder for PathPlanner
+    AutoBuilder.configure(
+        this::getPose,
+        this::setPose,
+        this::getChassisSpeeds,
+        this::runVelocity,
+        new PPHolonomicDriveController(
+            new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+        ppConfig,
+        () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+        this);
+    Pathfinding.setPathfinder(new LocalADStarAK());
+    PathPlannerLogging.setLogActivePathCallback(
+        (activePath) -> {
+          Logger.recordOutput("Odometry/Trajectory", activePath.toArray(new Pose2d[0]));
+        });
+    PathPlannerLogging.setLogTargetPoseCallback(
+        (targetPose) -> {
+          Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
+        });
   }
 
   /** Gets the radius of the drivetrain, in meters. */

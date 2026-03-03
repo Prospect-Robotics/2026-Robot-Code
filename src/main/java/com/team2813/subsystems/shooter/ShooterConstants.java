@@ -1,7 +1,6 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -10,35 +9,40 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Preferences;
 
 public class ShooterConstants {
 
-  public static final String SHOOTER_INTAKE_PREFERENCE_NT = "Shooter/SHOOTER_INTAKE_VOLTAGE";
+  public static final String SHOOTER_TRENCH_SHOOT_PREFERENCE_NT =
+      "Shooter/SHOOTER_TRENCH_SHOOT_VELOCITY_RPS";
+  public static final String SHOOTER_HUB_SHOOT_PREFERENCE_NT =
+      "Shooter/SHOOTER_HUB_SHOOT_VELOCITY_RPS";
+
   public static final String SHOOTER_OUTTAKE_PREFERENCE_NT = "Shooter/SHOOTER_OUTTAKE_VOLTAGE";
-  public static final String KICKER_INTAKE_PREFERENCE_NT = "Shooter/KICKER_INTAKE_VOLTAGE";
-  public static final String KICKER_OUTTAKE_PREFERENCE_NT = "Shooter/KICKER_OUTTAKE_VOLTAGE";
 
   public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
-  public static final double KICKER_SIM_MOI = 0.0000535531; // in kilograms*meters squared.
 
-  /*
-  Because shooting a ton of fuel will slow the flywheel,
-  we will aim about a 1/4 of a hub farther than the center of the hub
-  to counteract this speed loss.
+  /**
+   * Because shooting a ton of fuel will slow the flywheel, we will aim about a 1/4 of a hub farther
+   * than the center of the hub to counteract this speed loss.
    */
   public static final Distance EXTRA_HUB_AIMING_DISTANCE = Inches.of(10.425);
 
+  /**
+   * Used for automatically running kicker and hopper while shooting. If the motor speed is within
+   * this value of Rot/s of the setpoint, {@link Shooter#isMotorVelocityWithinTolerance()} will
+   * return true.
+   */
+  public static final AngularVelocity SHOOTER_SPOOL_SPEED_TOLERANCE = RotationsPerSecond.of(25);
+
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 40);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
-
-    // Kicker motors.
-    Preferences.initDouble(KICKER_INTAKE_PREFERENCE_NT, 5);
-    Preferences.initDouble(KICKER_OUTTAKE_PREFERENCE_NT, -3);
   }
 
   // Reminder: this is the right shooter motor when robot is viewed from behind.
@@ -48,36 +52,26 @@ public class ShooterConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs()
-                  .withKS(0.079361)
-                  .withKV(0.018418)
-                  .withKA(0.0012587)
-                  .withKP(1.9106e-9));
+                  .withKS(0.090914)
+                  .withKV(0.018361)
+                  .withKA(0.00116)
+                  .withKP(0.026868));
 
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
       new Follower(Constants.MAIN_SHOOTER_MOTOR_ID, MotorAlignmentValue.Opposed);
 
-  public static final TalonFXConfiguration KICKER_MOTOR_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
-
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
-  public static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
+  public static AngularVelocity getShooterTrenchShootVelocity() {
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90));
+  }
 
-  public static Voltage getShooterIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(SHOOTER_INTAKE_PREFERENCE_NT, 11));
+  public static AngularVelocity getShooterHubShootVelocity() {
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 40));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
     return Volts.of(Preferences.getDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5));
-  }
-
-  public static Voltage getKickerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(KICKER_INTAKE_PREFERENCE_NT, 5));
-  }
-
-  public static Voltage getKickerOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble(KICKER_OUTTAKE_PREFERENCE_NT, -3));
   }
 }

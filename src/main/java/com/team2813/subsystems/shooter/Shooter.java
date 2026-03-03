@@ -2,7 +2,7 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
@@ -27,9 +27,16 @@ public class Shooter extends SubsystemBase {
     io.setShooterMotorVoltage(Volts.of(0));
   }
 
-  public Command spoolShooterIntakewardCommand() {
+  public Command spoolShooterTrenchSpeedCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVoltage(ShooterConstants.getShooterIntakeVoltage()),
+        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterTrenchShootVelocity()),
+        this::stop,
+        this);
+  }
+
+  public Command spoolShooterHubSpeedCommand() {
+    return new StartEndCommand(
+        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
         this::stop,
         this);
   }
@@ -61,7 +68,19 @@ public class Shooter extends SubsystemBase {
   }
 
   // Used for auto calculated motor speed.
-  public void setShooterMotorVoltage(Voltage voltage) {
-    io.setShooterMotorVoltage(voltage);
+  public void setShooterMotorVelocity(AngularVelocity velocity) {
+    io.setShooterMotorVelocity(velocity);
+  }
+
+  /**
+   * Used for automatically running kicker and hopper motors once the shooter is spooled to speed.
+   *
+   * @return <code>true</code> if the motor is within {@link
+   *     ShooterConstants#SHOOTER_SPOOL_SPEED_TOLERANCE} of the {@link
+   *     #currentShooterVelocitySetpointRPS}
+   */
+  public boolean isMotorVelocityWithinTolerance() {
+    return replayedInputs.mainShooterMotorRotPerSec.isNear(
+        replayedInputs.mainShooterSetpoint, ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }

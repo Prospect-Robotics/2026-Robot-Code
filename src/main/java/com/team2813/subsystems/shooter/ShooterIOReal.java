@@ -16,6 +16,8 @@ public class ShooterIOReal implements ShooterIO {
   private TalonFX mainShooterMotor;
   private TalonFX followerShooterMotor;
 
+  private AngularVelocity mainShooterSetpoint = RotationsPerSecond.of(0);
+
   public ShooterIOReal() {
     mainShooterMotor = new TalonFX(Constants.MAIN_SHOOTER_MOTOR_ID);
     mainShooterMotor.getConfigurator().apply(ShooterConstants.MAIN_SHOOTER_MOTOR_CONFIG);
@@ -32,6 +34,7 @@ public class ShooterIOReal implements ShooterIO {
     inputs.mainShooterMotorAngle = mainShooterMotor.getPosition().getValue();
     inputs.mainShooterMotorRotPerSec = mainShooterMotor.getVelocity().getValue();
     inputs.mainShooterMotorCurrent = mainShooterMotor.getStatorCurrent().getValue();
+    inputs.mainShooterSetpoint = mainShooterSetpoint;
 
     inputs.followerShooterMotorVoltage = followerShooterMotor.getMotorVoltage().getValue();
     inputs.followerShooterMotorRotPerSec = followerShooterMotor.getVelocity().getValue();
@@ -40,11 +43,16 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {
-    mainShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
+    // Uses Rot/s rather than passing AngularVelocity because there seems to be some issue with
+    // AngularVelocity converting its value (i.e. Rot/s) to the base unit (rad/s)
+    mainShooterSetpoint = shooterMotorVelocity;
+    mainShooterMotor.setControl(
+        shooterVelocityControl.withVelocity(shooterMotorVelocity.in(RotationsPerSecond)));
   }
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterVoltage) {
+    mainShooterSetpoint = RotationsPerSecond.of(0);
     mainShooterMotor.setVoltage(shooterVoltage.in(Volts));
   }
 }
