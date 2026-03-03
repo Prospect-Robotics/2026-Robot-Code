@@ -143,8 +143,10 @@ public class SimulationVisualizer {
     SmartDashboard.putData("Climb Elevator Visualization", climbElevatorCanvas);
     Logger.recordOutput("Climb Elevator Visualization", climbElevatorCanvas);
 
-    double intakeExtensionX = intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
-    double intakeExtensionZ = -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
+    double intakeExtensionX =
+        intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
+    double intakeExtensionZ =
+        -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
 
     double innerClimbZ = innerClimbHeight.in(Meters);
     double outerClimbZ = outerClimbHeight.in(Meters);
