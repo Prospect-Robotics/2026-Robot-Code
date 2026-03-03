@@ -13,7 +13,6 @@ import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
-import com.team2813.commands.IntakeExtensionDefaultCommand;
 import com.team2813.subsystems.climb.Climb;
 import com.team2813.subsystems.climb.ClimbIO;
 import com.team2813.subsystems.climb.ClimbIOReal;
