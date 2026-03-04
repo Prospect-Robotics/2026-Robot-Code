@@ -1,25 +1,20 @@
 package com.team2813.subsystems.intakeextension;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.team2813.lib2813.testing.junit.jupiter.InitWPILib;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junitpioneer.jupiter.ClearEnvironmentVariable;
+import org.junit.jupiter.api.*;
 
-@Disabled
 @InitWPILib
-@ClearEnvironmentVariable(key = "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE")
 public class IntakeExtensionTest {
+
+  @AutoClose
+  private final IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
+
   @Test
-  public void testIntakeExtension() {
-    // create an intake extension subsystem
-
-    IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-
-    // extend the intake
+  public void testIntakeExtensionExtend() {
     intakeExtension.extend();
 
     for (int i = 0; i < 50; i++) {
@@ -27,20 +22,14 @@ public class IntakeExtensionTest {
     }
 
     assertEquals(
-        intakeExtension.getSetpoint().magnitude(),
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT)
-            .magnitude(),
-        0.01);
+            .in(Rotations),
+        intakeExtension.getPosition().in(Rotations),
+        0.5);
   }
 
-  @Disabled
   @Test
-  public void testIntakeRetraction() {
-    // create an intake extension subsystem
-
-    IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-
-    // retract the intake
+  public void testIntakeExtensionRetract() {
     intakeExtension.retract();
 
     for (int i = 0; i < 50; i++) {
@@ -48,34 +37,33 @@ public class IntakeExtensionTest {
     }
 
     assertEquals(
-        intakeExtension.getSetpoint().magnitude(),
         IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN)
-            .magnitude(),
-        0.01);
+            .in(Rotations),
+        intakeExtension.getPosition().in(Rotations),
+        0.5);
   }
 
-  @Disabled
   @Test
-  public void testIntakeExtensionAtPosition() {
-    // create an intake extension subsystem
-
-    IntakeExtension intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
-
-    // The intake should start at the retracted position, so the extender should be at position
-    assertTrue(intakeExtension.isExtenderAtPosition());
-
-    // extend the intake
+  public void testIntakeExtensionIsAtPositionExtend() {
     intakeExtension.extend();
-    // With new setpoint set by extend(), the extender should no longer be at position.
-    assertFalse(intakeExtension.isExtenderAtPosition());
 
-    // run periodic at the equivalent of 50 cycles (1 second) to let the intake reach the setpoint
     for (int i = 0; i < 50; i++) {
       intakeExtension.periodic();
     }
 
-    // TODO: Jazl, please debug this, it seems the PID, and kSVA constants for the Intake have not
-    // been merged properly.
-    assertTrue(intakeExtension.isExtenderAtPosition());
+    assertTrue(
+        intakeExtension.isExtenderAtPosition(), "Extender should be at position after extending");
+  }
+
+  @Test
+  public void testIntakeExtensionIsAtPositionRetract() {
+    intakeExtension.retract();
+
+    for (int i = 0; i < 50; i++) {
+      intakeExtension.periodic();
+    }
+
+    assertTrue(
+        intakeExtension.isExtenderAtPosition(), "Extender should be at position after retracting");
   }
 }

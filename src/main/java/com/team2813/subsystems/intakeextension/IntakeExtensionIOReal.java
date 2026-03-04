@@ -41,4 +41,9 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   public void setExtenderVoltage(Voltage extenderVoltage) {
     extenderMotor.setVoltage(extenderVoltage.in(Volts));
   }
+
+  @Override
+  public void close() {
+    extenderMotor.close();
+  }
 }
