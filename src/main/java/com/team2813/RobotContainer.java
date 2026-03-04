@@ -13,6 +13,10 @@ import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
+import com.team2813.subsystems.climb.Climb;
+import com.team2813.subsystems.climb.ClimbIO;
+import com.team2813.subsystems.climb.ClimbIOReal;
+import com.team2813.subsystems.climb.ClimbIOSim;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -60,6 +64,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Hopper hopper;
   private final Vision vision;
+  private final Climb climb;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -118,6 +123,8 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
+
+        climb = new Climb(new ClimbIOReal());
         break;
 
       case SIM:
@@ -159,6 +166,7 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
+        climb = new Climb(new ClimbIOSim());
         break;
 
       default:
@@ -188,6 +196,7 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
+        climb = new Climb(new ClimbIO() {});
         break;
     }
 
@@ -283,6 +292,16 @@ public class RobotContainer {
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
 
+    // FIXME: Test climb bindings! Remove later!
+    driveController.y().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
+    driveController.a().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.DOWN));
+
+    driveController.povLeft().onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.UP));
+    driveController
+        .povRight()
+        .onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.DOWN));
+    // END CLIMB BINDINGS.
+
     // hub shot command
     driveController
         .rightTrigger()
@@ -292,7 +311,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .y()
+        .start()
         .onTrue(
             new InstantCommand(
                 () ->
