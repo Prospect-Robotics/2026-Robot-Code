@@ -9,8 +9,10 @@ package com.team2813;
 
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
+import com.team2813.util.HubStatusUtil;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -28,7 +30,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  */
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
-  private RobotContainer robotContainer;
+  private final RobotContainer robotContainer;
+  private final Mode mode;
 
   public Robot() {
     // Record metadata
@@ -44,12 +47,15 @@ public class Robot extends LoggedRobot {
           case 1 -> "Uncommitted changes";
           default -> "Unknown";
         });
-
+    RobotController.setTimeSource(Logger::getTimestamp);
     // Set up data receivers & replay source
-    switch (Constants.currentMode) {
+    mode = getCurrentModeFromEnv();
+    System.out.printf("Current Mode: %s%n", mode);
+
+    switch (mode) {
       case REAL:
         // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs"));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
@@ -76,7 +82,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer(tunerConstants);
+    robotContainer = new RobotContainer(tunerConstants, mode);
   }
 
   /** This function is called periodically during all modes. */
@@ -93,9 +99,11 @@ public class Robot extends LoggedRobot {
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    if (Constants.currentMode != Constants.Mode.REAL) {
+    if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
+
+    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
@@ -162,4 +170,28 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  /** Gets the {@link Mode} that the robot should use. */
+  static Mode getCurrentModeFromEnv() {
+    return isReal() ? Mode.REAL : getSimMode();
+  }
+
+  /**
+   * Gets the {@link Mode} that the robot should use in simulation. This method will never return
+   * {@link Mode#REAL}, as that is never appropriate for robot simulation. If the gradle {@code
+   * replayWatch} task is run, this will return {@link Mode#REPLAY} automatically.
+   *
+   * @return The {@link Mode} that the robot should use if it is being simulated.
+   */
+  private static Mode getSimMode() {
+    // The environment variable "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE" is set to "true" when running
+    // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
+    // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
+    // not going to happen due to the long, specific name, and if it does, that is their problem :3.
+    if (Boolean.parseBoolean(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
+      return Mode.REPLAY;
+    } else {
+      return Mode.SIM;
+    }
+  }
 }

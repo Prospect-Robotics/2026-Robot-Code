@@ -14,47 +14,14 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
  * on a roboRIO.
  */
 public final class Constants {
-  /**
-   * Gets the {@link Mode} that the robot should use in simulation. This method will never return
-   * {@link Mode#REAL}, as that is never appropriate for robot simulation. If the gradle {@code
-   * replayWatch} task is run, this will return {@link Mode#REPLAY} automatically.
-   *
-   * @return The {@link Mode} that the robot should use if it is being simulated.
-   */
-  static Mode getSimMode() {
-    // The environment variable "FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE" is set to "true" when running
-    // `replayWatch`. This will then only return `Mode.REPLAY` when we are in replay mode. Note that
-    // this will set `Mode.REPLAY` if the user sets this environment variable, but that is probably
-    // not going to happen due to the long, specific name, and if it does, that is their problem :3.
-    if (Boolean.parseBoolean(System.getenv("FRC_ADVANTAGEKIT_LOG_REPLAY_ENABLE"))) {
-      return Mode.REPLAY;
-    } else {
-      return Mode.SIM;
-    }
-  }
-
-  public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : getSimMode();
-
   public static double SIM_TIME_PERIOD =
       0.02; // Update physics simulations every 20ms (like the actual bot).
-
-  public enum Mode {
-    /** Running on a real robot. */
-    REAL,
-
-    /** Running a physics simulator. */
-    SIM,
-
-    /** Replaying from a log file. */
-    REPLAY
-  }
 
   public static final Transform3d FRONT_CAMERA_POSITION =
       new Transform3d(
@@ -84,6 +51,10 @@ public final class Constants {
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
+  // Climb motors
+  // TODO(Stefan): ID these motors!
+  public static final int LEFTCLIMB_MOTOR_ID = 30;
+  public static final int RIGHTCLIMB_MOTOR_ID = 31;
   /**
    * Returns true if the robot is on the red alliance.
    *

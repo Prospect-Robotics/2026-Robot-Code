@@ -13,6 +13,8 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   private final TalonFX extenderMotor;
   private Angle extensionSetpoint;
 
+  private PositionVoltage positionVoltage = new PositionVoltage(0);
+
   public IntakeExtensionIOReal() {
     extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);
     extenderMotor.getConfigurator().apply(IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG);
@@ -32,7 +34,7 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   @Override
   public void setExtensionSetpoint(Angle setpoint) {
     extensionSetpoint = setpoint;
-    extenderMotor.setControl(new PositionVoltage(setpoint));
+    extenderMotor.setControl(positionVoltage.withPosition(setpoint));
   }
 
   @Override

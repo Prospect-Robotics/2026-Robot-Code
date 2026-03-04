@@ -24,6 +24,8 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
   private Angle extensionSetpoint;
 
+  private PositionVoltage positionVoltage = new PositionVoltage(0);
+
   // Motor to extension direction depends on how the motor is geared with respect to the extension
   // mechanism.
   private static final double MOTOR_DIRECTION =

@@ -1,10 +1,6 @@
 package com.team2813.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.*;
-
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -12,14 +8,15 @@ public interface ShooterIO {
 
   @AutoLog
   class ShooterIOInputs {
-    public Voltage mainShooterMotorVoltage = Volts.of(0);
-    public Angle mainShooterMotorAngle = Rotations.of(0);
-    public AngularVelocity mainShooterMotorRotPerSec = RotationsPerSecond.of(0);
-    public Current mainShooterMotorCurrent = Amps.of(0);
+    public double mainShooterMotorVoltageVolts = 0;
+    public double mainShooterMotorAngleRotations = 0;
+    public double mainShooterMotorRotPerSec = 0;
+    public double mainShooterMotorCurrentAmps = 0;
+    public double mainShooterSetpointRotsPerSec = 0;
 
-    public Voltage followerShooterMotorVoltage = Volts.of(0);
-    public AngularVelocity followerShooterMotorRotPerSec = RotationsPerSecond.of(0);
-    public Current followerShooterMotorCurrent = Amps.of(0);
+    public double followerShooterMotorVoltageVolts = 0;
+    public double followerShooterMotorRotPerSec = 0;
+    public double followerShooterMotorCurrentAmps = 0;
   }
 
   /**

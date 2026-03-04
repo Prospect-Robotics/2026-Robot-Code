@@ -11,8 +11,12 @@ import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
-import com.team2813.commands.IntakeExtensionDefaultCommand;
+import com.team2813.subsystems.climb.Climb;
+import com.team2813.subsystems.climb.ClimbIO;
+import com.team2813.subsystems.climb.ClimbIOReal;
+import com.team2813.subsystems.climb.ClimbIOSim;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -54,10 +58,13 @@ import org.photonvision.simulation.VisionSystemSim;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final Mode mode;
+
   // Subsystems
   private final Drive drive;
   private final Hopper hopper;
   private final Vision vision;
+  private final Climb climb;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -79,14 +86,16 @@ public class RobotContainer {
    *
    * @param tunerConstants The tuner constants for the robot.
    */
-  public RobotContainer(AllTunerConstants tunerConstants) {
-    switch (Constants.currentMode) {
+  public RobotContainer(AllTunerConstants tunerConstants, Mode mode) {
+    this.mode = mode;
+    switch (mode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         // ModuleIOTalonFX is intended for modules with TalonFX drive, TalonFX turn, and
         // a CANcoder
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIOPigeon2(tunerConstants),
                 new ModuleIOTalonFX(tunerConstants.frontLeft(), tunerConstants),
@@ -114,12 +123,15 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
+
+        climb = new Climb(new ClimbIOReal());
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIO() {},
                 new ModuleIOSim(tunerConstants.frontLeft()),
@@ -154,12 +166,14 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
+        climb = new Climb(new ClimbIOSim());
         break;
 
       default:
         // Replayed robot, disable IO implementations
         drive =
             new Drive(
+                mode,
                 tunerConstants,
                 new GyroIO() {},
                 new ModuleIO() {},
@@ -182,8 +196,15 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
+        climb = new Climb(new ClimbIO() {});
         break;
     }
+
+    // Registers all named commands.
+    namedCommandsRegistration();
+    // Creates the autoBuilder, necessary for pathplanner, must be run after
+    // namedCommandsRegistration because the registries freeze after.
+    drive.initializeAutoBuilder();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -221,9 +242,8 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(intakeRoller.outtakeCommand());
 
     // Intake Extension Bindings
-    intakeExtension.setDefaultCommand(
-        new IntakeExtensionDefaultCommand(
-            intakeExtension, () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1)));
+    intakeExtension.setManualOverrideController(
+        () -> MathUtil.applyDeadband(-operatorController.getLeftY(), 0.1));
 
     BooleanSupplier extensionInterruptionCondition =
         () ->
@@ -248,7 +268,9 @@ public class RobotContainer {
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
-    operatorController.rightTrigger().whileTrue(shooter.spoolShooterIntakewardCommand());
+    // Spool shooter commands
+    operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
+    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -265,21 +287,31 @@ public class RobotContainer {
         .whileTrue(
             new ParallelCommandGroup(
                 intakeRoller.intakeCommand(),
-                new StartEndCommand(
-                        intakeExtension::extend, intakeExtension::stopMotor, intakeExtension)
-                    .until(extensionInterruptionCondition)));
+                intakeExtension.extendCommand().until(extensionInterruptionCondition)));
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
 
+    // FIXME: Test climb bindings! Remove later!
+    driveController.y().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
+    driveController.a().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.DOWN));
+
+    driveController.povLeft().onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.UP));
+    driveController
+        .povRight()
+        .onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.DOWN));
+    // END CLIMB BINDINGS.
+
     // hub shot command
     driveController
         .rightTrigger()
-        .whileTrue(new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()));
+        .whileTrue(
+            new ParallelCommandGroup(
+                kicker.shootCommand(), hopper.intakeCommand(), intakeRoller.intakeCommand()));
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .y()
+        .start()
         .onTrue(
             new InstantCommand(
                 () ->
@@ -303,5 +335,15 @@ public class RobotContainer {
       hub = BLUE_HUB_POSITION;
     }
     return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
+  }
+
+  private void namedCommandsRegistration() {
+    NamedCommands.registerCommand(
+        "TrenchShot",
+        new ParallelCommandGroup(
+            shooter.spoolShooterTrenchSpeedCommand(),
+            new SequentialCommandGroup(
+                new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
   }
 }

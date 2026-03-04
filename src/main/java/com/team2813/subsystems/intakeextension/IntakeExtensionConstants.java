@@ -12,7 +12,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import org.littletonrobotics.junction.Logger;
 
-public class IntakeExtensionConstants {
+class IntakeExtensionConstants {
 
   public static final double EXTENDER_MOTOR_TO_EXTENDER_GEARING = 3; // reduction
 
@@ -71,5 +71,9 @@ public class IntakeExtensionConstants {
   }
 
   // Controls how fast the extension moves during manual control
-  public static final double MANUAL_SPEED_FACTOR = 5.0;
+  public static final double MANUAL_SPEED_FACTOR = 3.0;
+
+  private IntakeExtensionConstants() {
+    throw new AssertionError("Not instantiable");
+  }
 }

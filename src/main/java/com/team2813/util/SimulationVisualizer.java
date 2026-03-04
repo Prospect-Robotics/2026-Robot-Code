@@ -31,23 +31,47 @@ public class SimulationVisualizer {
       Degrees.of(4.75); // Pitch down relative to y axis.
   private static final SimulationVisualizer instance = new SimulationVisualizer();
 
+  // Note: We might make this public if someone wants unit on this.
   private SimulationVisualizer() {}
 
+  /** Returns the default instance of SimulationVisualizer. */
   public static SimulationVisualizer getInstance() {
     return instance;
   }
 
-  /** The position of the intake extension. Default at 0 (fully retracted) */
+  /**
+   * The position of the intake extension. Default at 0 inches (fully retracted). This value is used
+   * to update the 3D model, if in use.
+   */
   private Distance intakeExtensionPosition = Inches.of(0);
 
-  /** The Mech2d Canvas to draw the intake on (Size of the robot in inches) */
-  LoggedMechanism2d intakeExtensionCanvas = new LoggedMechanism2d(2, 1, new Color8Bit("#008cff"));
+  /**
+   * The position of the inner climb. Defaults to 0 inches (fully lowered). The position of the
+   * inner climb. Defaults to 0 inches (fully lowered). This value is used to update the 3D model,
+   * if in use.
+   */
+  private Distance innerClimbHeight = Inches.of(0);
+
+  /**
+   * The position of the outer climb. Defaults to 0 inches (fully lowered). The position of the
+   * inner climb. Defaults to 0 inches (fully lowered). This value is used to update the 3D model,
+   * if in use.
+   */
+  private Distance outerClimbHeight = Inches.of(0);
+
+  /** The Mech2d Canvas to draw the intake on (Size of the robot in meters) */
+  private LoggedMechanism2d intakeExtensionCanvas =
+      new LoggedMechanism2d(2, 1, new Color8Bit("#008cff"));
+
+  /** The Mech2d Canvas to draw the elevator on (Units in meters). */
+  private LoggedMechanism2d climbElevatorCanvas =
+      new LoggedMechanism2d(2, 1, new Color8Bit("#00ff65"));
 
   /**
    * Root node of the intake extension mechanism, located at the pivot point of the intake (relative
    * to the robot center)
    */
-  LoggedMechanismRoot2d intakeExtensionRoot =
+  private LoggedMechanismRoot2d intakeExtensionRoot =
       intakeExtensionCanvas.getRoot(
           "Intake Extension",
           1 + 0.34, // 1m is just the center of the mech2d canvas; 0.34m is the offset of hopper
@@ -59,7 +83,7 @@ public class SimulationVisualizer {
    * Ligament representing the intake extension, extending to the left from the root. Length is
    * updated in periodic to match the position of the intake extension.
    */
-  LoggedMechanismLigament2d intakeExtensionLigament =
+  private LoggedMechanismLigament2d intakeExtensionLigament =
       intakeExtensionRoot.append(
           new LoggedMechanismLigament2d(
               "Intake Extension",
@@ -68,20 +92,75 @@ public class SimulationVisualizer {
               10.0,
               new Color8Bit("#ff9900")));
 
+  /** Root node for the inner climb elevator. */
+  private LoggedMechanismRoot2d innerClimbElevatorRoot =
+      climbElevatorCanvas.getRoot(
+          "Inner Climb Elevator",
+          1, // In the middle of the canvas.
+          0.5 // A quarter the way down the canvas.
+          );
+
+  /** Root node for the outer climb elevator. */
+  private LoggedMechanismRoot2d outerClimbElevatorRoot =
+      climbElevatorCanvas.getRoot(
+          "Outer Climb Elevator",
+          1.06, // Slightly to the right of the inner climb root.
+          0.5);
+
+  /**
+   * Ligament representing the height of the inner climb carriage. The inner climb is depicted as a
+   * blue line.
+   */
+  private LoggedMechanismLigament2d innerClimbElevatorLigament =
+      innerClimbElevatorRoot.append(
+          new LoggedMechanismLigament2d(
+              "Inner Climb",
+              innerClimbHeight.in(Meters),
+              90, // Angled straight up, like a unit circle
+              3,
+              new Color8Bit("#5500ff") // Blue colored.
+              ));
+
+  /**
+   * Ligament representing the height of the outer climb carriage. The outer climb is depicted as a
+   * purple line.
+   */
+  private LoggedMechanismLigament2d outerClimbElevatorLigament =
+      outerClimbElevatorRoot.append(
+          new LoggedMechanismLigament2d(
+              "Outer Climb",
+              outerClimbHeight.in(Meters),
+              90,
+              3,
+              new Color8Bit("#ff00d4") // Purple colored.
+              ));
+
   /** Update the simulation visualizer with the current position of the intake extension. */
   public void periodic() {
     SmartDashboard.putData("Intake Extension Visualization", intakeExtensionCanvas);
     Logger.recordOutput("Intake Extension Visualization", intakeExtensionCanvas);
 
-    double x = intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
-    double z = -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
+    SmartDashboard.putData("Climb Elevator Visualization", climbElevatorCanvas);
+    Logger.recordOutput("Climb Elevator Visualization", climbElevatorCanvas);
+
+    double intakeExtensionX =
+        intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
+    double intakeExtensionZ =
+        -intakeExtensionPosition.in(Meters) * Math.sin(INDEXER_PITCH_ANGLE.in(Radians));
+
+    double innerClimbZ = innerClimbHeight.in(Meters);
+    double outerClimbZ = outerClimbHeight.in(Meters);
 
     // Component Simulation for the 3D robot.
     Logger.recordOutput(
         "Component Positions",
         new Pose3d[] {
           // Hopper and indexer
-          new Pose3d(x, 0, z, new Rotation3d(0, 0, 0)),
+          new Pose3d(intakeExtensionX, 0, intakeExtensionZ, new Rotation3d(0, 0, 0)),
+          // Inner Climb
+          new Pose3d(0, 0, innerClimbZ, new Rotation3d(0, 0, 0)),
+          // Outer Climb
+          new Pose3d(0, 0, outerClimbZ, new Rotation3d(0, 0, 0)),
         });
   }
 
@@ -90,11 +169,33 @@ public class SimulationVisualizer {
    * distance from the retracted position, so it should be 0 when the intake is fully retracted and
    * should increase as the intake extends.
    *
-   * @param position - the distance from the retracted position of the intake extension, in any
-   *     DistanceUnit.
+   * @param position The distance from the retracted position of the intake extension, in any {@link
+   *     edu.wpi.first.units.DistanceUnit}.
    */
   public void updateIntakeExtensionPosition(Distance position) {
     intakeExtensionPosition = position;
     intakeExtensionLigament.setLength(intakeExtensionPosition.in(Meters));
+  }
+
+  /**
+   * Updates the position of the inner climb in the simulation visualizer. The height is the
+   * distance from the retracted position (a height of zero is fully retracted).
+   *
+   * @param height The height of the inner climb carriage.
+   */
+  public void updateInnerClimbHeight(Distance height) {
+    innerClimbHeight = height;
+    innerClimbElevatorLigament.setLength(innerClimbHeight.in(Meters));
+  }
+
+  /**
+   * Updates the position of the outer climb in the simulation visualizer. The height is the
+   * distance from the retracted position (a height of zero is fully retracted).
+   *
+   * @param height The height of the outer climb carriage.
+   */
+  public void updateOuterClimbHeight(Distance height) {
+    outerClimbHeight = height;
+    outerClimbElevatorLigament.setLength(outerClimbHeight.in(Meters));
   }
 }
