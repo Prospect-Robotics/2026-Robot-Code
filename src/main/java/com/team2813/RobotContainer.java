@@ -270,8 +270,12 @@ public class RobotContainer {
 
     // Spool shooter commands
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
-    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
 
+    // climb bindings
+    operatorController.a().onTrue(climb.l1Sequence());
+    operatorController.x().onTrue(climb.l2Sequence());
+    operatorController.y().onTrue(climb.l3Sequence());
+    operatorController.start().onTrue(climb.postAutoClimb());
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
@@ -291,16 +295,6 @@ public class RobotContainer {
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
-
-    // FIXME: Test climb bindings! Remove later!
-    driveController.y().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.UP));
-    driveController.a().onTrue(climb.setInnerClimbPositionCommand(Climb.InnerClimbHeight.DOWN));
-
-    driveController.povLeft().onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.UP));
-    driveController
-        .povRight()
-        .onTrue(climb.setOuterClimbPositionCommand(Climb.OuterClimbHeight.DOWN));
-    // END CLIMB BINDINGS.
 
     // hub shot command
     driveController

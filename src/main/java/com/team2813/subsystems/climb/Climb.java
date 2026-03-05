@@ -8,7 +8,9 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import org.littletonrobotics.junction.Logger;
 
 /** Class that holds control logic and public interface for the elevator. */
@@ -85,9 +87,47 @@ public class Climb extends SubsystemBase {
     return new InstantCommand(() -> setOuterClimbPosition(height));
   }
 
+  public Command postAutoClimb() {
+    return new InstantCommand(() -> setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO));
+  }
+
+  public Command l1Sequence() {
+    return new SequentialCommandGroup(
+        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+        setOuterClimbPositionCommand(OuterClimbHeight.UP),
+        new WaitCommand(1),
+        setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
+  }
+
+  public Command l2Sequence() {
+    return new SequentialCommandGroup(
+        l1Sequence(),
+        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
+        new WaitCommand(1),
+        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+        new WaitCommand(1),
+        setOuterClimbPositionCommand(OuterClimbHeight.UP),
+        setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
+  }
+
+  public Command l3Sequence() {
+    return new SequentialCommandGroup(
+        l2Sequence(),
+        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
+        new WaitCommand(1),
+        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+        new WaitCommand(1),
+        setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
+  }
+
   public enum InnerClimbHeight {
-    UP(Inches.of(9.75)),
-    MIDDLE(Inches.of(4.875)),
+    // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
+    // except for down
+    // Origional values UP(Inches.of(9.75)), MIDDLE(Inches.of(4.875)),
+    UP(Inches.of(12.75)),
+    // TODO figure post auto position
+    POSTAUTO(Inches.of(0)),
+    MIDDLE(Inches.of(7.875)),
     DOWN(Inches.of(0.0));
 
     public final Distance position;
@@ -108,8 +148,11 @@ public class Climb extends SubsystemBase {
   }
 
   public enum OuterClimbHeight {
-    UP(Inches.of(11)),
-    MIDDLE(Inches.of(5.5)),
+    // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
+    // except for down
+    // Origional values UP(Inches.of(11)), MIDDLE(Inches.of(5.5)),
+    UP(Inches.of(14)),
+    MIDDLE(Inches.of(8.5)),
     DOWN(Inches.of(0.0));
 
     public final Distance position;
