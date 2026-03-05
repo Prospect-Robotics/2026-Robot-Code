@@ -85,6 +85,8 @@ public class ShooterIOSim implements ShooterIO {
     mainShooterSetpoint = shooterMotorVelocity;
     mainShooterMotor.setControl(
         shooterVelocityControl.withVelocity(shooterMotorVelocity.in(RotationsPerSecond)));
+
+    shooterSim.setAngularVelocity(shooterMotorVelocity.in(RadiansPerSecond));
   }
 
   @Override
