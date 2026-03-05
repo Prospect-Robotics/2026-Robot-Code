@@ -88,7 +88,7 @@ public class Climb extends SubsystemBase {
   }
 
   public Command postAutoClimb() {
-    return new InstantCommand(() -> setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO));
+    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
   }
 
   public Command l1Sequence() {
@@ -106,13 +106,13 @@ public class Climb extends SubsystemBase {
         new WaitCommand(1),
         setInnerClimbPositionCommand(InnerClimbHeight.UP),
         new WaitCommand(1),
-        setOuterClimbPositionCommand(OuterClimbHeight.UP),
         setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
   }
 
   public Command l3Sequence() {
     return new SequentialCommandGroup(
         l2Sequence(),
+        new WaitCommand(1),
         setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
         new WaitCommand(1),
         setInnerClimbPositionCommand(InnerClimbHeight.UP),
@@ -126,7 +126,7 @@ public class Climb extends SubsystemBase {
     // Origional values UP(Inches.of(9.75)), MIDDLE(Inches.of(4.875)),
     UP(Inches.of(12.75)),
     // TODO figure post auto position
-    POSTAUTO(Inches.of(0)),
+    POSTAUTO(Inches.of(4)),
     MIDDLE(Inches.of(7.875)),
     DOWN(Inches.of(0.0));
 
