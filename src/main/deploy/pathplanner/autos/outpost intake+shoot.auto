@@ -7,13 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "center-outpost"
+            "pathName": "left-outpost"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "outpost-center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HubShot"
           }
         }
       ]

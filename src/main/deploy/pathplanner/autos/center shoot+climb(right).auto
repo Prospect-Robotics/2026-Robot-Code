@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "HubShot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "center-climb right"
