@@ -353,5 +353,7 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                 new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
+
+    NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
 }
