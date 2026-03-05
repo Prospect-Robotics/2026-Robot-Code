@@ -345,5 +345,13 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                 new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
+
+    NamedCommands.registerCommand(
+        "HubShot",
+        new ParallelCommandGroup(
+            shooter.spoolShooterHubSpeedCommand(),
+            new SequentialCommandGroup(
+                new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
   }
 }
