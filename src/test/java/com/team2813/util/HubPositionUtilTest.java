@@ -9,28 +9,24 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.Optional;
-import org.junit.jupiter.params.Parameter;
-import org.junit.jupiter.params.ParameterizedClass;
+import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-@ParameterizedClass(name = "{0}")
-@EnumSource(value = DriverStation.Alliance.class)
 public class HubPositionUtilTest {
-  @Parameter DriverStation.Alliance alliance;
 
-  @ParameterizedTest(name = "{0}")
+  @ParameterizedTest(name = "{0}, {1}")
   @MethodSource("allData")
-  public void angleCalculation(TestData data) {
+  public void angleCalculation(DriverStation.Alliance alliance, TestData data) {
     Rotation2d angleFromHub =
         HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
     assertThat(angleFromHub).isWithin(1e-5).of(data.getAngle(alliance));
   }
 
-  @ParameterizedTest(name = "{0}")
+  @ParameterizedTest(name = "{0}, {1}")
   @MethodSource("allData")
-  public void distanceCalculation(TestData data) {
+  public void distanceCalculation(DriverStation.Alliance alliance, TestData data) {
     Distance distanceToHub =
         HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
     assertThat(distanceToHub.in(Meters)).isWithin(1e-5).of(data.getDistance(alliance));
@@ -64,8 +60,8 @@ public class HubPositionUtilTest {
     }
   }
 
-  static TestData[] allData() {
-    return new TestData[] {
+  static Stream<Arguments> allData() {
+    TestData[] data = {
       new TestData(
           Pose2d.kZero,
           0.3265177360538555,
@@ -85,5 +81,10 @@ public class HubPositionUtilTest {
           1.7777885210147176,
           2.0436242316042350)
     };
+    return Stream.of(DriverStation.Alliance.values())
+        .flatMap(
+            (alliance) -> {
+              return Stream.of(data).map((testData) -> Arguments.arguments(alliance, testData));
+            });
   }
 }
