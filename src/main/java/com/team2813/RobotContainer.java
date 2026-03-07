@@ -323,9 +323,7 @@ public class RobotContainer {
     return autoChooser.get();
   }
 
-  /**
-   * Used for stopping the intake roller if the auto command ends prematurely.
-   */
+  /** Used for stopping the intake roller if the auto command ends prematurely. */
   public void stopIntakeRoller() {
     intakeRoller.stop();
   }
