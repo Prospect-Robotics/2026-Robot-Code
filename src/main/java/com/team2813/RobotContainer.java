@@ -340,10 +340,24 @@ public class RobotContainer {
   private void namedCommandsRegistration() {
     NamedCommands.registerCommand(
         "TrenchShot",
-        new ParallelCommandGroup(
-            shooter.spoolShooterTrenchSpeedCommand(),
-            new SequentialCommandGroup(
-                new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
-                new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))));
+        new ParallelRaceGroup(
+            new ParallelCommandGroup(
+                shooter.spoolShooterTrenchSpeedCommand(),
+                new SequentialCommandGroup(
+                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+            new WaitCommand(3.5)));
+
+    NamedCommands.registerCommand(
+        "HubShot",
+        new ParallelRaceGroup(
+            new ParallelCommandGroup(
+                shooter.spoolShooterHubSpeedCommand(),
+                new SequentialCommandGroup(
+                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+            new WaitCommand(3.5)));
+
+    NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
 }
