@@ -25,7 +25,8 @@ public class HubPositionUtil {
    * @param currentAlliance The current alliance, use with {@link DriverStation#getAlliance()}
    * @return The {@link Rotation2d} to the hub.
    */
-  public static Rotation2d getBotToHubAngle(Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
+  public static Rotation2d getBotToHubAngle(
+      Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
     Pose2d hub = getCurrentHub(currentAlliance);
     return hub.getTranslation().minus(robotPosition.getTranslation()).getAngle();
   }
@@ -38,7 +39,8 @@ public class HubPositionUtil {
    * @param currentAlliance The current alliance, use with {@link DriverStation#getAlliance()}
    * @return The distance from the center of the current Hub.
    */
-  public static Distance getBotToHubDistance(Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
+  public static Distance getBotToHubDistance(
+      Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
     Pose2d hub = getCurrentHub(currentAlliance);
     Translation2d robotToHubTranslation =
         hub.getTranslation().minus(robotPosition.getTranslation());
@@ -50,7 +52,8 @@ public class HubPositionUtil {
   }
 
   /**
-   * @param currentAlliance The current Alliance as an {@link Optional}, intended for use with {@link DriverStation#getAlliance()}
+   * @param currentAlliance The current Alliance as an {@link Optional}, intended for use with
+   *     {@link DriverStation#getAlliance()}
    * @return The {@link Pose2d} of the hub for the current alliance. Defaults to blue if there is no
    *     alliance.
    */
