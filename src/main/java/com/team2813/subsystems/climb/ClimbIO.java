@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ClimbIO {
@@ -72,4 +73,8 @@ public interface ClimbIO {
   default Distance getOuterCarriagePosition() {
     return Meters.of(0);
   }
+
+  default void setInnerMotorVoltage(Voltage motorVoltage) {}
+
+  default void setOuterMotorVoltage(Voltage MotorVoltage) {}
 }

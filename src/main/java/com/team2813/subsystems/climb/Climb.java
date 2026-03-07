@@ -2,10 +2,12 @@ package com.team2813.subsystems.climb;
 
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Volt;
 
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -20,7 +22,7 @@ public class Climb extends SubsystemBase {
 
   private InnerClimbHeight currentInnerClimbSetpoint = InnerClimbHeight.DOWN;
   private OuterClimbHeight currentOuterClimbSetpoint = OuterClimbHeight.DOWN;
-
+  private Voltage motorVoltage = Volt.of(3);
   private final SimulationVisualizer defaultSimulationVisualizerInstance =
       SimulationVisualizer.getInstance();
 
@@ -79,12 +81,29 @@ public class Climb extends SubsystemBase {
     io.setOuterMotorSetpoint(heightSetpoint.getOuterPositionAngle());
   }
 
+  public void setInnerMotorVoltage() {
+    io.setInnerMotorVoltage(motorVoltage);
+  }
+
+  public void setOuterMotorVoltage(Voltage motorVoltage) {
+    io.setOuterMotorVoltage(motorVoltage);
+  }
+
   public Command setInnerClimbPositionCommand(InnerClimbHeight height) {
     return new InstantCommand(() -> setInnerClimbPosition(height));
   }
 
   public Command setOuterClimbPositionCommand(OuterClimbHeight height) {
     return new InstantCommand(() -> setOuterClimbPosition(height));
+  }
+
+  public Command manuelOuterClimb(double value) {
+    Voltage motorVoltage = Volt.of(3 * value);
+    return new InstantCommand(() -> setOuterMotorVoltage(motorVoltage));
+  }
+
+  public Command manuelInnerClimb() {
+    return new InstantCommand(() -> setInnerMotorVoltage());
   }
 
   public Command postAutoClimb() {

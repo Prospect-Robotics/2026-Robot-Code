@@ -12,6 +12,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import org.littletonrobotics.junction.Logger;
 
@@ -159,6 +160,15 @@ public class ClimbIOSim implements ClimbIO {
     return outerMotor.getPosition().getValue();
   }
 
+  @Override
+  public void setInnerMotorVoltage(Voltage motorVoltage) {
+    innerMotor.setVoltage(motorVoltage.in(Volts));
+  }
+
+  @Override
+  public void setOuterMotorVoltage(Voltage motorVoltage) {
+    innerMotor.setVoltage(motorVoltage.in(Volts));
+  }
   /**
    * @return The height of the climb.
    */

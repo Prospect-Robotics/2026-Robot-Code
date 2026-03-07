@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 
 public class ClimbIOReal implements ClimbIO {
 
@@ -66,6 +67,16 @@ public class ClimbIOReal implements ClimbIO {
   @Override
   public Angle getOuterMotorPosition() {
     return outerMotor.getPosition().getValue();
+  }
+
+  @Override
+  public void setInnerMotorVoltage(Voltage motorVoltage) {
+    innerMotor.setVoltage(motorVoltage.in(Volts));
+  }
+
+  @Override
+  public void setOuterMotorVoltage(Voltage motorVoltage) {
+    innerMotor.setVoltage(motorVoltage.in(Volts));
   }
 
   @Override

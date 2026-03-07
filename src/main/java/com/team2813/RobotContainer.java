@@ -278,6 +278,10 @@ public class RobotContainer {
     operatorController.b().onTrue(climb.deployClimb());
     operatorController.start().onTrue(climb.postAutoClimb());
 
+    operatorController.povUp().onTrue(climb.manuelInnerClimb());
+    operatorController.povDown().onTrue(climb.manuelInnerClimb());
+
+    climb.manuelOuterClimb(operatorController.getLeftY());
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
