@@ -2,9 +2,7 @@ package com.team2813.subsystems.intakeroller;
 
 import static edu.wpi.first.units.Units.Volts;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import org.littletonrobotics.junction.Logger;
 
 /** Code that controls the rollers of the intake. */
@@ -47,5 +45,10 @@ public class IntakeRoller extends SubsystemBase {
 
   public Command outtakeCommand() {
     return new StartEndCommand(this::outtake, this::stop, this);
+  }
+
+  // Used for autopaths.
+  public Command stopCommand() {
+    return new InstantCommand(this::stop, this);
   }
 }

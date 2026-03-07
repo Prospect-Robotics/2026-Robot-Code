@@ -344,6 +344,25 @@ public class RobotContainer {
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
             new WaitCommand(3.5)));
 
+    NamedCommands.registerCommand(
+        "ExtendIntake",
+        new ParallelRaceGroup(
+            intakeExtension.extendCommand().until(intakeExtension::isExtenderAtPosition),
+            new WaitCommand(2)));
+
+    NamedCommands.registerCommand(
+        "RetractIntake",
+        new ParallelRaceGroup(
+            intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition),
+            new WaitCommand(2)));
+
+    // Intake roller motor control.
+    NamedCommands.registerCommand("SpinRollerIntake", intakeRoller.intakeCommand());
+
+    NamedCommands.registerCommand("SpinRollerOuttake", intakeRoller.outtakeCommand());
+
+    NamedCommands.registerCommand("StopRoller", intakeRoller.stopCommand());
+
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
 }
