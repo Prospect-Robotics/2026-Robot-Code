@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class HubPositionUtilTest {
 
-  @ParameterizedTest(name = "{0}, {1}")
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void angleCalculation(DriverStation.Alliance alliance, TestData data) {
     Rotation2d angleFromHub =
@@ -24,7 +24,7 @@ public class HubPositionUtilTest {
     assertThat(angleFromHub).isWithin(1e-5).of(data.getAngle(alliance));
   }
 
-  @ParameterizedTest(name = "{0}, {1}")
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void distanceCalculation(DriverStation.Alliance alliance, TestData data) {
     Distance distanceToHub =
