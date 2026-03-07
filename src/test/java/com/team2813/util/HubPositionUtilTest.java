@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.Optional;
-import java.util.stream.Stream;
 import org.junit.jupiter.params.Parameter;
 import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,25 +64,26 @@ public class HubPositionUtilTest {
     }
   }
 
-  static Stream<TestData> allData() {
-    return Stream.of(
-        new TestData(
-            Pose2d.kZero,
-            0.3265177360538555,
-            12.47089988733772,
-            0.7179017820664226,
-            6.080822312812635),
-        new TestData(
-            new Pose2d(15, 5, Rotation2d.kZero),
-            -2.8376365100925645,
-            3.3411590803192835,
-            -3.0459163753242049,
-            10.4678746648973592),
-        new TestData(
-            new Pose2d(5, 2, Rotation2d.kZero),
-            0.2855745093824902,
-            7.0995312521320730,
-            1.7777885210147176,
-            2.0436242316042350));
+  static TestData[] allData() {
+    return new TestData[] {
+      new TestData(
+          Pose2d.kZero,
+          0.3265177360538555,
+          12.47089988733772,
+          0.7179017820664226,
+          6.080822312812635),
+      new TestData(
+          new Pose2d(15, 5, Rotation2d.kZero),
+          -2.8376365100925645,
+          3.3411590803192835,
+          -3.0459163753242049,
+          10.4678746648973592),
+      new TestData(
+          new Pose2d(5, 2, Rotation2d.kZero),
+          0.2855745093824902,
+          7.0995312521320730,
+          1.7777885210147176,
+          2.0436242316042350)
+    };
   }
 }
