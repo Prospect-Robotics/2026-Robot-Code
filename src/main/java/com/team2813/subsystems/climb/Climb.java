@@ -91,12 +91,14 @@ public class Climb extends SubsystemBase {
     return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
   }
 
-  public Command l1Sequence() {
+  public Command deployClimb() {
     return new SequentialCommandGroup(
-        setInnerClimbPositionCommand(InnerClimbHeight.UP),
         setOuterClimbPositionCommand(OuterClimbHeight.UP),
-        new WaitCommand(1),
-        setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
+        setInnerClimbPositionCommand(InnerClimbHeight.UP));
+  }
+
+  public Command l1Sequence() {
+    return setInnerClimbPositionCommand(InnerClimbHeight.DOWN);
   }
 
   public Command l2Sequence() {
@@ -106,18 +108,21 @@ public class Climb extends SubsystemBase {
         new WaitCommand(1),
         setInnerClimbPositionCommand(InnerClimbHeight.UP),
         new WaitCommand(1),
-        setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
+        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
+        new WaitCommand(1),
+        setOuterClimbPositionCommand(OuterClimbHeight.UP));
   }
 
   public Command l3Sequence() {
     return new SequentialCommandGroup(
         l2Sequence(),
-        new WaitCommand(1),
         setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
         new WaitCommand(1),
         setInnerClimbPositionCommand(InnerClimbHeight.UP),
         new WaitCommand(1),
-        setInnerClimbPositionCommand(InnerClimbHeight.DOWN));
+        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
+        new WaitCommand(1),
+        setOuterClimbPositionCommand(OuterClimbHeight.UP));
   }
 
   public enum InnerClimbHeight {
