@@ -45,10 +45,10 @@ public class HubPositionUtil {
     Translation2d robotToHubTranslation =
         hub.getTranslation().minus(robotPosition.getTranslation());
 
+    robotToHubTranslation.getNorm();
+
     // Translation2d keeps x and y in meters.
-    return Meters.of(
-        Math.sqrt(
-            Math.pow(robotToHubTranslation.getX(), 2) + Math.pow(robotToHubTranslation.getY(), 2)));
+    return Meters.of(robotToHubTranslation.getNorm());
   }
 
   /**
@@ -58,14 +58,8 @@ public class HubPositionUtil {
    *     alliance.
    */
   private static Pose2d getCurrentHub(Optional<DriverStation.Alliance> currentAlliance) {
-    Pose2d hub;
-
-    if (currentAlliance.isPresent() && currentAlliance.get() == DriverStation.Alliance.Red) {
-      hub = RED_HUB_POSITION;
-    } else {
-      hub = BLUE_HUB_POSITION;
-    }
-
-    return hub;
+    return currentAlliance.orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red
+        ? RED_HUB_POSITION
+        : BLUE_HUB_POSITION;
   }
 }
