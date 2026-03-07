@@ -66,7 +66,7 @@ public class RobotContainer {
   private final Climb climb;
 
   private final IntakeExtension intakeExtension;
-  private final IntakeRoller intakeRoller;
+  public final IntakeRoller intakeRoller;
 
   private final Shooter shooter;
   private final Kicker kicker;
@@ -346,22 +346,18 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "ExtendIntake",
-        new ParallelRaceGroup(
-            intakeExtension.extendCommand().until(intakeExtension::isExtenderAtPosition),
-            new WaitCommand(2)));
+        intakeExtension.extendCommand().until(intakeExtension::isExtenderAtPosition));
 
     NamedCommands.registerCommand(
         "RetractIntake",
-        new ParallelRaceGroup(
-            intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition),
-            new WaitCommand(2)));
+        intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition));
 
     // Intake roller motor control.
-    NamedCommands.registerCommand("SpinRollerIntake", intakeRoller.intakeCommand());
+    NamedCommands.registerCommand("SpinRollerIntake", new InstantCommand(intakeRoller::intake));
 
-    NamedCommands.registerCommand("SpinRollerOuttake", intakeRoller.outtakeCommand());
+    NamedCommands.registerCommand("SpinRollerOuttake", new InstantCommand(intakeRoller::outtake));
 
-    NamedCommands.registerCommand("StopRoller", intakeRoller.stopCommand());
+    NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }

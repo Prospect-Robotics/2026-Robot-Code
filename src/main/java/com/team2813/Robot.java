@@ -139,6 +139,8 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    robotContainer.intakeRoller.stop();
   }
 
   /** This function is called once when teleop is enabled. */
