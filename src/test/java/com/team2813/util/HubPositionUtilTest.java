@@ -19,9 +19,9 @@ public class HubPositionUtilTest {
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void angleCalculation(DriverStation.Alliance alliance, TestData data) {
-    Rotation2d angleFromHub =
+    Rotation2d angleToHub =
         HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
-    assertThat(angleFromHub).isWithin(1e-5).of(data.getAngle(alliance));
+    assertThat(angleToHub).isWithin(1e-5).of(data.getAngle(alliance));
   }
 
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
@@ -30,6 +30,31 @@ public class HubPositionUtilTest {
     Distance distanceToHub =
         HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
     assertThat(distanceToHub.in(Meters)).isWithin(1e-5).of(data.getDistance(alliance));
+  }
+
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
+  @MethodSource("allData")
+  public void startingRotationDoesNotChangeAngle(DriverStation.Alliance alliance, TestData data) {
+    Rotation2d expectedAngleToHub =
+        HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
+    Rotation2d actualAngleToHub =
+        HubPositionUtil.getBotToHubAngle(
+            data.withRotation(Rotation2d.k180deg).testPosition, Optional.of(alliance));
+    assertThat(actualAngleToHub).isWithin(1e-5).of(expectedAngleToHub);
+  }
+
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
+  @MethodSource("allData")
+  public void startingRotationDoesNotChangeDistance(
+      DriverStation.Alliance alliance, TestData data) {
+    Distance expectedDistanceToHub =
+        HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
+    Distance actualDistanceToHub =
+        HubPositionUtil.getBotToHubDistance(
+            data.withRotation(Rotation2d.k180deg).testPosition, Optional.of(alliance));
+    assertThat(actualDistanceToHub.baseUnitMagnitude())
+        .isWithin(1e-5)
+        .of(expectedDistanceToHub.baseUnitMagnitude());
   }
 
   public record TestData(
@@ -55,6 +80,15 @@ public class HubPositionUtilTest {
         case Blue -> expectedBlueDistance;
         case Red -> expectedRedDistance;
       };
+    }
+
+    public TestData withRotation(Rotation2d rotation) {
+      return new TestData(
+          new Pose2d(testPosition.getTranslation(), rotation),
+          expectedRedAngle,
+          expectedRedDistance,
+          expectedBlueAngle,
+          expectedBlueDistance);
     }
   }
 
