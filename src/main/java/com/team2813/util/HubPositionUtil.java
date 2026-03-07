@@ -45,8 +45,6 @@ public class HubPositionUtil {
     Translation2d robotToHubTranslation =
         hub.getTranslation().minus(robotPosition.getTranslation());
 
-    robotToHubTranslation.getNorm();
-
     // Translation2d keeps x and y in meters.
     return Meters.of(robotToHubTranslation.getNorm());
   }
