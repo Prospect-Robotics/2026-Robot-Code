@@ -44,19 +44,17 @@ public class HubPositionUtilTest {
     }
 
     public Rotation2d getAngle(DriverStation.Alliance alliance) {
-      if (alliance == DriverStation.Alliance.Blue) {
-        return new Rotation2d(expectedBlueAngle);
-      } else {
-        return new Rotation2d(expectedRedAngle);
-      }
+      return switch (alliance) {
+        case Blue -> new Rotation2d(expectedBlueAngle);
+        case Red -> new Rotation2d(expectedRedAngle);
+      };
     }
 
     public double getDistance(DriverStation.Alliance alliance) {
-      if (alliance == DriverStation.Alliance.Blue) {
-        return expectedBlueDistance;
-      } else {
-        return expectedRedDistance;
-      }
+      return switch (alliance) {
+        case Blue -> expectedBlueDistance;
+        case Red -> expectedRedDistance;
+      };
     }
   }
 
