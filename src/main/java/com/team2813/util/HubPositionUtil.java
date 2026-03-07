@@ -22,10 +22,11 @@ public class HubPositionUtil {
    * alliance present.
    *
    * @param robotPosition The current robot position in a {@link Pose2d}.
+   * @param currentAlliance The current alliance, use with {@link DriverStation#getAlliance()}
    * @return The {@link Rotation2d} to the hub.
    */
-  public static Rotation2d getBotToHubAngle(Pose2d robotPosition) {
-    Pose2d hub = getCurrentHub();
+  public static Rotation2d getBotToHubAngle(Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
+    Pose2d hub = getCurrentHub(currentAlliance);
     return hub.getTranslation().minus(robotPosition.getTranslation()).getAngle();
   }
 
@@ -34,10 +35,11 @@ public class HubPositionUtil {
    * alliance present.
    *
    * @param robotPosition The current robot position in a {@link Pose2d}.
+   * @param currentAlliance The current alliance, use with {@link DriverStation#getAlliance()}
    * @return The distance from the center of the current Hub.
    */
-  public static Distance getBotToHubDistance(Pose2d robotPosition) {
-    Pose2d hub = getCurrentHub();
+  public static Distance getBotToHubDistance(Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
+    Pose2d hub = getCurrentHub(currentAlliance);
     Translation2d robotToHubTranslation =
         hub.getTranslation().minus(robotPosition.getTranslation());
 
@@ -48,14 +50,14 @@ public class HubPositionUtil {
   }
 
   /**
+   * @param currentAlliance The current Alliance as an {@link Optional}, intended for use with {@link DriverStation#getAlliance()}
    * @return The {@link Pose2d} of the hub for the current alliance. Defaults to blue if there is no
    *     alliance.
    */
-  private static Pose2d getCurrentHub() {
+  private static Pose2d getCurrentHub(Optional<DriverStation.Alliance> currentAlliance) {
     Pose2d hub;
-    Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
 
-    if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+    if (currentAlliance.isPresent() && currentAlliance.get() == DriverStation.Alliance.Red) {
       hub = RED_HUB_POSITION;
     } else {
       hub = BLUE_HUB_POSITION;
