@@ -118,14 +118,12 @@ public class IntakeExtension extends SubsystemBase implements AutoCloseable {
    * @return A {@link RepeatCommand} that does the above.
    */
   public Command wallEMode() {
-    var waitHalfSecond = new WaitCommand(0.5);
-
     return new RepeatCommand(
             new SequentialCommandGroup(
                 halfRetractCommand().until(this::isExtenderAtPosition),
-                waitHalfSecond,
+                new WaitCommand(0.5),
                 extendCommand().until(this::isExtenderAtPosition),
-                waitHalfSecond))
+                new WaitCommand(0.5)))
         .finallyDo(this::stopMotor);
   }
 
