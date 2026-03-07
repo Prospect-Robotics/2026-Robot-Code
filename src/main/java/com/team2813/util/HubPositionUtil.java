@@ -27,8 +27,7 @@ public class HubPositionUtil {
    */
   public static Rotation2d getBotToHubAngle(
       Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
-    Pose2d hub = getCurrentHub(currentAlliance);
-    return hub.getTranslation().minus(robotPosition.getTranslation()).getAngle();
+    return getCurrentHub(currentAlliance).minus(robotPosition.getTranslation()).getAngle();
   }
 
   /**
@@ -41,9 +40,8 @@ public class HubPositionUtil {
    */
   public static Distance getBotToHubDistance(
       Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
-    Pose2d hub = getCurrentHub(currentAlliance);
     Translation2d robotToHubTranslation =
-        hub.getTranslation().minus(robotPosition.getTranslation());
+        getCurrentHub(currentAlliance).minus(robotPosition.getTranslation());
 
     // Translation2d keeps x and y in meters.
     return Meters.of(robotToHubTranslation.getNorm());
@@ -55,9 +53,9 @@ public class HubPositionUtil {
    * @return The {@link Pose2d} of the hub for the current alliance. Defaults to blue if there is no
    *     alliance.
    */
-  private static Pose2d getCurrentHub(Optional<DriverStation.Alliance> currentAlliance) {
+  private static Translation2d getCurrentHub(Optional<DriverStation.Alliance> currentAlliance) {
     return currentAlliance.orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red
-        ? RED_HUB_POSITION
-        : BLUE_HUB_POSITION;
+        ? RED_HUB_POSITION.getTranslation()
+        : BLUE_HUB_POSITION.getTranslation();
   }
 }
