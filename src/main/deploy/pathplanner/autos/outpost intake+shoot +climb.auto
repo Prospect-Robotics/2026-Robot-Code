@@ -17,15 +17,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "HubShot"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "center-climb right"
+            "pathName": "center-climb left"
           }
         }
       ]
