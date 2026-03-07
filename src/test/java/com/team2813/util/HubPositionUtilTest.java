@@ -14,7 +14,7 @@ public class HubPositionUtilTest {
 
   @Test
   public void doesDistanceToBlueHubCalculateRight() {
-    Pose2d testPosition = new Pose2d(); // Rotation and Translation of 0.
+    Pose2d testPosition = Pose2d.kZero;
 
     Distance distanceFromHub =
         HubPositionUtil.getBotToHubDistance(testPosition, Optional.of(DriverStation.Alliance.Blue));
@@ -25,7 +25,7 @@ public class HubPositionUtilTest {
 
   @Test
   public void doesDistanceToRedHubCalculateRight() {
-    Pose2d testPosition = new Pose2d(); // Rotation and Translation of 0.
+    Pose2d testPosition = Pose2d.kZero;
 
     Distance distanceFromHub =
         HubPositionUtil.getBotToHubDistance(testPosition, Optional.of(DriverStation.Alliance.Red));
@@ -36,7 +36,7 @@ public class HubPositionUtilTest {
 
   @Test
   public void doesAngleToBlueHubCalculateRight() {
-    Pose2d testPosition = new Pose2d(); // Rotation and Translation of 0.
+    Pose2d testPosition = Pose2d.kZero;
 
     Rotation2d angleFromHub =
         HubPositionUtil.getBotToHubAngle(testPosition, Optional.of(DriverStation.Alliance.Blue));
@@ -46,7 +46,7 @@ public class HubPositionUtilTest {
 
   @Test
   public void doesAngleToRedHubCalculateRight() {
-    Pose2d testPosition = new Pose2d();
+    Pose2d testPosition = Pose2d.kZero;
 
     Rotation2d angleFromHub =
         HubPositionUtil.getBotToHubAngle(testPosition, Optional.of(DriverStation.Alliance.Red));
