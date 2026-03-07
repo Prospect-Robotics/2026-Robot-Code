@@ -32,7 +32,7 @@ public class HubPositionUtilTest {
     assertThat(distanceToHub.in(Meters)).isWithin(1e-5).of(data.getDistance(alliance));
   }
 
-  public record TestData(
+  private record TestData(
       Pose2d testPosition,
       double expectedRedAngle,
       double expectedRedDistance,
@@ -60,7 +60,7 @@ public class HubPositionUtilTest {
     }
   }
 
-  static Stream<Arguments> allData() {
+  private static Stream<Arguments> allData() {
     TestData[] data = {
       new TestData(
           Pose2d.kZero,
