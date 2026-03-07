@@ -14,8 +14,8 @@ public class HubPositionUtil {
 
   private HubPositionUtil() {}
 
-  public static final Pose2d BLUE_HUB_POSITION = new Pose2d(4.580, 4.000, Rotation2d.kZero);
-  public static final Pose2d RED_HUB_POSITION = new Pose2d(11.812, 4.000, Rotation2d.kZero);
+  public static final Translation2d BLUE_HUB_POSITION = new Translation2d(4.580, 4.000);
+  public static final Translation2d RED_HUB_POSITION = new Translation2d(11.812, 4.000);
 
   /**
    * Calculates the angle to the hub (based on the current alliance). Defaults to blue hub if no
@@ -55,7 +55,7 @@ public class HubPositionUtil {
    */
   private static Translation2d getCurrentHub(Optional<DriverStation.Alliance> currentAlliance) {
     return currentAlliance.orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Red
-        ? RED_HUB_POSITION.getTranslation()
-        : BLUE_HUB_POSITION.getTranslation();
+        ? RED_HUB_POSITION
+        : BLUE_HUB_POSITION;
   }
 }
