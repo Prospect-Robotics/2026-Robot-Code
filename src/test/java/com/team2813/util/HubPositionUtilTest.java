@@ -84,7 +84,7 @@ public class HubPositionUtilTest {
     return Stream.of(DriverStation.Alliance.values())
         .flatMap(
             (alliance) -> {
-              return Stream.of(data).map((testData) -> Arguments.arguments(alliance, testData));
+              return Stream.of(data).map((testData) -> Arguments.of(alliance, testData));
             });
   }
 }
