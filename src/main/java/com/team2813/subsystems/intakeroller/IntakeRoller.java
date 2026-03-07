@@ -22,7 +22,8 @@ public class IntakeRoller extends SubsystemBase {
     Logger.processInputs("IntakeRoller", replayedInputs);
   }
 
-  // TODO: Private all of these methods, except, potentially stop? Will need to decide on how A-stopping will work.
+  // TODO: Private all of these methods, except, potentially stop? Will need to decide on how
+  // A-stopping will work.
   public void intake() {
     io.setIntakeMotorVoltage(IntakeRollerConstants.getIntakeVoltage());
   }
