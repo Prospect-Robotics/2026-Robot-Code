@@ -66,7 +66,7 @@ public class RobotContainer {
   private final Climb climb;
 
   private final IntakeExtension intakeExtension;
-  public final IntakeRoller intakeRoller;
+  private final IntakeRoller intakeRoller;
 
   private final Shooter shooter;
   private final Kicker kicker;
@@ -321,6 +321,13 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  /**
+   * Used for stopping the intake roller if the auto command ends prematurely.
+   */
+  public void stopIntakeRoller() {
+    intakeRoller.stop();
   }
 
   private void namedCommandsRegistration() {
