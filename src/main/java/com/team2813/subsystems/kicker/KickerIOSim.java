@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import com.team2813.subsystems.Simulation;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
@@ -44,12 +45,12 @@ public class KickerIOSim implements KickerIO {
   }
 
   private void updateSimulation() {
-    flywheelSim.update(Constants.SIM_TIME_PERIOD);
+    flywheelSim.update(Simulation.TIME_PERIOD);
 
     TalonFXSimState simState = motor.getSimState();
     simState.setRotorAcceleration(flywheelSim.getAngularAcceleration());
     simState.setRotorVelocity(flywheelSim.getAngularVelocity());
-    simState.setSupplyVoltage(Volts.of(12));
+    simState.setSupplyVoltage(Simulation.getMotorSupplyVoltage());
   }
 
   @Override

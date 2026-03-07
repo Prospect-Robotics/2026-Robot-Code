@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import com.team2813.subsystems.Simulation;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -49,8 +50,9 @@ public class ShooterIOSim implements ShooterIO {
   public void updateState(ShooterIOInputs inputs) {
     updateSimulation();
 
-    mainShooterSimState.setSupplyVoltage(Volts.of(12));
-    followerShooterSimState.setSupplyVoltage(Volts.of(12));
+    Voltage supplyVoltage = Simulation.getMotorSupplyVoltage();
+    mainShooterSimState.setSupplyVoltage(supplyVoltage);
+    followerShooterSimState.setSupplyVoltage(supplyVoltage);
 
     inputs.mainShooterMotorVoltageVolts = mainShooterMotor.getMotorVoltage().getValue().in(Volts);
     inputs.mainShooterMotorAngleRotations = mainShooterMotor.getPosition().getValue().in(Rotations);
@@ -69,7 +71,7 @@ public class ShooterIOSim implements ShooterIO {
 
   public void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
-    shooterSim.update(Constants.SIM_TIME_PERIOD);
+    shooterSim.update(Simulation.TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.
