@@ -103,7 +103,7 @@ dependencies {
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
     testImplementation 'org.junit-pioneer:junit-pioneer:2.3.0'
     testImplementation 'com.google.truth:truth:1.4.4'
     testImplementation libs.lib2813.testing
