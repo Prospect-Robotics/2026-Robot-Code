@@ -64,4 +64,8 @@ public final class Constants {
     return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
         == DriverStation.Alliance.Red;
   }
+
+  private Constants() {
+    throw new AssertionError("Not instantiable");
+  }
 }

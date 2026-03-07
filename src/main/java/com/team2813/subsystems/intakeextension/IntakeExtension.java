@@ -4,6 +4,7 @@ import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.t
 import static edu.wpi.first.units.Units.*;
 
 import com.team2813.util.SimulationVisualizer;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.*;
@@ -16,6 +17,7 @@ import org.littletonrobotics.junction.Logger;
  * pinion gear.
  */
 public class IntakeExtension extends SubsystemBase implements AutoCloseable {
+  static final double ACCEPTABLE_ERROR_IN_ROTATIONS = 0.4;
   private final IntakeExtensionIO io;
   private final IntakeExtensionIOInputsAutoLogged replayedInputs =
       new IntakeExtensionIOInputsAutoLogged();
@@ -50,10 +52,8 @@ public class IntakeExtension extends SubsystemBase implements AutoCloseable {
         replayedInputs
             .extenderMotorPosition
             .minus(replayedInputs.extenderMotorSetpoint)
-            .abs(Rotation);
-
-    // Is the error between the setpoint greater than half a rotation.
-    extenderAtPosition = error <= 0.4;
+            .abs(Units.Rotation);
+    extenderAtPosition = error <= ACCEPTABLE_ERROR_IN_ROTATIONS;
 
     Logger.recordOutput("IntakeExtension/extenderAtPosition", extenderAtPosition);
     Logger.recordOutput(
