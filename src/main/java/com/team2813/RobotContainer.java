@@ -252,10 +252,8 @@ public class RobotContainer {
                 || Math.abs(operatorController.getLeftY())
                     > 0.3); // Or the operator interrupts by moving the left joystick left/right.
 
-    operatorController
-        .b()
-        .whileTrue(
-            new ParallelCommandGroup(intakeExtension.wallEMode(), intakeRoller.intakeCommand()));
+    // operatorController.b().whileTrue( new ParallelCommandGroup(intakeExtension.wallEMode(),
+    // intakeRoller.intakeCommand()));
 
     // Defensive Stop.
     operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
@@ -278,10 +276,10 @@ public class RobotContainer {
     operatorController.b().onTrue(climb.deployClimb());
     operatorController.start().onTrue(climb.postAutoClimb());
 
-    operatorController.povUp().onTrue(climb.manuelInnerClimb());
-    operatorController.povDown().onTrue(climb.manuelInnerClimb());
+    operatorController.povUp().onTrue(climb.manuelUpInnerClimb());
+    operatorController.povDown().onTrue(climb.manuelDownInnerClimb());
 
-    climb.manuelOuterClimb(operatorController.getLeftY());
+    climb.manuelOuterClimb(operatorController.getRightY());
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
