@@ -7,7 +7,6 @@
 
 package com.team2813;
 
-import static com.team2813.Constants.onRed;
 import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -77,9 +76,6 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-
-  private static final Pose2d BLUE_HUB_POSITION = new Pose2d(4.580, 4.000, Rotation2d.kZero);
-  private static final Pose2d RED_HUB_POSITION = new Pose2d(11.812, 4.000, Rotation2d.kZero);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -325,16 +321,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
-  }
-
-  private Rotation2d getBotToHub() {
-    Pose2d hub;
-    if (onRed()) {
-      hub = RED_HUB_POSITION;
-    } else {
-      hub = BLUE_HUB_POSITION;
-    }
-    return hub.getTranslation().minus(drive.getPose().getTranslation()).getAngle();
   }
 
   private void namedCommandsRegistration() {
