@@ -30,15 +30,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "StopRoller"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RetractIntake"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopRoller"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RetractIntake"
+                }
+              }
+            ]
           }
         },
         {
