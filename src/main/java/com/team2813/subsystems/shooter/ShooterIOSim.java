@@ -69,7 +69,7 @@ public class ShooterIOSim implements ShooterIO {
         followerShooterMotor.getStatorCurrent().getValue().in(Amps);
   }
 
-  public void updateSimulation() {
+  private void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
     shooterSim.update(Simulation.TIME_PERIOD);
 

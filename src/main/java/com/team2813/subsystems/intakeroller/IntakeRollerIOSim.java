@@ -43,7 +43,7 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
     inputs.intakeMotorCurrent = intakeMotor.getStatorCurrent().getValue();
   }
 
-  public void updateSimulation() {
+  private void updateSimulation() {
     // TODO: Once we fetch from main, change this to the SIM_TIME in Constants.
     intakeFlywheelSim.update(0.02);
 

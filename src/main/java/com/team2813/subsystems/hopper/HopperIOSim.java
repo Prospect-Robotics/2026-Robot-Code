@@ -75,7 +75,7 @@ public class HopperIOSim implements HopperIO {
     inputs.feederCurrent = feederMotor.getStatorCurrent().getValue();
   }
 
-  public void updateSimulation() {
+  private void updateSimulation() {
     rollerSim.update(Simulation.TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
