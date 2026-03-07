@@ -37,9 +37,8 @@ public class IntakeRoller extends SubsystemBase {
   }
 
   /**
-   * This command should be used with Trigger.whileTrue();
-   *
-   * @return StartEndCommand instance which stops the motor on the end of the command.
+   * This command should be used with Trigger.whileTrue(); @ return StartEndCommand instance which
+   * stops the motor on the end of the command.
    */
   public Command intakeCommand() {
     return new StartEndCommand(this::intake, this::stop, this);

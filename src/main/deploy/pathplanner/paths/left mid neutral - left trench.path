@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.52338078291815,
-        "y": 0.6835112692763936
+        "x": 7.804208273894435,
+        "y": 4.9083594864479325
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6409333788016305,
-        "y": 1.798578458771148
+        "x": 7.402358834280498,
+        "y": 6.438434427771254
       },
       "isLocked": false,
-      "linkedName": "outpost"
+      "linkedName": "left mid neutral"
     },
     {
       "anchor": {
-        "x": 3.508573466476462,
-        "y": 3.8344507845934377
+        "x": 7.131398002853067,
+        "y": 7.2890727532097
       },
       "prevControl": {
-        "x": 2.013093264841041,
-        "y": 1.8546515630178206
+        "x": 7.508652702109808,
+        "y": 6.948461468217094
+      },
+      "nextControl": {
+        "x": 6.696885298828355,
+        "y": 7.681380471987106
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.2590156918687585,
+        "y": 7.625477888730385
+      },
+      "prevControl": {
+        "x": 5.710738297699772,
+        "y": 7.4822177030578345
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "center"
+      "linkedName": "left trench shoot"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.68206039317265
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

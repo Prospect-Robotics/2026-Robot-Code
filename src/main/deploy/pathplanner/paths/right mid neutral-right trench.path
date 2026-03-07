@@ -32,16 +32,16 @@
     },
     {
       "anchor": {
-        "x": 4.49191155492154,
-        "y": 0.418644793152639
+        "x": 4.271954350927246,
+        "y": 0.4574607703281026
       },
       "prevControl": {
-        "x": 4.9901116362331175,
-        "y": 0.5667883340664391
+        "x": 4.770154432238824,
+        "y": 0.6056043112419027
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "right trench"
+      "linkedName": "right trench shoot"
     }
   ],
   "rotationTargets": [],
