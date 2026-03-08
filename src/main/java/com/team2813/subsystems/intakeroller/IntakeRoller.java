@@ -24,11 +24,11 @@ public class IntakeRoller extends SubsystemBase {
 
   // TODO: Private all of these methods, except, potentially stop? Will need to decide on how
   // A-stopping will work.
-  public void intake() {
+  public void startIntake() {
     io.setIntakeMotorVoltage(IntakeRollerConstants.getIntakeVoltage());
   }
 
-  public void outtake() {
+  public void startOuttake() {
     io.setIntakeMotorVoltage(IntakeRollerConstants.getOuttakeVoltage());
   }
 
@@ -41,11 +41,11 @@ public class IntakeRoller extends SubsystemBase {
    * stops the motor on the end of the command.
    */
   public Command intakeCommand() {
-    return new StartEndCommand(this::intake, this::stop, this);
+    return new StartEndCommand(this::startIntake, this::stop, this);
   }
 
   public Command outtakeCommand() {
-    return new StartEndCommand(this::outtake, this::stop, this);
+    return new StartEndCommand(this::startOuttake, this::stop, this);
   }
 
   // Used for autopaths.

@@ -358,9 +358,11 @@ public class RobotContainer {
         intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition));
 
     // Intake roller motor control.
-    NamedCommands.registerCommand("SpinRollerIntake", new InstantCommand(intakeRoller::intake));
+    NamedCommands.registerCommand(
+        "SpinRollerIntake", new InstantCommand(intakeRoller::startIntake));
 
-    NamedCommands.registerCommand("SpinRollerOuttake", new InstantCommand(intakeRoller::outtake));
+    NamedCommands.registerCommand(
+        "SpinRollerOuttake", new InstantCommand(intakeRoller::startOuttake));
 
     NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
