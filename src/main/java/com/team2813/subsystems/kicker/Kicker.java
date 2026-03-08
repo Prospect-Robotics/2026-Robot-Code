@@ -62,7 +62,7 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
     io.setMotorVoltage(Volts.of(resistFuelVoltage));
   }
 
-  private void stop() {
+  public void stop() {
     io.setMotorVoltage(Volts.of(0));
   }
 

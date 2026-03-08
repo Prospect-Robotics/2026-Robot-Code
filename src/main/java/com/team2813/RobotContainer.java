@@ -103,7 +103,7 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                drive::addVisionMeasurement,
+                (robotPose, timestamp, stdDevs) -> {},
                 () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
@@ -323,9 +323,14 @@ public class RobotContainer {
     return autoChooser.get();
   }
 
-  /** Used for stopping the intake roller if the auto command ends prematurely. */
-  public void stopIntakeRoller() {
+  /** Used for stopping all subsystems if auto commands end prematurely. */
+  public void stopEverything() {
+    CommandScheduler.getInstance().cancelAll();
     intakeRoller.stop();
+    intakeExtension.stopMotor();
+    shooter.stop();
+    kicker.stop();
+    hopper.stop();
   }
 
   private void namedCommandsRegistration() {

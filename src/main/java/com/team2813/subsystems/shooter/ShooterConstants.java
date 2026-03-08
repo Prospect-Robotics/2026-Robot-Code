@@ -41,7 +41,7 @@ public class ShooterConstants {
   static {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90);
-    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 40);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 65);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
 
@@ -64,7 +64,7 @@ public class ShooterConstants {
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 40));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 65));
   }
 
   public static Voltage getShooterOuttakeVoltage() {

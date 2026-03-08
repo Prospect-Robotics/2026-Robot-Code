@@ -1,4 +1,4 @@
-package com.team2813.generated.rebuilt;
+package com.team2813.generated.cartacus;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -169,7 +169,7 @@ public class TunerConstants {
   private static final int kBackRightDriveMotorId = 1;
   private static final int kBackRightSteerMotorId = 2;
   private static final int kBackRightEncoderId = 3;
-  private static final Angle kBackRightEncoderOffset = Rotations.of(-0.110596);
+  private static final Angle kBackRightEncoderOffset = Rotations.of(-0.077393);
   private static final boolean kBackRightSteerMotorInverted = false;
   private static final boolean kBackRightEncoderInverted = false;
 

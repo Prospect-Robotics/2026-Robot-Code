@@ -38,13 +38,13 @@ public class AllDrivetrains {
     AllTunerConstants robotConstants =
         new AllTunerConstants(
             "REBUILT",
-            com.team2813.generated.rebuilt.TunerConstants.FrontLeft,
-            com.team2813.generated.rebuilt.TunerConstants.FrontRight,
-            com.team2813.generated.rebuilt.TunerConstants.BackLeft,
-            com.team2813.generated.rebuilt.TunerConstants.BackRight,
-            com.team2813.generated.rebuilt.TunerConstants.DrivetrainConstants,
-            com.team2813.generated.rebuilt.TunerConstants.kCANBus,
-            com.team2813.generated.rebuilt.TunerConstants.kSpeedAt12Volts);
+            com.team2813.generated.cartacus.TunerConstants.FrontLeft,
+            com.team2813.generated.cartacus.TunerConstants.FrontRight,
+            com.team2813.generated.cartacus.TunerConstants.BackLeft,
+            com.team2813.generated.cartacus.TunerConstants.BackRight,
+            com.team2813.generated.cartacus.TunerConstants.DrivetrainConstants,
+            com.team2813.generated.cartacus.TunerConstants.kCANBus,
+            com.team2813.generated.cartacus.TunerConstants.kSpeedAt12Volts);
     return robotConstants;
   }
 
