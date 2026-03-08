@@ -103,7 +103,7 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                (broken, vision, sucks) -> {},
+                (robotPose, timestamp, stdDevs) -> {},
                 () -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
