@@ -76,7 +76,7 @@ public class ClimbIOReal implements ClimbIO {
 
   @Override
   public void setOuterMotorVoltage(Voltage motorVoltage) {
-    innerMotor.setVoltage(motorVoltage.in(Volts));
+    outerMotor.setVoltage(motorVoltage.in(Volts));
   }
 
   @Override

@@ -167,7 +167,7 @@ public class ClimbIOSim implements ClimbIO {
 
   @Override
   public void setOuterMotorVoltage(Voltage motorVoltage) {
-    innerMotor.setVoltage(motorVoltage.in(Volts));
+    outerMotor.setVoltage(motorVoltage.in(Volts));
   }
   /**
    * @return The height of the climb.

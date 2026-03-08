@@ -9,10 +9,13 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 /** Class that holds control logic and public interface for the elevator. */
@@ -97,9 +100,16 @@ public class Climb extends SubsystemBase {
     return new InstantCommand(() -> setOuterClimbPosition(height));
   }
 
-  public Command manuelOuterClimb(double value) {
-    Voltage motorVoltage = Volt.of(3 * value);
-    return new InstantCommand(() -> setOuterMotorVoltage(motorVoltage));
+  public void setManualOutClimbOverrideController(DoubleSupplier controller) {
+    Supplier<Voltage> voltageSupplier =
+        () -> {
+          double val = controller.getAsDouble();
+          return Volt.of(val * 3);
+        };
+
+    Command setOuterClimbVoltageCommand =
+        Commands.run(() -> setOuterMotorVoltage(voltageSupplier.get()), this);
+    setDefaultCommand(setOuterClimbVoltageCommand);
   }
 
   public Command manuelDownInnerClimb() {

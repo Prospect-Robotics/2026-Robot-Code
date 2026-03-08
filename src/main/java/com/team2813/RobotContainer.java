@@ -279,7 +279,9 @@ public class RobotContainer {
     operatorController.povUp().whileTrue(climb.manuelUpInnerClimb());
     operatorController.povDown().whileTrue(climb.manuelDownInnerClimb());
 
-    climb.manuelOuterClimb(operatorController.getRightY());
+    climb.setManualOutClimbOverrideController(
+        () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
+
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
