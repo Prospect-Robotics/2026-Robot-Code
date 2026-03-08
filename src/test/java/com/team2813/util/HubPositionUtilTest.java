@@ -7,7 +7,7 @@ import static edu.wpi.first.units.Units.Meters;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +18,7 @@ public class HubPositionUtilTest {
 
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
-  public void angleCalculation(DriverStation.Alliance alliance, TestData data) {
+  public void angleCalculation(Alliance alliance, TestData data) {
     Rotation2d angleToHub =
         HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
     assertThat(angleToHub).isWithin(1e-5).of(data.getAngle(alliance));
@@ -26,7 +26,7 @@ public class HubPositionUtilTest {
 
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
-  public void distanceCalculation(DriverStation.Alliance alliance, TestData data) {
+  public void distanceCalculation(Alliance alliance, TestData data) {
     Distance distanceToHub =
         HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
     assertThat(distanceToHub.in(Meters)).isWithin(1e-5).of(data.getDistance(alliance));
@@ -34,7 +34,7 @@ public class HubPositionUtilTest {
 
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
-  public void startingRotationDoesNotChangeAngle(DriverStation.Alliance alliance, TestData data) {
+  public void startingRotationDoesNotChangeAngle(Alliance alliance, TestData data) {
     Rotation2d expectedAngleToHub =
         HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
     Rotation2d actualAngleToHub =
@@ -45,8 +45,7 @@ public class HubPositionUtilTest {
 
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
-  public void startingRotationDoesNotChangeDistance(
-      DriverStation.Alliance alliance, TestData data) {
+  public void startingRotationDoesNotChangeDistance(Alliance alliance, TestData data) {
     Distance expectedDistanceToHub =
         HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
     Distance actualDistanceToHub =
@@ -68,14 +67,14 @@ public class HubPositionUtilTest {
       return testPosition.toString();
     }
 
-    public Rotation2d getAngle(DriverStation.Alliance alliance) {
+    public Rotation2d getAngle(Alliance alliance) {
       return switch (alliance) {
         case Blue -> new Rotation2d(expectedBlueAngle);
         case Red -> new Rotation2d(expectedRedAngle);
       };
     }
 
-    public double getDistance(DriverStation.Alliance alliance) {
+    public double getDistance(Alliance alliance) {
       return switch (alliance) {
         case Blue -> expectedBlueDistance;
         case Red -> expectedRedDistance;
@@ -113,7 +112,7 @@ public class HubPositionUtilTest {
           1.7777885210147176,
           2.0436242316042350)
     };
-    return Stream.of(DriverStation.Alliance.values())
+    return Stream.of(Alliance.values())
         .flatMap(
             (alliance) -> {
               return Stream.of(data).map((testData) -> Arguments.of(alliance, testData));
