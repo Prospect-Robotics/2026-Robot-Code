@@ -2,9 +2,7 @@ package com.team2813.subsystems.intakeroller;
 
 import static edu.wpi.first.units.Units.Volts;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
 import org.littletonrobotics.junction.Logger;
 
 /** Code that controls the rollers of the intake. */
@@ -24,11 +22,13 @@ public class IntakeRoller extends SubsystemBase {
     Logger.processInputs("IntakeRoller", replayedInputs);
   }
 
-  public void intake() {
+  // TODO: Private all of these methods, except, potentially stop? Will need to decide on how
+  // A-stopping will work.
+  public void startIntake() {
     io.setIntakeMotorVoltage(IntakeRollerConstants.getIntakeVoltage());
   }
 
-  public void outtake() {
+  public void startOuttake() {
     io.setIntakeMotorVoltage(IntakeRollerConstants.getOuttakeVoltage());
   }
 
@@ -37,15 +37,19 @@ public class IntakeRoller extends SubsystemBase {
   }
 
   /**
-   * This command should be used with Trigger.whileTrue();
-   *
-   * @return StartEndCommand instance which stops the motor on the end of the command.
+   * This command should be used with Trigger.whileTrue(); @ return StartEndCommand instance which
+   * stops the motor on the end of the command.
    */
   public Command intakeCommand() {
-    return new StartEndCommand(this::intake, this::stop, this);
+    return new StartEndCommand(this::startIntake, this::stop, this);
   }
 
   public Command outtakeCommand() {
-    return new StartEndCommand(this::outtake, this::stop, this);
+    return new StartEndCommand(this::startOuttake, this::stop, this);
+  }
+
+  // Used for autopaths.
+  public Command stopCommand() {
+    return new InstantCommand(this::stop, this);
   }
 }

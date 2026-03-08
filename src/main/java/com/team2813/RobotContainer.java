@@ -323,6 +323,11 @@ public class RobotContainer {
     return autoChooser.get();
   }
 
+  /** Used for stopping the intake roller if the auto command ends prematurely. */
+  public void stopIntakeRoller() {
+    intakeRoller.stop();
+  }
+
   private void namedCommandsRegistration() {
     NamedCommands.registerCommand(
         "TrenchShot",
@@ -343,6 +348,23 @@ public class RobotContainer {
                     new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
             new WaitCommand(3.5)));
+
+    NamedCommands.registerCommand(
+        "ExtendIntake",
+        intakeExtension.extendCommand().until(intakeExtension::isExtenderAtPosition));
+
+    NamedCommands.registerCommand(
+        "RetractIntake",
+        intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition));
+
+    // Intake roller motor control.
+    NamedCommands.registerCommand(
+        "SpinRollerIntake", new InstantCommand(intakeRoller::startIntake));
+
+    NamedCommands.registerCommand(
+        "SpinRollerOuttake", new InstantCommand(intakeRoller::startOuttake));
+
+    NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
