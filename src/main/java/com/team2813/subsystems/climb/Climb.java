@@ -23,7 +23,6 @@ public class Climb extends SubsystemBase {
   private InnerClimbHeight currentInnerClimbSetpoint = InnerClimbHeight.DOWN;
   private OuterClimbHeight currentOuterClimbSetpoint = OuterClimbHeight.DOWN;
   private Voltage upMotorVoltage = Volt.of(3);
-  private Voltage downMotorVoltage = Volt.of(-3);
   private final SimulationVisualizer defaultSimulationVisualizerInstance =
       SimulationVisualizer.getInstance();
 
@@ -104,11 +103,11 @@ public class Climb extends SubsystemBase {
   }
 
   public Command manuelDownInnerClimb() {
-    return new InstantCommand(() -> setInnerMotorVoltage(downMotorVoltage));
+    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage.div(-1)));
   }
 
   public Command manuelUpInnerClimb() {
-    return new InstantCommand(() -> setInnerMotorVoltage(downMotorVoltage));
+    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage));
   }
 
   public Command postAutoClimb() {

@@ -276,8 +276,8 @@ public class RobotContainer {
     operatorController.b().onTrue(climb.deployClimb());
     operatorController.start().onTrue(climb.postAutoClimb());
 
-    operatorController.povUp().onTrue(climb.manuelUpInnerClimb());
-    operatorController.povDown().onTrue(climb.manuelDownInnerClimb());
+    operatorController.povUp().whileTrue(climb.manuelUpInnerClimb());
+    operatorController.povDown().whileTrue(climb.manuelDownInnerClimb());
 
     climb.manuelOuterClimb(operatorController.getRightY());
     // Driver controls
