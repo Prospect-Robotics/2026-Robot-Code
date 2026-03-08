@@ -112,6 +112,8 @@ public class HubPositionUtilTest {
           1.7777885210147176,
           2.0436242316042350)
     };
+    // Make the arguments consist of each test case (specified in `data`) with both `Alliance#Blue`
+    // and `Alliance#Red`
     return Stream.of(Alliance.values())
         .flatMap(
             (alliance) -> {
