@@ -103,7 +103,7 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                drive::addVisionMeasurement,
+                (robotPose, timestamp, stdDevs) -> {},
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
                     VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT),
