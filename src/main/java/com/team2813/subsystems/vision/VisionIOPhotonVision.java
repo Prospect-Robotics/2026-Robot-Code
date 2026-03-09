@@ -7,7 +7,7 @@
 
 package com.team2813.subsystems.vision;
 
-import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
+import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -77,13 +77,14 @@ public class VisionIOPhotonVision implements VisionIO {
                 robotPose, // 3D pose estimate
                 multitagResult.estimatedPose.ambiguity, // Ambiguity
                 multitagResult.fiducialIDsUsed.size(), // Tag count
-                totalTagDistance / result.targets.size())); // Average tag distance
+                totalTagDistance / result.targets.size(), // Average tag distance
+                PoseObservationType.PHOTONVISION)); // Observation type
 
       } else if (!result.targets.isEmpty()) { // Single tag result
         var target = result.targets.get(0);
 
         // Calculate robot pose
-        var tagPose = APRIL_TAG_LAYOUT.getTagPose(target.fiducialId);
+        var tagPose = aprilTagLayout.getTagPose(target.fiducialId);
         if (tagPose.isPresent()) {
           Transform3d fieldToTarget =
               new Transform3d(tagPose.get().getTranslation(), tagPose.get().getRotation());
@@ -96,15 +97,14 @@ public class VisionIOPhotonVision implements VisionIO {
           tagIds.add((short) target.fiducialId);
 
           // Add observation
-          if (!result.targets.isEmpty()) {
-            poseObservations.add(
-                new PoseObservation(
-                    result.getTimestampSeconds(), // Timestamp
-                    robotPose, // 3D pose estimate
-                    target.poseAmbiguity, // Ambiguity
-                    1, // Tag count
-                    cameraToTarget.getTranslation().getNorm())); // Average tag distance
-          }
+          poseObservations.add(
+              new PoseObservation(
+                  result.getTimestampSeconds(), // Timestamp
+                  robotPose, // 3D pose estimate
+                  target.poseAmbiguity, // Ambiguity
+                  1, // Tag count
+                  cameraToTarget.getTranslation().getNorm(), // Average tag distance
+                  PoseObservationType.PHOTONVISION)); // Observation type
         }
       }
     }

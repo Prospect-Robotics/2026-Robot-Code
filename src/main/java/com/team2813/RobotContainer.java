@@ -7,7 +7,7 @@
 
 package com.team2813;
 
-import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
+import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -103,8 +103,7 @@ public class RobotContainer {
 
         vision =
             new Vision(
-                (robotPose, timestamp, stdDevs) -> {},
-                () -> {},
+                drive::addVisionMeasurement,
                 new VisionIOPhotonVision(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
                     VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT),
@@ -138,24 +137,23 @@ public class RobotContainer {
         hopper = new Hopper(new HopperIOSim());
 
         VisionSystemSim visionSim = new VisionSystemSim("main");
-        visionSim.addAprilTags(APRIL_TAG_LAYOUT);
+        visionSim.addAprilTags(aprilTagLayout);
 
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                () -> visionSim.update(drive.getPose()),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.RED_BACK_LEFT_COLOR_CAMERA_NAME,
                     VisionConstants.RED_BACK_LEFT_CAM_FROM_ROBOT,
-                    visionSim),
+                    drive::getPose),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.GREEN_BACK_RIGHT_COLOR_CAMERA_NAME,
                     VisionConstants.GREEN_BACK_RIGHT_CAM_FROM_ROBOT,
-                    visionSim),
+                    drive::getPose),
                 new VisionIOPhotonVisionSim(
                     VisionConstants.BLUE_FRONT_MONO_CAMERA_NAME,
                     VisionConstants.BLUE_FRONT_CAM_FROM_ROBOT,
-                    visionSim));
+                    drive::getPose));
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
@@ -182,7 +180,6 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                () -> {},
                 new VisionIO() {},
                 new VisionIO() {},
                 new VisionIO() {});
