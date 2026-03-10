@@ -11,4 +11,5 @@ record AllClimbConstants(
     Distance climbHeightChangePerRotation,
     Distance climbSpoolRadius,
     Distance climbMinHeight,
+    Distance climbMidHeight,
     Distance climbMaxHeight) {}

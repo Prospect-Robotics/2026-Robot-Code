@@ -13,6 +13,7 @@ public class AllClimbs {
             ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION,
             ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS,
             ClimbConstants.OUTER_CLIMB_MIN_HEIGHT,
+            ClimbConstants.OUTER_CLIMB_MID_HEIGHT,
             ClimbConstants.OUTER_CLIMB_MAX_HEIGHT);
 
     return climbConstants;
@@ -28,6 +29,7 @@ public class AllClimbs {
             ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION,
             ClimbConstants.INNER_CLIMB_SPOOL_RADIUS,
             ClimbConstants.INNER_CLIMB_MIN_HEIGHT,
+            ClimbConstants.INNER_CLIMB_MID_HEIGHT,
             ClimbConstants.INNER_CLIMB_MAX_HEIGHT);
 
     return climbConstants;

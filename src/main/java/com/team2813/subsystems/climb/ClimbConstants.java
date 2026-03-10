@@ -51,8 +51,10 @@ public class ClimbConstants {
   public static final Distance OUTER_CLIMB_SPOOL_RADIUS = Inches.of(0.25);
 
   public static final Distance INNER_CLIMB_MIN_HEIGHT = Inches.of(0);
+  public static final Distance INNER_CLIMB_MID_HEIGHT = Inches.of(14.0);
   public static final Distance INNER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
 
   public static final Distance OUTER_CLIMB_MIN_HEIGHT = Inches.of(0);
+  public static final Distance OUTER_CLIMB_MID_HEIGHT = Inches.of(14.0);
   public static final Distance OUTER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
 }
