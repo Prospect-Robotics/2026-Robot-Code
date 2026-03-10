@@ -7,7 +7,7 @@ record AllClimbConstants(
     String climbName,
     int climbCanID,
     double motorToClimbGearing,
-    TalonFXConfiguration motorToClimbConfig,
+    TalonFXConfiguration climbMotorConfig,
     Distance climbHeightChangePerRotation,
     Distance climbSpoolRadius,
     Distance climbMinHeight,

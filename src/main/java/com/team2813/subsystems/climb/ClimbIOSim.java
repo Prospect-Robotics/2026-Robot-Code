@@ -66,11 +66,11 @@ public class ClimbIOSim extends ClimbIO {
     inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
     inputs.innerMotorVelocityRotsPerSecond = innerMotor.getRotorVelocity().getValue();
 
-    inputs.outerCarriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
-    inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
-    inputs.outerMotorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
-    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getRotorVelocity().getValue();
+    inputs.carriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
+    inputs.motorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
+    inputs.motorRotations = outerMotor.getPosition().getValueAsDouble();
+    inputs.motorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
+    inputs.motorVelocityRotsPerSecond = outerMotor.getRotorVelocity().getValue();
   }
 
   private void updateSim() {

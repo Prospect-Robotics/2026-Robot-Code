@@ -4,77 +4,58 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 
 public class ClimbIOReal extends ClimbIO {
 
-  private TalonFX innerMotor;
-  private TalonFX outerMotor;
+  private TalonFX climbMotor;
 
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
   public ClimbIOReal(AllClimbConstants climbConstants) {
     super(climbConstants);
 
-    outerMotor = new TalonFX(Constants.OUTER_CLIMB_MOTOR_ID);
-    outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
+    climbMotor = new TalonFX(super.climbConstants.climbCanID());
+    climbMotor.getConfigurator().apply(super.climbConstants.climbMotorConfig());
   }
 
   @Override
   public void updateState(ClimbIOInputs inputs) {
-
-    inputs.innerCarriagePositionInches = getInnerCarriagePosition().in(Inches);
-    inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
-    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getVelocity().getValue();
-    inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
-
-    inputs.outerCarriagePositionInches = getCarriagePosition().in(Inches);
-    inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
-    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValue();
-    inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.outerMotorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
-  }
-
-  @Override
-  public void setInnerMotorSetpoint(Angle setpoint) {
-    innerMotor.setControl(positionControl.withPosition(setpoint));
+    inputs.carriagePositionInches = getCarriagePosition().in(Inches);
+    inputs.motorRotations = climbMotor.getPosition().getValueAsDouble();
+    inputs.motorVelocityRotsPerSecond = climbMotor.getVelocity().getValue();
+    inputs.motorCurrent = climbMotor.getStatorCurrent().getValueAsDouble();
+    inputs.motorVoltage = climbMotor.getMotorVoltage().getValueAsDouble();
   }
 
   @Override
   public void setMotorSetpoint(Angle setpoint) {
-    outerMotor.setControl(positionControl.withPosition(setpoint));
+    climbMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
   public void stopMotor() {
-    outerMotor.disable();
+    climbMotor.disable();
   }
 
   @Override
   public Angle getMotorPosition() {
-    return outerMotor.getPosition().getValue();
+    return climbMotor.getPosition().getValue();
   }
 
   @Override
   public void setMotorVoltage(Voltage motorVoltage) {
-    outerMotor.setVoltage(motorVoltage.in(Volts));
+    climbMotor.setVoltage(motorVoltage.in(Volts));
   }
 
   @Override
   public Distance getCarriagePosition() {
-    return rightMotorRotationToCarriagePosition(outerMotor.getPosition().getValue());
+    return motorRotationToCarriagePosition(climbMotor.getPosition().getValue());
   }
 
-  private static Distance leftMotorRotationToCarriagePosition(Angle motorPosition) {
-    return ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.times(
-        motorPosition.in(Rotations));
-  }
-
-  private static Distance rightMotorRotationToCarriagePosition(Angle motorPosition) {
+  private static Distance motorRotationToCarriagePosition(Angle motorPosition) {
     return ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.times(
         motorPosition.in(Rotations));
   }

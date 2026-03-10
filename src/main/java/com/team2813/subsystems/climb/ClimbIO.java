@@ -14,12 +14,12 @@ public abstract class ClimbIO {
 
   @AutoLog
   class ClimbIOInputs {
-    public double outerCarriagePositionInches = 0.0;
+    public double carriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
-    public double outerMotorRotations = 0.0;
-    public AngularVelocity outerMotorVelocityRotsPerSecond = RotationsPerSecond.of(0.0);
-    public double outerMotorCurrent = 0.0;
-    public double outerMotorVoltage = 0.0;
+    public double motorRotations = 0.0;
+    public AngularVelocity motorVelocityRotsPerSecond = RotationsPerSecond.of(0.0);
+    public double motorCurrent = 0.0;
+    public double motorVoltage = 0.0;
   }
 
   public ClimbIO(AllClimbConstants climbConstants) {
