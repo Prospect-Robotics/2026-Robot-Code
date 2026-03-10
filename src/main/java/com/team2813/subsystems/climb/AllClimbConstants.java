@@ -5,6 +5,7 @@ import edu.wpi.first.units.measure.Distance;
 
 public record AllClimbConstants(
     String climbName,
+    int climbCanID,
     double motorToClimbGearing,
     TalonFXConfiguration motorToClimbConfig,
     Distance climbHeightChangePerRotation,

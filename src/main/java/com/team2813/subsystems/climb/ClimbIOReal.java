@@ -18,9 +18,10 @@ public class ClimbIOReal extends ClimbIO {
 
   public ClimbIOReal(AllClimbConstants climbConstants) {
     super(climbConstants);
-    innerMotor = new TalonFX(Constants.LEFTCLIMB_MOTOR_ID);
+
+    innerMotor = new TalonFX(Constants.INNER_CLIMB_MOTOR_ID);
     innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
-    outerMotor = new TalonFX(Constants.RIGHTCLIMB_MOTOR_ID);
+    outerMotor = new TalonFX(Constants.OUTER_CLIMB_MOTOR_ID);
     outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
   }
 
