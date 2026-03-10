@@ -274,18 +274,19 @@ public class RobotContainer {
     // Spool shooter commands
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
 
+    // TODO: Update these with the new Climbs.
     // climb bindings
-    operatorController.a().onTrue(outerClimb.l1Sequence());
-    operatorController.x().onTrue(outerClimb.l2Sequence());
-    operatorController.y().onTrue(outerClimb.l3Sequence());
-    operatorController.b().onTrue(outerClimb.deployClimb());
-    operatorController.start().onTrue(outerClimb.postAutoClimb());
-
-    operatorController.povUp().whileTrue(outerClimb.manuelUpInnerClimb());
-    operatorController.povDown().whileTrue(outerClimb.manuelDownInnerClimb());
-
-    outerClimb.setManualOutClimbOverrideController(
-        () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
+    //    operatorController.a().onTrue(outerClimb.l1Sequence());
+    //    operatorController.x().onTrue(outerClimb.l2Sequence());
+    //    operatorController.y().onTrue(outerClimb.l3Sequence());
+    //    operatorController.b().onTrue(outerClimb.deployClimb());
+    //    operatorController.start().onTrue(outerClimb.postAutoClimb());
+    //
+    //    operatorController.povUp().whileTrue(outerClimb.manuelUpInnerClimb());
+    //    operatorController.povDown().whileTrue(outerClimb.manuelDownInnerClimb());
+    //
+    //    outerClimb.setManualOutClimbOverrideController(
+    //        () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
 
     // Driver controls
     // Default command, normal field-relative drive

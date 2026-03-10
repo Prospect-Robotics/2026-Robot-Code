@@ -56,7 +56,6 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   private Distance motorRotationToCarriagePosition(Angle motorPosition) {
-    return super.climbConstants.climbHeightChangePerRotation().times(
-        motorPosition.in(Rotations));
+    return super.climbConstants.climbHeightChangePerRotation().times(motorPosition.in(Rotations));
   }
 }

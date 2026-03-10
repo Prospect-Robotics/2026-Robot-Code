@@ -66,12 +66,9 @@ public class ClimbIOSim extends ClimbIO {
 
     // Logs to "Real Outputs" NT
     Logger.recordOutput("Simulated Climb/motorSim/Voltage", climbMotorSim.getMotorVoltage());
-    Logger.recordOutput(
-        "Simulated Climb/climbSim/position (meters)", climbSim.getPositionMeters());
-    Logger.recordOutput(
-        "Simulated Climb/climbSim/hitsUpperLimit", climbSim.hasHitUpperLimit());
-    Logger.recordOutput(
-        "Simulated Climb/climbSim/hitsLowerLimit", climbSim.hasHitLowerLimit());
+    Logger.recordOutput("Simulated Climb/climbSim/position (meters)", climbSim.getPositionMeters());
+    Logger.recordOutput("Simulated Climb/climbSim/hitsUpperLimit", climbSim.hasHitUpperLimit());
+    Logger.recordOutput("Simulated Climb/climbSim/hitsLowerLimit", climbSim.hasHitLowerLimit());
 
     // angular velocity = linear velocity / radius, taken also from 5414
     climbMotorSim.setRotorVelocity(
@@ -118,12 +115,12 @@ public class ClimbIOSim extends ClimbIO {
    */
   private double getMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
-    return elevatorPosition
-        / super.climbConstants.climbHeightChangePerRotation().in(Meters);
+    return elevatorPosition / super.climbConstants.climbHeightChangePerRotation().in(Meters);
   }
 
   /**
    * Checks the set orientation of a given motor and updates the sim state to match.
+   *
    * @param motor The {@link TalonFX} instance to get the inversion of.
    * @return A {@link ChassisReference} for the {@link TalonFXSimState} to consume.
    */

@@ -40,11 +40,9 @@ public class Climb extends SubsystemBase {
     // instead.
     Logger.processInputs("Climb", replayedInputs);
     Logger.recordOutput(
-        "Climb/Carriage Setpoint (inches)",
-        currentClimbSetpoint.getPosition().in(Inches));
+        "Climb/Carriage Setpoint (inches)", currentClimbSetpoint.getPosition().in(Inches));
     Logger.recordOutput(
-        "Climb/Motor Setpoint (rotations)",
-        currentClimbSetpoint.getPositionAngle().in(Rotations));
+        "Climb/Motor Setpoint (rotations)", currentClimbSetpoint.getPositionAngle().in(Rotations));
   }
 
   @Override
@@ -70,95 +68,94 @@ public class Climb extends SubsystemBase {
     return new InstantCommand(() -> setClimbPosition(height));
   }
 
-
   // TODO: Move these into a different class as we split climb into two instances.
-//  public void setManualOutClimbOverrideController(DoubleSupplier controller) {
-//    Supplier<Voltage> voltageSupplier =
-//        () -> {
-//          double val = controller.getAsDouble();
-//          return Volt.of(val * 3);
-//        };
-//
-//    Command setOuterClimbVoltageCommand =
-//        Commands.run(() -> setOuterMotorVoltage(voltageSupplier.get()), this);
-//    setDefaultCommand(setOuterClimbVoltageCommand);
-//  }
-//
-//  public Command manuelDownInnerClimb() {
-//    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage.div(-1)));
-//  }
-//
-//  public Command manuelUpInnerClimb() {
-//    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage));
-//  }
-//
-//  public Command postAutoClimb() {
-//    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
-//  }
-//
-//  public Command deployClimb() {
-//    return new SequentialCommandGroup(
-//        setOuterClimbPositionCommand(OuterClimbHeight.UP),
-//        setInnerClimbPositionCommand(InnerClimbHeight.UP));
-//  }
-//
-//  public Command l1Sequence() {
-//    return setInnerClimbPositionCommand(InnerClimbHeight.DOWN);
-//  }
-//
-//  public Command l2Sequence() {
-//    return new SequentialCommandGroup(
-//        l1Sequence(),
-//        new WaitCommand(1),
-//        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
-//        new WaitCommand(1),
-//        setInnerClimbPositionCommand(InnerClimbHeight.UP),
-//        new WaitCommand(1),
-//        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
-//        new WaitCommand(1),
-//        setOuterClimbPositionCommand(OuterClimbHeight.UP));
-//  }
-//
-//  public Command l3Sequence() {
-//    return new SequentialCommandGroup(
-//        l2Sequence(),
-//        new WaitCommand(1),
-//        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
-//        new WaitCommand(1),
-//        setInnerClimbPositionCommand(InnerClimbHeight.UP),
-//        new WaitCommand(1),
-//        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
-//        new WaitCommand(1),
-//        setOuterClimbPositionCommand(OuterClimbHeight.UP));
-//  }
-//
-//  public enum InnerClimbHeight {
-//    // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
-//    // except for down
-//    // Origional values UP(Inches.of(9.75)), MIDDLE(Inches.of(4.875)),
-//    UP(Inches.of(12.75)),
-//    // TODO figure post auto position
-//    POSTAUTO(Inches.of(4)),
-//    MIDDLE(Inches.of(7.875)),
-//    DOWN(Inches.of(0.0));
-//
-//    public final Distance position;
-//
-//    InnerClimbHeight(Distance position) {
-//      this.position = position;
-//    }
-//
-//    public Distance getInnerPosition() {
-//      return position;
-//    }
-//
-//    public Angle getInnerPositionAngle() {
-//      return Rotations.of(
-//          position.in(Inches)
-//              / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Inches));
-//    }
-//  }
-//
+  //  public void setManualOutClimbOverrideController(DoubleSupplier controller) {
+  //    Supplier<Voltage> voltageSupplier =
+  //        () -> {
+  //          double val = controller.getAsDouble();
+  //          return Volt.of(val * 3);
+  //        };
+  //
+  //    Command setOuterClimbVoltageCommand =
+  //        Commands.run(() -> setOuterMotorVoltage(voltageSupplier.get()), this);
+  //    setDefaultCommand(setOuterClimbVoltageCommand);
+  //  }
+  //
+  //  public Command manuelDownInnerClimb() {
+  //    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage.div(-1)));
+  //  }
+  //
+  //  public Command manuelUpInnerClimb() {
+  //    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage));
+  //  }
+  //
+  //  public Command postAutoClimb() {
+  //    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
+  //  }
+  //
+  //  public Command deployClimb() {
+  //    return new SequentialCommandGroup(
+  //        setOuterClimbPositionCommand(OuterClimbHeight.UP),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.UP));
+  //  }
+  //
+  //  public Command l1Sequence() {
+  //    return setInnerClimbPositionCommand(InnerClimbHeight.DOWN);
+  //  }
+  //
+  //  public Command l2Sequence() {
+  //    return new SequentialCommandGroup(
+  //        l1Sequence(),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.UP));
+  //  }
+  //
+  //  public Command l3Sequence() {
+  //    return new SequentialCommandGroup(
+  //        l2Sequence(),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.UP));
+  //  }
+  //
+  //  public enum InnerClimbHeight {
+  //    // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
+  //    // except for down
+  //    // Origional values UP(Inches.of(9.75)), MIDDLE(Inches.of(4.875)),
+  //    UP(Inches.of(12.75)),
+  //    // TODO figure post auto position
+  //    POSTAUTO(Inches.of(4)),
+  //    MIDDLE(Inches.of(7.875)),
+  //    DOWN(Inches.of(0.0));
+  //
+  //    public final Distance position;
+  //
+  //    InnerClimbHeight(Distance position) {
+  //      this.position = position;
+  //    }
+  //
+  //    public Distance getInnerPosition() {
+  //      return position;
+  //    }
+  //
+  //    public Angle getInnerPositionAngle() {
+  //      return Rotations.of(
+  //          position.in(Inches)
+  //              / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Inches));
+  //    }
+  //  }
+  //
   public enum ClimbHeight {
     // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
     // except for down

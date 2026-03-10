@@ -13,7 +13,7 @@ public abstract class ClimbIO {
   AllClimbConstants climbConstants;
 
   @AutoLog
-  class ClimbIOInputs {
+  public static class ClimbIOInputs {
     public double carriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
     public double motorRotations = 0.0;
