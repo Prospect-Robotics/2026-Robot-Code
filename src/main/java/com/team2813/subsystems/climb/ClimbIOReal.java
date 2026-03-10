@@ -9,14 +9,15 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 
-public class ClimbIOReal implements ClimbIO {
+public class ClimbIOReal extends ClimbIO {
 
   private TalonFX innerMotor;
   private TalonFX outerMotor;
 
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
-  public ClimbIOReal() {
+  public ClimbIOReal(AllClimbConstants climbConstants) {
+    super(climbConstants);
     innerMotor = new TalonFX(Constants.LEFTCLIMB_MOTOR_ID);
     innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
     outerMotor = new TalonFX(Constants.RIGHTCLIMB_MOTOR_ID);

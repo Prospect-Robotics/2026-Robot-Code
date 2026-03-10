@@ -8,7 +8,9 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
-public interface ClimbIO {
+public abstract class ClimbIO {
+
+  AllClimbConstants climbConstants;
 
   @AutoLog
   class ClimbIOInputs {
@@ -27,37 +29,41 @@ public interface ClimbIO {
     public double outerMotorVoltage = 0.0;
   }
 
+  public ClimbIO(AllClimbConstants climbConstants) {
+    this.climbConstants = climbConstants;
+  }
+
   /**
    * Updates Advantage kit autologged input data, as well as any other necessary states (like in
    * sim)
    *
    * @param inputs The "struct" (data class) to handle hardware inputs.
    */
-  default void updateState(ClimbIOInputs inputs) {}
+  void updateState(ClimbIOInputs inputs) {}
 
   /**
    * Uses positional control for the motor, using its internal PID values.
    *
    * @param setpoint Position for the motor to go to.
    */
-  default void setInnerMotorSetpoint(Angle setpoint) {}
+  void setInnerMotorSetpoint(Angle setpoint) {}
 
-  default void setOuterMotorSetpoint(Angle setpoint) {}
+  void setOuterMotorSetpoint(Angle setpoint) {}
 
   /** Runs a brake request on the inner climb motor, stopping it and preventing movement. */
-  default void stopInnerMotor() {}
+  void stopInnerMotor() {}
 
   /** Runs a brake request on the outer climb motor, stopping it and preventing movement. */
-  default void stopOuterMotor() {}
+  void stopOuterMotor() {}
 
   /**
    * @return The angle of the motor.
    */
-  default Angle getInnerMotorPosition() {
+  Angle getInnerMotorPosition() {
     return Rotations.of(0);
   }
 
-  default Angle getOuterMotorPosition() {
+  Angle getOuterMotorPosition() {
     return Rotations.of(0);
   }
 
@@ -66,15 +72,15 @@ public interface ClimbIO {
    *
    * @return The position of the climbs carriage.
    */
-  default Distance getInnerCarriagePosition() {
+  Distance getInnerCarriagePosition() {
     return Meters.of(0);
   }
 
-  default Distance getOuterCarriagePosition() {
+  Distance getOuterCarriagePosition() {
     return Meters.of(0);
   }
 
-  default void setInnerMotorVoltage(Voltage motorVoltage) {}
+  void setInnerMotorVoltage(Voltage motorVoltage) {}
 
-  default void setOuterMotorVoltage(Voltage MotorVoltage) {}
+  void setOuterMotorVoltage(Voltage MotorVoltage) {}
 }

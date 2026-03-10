@@ -16,22 +16,13 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import org.littletonrobotics.junction.Logger;
 
-public class ClimbIOSim implements ClimbIO {
+public class ClimbIOSim extends ClimbIO {
   public static final Mass APPROX_CLIMB_CARRIAGE_WEIGHT = Pounds.of(2);
 
   // Physics sim for the climb
   // TODO(stefan): Factor out the two climbs in a helper class. There's a lot of
   // repetition here and in the class methods below.
-  private final ElevatorSim innerClimbSim =
-      new ElevatorSim(
-          DCMotor.getKrakenX60(1),
-          ClimbConstants.INNER_MOTOR_TO_CLIMB_GEARING,
-          APPROX_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
-          ClimbConstants.INNER_CLIMB_SPOOL_RADIUS.in(Meter),
-          ClimbConstants.INNER_CLIMB_MIN_HEIGHT.in(Meter),
-          ClimbConstants.INNER_CLIMB_MAX_HEIGHT.in(Meter),
-          true,
-          ClimbConstants.INNER_CLIMB_MIN_HEIGHT.in(Meter));
+ 
 
   private final ElevatorSim outerClimbSim =
       new ElevatorSim(
@@ -51,7 +42,8 @@ public class ClimbIOSim implements ClimbIO {
   // Used for actually moving the motor to a given position with PID applied to a voltage input.
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
-  public ClimbIOSim() {
+  public ClimbIOSim(AllClimbConstants climbConstants) {
+    super(climbConstants);
     innerMotor = new TalonFX(Constants.LEFTCLIMB_MOTOR_ID);
     innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
     innerMotorSim = innerMotor.getSimState();
@@ -67,7 +59,7 @@ public class ClimbIOSim implements ClimbIO {
   public void updateState(ClimbIOInputs inputs) {
     updateSim();
 
-    inputs.innerCarriagePositionInches = Meters.of(innerClimbSim.getPositionMeters()).in(Inches);
+    inputs.innerCarriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
     inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
     inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
     inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
