@@ -13,10 +13,7 @@ import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
-import com.team2813.subsystems.climb.Climb;
-import com.team2813.subsystems.climb.ClimbIO;
-import com.team2813.subsystems.climb.ClimbIOReal;
-import com.team2813.subsystems.climb.ClimbIOSim;
+import com.team2813.subsystems.climb.*;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -64,7 +61,9 @@ public class RobotContainer {
   private final Drive drive;
   private final Hopper hopper;
   private final Vision vision;
-  private final Climb climb;
+
+  private final Climb outerClimb;
+  private final Climb innerClimb;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -124,7 +123,9 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
 
-        climb = new Climb(new ClimbIOReal());
+        outerClimb = new Climb(new ClimbIOReal(AllClimbs.outerClimb()));
+        innerClimb = new Climb(new ClimbIOReal(AllClimbs.innerClimb()));
+
         break;
 
       case SIM:
@@ -166,7 +167,9 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
-        climb = new Climb(new ClimbIOSim());
+        outerClimb = new Climb(new ClimbIOSim(AllClimbs.outerClimb()));
+        innerClimb = new Climb(new ClimbIOSim(AllClimbs.innerClimb()));
+
         break;
 
       default:
@@ -196,7 +199,9 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
-        climb = new Climb(new ClimbIO() {});
+        outerClimb = new Climb(new ClimbIO(AllClimbs.outerClimb()) {});
+        innerClimb = new Climb(new ClimbIO(AllClimbs.innerClimb()) {});
+
         break;
     }
 
@@ -270,16 +275,16 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
 
     // climb bindings
-    operatorController.a().onTrue(climb.l1Sequence());
-    operatorController.x().onTrue(climb.l2Sequence());
-    operatorController.y().onTrue(climb.l3Sequence());
-    operatorController.b().onTrue(climb.deployClimb());
-    operatorController.start().onTrue(climb.postAutoClimb());
+    operatorController.a().onTrue(outerClimb.l1Sequence());
+    operatorController.x().onTrue(outerClimb.l2Sequence());
+    operatorController.y().onTrue(outerClimb.l3Sequence());
+    operatorController.b().onTrue(outerClimb.deployClimb());
+    operatorController.start().onTrue(outerClimb.postAutoClimb());
 
-    operatorController.povUp().whileTrue(climb.manuelUpInnerClimb());
-    operatorController.povDown().whileTrue(climb.manuelDownInnerClimb());
+    operatorController.povUp().whileTrue(outerClimb.manuelUpInnerClimb());
+    operatorController.povDown().whileTrue(outerClimb.manuelDownInnerClimb());
 
-    climb.setManualOutClimbOverrideController(
+    outerClimb.setManualOutClimbOverrideController(
         () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
 
     // Driver controls
