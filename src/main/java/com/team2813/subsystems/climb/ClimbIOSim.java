@@ -124,18 +124,8 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public void setInnerMotorSetpoint(Angle setpoint) {
-    innerMotor.setControl(positionControl.withPosition(setpoint));
-  }
-
-  @Override
   public void setMotorSetpoint(Angle setpoint) {
     outerMotor.setControl(positionControl.withPosition(setpoint));
-  }
-
-  @Override
-  public void stopInnerMotor() {
-    innerMotor.disable();
   }
 
   @Override
@@ -144,32 +134,18 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public Angle getInnerMotorPosition() {
-    return innerMotor.getPosition().getValue();
-  }
-
-  @Override
   public Angle getMotorPosition() {
     return outerMotor.getPosition().getValue();
-  }
-
-  @Override
-  public void setInnerMotorVoltage(Voltage motorVoltage) {
-    innerMotor.setVoltage(motorVoltage.in(Volts));
   }
 
   @Override
   public void setMotorVoltage(Voltage motorVoltage) {
     outerMotor.setVoltage(motorVoltage.in(Volts));
   }
+
   /**
    * @return The height of the climb.
    */
-  @Override
-  public Distance getInnerCarriagePosition() {
-    return Meters.of(innerClimbSim.getPositionMeters());
-  }
-
   @Override
   public Distance getCarriagePosition() {
     return Meters.of(outerClimbSim.getPositionMeters());
@@ -182,12 +158,6 @@ public class ClimbIOSim extends ClimbIO {
    * @param elevatorPosition
    * @return
    */
-  private static double getLeftMotorRotations(double elevatorPosition) {
-    // angular displacement in radians = linear displacement / radius
-    return elevatorPosition
-        / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Meters);
-  }
-
   private static double getRightMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
     return elevatorPosition

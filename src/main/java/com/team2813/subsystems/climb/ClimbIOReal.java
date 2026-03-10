@@ -19,8 +19,6 @@ public class ClimbIOReal extends ClimbIO {
   public ClimbIOReal(AllClimbConstants climbConstants) {
     super(climbConstants);
 
-    innerMotor = new TalonFX(Constants.INNER_CLIMB_MOTOR_ID);
-    innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
     outerMotor = new TalonFX(Constants.OUTER_CLIMB_MOTOR_ID);
     outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
   }
@@ -52,18 +50,8 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public void stopInnerMotor() {
-    innerMotor.disable();
-  }
-
-  @Override
   public void stopMotor() {
     outerMotor.disable();
-  }
-
-  @Override
-  public Angle getInnerMotorPosition() {
-    return innerMotor.getPosition().getValue();
   }
 
   @Override
@@ -72,18 +60,8 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public void setInnerMotorVoltage(Voltage motorVoltage) {
-    innerMotor.setVoltage(motorVoltage.in(Volts));
-  }
-
-  @Override
   public void setMotorVoltage(Voltage motorVoltage) {
     outerMotor.setVoltage(motorVoltage.in(Volts));
-  }
-
-  @Override
-  public Distance getInnerCarriagePosition() {
-    return leftMotorRotationToCarriagePosition(innerMotor.getPosition().getValue());
   }
 
   @Override
