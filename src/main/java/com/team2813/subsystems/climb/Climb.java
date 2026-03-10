@@ -137,6 +137,7 @@ public class Climb extends SubsystemBase {
   public Command l2Sequence() {
     return new SequentialCommandGroup(
         l1Sequence(),
+        new WaitCommand(1),
         setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
         new WaitCommand(1),
         setInnerClimbPositionCommand(InnerClimbHeight.UP),
@@ -149,6 +150,7 @@ public class Climb extends SubsystemBase {
   public Command l3Sequence() {
     return new SequentialCommandGroup(
         l2Sequence(),
+        new WaitCommand(1),
         setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
         new WaitCommand(1),
         setInnerClimbPositionCommand(InnerClimbHeight.UP),
