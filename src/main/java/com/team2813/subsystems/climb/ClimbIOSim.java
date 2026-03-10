@@ -22,13 +22,13 @@ public class ClimbIOSim extends ClimbIO {
   private final ElevatorSim climbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
-          ClimbConstants.OUTER_MOTOR_TO_CLIMB_GEARING,
+          super.climbConstants.motorToClimbGearing(),
           APPROX_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
-          ClimbConstants.OUTER_CLIMB_SPOOL_RADIUS.in(Meter),
-          ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter),
-          ClimbConstants.OUTER_CLIMB_MAX_HEIGHT.in(Meter),
+          super.climbConstants.climbSpoolRadius().in(Meters),
+          super.climbConstants.climbMinHeight().in(Meters),
+          super.climbConstants.climbMaxHeight().in(Meters),
           true,
-          ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter));
+          super.climbConstants.climbMinHeight().in(Meters));
 
   private TalonFX climbMotor;
   private TalonFXSimState climbMotorSim;
@@ -116,10 +116,10 @@ public class ClimbIOSim extends ClimbIO {
    * @param elevatorPosition
    * @return
    */
-  private static double getMotorRotations(double elevatorPosition) {
+  private double getMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
     return elevatorPosition
-        / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Meters);
+        / super.climbConstants.climbHeightChangePerRotation().in(Meters);
   }
 
   /**
