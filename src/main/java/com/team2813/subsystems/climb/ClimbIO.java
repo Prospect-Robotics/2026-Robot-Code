@@ -14,13 +14,6 @@ public abstract class ClimbIO {
 
   @AutoLog
   class ClimbIOInputs {
-    public double innerCarriagePositionInches = 0.0;
-    // public double motorSetpointRotations = 0.0;
-    public double innerMotorRotations = 0.0;
-    public AngularVelocity innerMotorVelocityRotsPerSecond = RotationsPerSecond.of(0.0);
-    public double innerMotorCurrent = 0.0;
-    public double innerMotorVoltage = 0.0;
-
     public double outerCarriagePositionInches = 0.0;
     // public double motorSetpointRotations = 0.0;
     public double outerMotorRotations = 0.0;
@@ -46,24 +39,15 @@ public abstract class ClimbIO {
    *
    * @param setpoint Position for the motor to go to.
    */
-  void setInnerMotorSetpoint(Angle setpoint) {}
+  void setMotorSetpoint(Angle setpoint) {}
 
-  void setOuterMotorSetpoint(Angle setpoint) {}
-
-  /** Runs a brake request on the inner climb motor, stopping it and preventing movement. */
-  void stopInnerMotor() {}
-
-  /** Runs a brake request on the outer climb motor, stopping it and preventing movement. */
-  void stopOuterMotor() {}
+  /** Runs a brake request on the climb motor, stopping it and preventing movement. */
+  void stopMotor() {}
 
   /**
    * @return The angle of the motor.
    */
-  Angle getInnerMotorPosition() {
-    return Rotations.of(0);
-  }
-
-  Angle getOuterMotorPosition() {
+  Angle getMotorPosition() {
     return Rotations.of(0);
   }
 
@@ -72,15 +56,9 @@ public abstract class ClimbIO {
    *
    * @return The position of the climbs carriage.
    */
-  Distance getInnerCarriagePosition() {
+  Distance getCarriagePosition() {
     return Meters.of(0);
   }
 
-  Distance getOuterCarriagePosition() {
-    return Meters.of(0);
-  }
-
-  void setInnerMotorVoltage(Voltage motorVoltage) {}
-
-  void setOuterMotorVoltage(Voltage MotorVoltage) {}
+  void setMotorVoltage(Voltage MotorVoltage) {}
 }

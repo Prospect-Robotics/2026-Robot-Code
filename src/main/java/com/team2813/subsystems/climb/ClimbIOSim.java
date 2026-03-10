@@ -129,7 +129,7 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public void setOuterMotorSetpoint(Angle setpoint) {
+  public void setMotorSetpoint(Angle setpoint) {
     outerMotor.setControl(positionControl.withPosition(setpoint));
   }
 
@@ -139,7 +139,7 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public void stopOuterMotor() {
+  public void stopMotor() {
     outerMotor.disable();
   }
 
@@ -149,7 +149,7 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public Angle getOuterMotorPosition() {
+  public Angle getMotorPosition() {
     return outerMotor.getPosition().getValue();
   }
 
@@ -159,7 +159,7 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public void setOuterMotorVoltage(Voltage motorVoltage) {
+  public void setMotorVoltage(Voltage motorVoltage) {
     outerMotor.setVoltage(motorVoltage.in(Volts));
   }
   /**
@@ -171,7 +171,7 @@ public class ClimbIOSim extends ClimbIO {
   }
 
   @Override
-  public Distance getOuterCarriagePosition() {
+  public Distance getCarriagePosition() {
     return Meters.of(outerClimbSim.getPositionMeters());
   }
 

@@ -34,7 +34,7 @@ public class ClimbIOReal extends ClimbIO {
     inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
     inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
 
-    inputs.outerCarriagePositionInches = getOuterCarriagePosition().in(Inches);
+    inputs.outerCarriagePositionInches = getCarriagePosition().in(Inches);
     inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
     inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValue();
     inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
@@ -47,7 +47,7 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public void setOuterMotorSetpoint(Angle setpoint) {
+  public void setMotorSetpoint(Angle setpoint) {
     outerMotor.setControl(positionControl.withPosition(setpoint));
   }
 
@@ -57,7 +57,7 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public void stopOuterMotor() {
+  public void stopMotor() {
     outerMotor.disable();
   }
 
@@ -67,7 +67,7 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public Angle getOuterMotorPosition() {
+  public Angle getMotorPosition() {
     return outerMotor.getPosition().getValue();
   }
 
@@ -77,7 +77,7 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public void setOuterMotorVoltage(Voltage motorVoltage) {
+  public void setMotorVoltage(Voltage motorVoltage) {
     outerMotor.setVoltage(motorVoltage.in(Volts));
   }
 
@@ -87,7 +87,7 @@ public class ClimbIOReal extends ClimbIO {
   }
 
   @Override
-  public Distance getOuterCarriagePosition() {
+  public Distance getCarriagePosition() {
     return rightMotorRotationToCarriagePosition(outerMotor.getPosition().getValue());
   }
 

@@ -71,7 +71,7 @@ public class Climb extends SubsystemBase {
   }
 
   public void stopOuterClimb() {
-    io.stopOuterMotor();
+    io.stopMotor();
   }
 
   public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {
@@ -81,7 +81,7 @@ public class Climb extends SubsystemBase {
 
   public void setOuterClimbPosition(OuterClimbHeight heightSetpoint) {
     currentOuterClimbSetpoint = heightSetpoint;
-    io.setOuterMotorSetpoint(heightSetpoint.getOuterPositionAngle());
+    io.setMotorSetpoint(heightSetpoint.getOuterPositionAngle());
   }
 
   public void setInnerMotorVoltage(Voltage motorVoltage) {
@@ -89,7 +89,7 @@ public class Climb extends SubsystemBase {
   }
 
   public void setOuterMotorVoltage(Voltage motorVoltage) {
-    io.setOuterMotorVoltage(motorVoltage);
+    io.setMotorVoltage(motorVoltage);
   }
 
   public Command setInnerClimbPositionCommand(InnerClimbHeight height) {
