@@ -19,12 +19,7 @@ import org.littletonrobotics.junction.Logger;
 public class ClimbIOSim extends ClimbIO {
   public static final Mass APPROX_CLIMB_CARRIAGE_WEIGHT = Pounds.of(2);
 
-  // Physics sim for the climb
-  // TODO(stefan): Factor out the two climbs in a helper class. There's a lot of
-  // repetition here and in the class methods below.
- 
-
-  private final ElevatorSim outerClimbSim =
+  private final ElevatorSim climbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
           ClimbConstants.OUTER_MOTOR_TO_CLIMB_GEARING,
@@ -35,112 +30,75 @@ public class ClimbIOSim extends ClimbIO {
           true,
           ClimbConstants.OUTER_CLIMB_MIN_HEIGHT.in(Meter));
 
-  private TalonFX innerMotor;
-  private TalonFXSimState innerMotorSim;
-  private TalonFX outerMotor;
-  private TalonFXSimState outerMotorSim;
+  private TalonFX climbMotor;
+  private TalonFXSimState climbMotorSim;
   // Used for actually moving the motor to a given position with PID applied to a voltage input.
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
   public ClimbIOSim(AllClimbConstants climbConstants) {
     super(climbConstants);
 
-    innerMotor = new TalonFX(Constants.INNER_CLIMB_MOTOR_ID);
-    innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
-    innerMotorSim = innerMotor.getSimState();
-    innerMotorSim.Orientation = getOrientation(innerMotor);
-
-    outerMotor = new TalonFX(Constants.OUTER_CLIMB_MOTOR_ID);
-    outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
-    outerMotorSim = outerMotor.getSimState();
-    outerMotorSim.Orientation = getOrientation(outerMotor);
+    climbMotor = new TalonFX(Constants.OUTER_CLIMB_MOTOR_ID);
+    climbMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
+    climbMotorSim = climbMotor.getSimState();
+    climbMotorSim.Orientation = getOrientation(climbMotor);
   }
 
   @Override
   public void updateState(ClimbIOInputs inputs) {
     updateSim();
 
-    inputs.innerCarriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
-    inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
-    inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
-    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getRotorVelocity().getValue();
-
-    inputs.carriagePositionInches = Meters.of(outerClimbSim.getPositionMeters()).in(Inches);
-    inputs.motorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.motorRotations = outerMotor.getPosition().getValueAsDouble();
-    inputs.motorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
-    inputs.motorVelocityRotsPerSecond = outerMotor.getRotorVelocity().getValue();
+    inputs.carriagePositionInches = Meters.of(climbSim.getPositionMeters()).in(Inches);
+    inputs.motorCurrent = climbMotor.getStatorCurrent().getValueAsDouble();
+    inputs.motorRotations = climbMotor.getPosition().getValueAsDouble();
+    inputs.motorVoltage = climbMotor.getMotorVoltage().getValueAsDouble();
+    inputs.motorVelocityRotsPerSecond = climbMotor.getRotorVelocity().getValue();
   }
 
   private void updateSim() {
-    innerMotorSim.setSupplyVoltage(Volts.of(12));
+    climbMotorSim.setSupplyVoltage(Volts.of(12));
 
     // Apply the voltage to the sim elevator that we apply to the sim motor.
     // Negating the sim motor value since it is set to use negative value when pushing
     // the cartrage UP.
-    innerClimbSim.setInput(innerMotorSim.getMotorVoltage());
-    innerClimbSim.update(Constants.SIM_TIME_PERIOD); // Same update cycle as an actual robot, 20 ms.
+    climbSim.setInput(climbMotorSim.getMotorVoltage());
+    climbSim.update(Constants.SIM_TIME_PERIOD); // Same update cycle as an actual robot, 20 ms.
 
     // Logs to "Real Outputs" NT
-    Logger.recordOutput("Simulated Climb/Inner/motorSim/Voltage", innerMotorSim.getMotorVoltage());
+    Logger.recordOutput("Simulated Climb/motorSim/Voltage", climbMotorSim.getMotorVoltage());
     Logger.recordOutput(
-        "Simulated Climb/Inner/climbSim/position (meters)", innerClimbSim.getPositionMeters());
+        "Simulated Climb/climbSim/position (meters)", climbSim.getPositionMeters());
     Logger.recordOutput(
-        "Simulated Climb/Inner/climbSim/hitsUpperLimit", innerClimbSim.hasHitUpperLimit());
+        "Simulated Climb/climbSim/hitsUpperLimit", climbSim.hasHitUpperLimit());
     Logger.recordOutput(
-        "Simulated Climb/Inner/climbSim/hitsLowerLimit", innerClimbSim.hasHitLowerLimit());
-
-    innerMotorSim.setRawRotorPosition(getLeftMotorRotations(innerClimbSim.getPositionMeters()));
+        "Simulated Climb/climbSim/hitsLowerLimit", climbSim.hasHitLowerLimit());
 
     // angular velocity = linear velocity / radius, taken also from 5414
-    innerMotorSim.setRotorVelocity(
-        innerClimbSim.getVelocityMetersPerSecond()
-            / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Meters));
-
-    outerMotorSim.setSupplyVoltage(Volts.of(12));
-
-    // Apply the voltage to the sim elevator that we apply to the sim motor.
-    // Negating the sim motor value since it is set to use negative value when pushing
-    // the cartrage UP.
-    outerClimbSim.setInput(outerMotorSim.getMotorVoltage());
-    outerClimbSim.update(Constants.SIM_TIME_PERIOD); // Same update cycle as an actual robot, 20 ms.
-
-    // Logs to "Real Outputs" NT
-    Logger.recordOutput("Simulated Climb/Outer/motorSim/Voltage", outerMotorSim.getMotorVoltage());
-    Logger.recordOutput(
-        "Simulated Climb/Outer/climbSim/position (meters)", outerClimbSim.getPositionMeters());
-    Logger.recordOutput(
-        "Simulated Climb/Outer/climbSim/hitsUpperLimit", outerClimbSim.hasHitUpperLimit());
-    Logger.recordOutput(
-        "Simulated Climb/Outer/climbSim/hitsLowerLimit", outerClimbSim.hasHitLowerLimit());
-
-    // angular velocity = linear velocity / radius, taken also from 5414
-    outerMotorSim.setRotorVelocity(
-        outerClimbSim.getVelocityMetersPerSecond()
+    climbMotorSim.setRotorVelocity(
+        climbSim.getVelocityMetersPerSecond()
             / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Meters));
 
-    outerMotorSim.setRawRotorPosition(getRightMotorRotations(outerClimbSim.getPositionMeters()));
+    climbMotorSim.setRawRotorPosition(getMotorRotations(climbSim.getPositionMeters()));
   }
 
   @Override
   public void setMotorSetpoint(Angle setpoint) {
-    outerMotor.setControl(positionControl.withPosition(setpoint));
+    climbMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
   public void stopMotor() {
-    outerMotor.disable();
+    climbMotor.disable();
   }
 
   @Override
   public Angle getMotorPosition() {
-    return outerMotor.getPosition().getValue();
+    return climbMotor.getPosition().getValue();
   }
 
   @Override
   public void setMotorVoltage(Voltage motorVoltage) {
-    outerMotor.setVoltage(motorVoltage.in(Volts));
+    climbMotor.setVoltage(motorVoltage.in(Volts));
   }
 
   /**
@@ -148,7 +106,7 @@ public class ClimbIOSim extends ClimbIO {
    */
   @Override
   public Distance getCarriagePosition() {
-    return Meters.of(outerClimbSim.getPositionMeters());
+    return Meters.of(climbSim.getPositionMeters());
   }
 
   /**
@@ -158,12 +116,17 @@ public class ClimbIOSim extends ClimbIO {
    * @param elevatorPosition
    * @return
    */
-  private static double getRightMotorRotations(double elevatorPosition) {
+  private static double getMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
     return elevatorPosition
         / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Meters);
   }
 
+  /**
+   * Checks the set orientation of a given motor and updates the sim state to match.
+   * @param motor The {@link TalonFX} instance to get the inversion of.
+   * @return A {@link ChassisReference} for the {@link TalonFXSimState} to consume.
+   */
   private static ChassisReference getOrientation(TalonFX motor) {
     MotorOutputConfigs outputConfigs = new MotorOutputConfigs();
     // Populate "outputConfigs" with the current configuration of the motor.
