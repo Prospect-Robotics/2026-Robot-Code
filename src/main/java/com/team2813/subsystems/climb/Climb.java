@@ -36,7 +36,7 @@ public class Climb extends SubsystemBase {
     // In `REPLAY` mode, `updateState` does nothing, and the `replayedInputs` are populated from the
     // replayed logs
     // instead.
-    Logger.processInputs("Climb", replayedInputs);
+    Logger.processInputs(String.format("Climb/%s", io.climbConstants.climbName()), replayedInputs);
     Logger.recordOutput(
         String.format("Climb/%s/Carriage Setpoint (inches)", io.climbConstants.climbName()),
         currentClimbSetpoint.getPosition().in(Inches));
