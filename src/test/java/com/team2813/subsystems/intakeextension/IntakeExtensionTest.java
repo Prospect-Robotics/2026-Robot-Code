@@ -22,8 +22,7 @@ public class IntakeExtensionTest {
     }
 
     assertEquals(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT)
-            .in(Rotations),
+        IntakeExtensionConstants.ExtenderPositions.OUT.getAngle().in(Rotations),
         intakeExtension.getPosition().in(Rotations),
         0.5);
   }
@@ -37,8 +36,7 @@ public class IntakeExtensionTest {
     }
 
     assertEquals(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN)
-            .in(Rotations),
+        IntakeExtensionConstants.ExtenderPositions.IN.getAngle().in(Rotations),
         intakeExtension.getPosition().in(Rotations),
         0.5);
   }
