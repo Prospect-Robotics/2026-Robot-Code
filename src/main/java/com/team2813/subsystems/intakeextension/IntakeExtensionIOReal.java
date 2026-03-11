@@ -4,7 +4,6 @@ import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;

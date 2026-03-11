@@ -7,8 +7,9 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -20,7 +21,12 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   private final ElevatorSim extenderSim;
 
   // PID controller for simulation - TalonFX sim doesn't run internal PID
-  private final PIDController simPidController;
+  private final ProfiledPIDController simPidController;
+
+  private final TrapezoidProfile.Constraints extensionConstraints =
+      new TrapezoidProfile.Constraints(
+          IntakeExtensionConstants.EXTENDER_SPEED.magnitude(),
+          IntakeExtensionConstants.EXTENDER_ACCEL.magnitude());
 
   private Angle extensionSetpoint;
 
@@ -51,7 +57,8 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
     // Initialize PID controller with same gains as motor config
     var slot0 = IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG.Slot0;
-    simPidController = new PIDController(slot0.kP, slot0.kI, slot0.kD);
+    simPidController =
+        new ProfiledPIDController(slot0.kP, slot0.kI, slot0.kD, extensionConstraints);
 
     extensionSetpoint = Rotation.of(0);
   }
@@ -69,7 +76,11 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     double setpointRotations = extensionSetpoint.in(Rotations);
 
     // Calculate PID output voltage
-    double pidOutput = simPidController.calculate(currentPositionRotations, setpointRotations);
+    double pidOutput =
+        simPidController.calculate(
+            currentPositionRotations,
+            new TrapezoidProfile.State(setpointRotations, 0),
+            extensionConstraints);
 
     // Add static friction feedforward (kS). Velocity feedforward (kV) is not used in this
     // position-control simulation.
