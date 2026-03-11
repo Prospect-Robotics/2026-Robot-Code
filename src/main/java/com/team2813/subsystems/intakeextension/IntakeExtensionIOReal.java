@@ -3,6 +3,7 @@ package com.team2813.subsystems.intakeextension;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
@@ -13,7 +14,7 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   private final TalonFX extenderMotor;
   private Angle extensionSetpoint;
 
-  private PositionVoltage positionVoltage = new PositionVoltage(0);
+  private MotionMagicVoltage MotionMagicVoltage = new MotionMagicVoltage(0);
 
   public IntakeExtensionIOReal() {
     extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);
@@ -34,7 +35,7 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   @Override
   public void setExtensionSetpoint(Angle setpoint) {
     extensionSetpoint = setpoint;
-    extenderMotor.setControl(positionVoltage.withPosition(setpoint));
+    extenderMotor.setControl(MotionMagicVoltage.withPosition(setpoint));
   }
 
   @Override

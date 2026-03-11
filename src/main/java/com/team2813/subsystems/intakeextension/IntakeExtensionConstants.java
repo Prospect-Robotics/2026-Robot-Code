@@ -1,13 +1,17 @@
 package com.team2813.subsystems.intakeextension;
 
+import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.EXTENDED_POSITION;
+import static com.team2813.subsystems.intakeextension.IntakeExtensionConstants.EXTENDER_SPEED;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import org.littletonrobotics.junction.Logger;
@@ -19,6 +23,10 @@ class IntakeExtensionConstants {
   public static final Mass WEIGHT_OF_EXTENDER_CARRIAGE =
       Kilograms.of(6.137); // Value taken from CAD
 
+  //velocity: configured to extend the intake in 0.8 seconds (subject to change)
+  public static final AngularVelocity EXTENDER_SPEED = 
+      toMotorSetpoint(ExtenderPositions.OUT).div(Seconds.of(0.8));
+
   public static final TalonFXConfiguration EXTENDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withSlot0(
@@ -26,10 +34,18 @@ class IntakeExtensionConstants {
               // https://share.google/aimode/Ha33a7FUqS9EhAzI4
               new Slot0Configs().withKS(0.25).withKV(0.25).withKP(10).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1));
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1)).withMotionMagic(
+            //motionmagic allows us to set a motion profile for PID control
+            //for the extension, we can set a maximum velocity and accel to make walle commands less likely to break the intake
+
+            //velocity: configured to extend the intake in 0.8 seconds (subject to change)
+            //acceleration: allows the intake to reach max velocity in 0.25 seconds (subject to change)
+            (new MotionMagicConfigs()).withMotionMagicCruiseVelocity(EXTENDER_SPEED).
+            withMotionMagicAcceleration(EXTENDER_SPEED.div(Seconds.of(0.25)))
+          );
 
   public static final Distance PULLEY_RADIUS = Inches.of(0.5);
-
+  
   public static final double DISTANCE_METERS_TO_MOTOR_ROTATIONS =
       EXTENDER_MOTOR_TO_EXTENDER_GEARING / (2.0 * Math.PI * PULLEY_RADIUS.in(Meters));
 
