@@ -73,10 +73,6 @@ public class Climb extends SubsystemBase {
   //    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage.div(-1)));
   //  }
   //
-  //  public Command manuelUpInnerClimb() {
-  //    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage));
-  //  }
-  //
   //  public Command postAutoClimb() {
   //    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
   //  }
