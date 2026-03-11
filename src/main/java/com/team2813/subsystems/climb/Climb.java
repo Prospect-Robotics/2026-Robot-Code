@@ -38,9 +38,11 @@ public class Climb extends SubsystemBase {
     // instead.
     Logger.processInputs("Climb", replayedInputs);
     Logger.recordOutput(
-        "Climb/Carriage Setpoint (inches)", currentClimbSetpoint.getPosition().in(Inches));
+        String.format("Climb/%s/Carriage Setpoint (inches)", io.climbConstants.climbName()),
+        currentClimbSetpoint.getPosition().in(Inches));
     Logger.recordOutput(
-        "Climb/Motor Setpoint (rotations)", currentClimbSetpoint.getPositionAngle().in(Rotations));
+        String.format("Climb/%s/Motor Setpoint (rotations)", io.climbConstants.climbName()),
+        currentClimbSetpoint.getPositionAngle().in(Rotations));
   }
 
   @Override

@@ -65,10 +65,21 @@ public class ClimbIOSim extends ClimbIO {
     climbSim.update(Constants.SIM_TIME_PERIOD); // Same update cycle as an actual robot, 20 ms.
 
     // Logs to "Real Outputs" NT
-    Logger.recordOutput("Simulated Climb/motorSim/Voltage", climbMotorSim.getMotorVoltage());
-    Logger.recordOutput("Simulated Climb/climbSim/position (meters)", climbSim.getPositionMeters());
-    Logger.recordOutput("Simulated Climb/climbSim/hitsUpperLimit", climbSim.hasHitUpperLimit());
-    Logger.recordOutput("Simulated Climb/climbSim/hitsLowerLimit", climbSim.hasHitLowerLimit());
+    Logger.recordOutput(
+        String.format("Simulated Climb/%s/motorSim/Voltage", super.climbConstants.climbName()),
+        climbMotorSim.getMotorVoltage());
+    Logger.recordOutput(
+        String.format(
+            "Simulated Climb/%s/climbSim/position (meters)", super.climbConstants.climbName()),
+        climbSim.getPositionMeters());
+    Logger.recordOutput(
+        String.format(
+            "Simulated Climb/%s/climbSim/hitsUpperLimit", super.climbConstants.climbName()),
+        climbSim.hasHitUpperLimit());
+    Logger.recordOutput(
+        String.format(
+            "Simulated Climb/%s/climbSim/hitsLowerLimit", super.climbConstants.climbName()),
+        climbSim.hasHitLowerLimit());
 
     // angular velocity = linear velocity / radius, taken also from 5414
     climbMotorSim.setRotorVelocity(
