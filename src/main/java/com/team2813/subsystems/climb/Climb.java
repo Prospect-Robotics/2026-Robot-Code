@@ -67,18 +67,6 @@ public class Climb extends SubsystemBase {
   }
 
   // TODO: Move these into a different class as we split climb into two instances.
-  //  public void setManualOutClimbOverrideController(DoubleSupplier controller) {
-  //    Supplier<Voltage> voltageSupplier =
-  //        () -> {
-  //          double val = controller.getAsDouble();
-  //          return Volt.of(val * 3);
-  //        };
-  //
-  //    Command setOuterClimbVoltageCommand =
-  //        Commands.run(() -> setOuterMotorVoltage(voltageSupplier.get()), this);
-  //    setDefaultCommand(setOuterClimbVoltageCommand);
-  //  }
-  //
   //  public Command manuelDownInnerClimb() {
   //    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage.div(-1)));
   //  }

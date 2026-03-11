@@ -5,8 +5,10 @@ import com.team2813.subsystems.climb.ClimbConstants;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import java.util.function.Supplier;
 
+/** A collections of commands to run on the climb. */
 public class ClimbSequences {
 
   private ClimbSequences() {}
@@ -16,17 +18,41 @@ public class ClimbSequences {
    * Climb#setDefaultCommand(Command)}
    *
    * @param joystickAxis A double supplier to the controller axis to manually control the climb.
-   * @param climb Instance of climb to apply this command to
+   * @param outerClimbInstance Instance of climb to apply this command to (preferably outer climb).
    * @return A command to be set as the default command of the given climb instance (preferably the
    *     outer).
    */
-  public static Command getOuterClimbVoltageManualCommand(
-      Supplier<Double> joystickAxis, Climb climb) {
+  public static Command outerClimbManualCommand(
+      Supplier<Double> joystickAxis, Climb outerClimbInstance) {
     Supplier<Voltage> motorVoltSetpoint =
         () -> ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE.times(joystickAxis.get());
 
     // I believe this needs to be a supplier, so we can update the voltage in realtime, rather than
     // it just being constant.
-    return new RunCommand(() -> climb.setMotorVoltage(motorVoltSetpoint.get()), climb);
+    return new RunCommand(
+        () -> outerClimbInstance.setMotorVoltage(motorVoltSetpoint.get()), outerClimbInstance);
+  }
+
+  /**
+   * This should be bound to a {@link
+   * edu.wpi.first.wpilibj2.command.button.Trigger#whileTrue(Command)}.
+   *
+   * @param innerClimbInstance The instance of inner climb to apply this command to.
+   * @return A {@link StartEndCommand} to set the motor voltage to go upward with 3 volts.
+   */
+  public static Command innerClimbManualUpCommand(Climb innerClimbInstance) {
+    return new StartEndCommand(
+        () -> innerClimbInstance.setMotorVoltage(ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE),
+        innerClimbInstance::stopClimb,
+        innerClimbInstance);
+  }
+
+  public static Command innerClimbManualDownCommand(Climb innerClimbInstance) {
+    return new StartEndCommand(
+        () ->
+            innerClimbInstance.setMotorVoltage(
+                ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE.unaryMinus()),
+        innerClimbInstance::stopClimb,
+        innerClimbInstance);
   }
 }
