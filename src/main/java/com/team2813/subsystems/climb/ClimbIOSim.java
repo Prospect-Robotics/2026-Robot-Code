@@ -38,8 +38,8 @@ public class ClimbIOSim extends ClimbIO {
   public ClimbIOSim(AllClimbConstants climbConstants) {
     super(climbConstants);
 
-    climbMotor = new TalonFX(Constants.OUTER_CLIMB_MOTOR_ID);
-    climbMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
+    climbMotor = new TalonFX(climbConstants.climbCanID());
+    climbMotor.getConfigurator().apply(climbConstants.climbMotorConfig());
     climbMotorSim = climbMotor.getSimState();
     climbMotorSim.Orientation = getOrientation(climbMotor);
   }

@@ -48,8 +48,14 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    defaultSimulationVisualizerInstance.updateOuterClimbHeight(
-        Inches.of(replayedInputs.carriagePositionInches));
+    if (io.climbConstants.climbName().equals("Outer")) {
+      defaultSimulationVisualizerInstance.updateOuterClimbHeight(
+          Inches.of(replayedInputs.carriagePositionInches));
+
+    } else if (io.climbConstants.climbName().equals("Inner")) {
+      defaultSimulationVisualizerInstance.updateInnerClimbHeight(
+          Inches.of(replayedInputs.carriagePositionInches));
+    }
   }
 
   public void stopClimb() {
