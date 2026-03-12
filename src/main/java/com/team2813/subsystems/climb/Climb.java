@@ -77,10 +77,6 @@ public class Climb extends SubsystemBase {
   }
 
   // TODO: Move these into a different class as we split climb into two instances.
-  //  public Command manuelDownInnerClimb() {
-  //    return new InstantCommand(() -> setInnerMotorVoltage(upMotorVoltage.div(-1)));
-  //  }
-  //
   //  public Command postAutoClimb() {
   //    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
   //  }

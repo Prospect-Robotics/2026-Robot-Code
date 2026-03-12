@@ -1,11 +1,13 @@
 package com.team2813.commands;
 
+import com.team2813.subsystems.climb.AllClimbs;
 import com.team2813.subsystems.climb.Climb;
 import com.team2813.subsystems.climb.ClimbConstants;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /** A collections of commands to run on the climb. */
@@ -35,7 +37,7 @@ public class ClimbSequences {
 
   /**
    * This should be bound to a {@link
-   * edu.wpi.first.wpilibj2.command.button.Trigger#whileTrue(Command)}.
+   * edu.wpi.first.wpilibj2.command.button.Trigger#whileTrue(Command)}
    *
    * @param innerClimbInstance The instance of inner climb to apply this command to.
    * @return A {@link StartEndCommand} to set the motor voltage to go upward with 3 volts.
@@ -47,6 +49,13 @@ public class ClimbSequences {
         innerClimbInstance);
   }
 
+  /**
+   * This should be bound to a {@link
+   * edu.wpi.first.wpilibj2.command.button.Trigger#whileTrue(Command)}.
+   *
+   * @param innerClimbInstance The instance of inner climb to apply this command to.
+   * @return A {@link StartEndCommand} to set the motor voltage to go downward with 3 volts.
+   */
   public static Command innerClimbManualDownCommand(Climb innerClimbInstance) {
     return new StartEndCommand(
         () ->
@@ -54,5 +63,25 @@ public class ClimbSequences {
                 ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE.unaryMinus()),
         innerClimbInstance::stopClimb,
         innerClimbInstance);
+  }
+
+  /**
+   * Moves the inner climb to its post auto position.
+   *
+   * <p>The climbInterruption is used for when the climb reaches its setpoint, or if the operator
+   * interrupts via manual movement.
+   *
+   * @param innerClimbInstance The inner climb instance to apply the command to.
+   * @param climbInterruption A boolean supplier to allow for cancellation of this command.
+   * @return
+   */
+  public static Command postAutoClimb(Climb innerClimbInstance, BooleanSupplier climbInterruption) {
+    return new StartEndCommand(
+            () ->
+                innerClimbInstance.setClimbPosition(
+                    AllClimbs.InnerClimbHeight.POSTAUTO.getInnerPosition()),
+            innerClimbInstance::stopClimb,
+            innerClimbInstance)
+        .until(climbInterruption);
   }
 }
