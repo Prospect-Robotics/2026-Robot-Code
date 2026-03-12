@@ -1,14 +1,15 @@
 package com.team2813.subsystems.climb;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Volts;
 // import static edu.wpi.first.units.Units.Millimeters;
+
+import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 
@@ -61,4 +62,6 @@ public class ClimbConstants {
   public static final Distance OUTER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
 
   public static final Voltage MANUAL_OUTER_CLIMB_VOLTAGE = Volts.of(3);
+
+  public static final Angle CLIMB_SETPOINT_TO_MOTOR_ROT_TOLERANCE = Rotations.of(2);
 }

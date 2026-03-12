@@ -76,6 +76,12 @@ public class Climb extends SubsystemBase {
             / io.climbConstants.climbHeightChangePerRotation().in(Inches));
   }
 
+  public boolean atSetpointPosition() {
+    return io.getMotorPosition()
+        .isNear(
+            currentClimbSetpointRotations, ClimbConstants.CLIMB_SETPOINT_TO_MOTOR_ROT_TOLERANCE);
+  }
+
   // TODO: Move these into a different class as we split climb into two instances.
   //  public Command postAutoClimb() {
   //    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);

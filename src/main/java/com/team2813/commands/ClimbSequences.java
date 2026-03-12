@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+// TODO: Lets not make this a static class.
 /** A collections of commands to run on the climb. */
 public class ClimbSequences {
 

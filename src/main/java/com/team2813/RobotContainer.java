@@ -12,6 +12,7 @@ import static com.team2813.subsystems.vision.VisionConstants.APRIL_TAG_LAYOUT;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.team2813.commands.ClimbSequences;
 import com.team2813.commands.DriveCommands;
 import com.team2813.subsystems.climb.*;
 import com.team2813.subsystems.drive.AllTunerConstants;
@@ -205,6 +206,9 @@ public class RobotContainer {
         break;
     }
 
+    outerClimb.setDefaultCommand(
+        ClimbSequences.outerClimbManualCommand(operatorController::getRightY, outerClimb));
+
     // Registers all named commands.
     namedCommandsRegistration();
     // Creates the autoBuilder, necessary for pathplanner, must be run after
@@ -274,16 +278,20 @@ public class RobotContainer {
     // Spool shooter commands
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
 
+    // Used for stopping Climb command sequences.
+    BooleanSupplier cancelOuterClimbCommand =
+        () -> outerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
+
+    operatorController.povUp().whileTrue(ClimbSequences.innerClimbManualUpCommand(innerClimb));
+    operatorController.povDown().whileTrue(ClimbSequences.innerClimbManualDownCommand(innerClimb));
+
+    // Climb binding
     // TODO: Update these with the new Climbs.
-    // climb bindings
     //    operatorController.a().onTrue(outerClimb.l1Sequence());
     //    operatorController.x().onTrue(outerClimb.l2Sequence());
     //    operatorController.y().onTrue(outerClimb.l3Sequence());
     //    operatorController.b().onTrue(outerClimb.deployClimb());
     //    operatorController.start().onTrue(outerClimb.postAutoClimb());
-    //
-    //    operatorController.povUp().whileTrue(outerClimb.manuelUpInnerClimb());
-    //    operatorController.povDown().whileTrue(outerClimb.manuelDownInnerClimb());
     //
     //    outerClimb.setManualOutClimbOverrideController(
     //        () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
