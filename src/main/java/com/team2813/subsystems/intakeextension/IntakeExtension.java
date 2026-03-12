@@ -89,15 +89,11 @@ public class IntakeExtension extends SubsystemBase implements AutoCloseable {
   }
 
   void extend() {
-    extenderAtPosition = false;
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT));
+    setSetpoint(IntakeExtensionConstants.ExtenderPositions.OUT);
   }
 
   void retract() {
-    extenderAtPosition = false;
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(IntakeExtensionConstants.ExtenderPositions.IN));
+    setSetpoint(IntakeExtensionConstants.ExtenderPositions.IN);
   }
 
   /**
@@ -105,10 +101,14 @@ public class IntakeExtension extends SubsystemBase implements AutoCloseable {
    * than fully retracting).
    */
   private void halfRetract() {
+    setSetpoint(IntakeExtensionConstants.ExtenderPositions.MIDDLE);
+  }
+
+  private void setSetpoint(IntakeExtensionConstants.ExtenderPositions position) {
     extenderAtPosition = false;
-    io.setExtensionSetpoint(
-        IntakeExtensionConstants.toMotorSetpoint(
-            IntakeExtensionConstants.ExtenderPositions.MIDDLE));
+    Angle setpoint = position.getAngle();
+    Logger.recordOutput("IntakeExtension/Setpoint", setpoint);
+    io.setExtensionSetpoint(setpoint);
   }
 
   /**

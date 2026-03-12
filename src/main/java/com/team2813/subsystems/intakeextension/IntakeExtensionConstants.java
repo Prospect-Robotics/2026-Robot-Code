@@ -10,7 +10,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
-import org.littletonrobotics.junction.Logger;
 
 class IntakeExtensionConstants {
 
@@ -38,6 +37,7 @@ class IntakeExtensionConstants {
 
   public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.25);
 
+  // TODO: Migrate this enum to a more suitable location than a Constants Class.
   public enum ExtenderPositions {
     // Added 0.2 in the direction of motion to prevent stalling and ensure the intake retracts all
     // the way back.
@@ -53,19 +53,12 @@ class IntakeExtensionConstants {
       this.position = of;
     }
 
-    public Distance getPosition() {
-      return position;
+    public Angle getAngle() {
+      return Rotations.of(position.in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
     }
   }
 
-  // TODO: Migrate these conversion methods to a more suitable location than a Constants Class, such
-  // as the Extender Positions enum or IntakeExtension.java
-
-  public static Angle toMotorSetpoint(ExtenderPositions position) {
-    Logger.recordOutput("IntakeExtension/Setpoint", position);
-    return Rotations.of(position.getPosition().in(Meters) * DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-  }
-
+  // TODO: Migrate this methods to a more suitable location than a Constants Class.
   public static Distance toIntakeExtensionPosition(Angle motorPosition) {
     return Meters.of(motorPosition.in(Rotations) / DISTANCE_METERS_TO_MOTOR_ROTATIONS);
   }
