@@ -9,7 +9,6 @@ package com.team2813;
 
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
 import com.team2813.subsystems.climb.Climb;
@@ -42,12 +41,12 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.function.BooleanSupplier;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.photonvision.simulation.VisionSystemSim;
 
 /**
@@ -75,7 +74,7 @@ public class RobotContainer {
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
-  private final LoggedDashboardChooser<Command> autoChooser;
+  private final AutoSelector autoSelector;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -193,32 +192,46 @@ public class RobotContainer {
         break;
     }
 
-    // Registers all named commands.
-    namedCommandsRegistration();
-    // Creates the autoBuilder, necessary for pathplanner, must be run after
-    // namedCommandsRegistration because the registries freeze after.
+    // Set up auto routines
+    Preferences.initBoolean("Choreo/enabled", false);
+    boolean useChoreo = Preferences.getBoolean("Choreo/enabled", false);
+    if (useChoreo) {
+      autoSelector =
+          new ChoreoAutos(
+              drive,
+              intakeRoller,
+              intakeExtension,
+              shooter,
+              kicker,
+              hopper,
+              this::namedCommandsRegistration);
+    } else {
+      // Creates the autoBuilder, necessary for pathplanner, must be run after
+      // namedCommandsRegistration because the registries freeze after.
+      drive.initializeAutoBuilder();
+      // Registers all named commands.
+      namedCommandsRegistration();
+      autoSelector = new PathPlannerAutos();
+    }
     drive.initializeAutoBuilder();
 
-    // Set up auto routines
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
     // Set up SysId routines
-    autoChooser.addOption(
-        "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
-    autoChooser.addOption(
-        "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
+    autoSelector.addOption(
+        "Drive Wheel Radius Characterization",
+        () -> DriveCommands.wheelRadiusCharacterization(drive));
+    autoSelector.addOption(
+        "Drive Simple FF Characterization", () -> DriveCommands.feedforwardCharacterization(drive));
+    autoSelector.addOption(
         "Drive SysId (Quasistatic Forward)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
+        () -> drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoSelector.addOption(
         "Drive SysId (Quasistatic Reverse)",
-        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption("Shooter SysID Routine", shooter.sysIDRoutine());
-
+        () -> drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoSelector.addOption(
+        "Drive SysId (Dynamic Forward)", () -> drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoSelector.addOption(
+        "Drive SysId (Dynamic Reverse)", () -> drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoSelector.addOption("Shooter SysID Routine", shooter::sysIDRoutine);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -317,7 +330,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    return autoSelector.getAutonomousCommand();
   }
 
   /** Used for stopping all subsystems if auto commands end prematurely. */
