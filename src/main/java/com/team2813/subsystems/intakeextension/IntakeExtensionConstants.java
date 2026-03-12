@@ -20,15 +20,25 @@ class IntakeExtensionConstants {
   public static final Distance EXTENDED_POSITION = Inches.of(10.75);
   public static final Distance RETRACTED_POSITION = Inches.of(0);
 
+  // About halfway in, used for walle mode, as we retract to this before fully extending.
+  public static final Distance MIDDLE_POSITION = Inches.of(5.4);
+
   public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.25);
 
+  /**
+   * Supported positions for the extender.
+   *
+   * <p>This is defined near the top of the file to avoid initialization issues due to cirular
+   * dependencies of static fields/classes.
+   *
+   * <p>TODO: Consider making this a package-scope enum in IntakeExtension to prevent future
+   * initialization issues.
+   */
   public enum ExtenderPositions {
-    // Added 0.2 in the direction of motion to prevent stalling and ensure the intake retracts all
+    // Added 0.25 in the direction of motion to prevent stalling and ensure the intake retracts all
     // the way back.
-
     OUT(EXTENDED_POSITION.plus(ANTI_STALL_DISTANCE)),
-    // About halfway in, used for walle mode, as we retract to this before fully extending.
-    MIDDLE(Inches.of(5.4)),
+    MIDDLE(MIDDLE_POSITION),
     IN(RETRACTED_POSITION.minus(ANTI_STALL_DISTANCE));
 
     private final Distance position;
