@@ -9,6 +9,12 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "right trench-right mid neutral"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "ExtendIntake"
@@ -24,21 +30,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "right trench-right mid neutral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopRoller"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "right mid neutral-right trench"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "right mid neutral-right trench"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopRoller"
+                }
+              }
+            ]
           }
         },
         {
@@ -52,22 +59,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "WalleMode"
-                      }
-                    }
-                  ]
+                  "name": "WalleMode"
                 }
               }
             ]
@@ -76,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "RetractIntake"
+            "name": "ExtendIntake"
           }
         }
       ]

@@ -9,6 +9,12 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "left trench - left mid neutral"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "ExtendIntake"
@@ -24,40 +30,47 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "left trench - left mid neutral"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "StopRoller"
+                  "pathName": "left mid neutral - left trench"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "RetractIntake"
+                  "name": "StopRoller"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "left mid neutral - left trench"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "TrenchShot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "WalleMode"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TrenchShot"
+            "name": "ExtendIntake"
           }
         }
       ]
