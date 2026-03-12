@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Rotations;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,8 +17,8 @@ public class Climb extends SubsystemBase {
   private final ClimbIO io;
   private final ClimbIOInputsAutoLogged replayedInputs = new ClimbIOInputsAutoLogged();
 
-  private InnerClimbHeight currentInnerClimbSetpoint = InnerClimbHeight.DOWN;
-  private OuterClimbHeight currentOuterClimbSetpoint = OuterClimbHeight.DOWN;
+  private Angle currentClimbSetpointRotations = Rotations.of(0);
+  private Distance currentClimbSetpointInches = Inches.of(0);
 
   private final SimulationVisualizer defaultSimulationVisualizerInstance =
       SimulationVisualizer.getInstance();
@@ -36,96 +37,97 @@ public class Climb extends SubsystemBase {
     // In `REPLAY` mode, `updateState` does nothing, and the `replayedInputs` are populated from the
     // replayed logs
     // instead.
-    Logger.processInputs("Climb", replayedInputs);
+    Logger.processInputs(String.format("Climb/%s", io.climbConstants.climbName()), replayedInputs);
     Logger.recordOutput(
-        "Climb/Inner Climb/Carriage Setpoint (inches)",
-        currentInnerClimbSetpoint.getInnerPosition().in(Inches));
+        String.format("Climb/%s/Carriage Setpoint (inches)", io.climbConstants.climbName()),
+        currentClimbSetpointInches.in(Inches));
     Logger.recordOutput(
-        "Climb/Inner Climb/Motor Setpoint (rotations)",
-        currentInnerClimbSetpoint.getInnerPositionAngle().in(Rotations));
-    Logger.recordOutput(
-        "Climb/Outer Climb/Carriage Setpoint (inches)",
-        currentOuterClimbSetpoint.getOuterPosition().in(Inches));
-    Logger.recordOutput(
-        "Climb/Outer Climb/Motor Setpoint (rotations)",
-        currentOuterClimbSetpoint.getOuterPositionAngle().in(Rotations));
+        String.format("Climb/%s/Motor Setpoint (rotations)", io.climbConstants.climbName()),
+        currentClimbSetpointRotations.in(Rotations));
   }
 
   @Override
   public void simulationPeriodic() {
-    defaultSimulationVisualizerInstance.updateInnerClimbHeight(
-        Inches.of(replayedInputs.innerCarriagePositionInches));
-    defaultSimulationVisualizerInstance.updateOuterClimbHeight(
-        Inches.of(replayedInputs.outerCarriagePositionInches));
-  }
+    if (io.climbConstants.climbName().equals("Outer")) {
+      defaultSimulationVisualizerInstance.updateOuterClimbHeight(
+          Inches.of(replayedInputs.carriagePositionInches));
 
-  public void stopInnerClimb() {
-    io.stopInnerMotor();
-  }
-
-  public void stopOuterClimb() {
-    io.stopOuterMotor();
-  }
-
-  public void setInnerClimbPosition(InnerClimbHeight heightSetpoint) {
-    currentInnerClimbSetpoint = heightSetpoint;
-    io.setInnerMotorSetpoint(heightSetpoint.getInnerPositionAngle());
-  }
-
-  public void setOuterClimbPosition(OuterClimbHeight heightSetpoint) {
-    currentOuterClimbSetpoint = heightSetpoint;
-    io.setOuterMotorSetpoint(heightSetpoint.getOuterPositionAngle());
-  }
-
-  public Command setInnerClimbPositionCommand(InnerClimbHeight height) {
-    return new InstantCommand(() -> setInnerClimbPosition(height));
-  }
-
-  public Command setOuterClimbPositionCommand(OuterClimbHeight height) {
-    return new InstantCommand(() -> setOuterClimbPosition(height));
-  }
-
-  public enum InnerClimbHeight {
-    UP(Inches.of(9.75)),
-    MIDDLE(Inches.of(4.875)),
-    DOWN(Inches.of(0.0));
-
-    public final Distance position;
-
-    InnerClimbHeight(Distance position) {
-      this.position = position;
-    }
-
-    public Distance getInnerPosition() {
-      return position;
-    }
-
-    public Angle getInnerPositionAngle() {
-      return Rotations.of(
-          position.in(Inches)
-              / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Inches));
+    } else if (io.climbConstants.climbName().equals("Inner")) {
+      defaultSimulationVisualizerInstance.updateInnerClimbHeight(
+          Inches.of(replayedInputs.carriagePositionInches));
     }
   }
 
-  public enum OuterClimbHeight {
-    UP(Inches.of(11)),
-    MIDDLE(Inches.of(5.5)),
-    DOWN(Inches.of(0.0));
-
-    public final Distance position;
-
-    OuterClimbHeight(Distance position) {
-      this.position = position;
-    }
-
-    public Distance getOuterPosition() {
-      return position;
-    }
-
-    public Angle getOuterPositionAngle() {
-      return Rotations.of(
-          position.in(Inches)
-              / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Inches));
-    }
+  public void stopClimb() {
+    io.stopMotor();
   }
+
+  public void setClimbPosition(Distance heightSetpoint) {
+    currentClimbSetpointInches = heightSetpoint;
+    currentClimbSetpointRotations = convertExtenderHeightToMotorAngle(heightSetpoint);
+    io.setMotorSetpoint(currentClimbSetpointRotations);
+  }
+
+  public void setMotorVoltage(Voltage motorVoltage) {
+    io.setMotorVoltage(motorVoltage);
+  }
+
+  public Command setClimbPositionCommand(Distance heightSetpoint) {
+    return new InstantCommand(() -> setClimbPosition(heightSetpoint));
+  }
+
+  private Angle convertExtenderHeightToMotorAngle(Distance heightPositionSetpoint) {
+    return Rotations.of(
+        heightPositionSetpoint.in(Inches)
+            / io.climbConstants.climbHeightChangePerRotation().in(Inches));
+  }
+
+  public boolean atSetpointPosition() {
+    return io.getMotorPosition()
+        .isNear(
+            currentClimbSetpointRotations, ClimbConstants.CLIMB_SETPOINT_TO_MOTOR_ROT_TOLERANCE);
+  }
+
+  // TODO: Move these into a different class as we split climb into two instances.
+  //  public Command postAutoClimb() {
+  //    return setInnerClimbPositionCommand(InnerClimbHeight.POSTAUTO);
+  //  }
+  //
+  //  public Command deployClimb() {
+  //    return new SequentialCommandGroup(
+  //        setOuterClimbPositionCommand(OuterClimbHeight.UP),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.UP));
+  //  }
+  //
+  //  public Command l1Sequence() {
+  //    return setInnerClimbPositionCommand(InnerClimbHeight.DOWN);
+  //  }
+  //
+  //  public Command l2Sequence() {
+  //    return new SequentialCommandGroup(
+  //        l1Sequence(),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.UP));
+  //  }
+  //
+  //  public Command l3Sequence() {
+  //    return new SequentialCommandGroup(
+  //        l2Sequence(),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.UP),
+  //        new WaitCommand(1),
+  //        setInnerClimbPositionCommand(InnerClimbHeight.DOWN),
+  //        new WaitCommand(1),
+  //        setOuterClimbPositionCommand(OuterClimbHeight.UP));
+  //  }
+  //
+  //
 }
