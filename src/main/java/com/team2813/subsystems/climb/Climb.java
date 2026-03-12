@@ -17,7 +17,8 @@ public class Climb extends SubsystemBase {
   private final ClimbIO io;
   private final ClimbIOInputsAutoLogged replayedInputs = new ClimbIOInputsAutoLogged();
 
-  private ClimbHeight currentClimbSetpoint = ClimbHeight.DOWN;
+  private Angle currentClimbSetpointRotations = Rotations.of(0);
+  private Distance currentClimbSetpointInches = Inches.of(0);
 
   private final SimulationVisualizer defaultSimulationVisualizerInstance =
       SimulationVisualizer.getInstance();
@@ -39,10 +40,10 @@ public class Climb extends SubsystemBase {
     Logger.processInputs(String.format("Climb/%s", io.climbConstants.climbName()), replayedInputs);
     Logger.recordOutput(
         String.format("Climb/%s/Carriage Setpoint (inches)", io.climbConstants.climbName()),
-        currentClimbSetpoint.getPosition().in(Inches));
+        currentClimbSetpointInches.in(Inches));
     Logger.recordOutput(
         String.format("Climb/%s/Motor Setpoint (rotations)", io.climbConstants.climbName()),
-        currentClimbSetpoint.getPositionAngle().in(Rotations));
+        currentClimbSetpointRotations.in(Rotations));
   }
 
   @Override
@@ -55,17 +56,24 @@ public class Climb extends SubsystemBase {
     io.stopMotor();
   }
 
-  public void setClimbPosition(ClimbHeight heightSetpoint) {
-    currentClimbSetpoint = heightSetpoint;
-    io.setMotorSetpoint(heightSetpoint.getPositionAngle());
+  public void setClimbPosition(Distance heightSetpoint) {
+    currentClimbSetpointInches = heightSetpoint;
+    currentClimbSetpointRotations = convertExtenderHeightToMotorAngle(heightSetpoint);
+    io.setMotorSetpoint(currentClimbSetpointRotations);
   }
 
   public void setMotorVoltage(Voltage motorVoltage) {
     io.setMotorVoltage(motorVoltage);
   }
 
-  public Command setClimbPositionCommand(ClimbHeight height) {
-    return new InstantCommand(() -> setClimbPosition(height));
+  public Command setClimbPositionCommand(Distance heightSetpoint) {
+    return new InstantCommand(() -> setClimbPosition(heightSetpoint));
+  }
+
+  private Angle convertExtenderHeightToMotorAngle(Distance heightPositionSetpoint) {
+    return Rotations.of(
+        heightPositionSetpoint.in(Inches)
+            / io.climbConstants.climbHeightChangePerRotation().in(Inches));
   }
 
   // TODO: Move these into a different class as we split climb into two instances.
@@ -113,55 +121,5 @@ public class Climb extends SubsystemBase {
   //        setOuterClimbPositionCommand(OuterClimbHeight.UP));
   //  }
   //
-  //  public enum InnerClimbHeight {
-  //    // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
-  //    // except for down
-  //    // Origional values UP(Inches.of(9.75)), MIDDLE(Inches.of(4.875)),
-  //    UP(Inches.of(12.75)),
-  //    // TODO figure post auto position
-  //    POSTAUTO(Inches.of(4)),
-  //    MIDDLE(Inches.of(7.875)),
-  //    DOWN(Inches.of(0.0));
   //
-  //    public final Distance position;
-  //
-  //    InnerClimbHeight(Distance position) {
-  //      this.position = position;
-  //    }
-  //
-  //    public Distance getInnerPosition() {
-  //      return position;
-  //    }
-  //
-  //    public Angle getInnerPositionAngle() {
-  //      return Rotations.of(
-  //          position.in(Inches)
-  //              / ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Inches));
-  //    }
-  //  }
-  //
-  public enum ClimbHeight {
-    // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
-    // except for down
-    // Origional values UP(Inches.of(11)), MIDDLE(Inches.of(5.5)),
-    UP(Inches.of(14)),
-    MIDDLE(Inches.of(8.5)),
-    DOWN(Inches.of(0.0));
-
-    public final Distance position;
-
-    ClimbHeight(Distance position) {
-      this.position = position;
-    }
-
-    public Distance getPosition() {
-      return position;
-    }
-
-    public Angle getPositionAngle() {
-      return Rotations.of(
-          position.in(Inches)
-              / ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.in(Inches));
-    }
-  }
 }
