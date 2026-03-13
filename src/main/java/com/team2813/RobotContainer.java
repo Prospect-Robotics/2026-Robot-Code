@@ -270,7 +270,8 @@ public class RobotContainer {
 
     // Spool shooter commands
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
-
+    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
+    operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Used for stopping Climb command sequences.
     BooleanSupplier cancelOuterClimbCommand =
         () -> outerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
@@ -289,8 +290,7 @@ public class RobotContainer {
     //    outerClimb.setManualOutClimbOverrideController(
     //        () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
 
-    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
-    operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
+   
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
