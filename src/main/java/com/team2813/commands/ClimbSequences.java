@@ -21,19 +21,19 @@ public class ClimbSequences {
    * Climb#setDefaultCommand(Command)}
    *
    * @param joystickAxis A double supplier to the controller axis to manually control the climb.
-   * @param outerClimbInstance Instance of climb to apply this command to (preferably outer climb).
+   * @param innerClimbInstance Instance of climb to apply this command to (preferably inner climb).
    * @return A command to be set as the default command of the given climb instance (preferably the
    *     outer).
    */
-  public static Command outerClimbManualCommand(
-      Supplier<Double> joystickAxis, Climb outerClimbInstance) {
+  public static Command innerClimbManualCommand(
+      Supplier<Double> joystickAxis, Climb innerClimbInstance) {
     Supplier<Voltage> motorVoltSetpoint =
-        () -> ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE.times(joystickAxis.get());
+        () -> ClimbConstants.MANUAL_INNER_CLIMB_VOLTAGE.times(joystickAxis.get());
 
     // I believe this needs to be a supplier, so we can update the voltage in realtime, rather than
     // it just being constant.
     return new RunCommand(
-        () -> outerClimbInstance.setMotorVoltage(motorVoltSetpoint.get()), outerClimbInstance);
+        () -> innerClimbInstance.setMotorVoltage(motorVoltSetpoint.get()), innerClimbInstance);
   }
 
   /**
@@ -45,7 +45,7 @@ public class ClimbSequences {
    */
   public static Command innerClimbManualUpCommand(Climb innerClimbInstance) {
     return new StartEndCommand(
-        () -> innerClimbInstance.setMotorVoltage(ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE),
+        () -> innerClimbInstance.setMotorVoltage(ClimbConstants.MANUAL_INNER_CLIMB_VOLTAGE),
         innerClimbInstance::stopClimb,
         innerClimbInstance);
   }
@@ -61,7 +61,7 @@ public class ClimbSequences {
     return new StartEndCommand(
         () ->
             innerClimbInstance.setMotorVoltage(
-                ClimbConstants.MANUAL_OUTER_CLIMB_VOLTAGE.unaryMinus()),
+                ClimbConstants.MANUAL_INNER_CLIMB_VOLTAGE.unaryMinus()),
         innerClimbInstance::stopClimb,
         innerClimbInstance);
   }

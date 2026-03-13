@@ -199,8 +199,8 @@ public class RobotContainer {
         break;
     }
 
-    outerClimb.setDefaultCommand(
-        ClimbSequences.outerClimbManualCommand(operatorController::getRightY, outerClimb));
+    innerClimb.setDefaultCommand(
+        ClimbSequences.innerClimbManualCommand(operatorController::getRightY, innerClimb));
 
     // Registers all named commands.
     namedCommandsRegistration();
@@ -273,11 +273,11 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Used for stopping Climb command sequences.
-    BooleanSupplier cancelOuterClimbCommand =
-        () -> outerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
+    BooleanSupplier cancelInnerClimbCommand =
+        () -> innerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
 
-    operatorController.povUp().whileTrue(ClimbSequences.innerClimbManualUpCommand(innerClimb));
-    operatorController.povDown().whileTrue(ClimbSequences.innerClimbManualDownCommand(innerClimb));
+    // operatorController.povUp().whileTrue(ClimbSequences.innerClimbManualUpCommand(innerClimb));
+    // operatorController.povDown().whileTrue(ClimbSequences.innerClimbManualDownCommand(innerClimb));
 
     // Climb binding
     // TODO: Update these with the new Climbs.
@@ -290,7 +290,6 @@ public class RobotContainer {
     //    outerClimb.setManualOutClimbOverrideController(
     //        () -> MathUtil.applyDeadband(-operatorController.getRightY(), 0.1));
 
-   
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(

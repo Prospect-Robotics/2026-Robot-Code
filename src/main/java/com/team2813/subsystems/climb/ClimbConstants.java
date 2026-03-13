@@ -61,7 +61,7 @@ public class ClimbConstants {
   public static final Distance OUTER_CLIMB_MID_HEIGHT = Inches.of(14.0);
   public static final Distance OUTER_CLIMB_MAX_HEIGHT = Inches.of(28.0);
 
-  public static final Voltage MANUAL_OUTER_CLIMB_VOLTAGE = Volts.of(3);
+  public static final Voltage MANUAL_INNER_CLIMB_VOLTAGE = Volts.of(3);
 
   public static final Angle CLIMB_SETPOINT_TO_MOTOR_ROT_TOLERANCE = Rotations.of(2);
 }
