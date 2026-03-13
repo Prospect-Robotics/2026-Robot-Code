@@ -4,87 +4,58 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 
-public class ClimbIOReal implements ClimbIO {
+public class ClimbIOReal extends ClimbIO {
 
-  private TalonFX innerMotor;
-  private TalonFX outerMotor;
+  private TalonFX climbMotor;
 
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
 
-  public ClimbIOReal() {
-    innerMotor = new TalonFX(Constants.LEFTCLIMB_MOTOR_ID);
-    innerMotor.getConfigurator().apply(ClimbConstants.INNER_MOTOR_TO_CLIMB_CONFIG);
-    outerMotor = new TalonFX(Constants.RIGHTCLIMB_MOTOR_ID);
-    outerMotor.getConfigurator().apply(ClimbConstants.OUTER_MOTOR_TO_CLIMB_CONFIG);
+  public ClimbIOReal(AllClimbConstants climbConstants) {
+    super(climbConstants);
+
+    climbMotor = new TalonFX(climbConstants.climbCanID());
+    climbMotor.getConfigurator().apply(climbConstants.climbMotorConfig());
   }
 
   @Override
   public void updateState(ClimbIOInputs inputs) {
-
-    inputs.innerCarriagePositionInches = getInnerCarriagePosition().in(Inches);
-    inputs.innerMotorRotations = innerMotor.getPosition().getValueAsDouble();
-    inputs.innerMotorVelocityRotsPerSecond = innerMotor.getVelocity().getValue();
-    inputs.innerMotorCurrent = innerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.innerMotorVoltage = innerMotor.getMotorVoltage().getValueAsDouble();
-
-    inputs.outerCarriagePositionInches = getOuterCarriagePosition().in(Inches);
-    inputs.outerMotorRotations = outerMotor.getPosition().getValueAsDouble();
-    inputs.outerMotorVelocityRotsPerSecond = outerMotor.getVelocity().getValue();
-    inputs.outerMotorCurrent = outerMotor.getStatorCurrent().getValueAsDouble();
-    inputs.outerMotorVoltage = outerMotor.getMotorVoltage().getValueAsDouble();
+    inputs.carriagePositionInches = getCarriagePosition().in(Inches);
+    inputs.motorRotations = climbMotor.getPosition().getValueAsDouble();
+    inputs.motorVelocityRotsPerSecond = climbMotor.getVelocity().getValue();
+    inputs.motorCurrent = climbMotor.getStatorCurrent().getValueAsDouble();
+    inputs.motorVoltage = climbMotor.getMotorVoltage().getValueAsDouble();
   }
 
   @Override
-  public void setInnerMotorSetpoint(Angle setpoint) {
-    innerMotor.setControl(positionControl.withPosition(setpoint));
+  public void setMotorSetpoint(Angle setpoint) {
+    climbMotor.setControl(positionControl.withPosition(setpoint));
   }
 
   @Override
-  public void setOuterMotorSetpoint(Angle setpoint) {
-    outerMotor.setControl(positionControl.withPosition(setpoint));
+  public void stopMotor() {
+    climbMotor.disable();
   }
 
   @Override
-  public void stopInnerMotor() {
-    innerMotor.disable();
+  public Angle getMotorPosition() {
+    return climbMotor.getPosition().getValue();
   }
 
   @Override
-  public void stopOuterMotor() {
-    outerMotor.disable();
+  public void setMotorVoltage(Voltage motorVoltage) {
+    climbMotor.setVoltage(motorVoltage.in(Volts));
   }
 
   @Override
-  public Angle getInnerMotorPosition() {
-    return innerMotor.getPosition().getValue();
+  public Distance getCarriagePosition() {
+    return motorRotationToCarriagePosition(climbMotor.getPosition().getValue());
   }
 
-  @Override
-  public Angle getOuterMotorPosition() {
-    return outerMotor.getPosition().getValue();
-  }
-
-  @Override
-  public Distance getInnerCarriagePosition() {
-    return leftMotorRotationToCarriagePosition(innerMotor.getPosition().getValue());
-  }
-
-  @Override
-  public Distance getOuterCarriagePosition() {
-    return rightMotorRotationToCarriagePosition(outerMotor.getPosition().getValue());
-  }
-
-  private static Distance leftMotorRotationToCarriagePosition(Angle motorPosition) {
-    return ClimbConstants.INNER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.times(
-        motorPosition.in(Rotations));
-  }
-
-  private static Distance rightMotorRotationToCarriagePosition(Angle motorPosition) {
-    return ClimbConstants.OUTER_CLIMB_HEIGHT_CHANGE_PER_MOTOR_ROTATION.times(
-        motorPosition.in(Rotations));
+  private Distance motorRotationToCarriagePosition(Angle motorPosition) {
+    return super.climbConstants.climbHeightChangePerRotation().times(motorPosition.in(Rotations));
   }
 }
