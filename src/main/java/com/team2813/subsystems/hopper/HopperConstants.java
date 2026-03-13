@@ -14,11 +14,11 @@ public class HopperConstants {
 
   static {
     // Roller motors.
-    Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 8);
+    Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 6.5f);
     Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8);
 
     // Feeder/Vectoring motors.
-    Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 8);
+    Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 6.5f);
     Preferences.initFloat("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -8);
   }
 
