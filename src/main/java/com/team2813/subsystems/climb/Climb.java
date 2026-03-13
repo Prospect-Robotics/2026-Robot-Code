@@ -11,10 +11,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
-/** Class that holds control logic and public interface for the elevator. */
-public class Climb extends SubsystemBase {
+/**
+ * Class that holds control logic and public interface for the elevator.
+ *
+ * @param <T> An distance supplier used for motor setpoints.
+ */
+public class Climb<T extends Supplier<Distance>> extends SubsystemBase {
   private final ClimbIO io;
   private final ClimbIOInputsAutoLogged replayedInputs = new ClimbIOInputsAutoLogged();
 
@@ -66,8 +71,8 @@ public class Climb extends SubsystemBase {
     io.stopMotor();
   }
 
-  public void setClimbPosition(Distance heightSetpoint) {
-    currentClimbSetpointInches = heightSetpoint;
+  public void setClimbPosition(T heightSetpoint) {
+    currentClimbSetpointInches = heightSetpoint.get();
     currentClimbSetpointRotations = convertExtenderHeightToMotorAngle(heightSetpoint);
     io.setMotorSetpoint(currentClimbSetpointRotations);
   }
@@ -76,13 +81,13 @@ public class Climb extends SubsystemBase {
     io.setMotorVoltage(motorVoltage);
   }
 
-  public Command setClimbPositionCommand(Distance heightSetpoint) {
+  public Command setClimbPositionCommand(T heightSetpoint) {
     return new InstantCommand(() -> setClimbPosition(heightSetpoint));
   }
 
-  private Angle convertExtenderHeightToMotorAngle(Distance heightPositionSetpoint) {
+  private Angle convertExtenderHeightToMotorAngle(T heightPositionSetpoint) {
     return Rotations.of(
-        heightPositionSetpoint.in(Inches)
+        heightPositionSetpoint.get().in(Inches)
             / io.climbConstants.climbHeightChangePerRotation().in(Inches));
   }
 

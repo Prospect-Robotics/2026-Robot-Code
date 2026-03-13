@@ -78,9 +78,7 @@ public class ClimbSequences {
    */
   public static Command postAutoClimb(Climb innerClimbInstance, BooleanSupplier climbInterruption) {
     return new StartEndCommand(
-            () ->
-                innerClimbInstance.setClimbPosition(
-                    AllClimbs.InnerClimbHeight.POSTAUTO.getInnerPosition()),
+            () -> innerClimbInstance.setClimbPosition(AllClimbs.InnerClimbHeight.POSTAUTO),
             innerClimbInstance::stopClimb,
             innerClimbInstance)
         .until(climbInterruption);

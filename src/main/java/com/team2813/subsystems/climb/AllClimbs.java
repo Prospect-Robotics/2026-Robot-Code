@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Inches;
 
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Distance;
+import java.util.function.Supplier;
 
 public class AllClimbs {
   public static AllClimbConstants outerClimb() {
@@ -32,7 +33,7 @@ public class AllClimbs {
         ClimbConstants.INNER_CLIMB_MAX_HEIGHT);
   }
 
-  public enum InnerClimbHeight {
+  public enum InnerClimbHeight implements Supplier<Distance> {
     // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
     // except for down
     // Origional values UP(Inches.of(9.75)), MIDDLE(Inches.of(4.875)),
@@ -48,12 +49,13 @@ public class AllClimbs {
       this.position = position;
     }
 
-    public Distance getInnerPosition() {
+    @Override
+    public Distance get() {
       return position;
     }
   }
 
-  public enum UpperClimbHeight {
+  public enum OuterClimbHeight implements Supplier<Distance> {
     // elliot said add 3 inches since its not a normal elevator beacuse a rope is spolling it,
     // except for down
     // Origional values UP(Inches.of(11)), MIDDLE(Inches.of(5.5)),
@@ -63,11 +65,12 @@ public class AllClimbs {
 
     public final Distance position;
 
-    UpperClimbHeight(Distance position) {
+    OuterClimbHeight(Distance position) {
       this.position = position;
     }
 
-    public Distance getPosition() {
+    @Override
+    public Distance get() {
       return position;
     }
   }

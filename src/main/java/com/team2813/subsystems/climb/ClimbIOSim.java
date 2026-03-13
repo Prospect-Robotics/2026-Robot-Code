@@ -69,16 +69,13 @@ public class ClimbIOSim extends ClimbIO {
         String.format("Simulated Climb/%s/motorSim/Voltage", climbConstants.climbName()),
         climbMotorSim.getMotorVoltage());
     Logger.recordOutput(
-        String.format(
-            "Simulated Climb/%s/climbSim/position (meters)", climbConstants.climbName()),
+        String.format("Simulated Climb/%s/climbSim/position (meters)", climbConstants.climbName()),
         climbSim.getPositionMeters());
     Logger.recordOutput(
-        String.format(
-            "Simulated Climb/%s/climbSim/hitsUpperLimit", climbConstants.climbName()),
+        String.format("Simulated Climb/%s/climbSim/hitsUpperLimit", climbConstants.climbName()),
         climbSim.hasHitUpperLimit());
     Logger.recordOutput(
-        String.format(
-            "Simulated Climb/%s/climbSim/hitsLowerLimit", climbConstants.climbName()),
+        String.format("Simulated Climb/%s/climbSim/hitsLowerLimit", climbConstants.climbName()),
         climbSim.hasHitLowerLimit());
 
     // angular velocity = linear velocity / radius, taken also from 5414
