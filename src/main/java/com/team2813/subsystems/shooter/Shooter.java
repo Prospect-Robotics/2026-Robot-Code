@@ -41,6 +41,13 @@ public class Shooter extends SubsystemBase {
         this);
   }
 
+  public Command spoolShooterHerdSpeedCommand() {
+    return new StartEndCommand(
+        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHerdShootVelocity()),
+        this::stop,
+        this);
+  }
+
   public Command outakeCommand() {
     return new StartEndCommand(
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
