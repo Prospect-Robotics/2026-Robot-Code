@@ -22,13 +22,13 @@ public class ClimbIOSim extends ClimbIO {
   private final ElevatorSim climbSim =
       new ElevatorSim(
           DCMotor.getKrakenX60(1),
-          super.climbConstants.motorToClimbGearing(),
+          climbConstants.motorToClimbGearing(),
           APPROX_CLIMB_CARRIAGE_WEIGHT.in(Kilograms),
-          super.climbConstants.climbSpoolRadius().in(Meters),
-          super.climbConstants.climbMinHeight().in(Meters),
-          super.climbConstants.climbMaxHeight().in(Meters),
+          climbConstants.climbSpoolRadius().in(Meters),
+          climbConstants.climbMinHeight().in(Meters),
+          climbConstants.climbMaxHeight().in(Meters),
           true,
-          super.climbConstants.climbMinHeight().in(Meters));
+          climbConstants.climbMinHeight().in(Meters));
 
   private TalonFX climbMotor;
   private TalonFXSimState climbMotorSim;
@@ -66,19 +66,19 @@ public class ClimbIOSim extends ClimbIO {
 
     // Logs to "Real Outputs" NT
     Logger.recordOutput(
-        String.format("Simulated Climb/%s/motorSim/Voltage", super.climbConstants.climbName()),
+        String.format("Simulated Climb/%s/motorSim/Voltage", climbConstants.climbName()),
         climbMotorSim.getMotorVoltage());
     Logger.recordOutput(
         String.format(
-            "Simulated Climb/%s/climbSim/position (meters)", super.climbConstants.climbName()),
+            "Simulated Climb/%s/climbSim/position (meters)", climbConstants.climbName()),
         climbSim.getPositionMeters());
     Logger.recordOutput(
         String.format(
-            "Simulated Climb/%s/climbSim/hitsUpperLimit", super.climbConstants.climbName()),
+            "Simulated Climb/%s/climbSim/hitsUpperLimit", climbConstants.climbName()),
         climbSim.hasHitUpperLimit());
     Logger.recordOutput(
         String.format(
-            "Simulated Climb/%s/climbSim/hitsLowerLimit", super.climbConstants.climbName()),
+            "Simulated Climb/%s/climbSim/hitsLowerLimit", climbConstants.climbName()),
         climbSim.hasHitLowerLimit());
 
     // angular velocity = linear velocity / radius, taken also from 5414
@@ -126,7 +126,7 @@ public class ClimbIOSim extends ClimbIO {
    */
   private double getMotorRotations(double elevatorPosition) {
     // angular displacement in radians = linear displacement / radius
-    return elevatorPosition / super.climbConstants.climbHeightChangePerRotation().in(Meters);
+    return elevatorPosition / climbConstants.climbHeightChangePerRotation().in(Meters);
   }
 
   /**

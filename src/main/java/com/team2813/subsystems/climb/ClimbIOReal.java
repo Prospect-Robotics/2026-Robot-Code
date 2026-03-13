@@ -17,8 +17,8 @@ public class ClimbIOReal extends ClimbIO {
   public ClimbIOReal(AllClimbConstants climbConstants) {
     super(climbConstants);
 
-    climbMotor = new TalonFX(super.climbConstants.climbCanID());
-    climbMotor.getConfigurator().apply(super.climbConstants.climbMotorConfig());
+    climbMotor = new TalonFX(climbConstants.climbCanID());
+    climbMotor.getConfigurator().apply(climbConstants.climbMotorConfig());
   }
 
   @Override
