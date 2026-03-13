@@ -1,10 +1,8 @@
 package com.team2813.subsystems.climb;
 
 import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Rotations;
 
 import com.team2813.Constants;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 
 public class AllClimbs {

@@ -10,6 +10,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.Consumer;
 import org.littletonrobotics.junction.Logger;
 
 /** Class that holds control logic and public interface for the elevator. */
@@ -20,6 +21,8 @@ public class Climb extends SubsystemBase {
   private Angle currentClimbSetpointRotations = Rotations.of(0);
   private Distance currentClimbSetpointInches = Inches.of(0);
 
+  private final Consumer<Distance> simulationVisualizerMethod;
+
   private final SimulationVisualizer defaultSimulationVisualizerInstance =
       SimulationVisualizer.getInstance();
 
@@ -28,6 +31,14 @@ public class Climb extends SubsystemBase {
    */
   public Climb(ClimbIO io) {
     this.io = io;
+
+    if (io.climbConstants.climbName().equals("Outer")) {
+      simulationVisualizerMethod = defaultSimulationVisualizerInstance::updateOuterClimbHeight;
+    } else if (io.climbConstants.climbName().equals("Inner")) {
+      simulationVisualizerMethod = defaultSimulationVisualizerInstance::updateInnerClimbHeight;
+    } else {
+      simulationVisualizerMethod = null;
+    }
   }
 
   @Override
@@ -48,14 +59,7 @@ public class Climb extends SubsystemBase {
 
   @Override
   public void simulationPeriodic() {
-    if (io.climbConstants.climbName().equals("Outer")) {
-      defaultSimulationVisualizerInstance.updateOuterClimbHeight(
-          Inches.of(replayedInputs.carriagePositionInches));
-
-    } else if (io.climbConstants.climbName().equals("Inner")) {
-      defaultSimulationVisualizerInstance.updateInnerClimbHeight(
-          Inches.of(replayedInputs.carriagePositionInches));
-    }
+    simulationVisualizerMethod.accept(Inches.of(replayedInputs.carriagePositionInches));
   }
 
   public void stopClimb() {
