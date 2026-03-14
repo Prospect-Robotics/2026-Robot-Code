@@ -62,8 +62,8 @@ public class RobotContainer {
   private final Hopper hopper;
   private final Vision vision;
 
-  private final Climb<AllClimbs.OuterClimbHeight> outerClimb;
-  private final Climb<AllClimbs.InnerClimbHeight> innerClimb;
+//  private final Climb<AllClimbs.OuterClimbHeight> outerClimb;
+//  private final Climb<AllClimbs.InnerClimbHeight> innerClimb;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -119,8 +119,8 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
 
-        outerClimb = new Climb<>(new ClimbIOReal(AllClimbs.outerClimb()));
-        innerClimb = new Climb<>(new ClimbIOReal(AllClimbs.innerClimb()));
+//        outerClimb = new Climb<>(new ClimbIOReal(AllClimbs.outerClimb()));
+//        innerClimb = new Climb<>(new ClimbIOReal(AllClimbs.innerClimb()));
 
         break;
 
@@ -162,8 +162,8 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
-        outerClimb = new Climb<>(new ClimbIOSim(AllClimbs.outerClimb()));
-        innerClimb = new Climb<>(new ClimbIOSim(AllClimbs.innerClimb()));
+//        outerClimb = new Climb<>(new ClimbIOSim(AllClimbs.outerClimb()));
+//        innerClimb = new Climb<>(new ClimbIOSim(AllClimbs.innerClimb()));
 
         break;
 
@@ -193,14 +193,14 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
-        outerClimb = new Climb<>(new ClimbIO(AllClimbs.outerClimb()) {});
-        innerClimb = new Climb<>(new ClimbIO(AllClimbs.innerClimb()) {});
+//        outerClimb = new Climb<>(new ClimbIO(AllClimbs.outerClimb()) {});
+//        innerClimb = new Climb<>(new ClimbIO(AllClimbs.innerClimb()) {});
 
         break;
     }
 
-    innerClimb.setDefaultCommand(
-        ClimbSequences.innerClimbManualCommand(operatorController::getRightY, innerClimb));
+//    innerClimb.setDefaultCommand(
+//        ClimbSequences.innerClimbManualCommand(operatorController::getRightY, innerClimb));
 
     // Registers all named commands.
     namedCommandsRegistration();
@@ -273,8 +273,8 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Used for stopping Climb command sequences.
-    BooleanSupplier cancelInnerClimbCommand =
-        () -> innerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
+//    BooleanSupplier cancelInnerClimbCommand =
+//        () -> innerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
 
     // operatorController.povUp().whileTrue(ClimbSequences.innerClimbManualUpCommand(innerClimb));
     // operatorController.povDown().whileTrue(ClimbSequences.innerClimbManualDownCommand(innerClimb));
