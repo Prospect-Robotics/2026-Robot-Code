@@ -39,7 +39,8 @@ public class HopperConstants {
 
   public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)); // 60 amps
 
   // TODO: Change this later to the actual number.
   public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
