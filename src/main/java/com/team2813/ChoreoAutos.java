@@ -6,6 +6,7 @@ import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
+import choreo.util.ChoreoAllianceFlipUtil;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.hopper.Hopper;
@@ -21,16 +22,21 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedNetworkInput;
 
 public class ChoreoAutos implements AutoSelector {
   private final AutoFactory autoFactory;
   private final SelectorWrapper autoChooser = new SelectorWrapper("Choreo Auto Selector");
+  private final LoggedDashboardChooser<AutoSide> sideChooser;
+  private AutoSide autoSide;
+  private final Drive drive;
   private final IntakeRoller intakeRoller;
   private final IntakeExtension intakeExtension;
   private final Shooter shooter;
@@ -61,6 +67,12 @@ public class ChoreoAutos implements AutoSelector {
     return Preferences.getBoolean("Choreo/copy-pathplanner", true);
   }
 
+  private enum AutoSide {
+    Left,
+    Right,
+    DoNotFlip,
+  }
+
   private ChoreoAutos(
       boolean addPathPlannerAutos,
       Drive drive,
@@ -73,8 +85,8 @@ public class ChoreoAutos implements AutoSelector {
     autoFactory =
         new AutoFactory(
             drive::getPose,
-            drive::setPose,
-            (SwerveSample sample) -> followTrajectory(drive, sample),
+            this::setPose,
+            this::followTrajectory,
             true,
             drive,
             this::logTrajectory);
@@ -87,13 +99,27 @@ public class ChoreoAutos implements AutoSelector {
       }
     }
     rotController.enableContinuousInput(-Math.PI, Math.PI);
+    this.drive = drive;
     this.intakeRoller = intakeRoller;
     this.intakeExtension = intakeExtension;
     this.shooter = shooter;
     this.kicker = kicker;
     this.hopper = hopper;
 
-    autoChooser.addRoutine("CHOR - Neutral Zone Auto", this::neutralZoneAuto);
+    autoChooser.addRoutine("[CHOR] Neutral Zone Auto", this::neutralZoneAuto);
+
+    sideChooser = new LoggedDashboardChooser<>("Choreo Auto Side");
+    for (AutoSide side : AutoSide.values()) {
+      sideChooser.addOption(side.toString(), side);
+    }
+  }
+
+  private void setPose(Pose2d pose) {
+    if (autoSide == AutoSide.Left) {
+      drive.setPose(flipPoseToLeft(pose));
+    } else {
+      drive.setPose(pose);
+    }
   }
 
   private AutoRoutine neutralZoneAuto() {
@@ -128,6 +154,7 @@ public class ChoreoAutos implements AutoSelector {
 
   @Override
   public Command getAutonomousCommand() {
+    autoSide = sideChooser.get();
     return autoChooser.selectedCommand();
   }
 
@@ -140,7 +167,11 @@ public class ChoreoAutos implements AutoSelector {
   private final PIDController yController = new PIDController(5.0, 0, 0);
   private final PIDController rotController = new PIDController(5.0, 0, 0);
 
-  private void followTrajectory(Drive drive, SwerveSample sample) {
+  private void followTrajectory(SwerveSample sample) {
+    // Assume all autos are on the right side
+    if (autoSide == AutoSide.Left) {
+      sample = flipToLeft(sample);
+    }
     ChassisSpeeds speeds = sample.getChassisSpeeds();
     Pose2d pose = drive.getPose();
     speeds.vxMetersPerSecond += xController.calculate(pose.getX(), sample.x);
@@ -154,14 +185,50 @@ public class ChoreoAutos implements AutoSelector {
 
   private void logTrajectory(Trajectory<SwerveSample> trajectory, boolean starting) {
     if (starting) {
-      Trajectory<SwerveSample> traj = trajectory;
+      Trajectory<SwerveSample> traj;
+      // Assume all autos (and therefore trajectories are on the right side
+      if (autoSide == AutoSide.Left) {
+        traj = flipTrajToLeft(trajectory);
+      } else {
+        traj = trajectory;
+      }
       if (DriverStation.getAlliance().map(a -> a == DriverStation.Alliance.Red).orElse(false)) {
-        traj = trajectory.flipped();
+        traj = traj.flipped();
       }
       Logger.recordOutput("Odometry/Trajectory", traj.getPoses());
     } else {
       Logger.recordOutput("Odometry/Trajectory", new Pose2d[0]);
     }
+  }
+
+  private static SwerveSample flipToLeft(SwerveSample s) {
+    return new SwerveSample(
+        s.t,
+        s.x,
+        ChoreoAllianceFlipUtil.flipY(s.y), // only works w/ rotationally symmetric field
+        -s.heading, // TODO: check validity
+        s.vx,
+        -s.vy,
+        -s.omega,
+        s.ax,
+        -s.ay,
+        -s.alpha,
+        new double[] {
+          s.moduleForcesX()[1], s.moduleForcesX()[0], s.moduleForcesX()[3], s.moduleForcesX()[2]
+        },
+        new double[] {
+          -s.moduleForcesY()[1], -s.moduleForcesY()[0], -s.moduleForcesY()[3], -s.moduleForcesY()[2]
+        });
+  }
+
+  private static Trajectory<SwerveSample> flipTrajToLeft(Trajectory<SwerveSample> traj) {
+    List<SwerveSample> samples = traj.samples().stream().map(ChoreoAutos::flipToLeft).toList();
+    return new Trajectory<>(traj.name(), samples, traj.splits(), traj.events());
+  }
+
+  private static Pose2d flipPoseToLeft(Pose2d pose) {
+    return new Pose2d(
+        pose.getX(), ChoreoAllianceFlipUtil.flipY(pose.getY()), pose.getRotation().unaryMinus());
   }
 
   private static final class SelectorWrapper extends LoggedNetworkInput {
