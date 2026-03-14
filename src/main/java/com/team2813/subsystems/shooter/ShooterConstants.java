@@ -61,6 +61,8 @@ public class ShooterConstants {
 
   public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
+          .withSlot0(
+              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(60)));
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
