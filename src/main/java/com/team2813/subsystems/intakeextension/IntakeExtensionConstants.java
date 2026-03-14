@@ -2,10 +2,7 @@ package com.team2813.subsystems.intakeextension;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
@@ -25,7 +22,8 @@ class IntakeExtensionConstants {
               // https://share.google/aimode/Ha33a7FUqS9EhAzI4
               new Slot0Configs().withKS(0.25).withKV(0.25).withKP(10).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1));
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1))
+          .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Amps.of(60)));
 
   public static final Distance PULLEY_RADIUS = Inches.of(0.5);
 
