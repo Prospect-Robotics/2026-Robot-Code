@@ -31,6 +31,7 @@ public class ShooterIOSim implements ShooterIO {
     mainShooterSimState = mainShooterMotor.getSimState();
 
     followerShooterMotor = new TalonFX(Constants.FOLLOWER_SHOOTER_MOTOR_ID);
+    followerShooterMotor.getConfigurator().apply(ShooterConstants.FOLLOWER_SHOOTER_MOTOR_CONFIG);
     followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
     followerShooterSimState = followerShooterMotor.getSimState();
 

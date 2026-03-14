@@ -2,6 +2,7 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -55,8 +56,12 @@ public class ShooterConstants {
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
-              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743));
+              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Amps.of(80)));
 
+  public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
+      new TalonFXConfiguration()
+          .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Amps.of(80)));
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
       new Follower(Constants.MAIN_SHOOTER_MOTOR_ID, MotorAlignmentValue.Opposed);
