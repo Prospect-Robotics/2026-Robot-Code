@@ -12,23 +12,29 @@ public class HopperConstants {
 
   public static final double ROLLER_SIM_MOI = 0.00057684; // in kilograms*meters squared.
 
+  public static final String HOPPER_INTAKE_VOLTAGE_NT = "Hopper/ROLLER_INTAKE_VOLTAGE";
+  public static final String HOPPER_OUTTAKE_VOLTAGE_NT = "Hopper/ROLLER_OUTTAKE_VOLTAGE";
+
+  public static final String INDEXER_INTAKE_VOLTAGE_NT = "Hopper/FEEDER_INTAKE_VOLTAGE";
+  public static final String INDEXER_OUTTAKE_VOLTAGE_NT = "Hopper/FEEDER_OUTTAKE_VOLTAGE";
+
   static {
     // Roller motors.
-    Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 6.5f);
-    Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8);
+    Preferences.initDouble(HOPPER_INTAKE_VOLTAGE_NT, 6.5);
+    Preferences.initDouble(HOPPER_OUTTAKE_VOLTAGE_NT, -8);
 
     // Feeder/Vectoring motors.
-    Preferences.initFloat("Hopper/FEEDER_INTAKE_VOLTAGE", 6.5f);
-    Preferences.initFloat("Hopper/FEEDER_OUTTAKE_VOLTAGE", -8);
+    Preferences.initDouble(INDEXER_INTAKE_VOLTAGE_NT, 6.5);
+    Preferences.initDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -8);
   }
 
   // Roller Motor Configs
   public static Voltage getRollerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/ROLLER_INTAKE_VOLTAGE", 8)); // 5 is the backup.
+    return Volts.of(Preferences.getDouble(HOPPER_INTAKE_VOLTAGE_NT, 8)); // 5 is the backup.
   }
 
   public static Voltage getRollerOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8));
+    return Volts.of(Preferences.getDouble(HOPPER_OUTTAKE_VOLTAGE_NT, -8));
   }
 
   public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
@@ -40,11 +46,11 @@ public class HopperConstants {
 
   // Feeder Motor Configs
   public static Voltage getFeederIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_INTAKE_VOLTAGE", 8));
+    return Volts.of(Preferences.getDouble(INDEXER_INTAKE_VOLTAGE_NT, 8));
   }
 
   public static Voltage getFeederOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -8));
+    return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -8));
   }
 
   public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =
