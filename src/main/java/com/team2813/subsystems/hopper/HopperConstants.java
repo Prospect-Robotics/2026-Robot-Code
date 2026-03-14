@@ -24,13 +24,13 @@ public class HopperConstants {
     Preferences.initDouble(HOPPER_OUTTAKE_VOLTAGE_NT, -8);
 
     // Feeder/Vectoring motors.
-    Preferences.initDouble(INDEXER_INTAKE_VOLTAGE_NT, 6.5);
+    Preferences.initDouble(INDEXER_INTAKE_VOLTAGE_NT, 5);
     Preferences.initDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -8);
   }
 
   // Roller Motor Configs
   public static Voltage getRollerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(HOPPER_INTAKE_VOLTAGE_NT, 8)); // 5 is the backup.
+    return Volts.of(Preferences.getDouble(HOPPER_INTAKE_VOLTAGE_NT, 6.5)); // 5 is the backup.
   }
 
   public static Voltage getRollerOuttakeVoltage() {
@@ -46,7 +46,7 @@ public class HopperConstants {
 
   // Feeder Motor Configs
   public static Voltage getFeederIntakeVoltage() {
-    return Volts.of(Preferences.getDouble(INDEXER_INTAKE_VOLTAGE_NT, 8));
+    return Volts.of(Preferences.getDouble(INDEXER_INTAKE_VOLTAGE_NT, 5));
   }
 
   public static Voltage getFeederOuttakeVoltage() {
