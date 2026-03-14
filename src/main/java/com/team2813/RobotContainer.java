@@ -353,7 +353,7 @@ public class RobotContainer {
                 shooter.spoolShooterTrenchSpeedCommand(),
                 new SequentialCommandGroup(
 //                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
-                    new WaitCommand(0.5),
+                    new WaitCommand(0
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
             new WaitCommand(3.5)));
 
