@@ -352,7 +352,8 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 shooter.spoolShooterTrenchSpeedCommand(),
                 new SequentialCommandGroup(
-                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+//                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
             new WaitCommand(3.5)));
 
@@ -362,7 +363,8 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 shooter.spoolShooterHubSpeedCommand(),
                 new SequentialCommandGroup(
-                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+//                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
             new WaitCommand(3.5)));
 
