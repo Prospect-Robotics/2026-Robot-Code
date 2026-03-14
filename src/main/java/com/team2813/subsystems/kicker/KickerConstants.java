@@ -17,7 +17,7 @@ class KickerConstants {
   static final TalonFXConfiguration KICKER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-              .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(35)));
+          .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(35)));
 
   static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
 

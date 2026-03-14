@@ -20,7 +20,8 @@ public class IntakeRollerConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withFeedback(
               new FeedbackConfigs().withSensorToMechanismRatio(INTAKE_MOTOR_TO_INTAKE_GEARING))
-              .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(60));
+          .withCurrentLimits(
+              new CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(60));
 
   public static final String INTAKE_PREFERENCE_NT = "IntakeRoller/INTAKE_MOTOR_VOLTAGE";
   public static final String OUTTAKE_PREFERENCE_NT = "IntakeRoller/OUTTAKE_MOTOR_VOLTAGE";
