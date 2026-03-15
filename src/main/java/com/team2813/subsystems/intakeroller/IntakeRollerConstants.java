@@ -30,7 +30,7 @@ public class IntakeRollerConstants {
 
   static {
     Preferences.initFloat(INTAKE_PREFERENCE_NT, 8);
-    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -8);
+    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -6);
   }
 
   public static Voltage getIntakeVoltage() {
@@ -38,6 +38,6 @@ public class IntakeRollerConstants {
   }
 
   public static Voltage getOuttakeVoltage() {
-    return Volts.of(Preferences.getFloat(OUTTAKE_PREFERENCE_NT, -8));
+    return Volts.of(Preferences.getFloat(OUTTAKE_PREFERENCE_NT, -6));
   }
 }

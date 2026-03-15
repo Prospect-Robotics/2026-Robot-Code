@@ -21,11 +21,11 @@ public class HopperConstants {
   static {
     // Feeder motors.
     Preferences.initDouble(FEEDER_INTAKE_VOLTAGE_NT, 8);
-    Preferences.initDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -8);
+    Preferences.initDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6);
 
     // Indexer/Vectoring motors.
     Preferences.initDouble(INDEXER_INTAKE_VOLTAGE_NT, 8);
-    Preferences.initDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -8);
+    Preferences.initDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -6);
   }
 
   // Roller Motor Configs
@@ -34,7 +34,7 @@ public class HopperConstants {
   }
 
   public static Voltage getRollerOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -8));
+    return Volts.of(Preferences.getDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
   // TOP
@@ -58,7 +58,7 @@ public class HopperConstants {
   }
 
   public static Voltage getFeederOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -8));
+    return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
   public static final TalonFXConfiguration FEEDER_MOTOR_CONFIG =
