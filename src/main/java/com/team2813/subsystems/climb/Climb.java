@@ -3,15 +3,14 @@ package com.team2813.subsystems.climb;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Rotations;
 
-import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -21,29 +20,18 @@ import org.littletonrobotics.junction.Logger;
  */
 public class Climb<T extends Supplier<Distance>> extends SubsystemBase {
   private final ClimbIO io;
+  private final String name;
   private final ClimbIOInputsAutoLogged replayedInputs = new ClimbIOInputsAutoLogged();
 
   private Angle currentClimbSetpointRotations = Rotations.of(0);
   private Distance currentClimbSetpointInches = Inches.of(0);
-
-  private final Consumer<Distance> simulationVisualizerMethod;
-
-  private final SimulationVisualizer defaultSimulationVisualizerInstance =
-      SimulationVisualizer.getInstance();
 
   /**
    * @param io The hardware implementation for the climb, either sim or real.
    */
   public Climb(ClimbIO io) {
     this.io = io;
-
-    if (io.climbConstants.climbName().equals("Outer")) {
-      simulationVisualizerMethod = defaultSimulationVisualizerInstance::updateOuterClimbHeight;
-    } else if (io.climbConstants.climbName().equals("Inner")) {
-      simulationVisualizerMethod = defaultSimulationVisualizerInstance::updateInnerClimbHeight;
-    } else {
-      simulationVisualizerMethod = null;
-    }
+    this.name = io.climbConstants.climbName();
   }
 
   @Override
@@ -53,19 +41,14 @@ public class Climb<T extends Supplier<Distance>> extends SubsystemBase {
     // In `REPLAY` mode, `updateState` does nothing, and the `replayedInputs` are populated from the
     // replayed logs
     // instead.
-    Logger.processInputs(String.format("Climb/%s", io.climbConstants.climbName()), replayedInputs);
-    Logger.recordOutput(
-        String.format("Climb/%s/Carriage Setpoint (inches)", io.climbConstants.climbName()),
-        currentClimbSetpointInches.in(Inches));
-    Logger.recordOutput(
-        String.format("Climb/%s/Motor Setpoint (rotations)", io.climbConstants.climbName()),
+    Logger.processInputs("Climb/" + name, replayedInputs);
+    Logger.recordOutput("Climb/" + name + "/Carriage Setpoint (inches)", currentClimbSetpointInches.in(Inches));
+    Logger.recordOutput("Climb/" + name + "/Motor Setpoint (rotations)",
         currentClimbSetpointRotations.in(Rotations));
   }
 
   @Override
-  public void simulationPeriodic() {
-    simulationVisualizerMethod.accept(Inches.of(replayedInputs.carriagePositionInches));
-  }
+  public void simulationPeriodic() {}
 
   public void stopClimb() {
     io.stopMotor();

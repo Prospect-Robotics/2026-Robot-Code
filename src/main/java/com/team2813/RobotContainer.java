@@ -36,6 +36,7 @@ import com.team2813.subsystems.kicker.KickerIOReal;
 import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
+import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -162,8 +163,13 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
-        outerClimb = new Climb<>(new ClimbIOSim(AllClimbs.outerClimb()));
-        innerClimb = new Climb<>(new ClimbIOSim(AllClimbs.innerClimb()));
+        var simVizInstance = SimulationVisualizer.getInstance();
+        outerClimb =
+            new Climb<>(
+                new ClimbIOSim(AllClimbs.outerClimb(), simVizInstance::updateOuterClimbHeight));
+        innerClimb =
+            new Climb<>(
+                new ClimbIOSim(AllClimbs.innerClimb(), simVizInstance::updateInnerClimbHeight));
 
         break;
 

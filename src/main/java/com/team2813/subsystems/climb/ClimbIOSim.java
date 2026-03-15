@@ -14,6 +14,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import java.util.function.Consumer;
 import org.littletonrobotics.junction.Logger;
 
 public class ClimbIOSim extends ClimbIO {
@@ -34,9 +35,12 @@ public class ClimbIOSim extends ClimbIO {
   private TalonFXSimState climbMotorSim;
   // Used for actually moving the motor to a given position with PID applied to a voltage input.
   private final PositionVoltage positionControl = new PositionVoltage(Rotations.of(0));
+  private final Consumer<Distance> simVisualizationHeightConsumer;
 
-  public ClimbIOSim(AllClimbConstants climbConstants) {
+  public ClimbIOSim(
+      AllClimbConstants climbConstants, Consumer<Distance> simVisualizationHeightConsumer) {
     super(climbConstants);
+    this.simVisualizationHeightConsumer = simVisualizationHeightConsumer;
 
     climbMotor = new TalonFX(climbConstants.climbCanID());
     climbMotor.getConfigurator().apply(climbConstants.climbMotorConfig());
@@ -53,6 +57,8 @@ public class ClimbIOSim extends ClimbIO {
     inputs.motorRotations = climbMotor.getPosition().getValueAsDouble();
     inputs.motorVoltage = climbMotor.getMotorVoltage().getValueAsDouble();
     inputs.motorVelocityRotsPerSecond = climbMotor.getRotorVelocity().getValue();
+
+    simVisualizationHeightConsumer.accept(Inches.of(inputs.carriagePositionInches));
   }
 
   private void updateSim() {
