@@ -355,7 +355,7 @@ public class RobotContainer {
                     // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                     new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
-            new WaitCommand(3.5)));
+            new WaitCommand(5)));
 
     NamedCommands.registerCommand(
         "HubShot",
@@ -366,15 +366,28 @@ public class RobotContainer {
                     // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                     new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
-            new WaitCommand(3.5)));
+            new WaitCommand(6)));
 
     NamedCommands.registerCommand(
         "ExtendIntake",
-        intakeExtension.extendCommand().until(intakeExtension::isExtenderAtPosition));
+        intakeExtension
+            .extendCommand()
+            .until(intakeExtension::isExtenderAtPosition)
+            .raceWith(new WaitCommand(3)));
 
     NamedCommands.registerCommand(
         "RetractIntake",
-        intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition));
+        intakeExtension
+            .retractCommand()
+            .until(intakeExtension::isExtenderAtPosition)
+            .raceWith(new WaitCommand(3)));
+
+    NamedCommands.registerCommand(
+        "HalfwayIntake",
+        intakeExtension
+            .halfRetractCommand()
+            .until(intakeExtension::isExtenderAtPosition)
+            .raceWith(new WaitCommand(3)));
 
     // Intake roller motor control.
     NamedCommands.registerCommand(
