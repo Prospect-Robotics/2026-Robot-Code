@@ -23,7 +23,6 @@ public class ShooterIOReal implements ShooterIO {
 
     followerShooterMotor = new TalonFX(Constants.FOLLOWER_SHOOTER_MOTOR_ID);
     followerShooterMotor.getConfigurator().apply(ShooterConstants.FOLLOWER_SHOOTER_MOTOR_CONFIG);
-    followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
   }
@@ -51,11 +50,14 @@ public class ShooterIOReal implements ShooterIO {
     // AngularVelocity converting its value (i.e. Rot/s) to the base unit (rad/s)
     mainShooterSetpoint = shooterMotorVelocity;
     mainShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
+    // same velocity
+    followerShooterMotor.setControl(shooterVelocityControl);
   }
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterVoltage) {
     mainShooterSetpoint = RotationsPerSecond.of(0);
     mainShooterMotor.setVoltage(shooterVoltage.in(Volts));
+    followerShooterMotor.setVoltage(shooterVoltage.in(Volts));
   }
 }
