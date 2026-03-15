@@ -44,7 +44,7 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 150);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90);
     Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 115);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
@@ -57,13 +57,13 @@ public class ShooterConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
-          .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(120)));
+          .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(80)));
 
   public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
-          .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(120)));
+          .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(80)));
   // Left shooter motor.
   public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
       new Follower(Constants.MAIN_SHOOTER_MOTOR_ID, MotorAlignmentValue.Opposed);
