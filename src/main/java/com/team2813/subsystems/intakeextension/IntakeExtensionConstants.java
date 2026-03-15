@@ -25,7 +25,7 @@ class IntakeExtensionConstants {
           .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withSupplyCurrentLimit(Amps.of(30))
                   .withStatorCurrentLimit(70));
 
   public static final Distance PULLEY_RADIUS = Inches.of(0.5);
