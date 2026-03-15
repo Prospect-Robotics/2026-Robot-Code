@@ -23,7 +23,10 @@ class IntakeExtensionConstants {
               new Slot0Configs().withKS(0.25).withKV(0.25).withKP(10).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1))
-          .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Amps.of(40)));
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withStatorCurrentLimit(70));
 
   public static final Distance PULLEY_RADIUS = Inches.of(0.5);
 
