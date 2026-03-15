@@ -1,7 +1,9 @@
 package com.team2813.subsystems.hopper;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -40,14 +42,21 @@ public class HopperConstants {
   // TOP
   public static final TalonFXConfiguration MAIN_ROLLER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)); // 60 amps
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withStatorCurrentLimit(Amps.of(80)));
 
   // Bottom Motor, opposite of main motor.
   public static final TalonFXConfiguration FOLLOWER_FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withStatorCurrentLimit(Amps.of(80)));
 
   // TODO: Change this later to the actual number.
   public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
@@ -61,7 +70,11 @@ public class HopperConstants {
     return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
-  public static final TalonFXConfiguration FEEDER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration INDEXER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(30))
+                  .withStatorCurrentLimit(Amps.of(60)));
 }

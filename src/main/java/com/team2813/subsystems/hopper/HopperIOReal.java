@@ -23,7 +23,7 @@ public class HopperIOReal implements HopperIO {
     //        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
 
     feederMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
-    feederMotor.getConfigurator().apply(HopperConstants.FEEDER_MOTOR_CONFIG);
+    feederMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
   }
 
   @Override

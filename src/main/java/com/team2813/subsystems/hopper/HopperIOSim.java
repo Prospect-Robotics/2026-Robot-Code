@@ -48,7 +48,7 @@ public class HopperIOSim implements HopperIO {
             DCMotor.getKrakenX60(2));
 
     feederMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
-    feederMotor.getConfigurator().apply(HopperConstants.FEEDER_MOTOR_CONFIG);
+    feederMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
     feederMotorSimState = feederMotor.getSimState();
   }
 
