@@ -2,9 +2,7 @@ package com.team2813.subsystems.hopper;
 
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -30,12 +28,13 @@ public class HopperIOSim implements HopperIO {
 
   public HopperIOSim() {
     mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
-    mainRollerMotor.getConfigurator().apply(HopperConstants.ROLLER_MOTOR_CONFIG);
+    mainRollerMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
     mainRollerMotorSimState = mainRollerMotor.getSimState();
 
     followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
-    followerRollerMotor.setControl(
-        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
+    followerRollerMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
+    //    followerRollerMotor.setControl(
+    //        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
     followerRollerMotorSimState = followerRollerMotor.getSimState();
 
     // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value
@@ -49,7 +48,7 @@ public class HopperIOSim implements HopperIO {
             DCMotor.getKrakenX60(2));
 
     feederMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
-    feederMotor.getConfigurator().apply(HopperConstants.RIGHT_FEEDER_MOTOR_CONFIG);
+    feederMotor.getConfigurator().apply(HopperConstants.FEEDER_MOTOR_CONFIG);
     feederMotorSimState = feederMotor.getSimState();
   }
 

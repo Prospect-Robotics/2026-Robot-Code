@@ -37,10 +37,17 @@ public class HopperConstants {
     return Volts.of(Preferences.getDouble(HOPPER_OUTTAKE_VOLTAGE_NT, -8));
   }
 
-  public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
+  // TOP
+  public static final TalonFXConfiguration MAIN_ROLLER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)); // 60 amps
+
+  // Bottom Motor, opposite of main motor.
+  public static final TalonFXConfiguration FOLLOWER_FEEDER_MOTOR_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
 
   // TODO: Change this later to the actual number.
   public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
@@ -54,7 +61,7 @@ public class HopperConstants {
     return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -8));
   }
 
-  public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
 }
