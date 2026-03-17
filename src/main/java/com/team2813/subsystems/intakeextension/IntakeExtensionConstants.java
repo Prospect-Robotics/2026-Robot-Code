@@ -22,7 +22,6 @@ class IntakeExtensionConstants {
               // https://share.google/aimode/Ha33a7FUqS9EhAzI4
               new Slot0Configs().withKS(0.25).withKV(0.25).withKP(10).withKI(0.0).withKD(0.1))
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(1))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withSupplyCurrentLimit(Amps.of(30))
