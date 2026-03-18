@@ -31,7 +31,7 @@ public class ShooterIOSim implements ShooterIO {
     mainShooterSimState = mainShooterMotor.getSimState();
 
     followerShooterMotor = new TalonFX(Constants.FOLLOWER_SHOOTER_MOTOR_ID);
-    followerShooterMotor.setControl(ShooterConstants.FOLLOWER_SHOOTER_CONTROL_MODE);
+    followerShooterMotor.getConfigurator().apply(ShooterConstants.FOLLOWER_SHOOTER_MOTOR_CONFIG);
     followerShooterSimState = followerShooterMotor.getSimState();
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
@@ -85,6 +85,7 @@ public class ShooterIOSim implements ShooterIO {
     mainShooterSetpoint = shooterMotorVelocity;
     mainShooterMotor.setControl(
         shooterVelocityControl.withVelocity(shooterMotorVelocity.in(RotationsPerSecond)));
+    followerShooterMotor.setControl(shooterVelocityControl);
 
     shooterSim.setAngularVelocity(shooterMotorVelocity.in(RadiansPerSecond));
   }
@@ -93,6 +94,7 @@ public class ShooterIOSim implements ShooterIO {
   public void setShooterMotorVoltage(Voltage shooterMotorVoltage) {
     mainShooterSetpoint = RotationsPerSecond.of(0);
     mainShooterMotor.setVoltage(shooterMotorVoltage.in(Volts));
+    followerShooterMotor.setVoltage(shooterMotorVoltage.in(Volts));
     shooterSim.setInputVoltage(shooterMotorVoltage.in(Volts));
   }
 }

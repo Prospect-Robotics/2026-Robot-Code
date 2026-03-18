@@ -2,6 +2,7 @@ package com.team2813.subsystems.intakeroller;
 
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -18,7 +19,9 @@ public class IntakeRollerConstants {
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withFeedback(
-              new FeedbackConfigs().withSensorToMechanismRatio(INTAKE_MOTOR_TO_INTAKE_GEARING));
+              new FeedbackConfigs().withSensorToMechanismRatio(INTAKE_MOTOR_TO_INTAKE_GEARING))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(60));
 
   public static final String INTAKE_PREFERENCE_NT = "IntakeRoller/INTAKE_MOTOR_VOLTAGE";
   public static final String OUTTAKE_PREFERENCE_NT = "IntakeRoller/OUTTAKE_MOTOR_VOLTAGE";
@@ -27,7 +30,7 @@ public class IntakeRollerConstants {
 
   static {
     Preferences.initFloat(INTAKE_PREFERENCE_NT, 8);
-    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -8);
+    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -6);
   }
 
   public static Voltage getIntakeVoltage() {
@@ -35,6 +38,6 @@ public class IntakeRollerConstants {
   }
 
   public static Voltage getOuttakeVoltage() {
-    return Volts.of(Preferences.getFloat(OUTTAKE_PREFERENCE_NT, -8));
+    return Volts.of(Preferences.getFloat(OUTTAKE_PREFERENCE_NT, -6));
   }
 }

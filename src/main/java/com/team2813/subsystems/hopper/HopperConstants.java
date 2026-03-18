@@ -1,7 +1,9 @@
 package com.team2813.subsystems.hopper;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -12,42 +14,67 @@ public class HopperConstants {
 
   public static final double ROLLER_SIM_MOI = 0.00057684; // in kilograms*meters squared.
 
-  static {
-    // Roller motors.
-    Preferences.initFloat("Hopper/ROLLER_INTAKE_VOLTAGE", 6.5f);
-    Preferences.initFloat("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8);
+  public static final String FEEDER_INTAKE_VOLTAGE_NT = "Hopper/FEEDER_INTAKE_VOLTAGE";
+  public static final String FEEDER_OUTTAKE_VOLTAGE_NT = "Hopper/FEEDER_OUTTAKE_VOLTAGE";
 
-    // Feeder/Vectoring motors.
-    Preferences.initFloat("Hopper/RIGHT_FEEDER_INTAKE_VOLTAGE", 6.5f);
-    Preferences.initFloat("Hopper/RIGHT_FEEDER_OUTTAKE_VOLTAGE", -8);
+  public static final String INDEXER_INTAKE_VOLTAGE_NT = "Hopper/INDEXER_INTAKE_VOLTAGE";
+  public static final String INDEXER_OUTTAKE_VOLTAGE_NT = "Hopper/INDEXER_OUTTAKE_VOLTAGE";
+
+  static {
+    // Feeder motors.
+    Preferences.initDouble(FEEDER_INTAKE_VOLTAGE_NT, 8);
+    Preferences.initDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6);
+
+    // Indexer/Vectoring motors.
+    Preferences.initDouble(INDEXER_INTAKE_VOLTAGE_NT, 8);
+    Preferences.initDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -6);
   }
 
   // Roller Motor Configs
   public static Voltage getRollerIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/ROLLER_INTAKE_VOLTAGE", 8)); // 5 is the backup.
+    return Volts.of(Preferences.getDouble(FEEDER_INTAKE_VOLTAGE_NT, 6.5)); // 5 is the backup.
   }
 
   public static Voltage getRollerOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/ROLLER_OUTTAKE_VOLTAGE", -8));
+    return Volts.of(Preferences.getDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
-  public static final TalonFXConfiguration ROLLER_MOTOR_CONFIG =
+  // TOP
+  public static final TalonFXConfiguration MAIN_ROLLER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withStatorCurrentLimit(Amps.of(80)));
+
+  // Bottom Motor, opposite of main motor.
+  public static final TalonFXConfiguration FOLLOWER_FEEDER_MOTOR_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(40))
+                  .withStatorCurrentLimit(Amps.of(80)));
 
   // TODO: Change this later to the actual number.
   public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
 
   // Feeder Motor Configs
   public static Voltage getFeederIntakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_INTAKE_VOLTAGE", 8));
+    return Volts.of(Preferences.getDouble(INDEXER_INTAKE_VOLTAGE_NT, 5));
   }
 
   public static Voltage getFeederOuttakeVoltage() {
-    return Volts.of(Preferences.getDouble("Hopper/FEEDER_OUTTAKE_VOLTAGE", -8));
+    return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
-  public static final TalonFXConfiguration RIGHT_FEEDER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration INDEXER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withSupplyCurrentLimit(Amps.of(30))
+                  .withStatorCurrentLimit(Amps.of(60)));
 }

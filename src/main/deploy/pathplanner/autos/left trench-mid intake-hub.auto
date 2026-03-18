@@ -5,21 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "TrenchShot"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "right trench-right mid neutral"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -31,6 +19,12 @@
                 "data": {
                   "name": "SpinRollerIntake"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "left trench - left mid neutral"
+                }
               }
             ]
           }
@@ -39,17 +33,17 @@
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "right mid neutral-right trench"
-                }
-              },
               {
                 "type": "named",
                 "data": {
                   "name": "StopRoller"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "neutral zone-left trench-hub"
+                }
               }
             ]
           }
@@ -61,7 +55,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "TrenchShot"
+                  "name": "HubShot"
                 }
               },
               {
@@ -90,12 +84,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ExtendIntake"
           }
         }
       ]
