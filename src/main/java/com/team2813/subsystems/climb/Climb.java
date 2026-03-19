@@ -41,8 +41,10 @@ public class Climb<T extends Supplier<Distance>> extends SubsystemBase {
     // replayed logs
     // instead.
     Logger.processInputs("Climb/" + name, replayedInputs);
-    Logger.recordOutput("Climb/" + name + "/Carriage Setpoint (inches)", currentClimbSetpointInches.in(Inches));
-    Logger.recordOutput("Climb/" + name + "/Motor Setpoint (rotations)",
+    Logger.recordOutput(
+        "Climb/" + name + "/Carriage Setpoint (inches)", currentClimbSetpointInches.in(Inches));
+    Logger.recordOutput(
+        "Climb/" + name + "/Motor Setpoint (rotations)",
         currentClimbSetpointRotations.in(Rotations));
   }
 
