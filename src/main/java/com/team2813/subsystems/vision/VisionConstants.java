@@ -14,8 +14,16 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.Preferences;
 
 public class VisionConstants {
+
+  public static final String VISION_ENABLED_NT = "Vision/VisionEnabled";
+
+  static {
+    Preferences.initBoolean(VISION_ENABLED_NT, true);
+  }
+
   // AprilTag layout
   public static AprilTagFieldLayout aprilTagLayout =
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -60,6 +68,14 @@ public class VisionConstants {
         1.0, // Camera 0
         1.0 // Camera 1
       };
+
+  /**
+   * @return true if vision is enabled, or false if not or if the Preferences networktable doesn't
+   *     exist
+   */
+  public static boolean isVisionEnabled() {
+    return Preferences.getBoolean(VISION_ENABLED_NT, false);
+  }
 
   // Multipliers to apply for MegaTag 2 observations
   public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve

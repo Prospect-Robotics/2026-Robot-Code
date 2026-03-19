@@ -11,7 +11,6 @@ import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.team2813.commands.ClimbSequences;
 import com.team2813.commands.DriveCommands;
 import com.team2813.subsystems.climb.*;
 import com.team2813.subsystems.drive.AllTunerConstants;
@@ -63,8 +62,8 @@ public class RobotContainer {
   private final Hopper hopper;
   private final Vision vision;
 
-  private final Climb<AllClimbs.OuterClimbHeight> outerClimb;
-  private final Climb<AllClimbs.InnerClimbHeight> innerClimb;
+  //  private final Climb<AllClimbs.OuterClimbHeight> outerClimb;
+  //  private final Climb<AllClimbs.InnerClimbHeight> innerClimb;
 
   private final IntakeExtension intakeExtension;
   private final IntakeRoller intakeRoller;
@@ -120,8 +119,8 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
 
-        outerClimb = new Climb<>(new ClimbIOReal(AllClimbs.outerClimb()));
-        innerClimb = new Climb<>(new ClimbIOReal(AllClimbs.innerClimb()));
+        //        outerClimb = new Climb<>(new ClimbIOReal(AllClimbs.outerClimb()));
+        //        innerClimb = new Climb<>(new ClimbIOReal(AllClimbs.innerClimb()));
 
         break;
 
@@ -163,13 +162,8 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
 
-        var simVizInstance = SimulationVisualizer.getInstance();
-        outerClimb =
-            new Climb<>(
-                new ClimbIOSim(AllClimbs.outerClimb(), simVizInstance::updateOuterClimbHeight));
-        innerClimb =
-            new Climb<>(
-                new ClimbIOSim(AllClimbs.innerClimb(), simVizInstance::updateInnerClimbHeight));
+        //        outerClimb = new Climb<>(new ClimbIOSim(AllClimbs.outerClimb()));
+        //        innerClimb = new Climb<>(new ClimbIOSim(AllClimbs.innerClimb()));
 
         break;
 
@@ -199,14 +193,14 @@ public class RobotContainer {
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
 
-        outerClimb = new Climb<>(new ClimbIO(AllClimbs.outerClimb()) {});
-        innerClimb = new Climb<>(new ClimbIO(AllClimbs.innerClimb()) {});
+        //        outerClimb = new Climb<>(new ClimbIO(AllClimbs.outerClimb()) {});
+        //        innerClimb = new Climb<>(new ClimbIO(AllClimbs.innerClimb()) {});
 
         break;
     }
 
-    innerClimb.setDefaultCommand(
-        ClimbSequences.innerClimbManualCommand(operatorController::getRightY, innerClimb));
+    //    innerClimb.setDefaultCommand(
+    //        ClimbSequences.innerClimbManualCommand(operatorController::getRightY, innerClimb));
 
     // Registers all named commands.
     namedCommandsRegistration();
@@ -279,8 +273,9 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Used for stopping Climb command sequences.
-    BooleanSupplier cancelInnerClimbCommand =
-        () -> innerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) > 0.3;
+    //    BooleanSupplier cancelInnerClimbCommand =
+    //        () -> innerClimb.atSetpointPosition() || Math.abs(operatorController.getRightY()) >
+    // 0.3;
 
     // operatorController.povUp().whileTrue(ClimbSequences.innerClimbManualUpCommand(innerClimb));
     // operatorController.povDown().whileTrue(ClimbSequences.innerClimbManualDownCommand(innerClimb));
@@ -358,9 +353,10 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 shooter.spoolShooterTrenchSpeedCommand(),
                 new SequentialCommandGroup(
-                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
-            new WaitCommand(3.5)));
+            new WaitCommand(5)));
 
     NamedCommands.registerCommand(
         "HubShot",
@@ -368,17 +364,31 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 shooter.spoolShooterHubSpeedCommand(),
                 new SequentialCommandGroup(
-                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
-            new WaitCommand(3.5)));
+            new WaitCommand(6)));
 
     NamedCommands.registerCommand(
         "ExtendIntake",
-        intakeExtension.extendCommand().until(intakeExtension::isExtenderAtPosition));
+        intakeExtension
+            .extendCommand()
+            .until(intakeExtension::isExtenderAtPosition)
+            .raceWith(new WaitCommand(3)));
 
     NamedCommands.registerCommand(
         "RetractIntake",
-        intakeExtension.retractCommand().until(intakeExtension::isExtenderAtPosition));
+        intakeExtension
+            .retractCommand()
+            .until(intakeExtension::isExtenderAtPosition)
+            .raceWith(new WaitCommand(3)));
+
+    NamedCommands.registerCommand(
+        "HalfwayIntake",
+        intakeExtension
+            .halfRetractCommand()
+            .until(intakeExtension::isExtenderAtPosition)
+            .raceWith(new WaitCommand(3)));
 
     // Intake roller motor control.
     NamedCommands.registerCommand(

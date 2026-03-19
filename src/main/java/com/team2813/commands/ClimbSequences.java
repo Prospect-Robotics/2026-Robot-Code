@@ -3,6 +3,7 @@ package com.team2813.commands;
 import com.team2813.subsystems.climb.AllClimbs;
 import com.team2813.subsystems.climb.Climb;
 import com.team2813.subsystems.climb.ClimbConstants;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -26,7 +27,7 @@ public class ClimbSequences {
    *     outer).
    */
   public static Command innerClimbManualCommand(
-      Supplier<Double> joystickAxis, Climb innerClimbInstance) {
+      Supplier<Double> joystickAxis, Climb<Supplier<Distance>> innerClimbInstance) {
     Supplier<Voltage> motorVoltSetpoint =
         () -> ClimbConstants.MANUAL_INNER_CLIMB_VOLTAGE.times(joystickAxis.get());
 
@@ -43,7 +44,7 @@ public class ClimbSequences {
    * @param innerClimbInstance The instance of inner climb to apply this command to.
    * @return A {@link StartEndCommand} to set the motor voltage to go upward with 3 volts.
    */
-  public static Command innerClimbManualUpCommand(Climb innerClimbInstance) {
+  public static Command innerClimbManualUpCommand(Climb<Supplier<Distance>> innerClimbInstance) {
     return new StartEndCommand(
         () -> innerClimbInstance.setMotorVoltage(ClimbConstants.MANUAL_INNER_CLIMB_VOLTAGE),
         innerClimbInstance::stopClimb,
@@ -57,7 +58,7 @@ public class ClimbSequences {
    * @param innerClimbInstance The instance of inner climb to apply this command to.
    * @return A {@link StartEndCommand} to set the motor voltage to go downward with 3 volts.
    */
-  public static Command innerClimbManualDownCommand(Climb innerClimbInstance) {
+  public static Command innerClimbManualDownCommand(Climb<Supplier<Distance>> innerClimbInstance) {
     return new StartEndCommand(
         () ->
             innerClimbInstance.setMotorVoltage(
@@ -76,7 +77,8 @@ public class ClimbSequences {
    * @param climbInterruption A boolean supplier to allow for cancellation of this command.
    * @return
    */
-  public static Command postAutoClimb(Climb innerClimbInstance, BooleanSupplier climbInterruption) {
+  public static Command postAutoClimb(
+      Climb<Supplier<Distance>> innerClimbInstance, BooleanSupplier climbInterruption) {
     return new StartEndCommand(
             () -> innerClimbInstance.setClimbPosition(AllClimbs.InnerClimbHeight.POSTAUTO),
             innerClimbInstance::stopClimb,

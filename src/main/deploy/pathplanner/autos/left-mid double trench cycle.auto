@@ -1,0 +1,191 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "TrenchShot"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "left trench - left mid neutral"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "ExtendIntake"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SpinRollerIntake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "left mid neutral - left trench"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "StopRoller"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "TrenchShot"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "WalleMode"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 9.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "left trench - left mid neutral"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "ExtendIntake"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SpinRollerIntake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "left mid neutral - left trench"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "StopRoller"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "race",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "TrenchShot"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "WalleMode"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 10.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ExtendIntake"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

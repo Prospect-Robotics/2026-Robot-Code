@@ -2,13 +2,11 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
-import com.team2813.Constants;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
@@ -43,7 +41,7 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 150);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100);
     Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 115);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
@@ -55,16 +53,26 @@ public class ShooterConstants {
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
-              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743));
+              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withStatorCurrentLimit(Amps.of(70))
+                  .withSupplyCurrentLimit(50));
 
-  // Left shooter motor.
-  public static final Follower FOLLOWER_SHOOTER_CONTROL_MODE =
-      new Follower(Constants.MAIN_SHOOTER_MOTOR_ID, MotorAlignmentValue.Opposed);
+  public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withSlot0(
+              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withStatorCurrentLimit(Amps.of(70))
+                  .withSupplyCurrentLimit(50));
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
   public static AngularVelocity getShooterTrenchShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 90));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100));
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {

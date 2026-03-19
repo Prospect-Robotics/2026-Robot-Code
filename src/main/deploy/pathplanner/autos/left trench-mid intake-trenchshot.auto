@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "TrenchShot"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "left trench - left mid neutral"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -24,9 +36,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "left trench - left mid neutral"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "left mid neutral - left trench"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopRoller"
+                }
+              }
+            ]
           }
         },
         {
@@ -36,28 +61,41 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "StopRoller"
+                  "name": "TrenchShot"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "RetractIntake"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "HalfwayIntake"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "RetractIntake"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "left mid neutral - left trench"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "TrenchShot"
+            "name": "ExtendIntake"
           }
         }
       ]
