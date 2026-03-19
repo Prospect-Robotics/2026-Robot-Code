@@ -22,6 +22,9 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -32,6 +35,10 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final RobotContainer robotContainer;
   private final Mode mode;
+
+  private static final Path USB_LOG_PATH = Path.of("/U/logs");
+  private static final Path ROBORIO_LOG_PATH = Path.of("/home/lvuser/logs");
+
 
   public Robot() {
     // Record metadata
@@ -54,8 +61,12 @@ public class Robot extends LoggedRobot {
 
     switch (mode) {
       case REAL:
+
+        // Is the usb plugged in? If not, log to rio.
+        Path pathToLog = Files.exists(USB_LOG_PATH) ? USB_LOG_PATH : ROBORIO_LOG_PATH;
+
         // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs"));
+        Logger.addDataReceiver(new WPILOGWriter(pathToLog.toString()));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
