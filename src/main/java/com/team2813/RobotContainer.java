@@ -57,18 +57,18 @@ public class RobotContainer {
   private final Mode mode;
 
   // Subsystems
-  private final Drive drive;
-  private final Hopper hopper;
-  private final Vision vision;
+  final Drive drive;
+  final Hopper hopper;
+  final Vision vision;
 
   //  private final Climb<AllClimbs.OuterClimbHeight> outerClimb;
   //  private final Climb<AllClimbs.InnerClimbHeight> innerClimb;
 
-  private final IntakeExtension intakeExtension;
-  private final IntakeRoller intakeRoller;
+  final IntakeExtension intakeExtension;
+  final IntakeRoller intakeRoller;
 
-  private final Shooter shooter;
-  private final Kicker kicker;
+  final Shooter shooter;
+  final Kicker kicker;
   // Controller
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
