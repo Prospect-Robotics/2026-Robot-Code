@@ -55,6 +55,7 @@ public final class Constants {
   // TODO(Stefan): ID these motors!
   public static final int INNER_CLIMB_MOTOR_ID = 30;
   public static final int OUTER_CLIMB_MOTOR_ID = 31;
+
   /**
    * Returns true if the robot is on the red alliance.
    *
