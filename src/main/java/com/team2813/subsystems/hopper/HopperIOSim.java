@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import com.team2813.subsystems.Simulation;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
@@ -56,9 +57,10 @@ public class HopperIOSim implements HopperIO {
   public void updateState(HopperIOInputs inputs) {
     updateSimulation();
 
-    mainRollerMotorSimState.setSupplyVoltage(Volts.of(12));
-    followerRollerMotorSimState.setSupplyVoltage(Volts.of(12));
-    feederMotorSimState.setSupplyVoltage(Volts.of(12));
+    Voltage supplyVoltage = Simulation.getMotorSupplyVoltage();
+    mainRollerMotorSimState.setSupplyVoltage(supplyVoltage);
+    followerRollerMotorSimState.setSupplyVoltage(supplyVoltage);
+    feederMotorSimState.setSupplyVoltage(supplyVoltage);
 
     inputs.mainRollerMotorVoltage = mainRollerMotor.getMotorVoltage().getValue();
     inputs.mainRollerMotorRPS = mainRollerMotor.getRotorVelocity().getValue();
@@ -73,8 +75,8 @@ public class HopperIOSim implements HopperIO {
     inputs.feederCurrent = feederMotor.getStatorCurrent().getValue();
   }
 
-  public void updateSimulation() {
-    rollerSim.update(Constants.SIM_TIME_PERIOD);
+  private void updateSimulation() {
+    rollerSim.update(Simulation.TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.

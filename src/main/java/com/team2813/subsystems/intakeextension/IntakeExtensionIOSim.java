@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import com.team2813.subsystems.Simulation;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -59,7 +60,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
   @Override
   public void updateState(IntakeExtensionIOInputs inputs) {
     // Continue supplying the simulated motor with 12V voltage.
-    extenderMotorSimState.setSupplyVoltage(12);
+    extenderMotorSimState.setSupplyVoltage(Simulation.getMotorSupplyVoltage());
 
     // TalonFX simulation doesn't run the internal PID controller, so we simulate it ourselves
     // using a WPILib PIDController with the same gains.

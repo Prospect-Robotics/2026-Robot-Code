@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import com.team2813.subsystems.Simulation;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
@@ -35,14 +36,14 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
   public void updateState(IntakeRollerIOInputs inputs) {
     updateSimulation();
 
-    intakeSimState.setSupplyVoltage(Volts.of(12));
+    intakeSimState.setSupplyVoltage(Simulation.getMotorSupplyVoltage());
 
     inputs.intakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
     inputs.intakeMotorRPS = intakeMotor.getVelocity().getValue();
     inputs.intakeMotorCurrent = intakeMotor.getStatorCurrent().getValue();
   }
 
-  public void updateSimulation() {
+  private void updateSimulation() {
     // TODO: Once we fetch from main, change this to the SIM_TIME in Constants.
     intakeFlywheelSim.update(0.02);
 
