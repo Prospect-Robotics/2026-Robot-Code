@@ -40,7 +40,8 @@ public class KickerIOSim implements KickerIO {
 
     inputs.motorVoltage = motor.getMotorVoltage().getValue();
     inputs.motorRotationalVelocity = motor.getVelocity().getValue();
-    inputs.motorCurrent = motor.getStatorCurrent().getValue();
+    inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();
+    inputs.motorSupplyCurrent = motor.getSupplyCurrent().getValue();
   }
 
   private void updateSimulation() {

@@ -12,7 +12,8 @@ public interface KickerIO extends AutoCloseable {
   class KickerIOInputs {
     public Voltage motorVoltage = Volts.of(0);
     public AngularVelocity motorRotationalVelocity = RotationsPerSecond.of(0);
-    public Current motorCurrent = Amps.of(0);
+    public Current motorStatorCurrent = Amps.of(0);
+    public Current motorSupplyCurrent = Amps.of(0);
   }
 
   @Override

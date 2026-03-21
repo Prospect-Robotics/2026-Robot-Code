@@ -18,7 +18,8 @@ public class KickerIOReal implements KickerIO {
   public void updateState(KickerIOInputs inputs) {
     inputs.motorVoltage = motor.getMotorVoltage().getValue();
     inputs.motorRotationalVelocity = motor.getVelocity().getValue();
-    inputs.motorCurrent = motor.getStatorCurrent().getValue();
+    inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();
+    inputs.motorSupplyCurrent = motor.getSupplyCurrent().getValue();
   }
 
   @Override
