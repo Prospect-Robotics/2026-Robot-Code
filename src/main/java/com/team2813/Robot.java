@@ -58,11 +58,7 @@ public class Robot extends LoggedRobot {
     System.out.printf("Current Mode: %s%n", mode);
 
     Path logFilePath = Files.exists(USB_LOG_PATH) ? USB_LOG_PATH : ROBORIO_LOG_PATH;
-    if (mode == Mode.REAL) {
-      Logger.recordMetadata("LogFilePath", logFilePath.toString());
-    } else {
-      Logger.recordMetadata("LogFilePath", "Not Real Mode: No log file.");
-    }
+    Logger.recordMetadata("LogFilePath", logFilePath.toString());
 
     switch (mode) {
       case REAL:
