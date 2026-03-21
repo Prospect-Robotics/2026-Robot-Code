@@ -63,14 +63,17 @@ public class HopperIOSim implements HopperIO {
     inputs.mainFeederMotorVoltage = mainFeederMotor.getMotorVoltage().getValue();
     inputs.mainFeederMotorRPS = mainFeederMotor.getRotorVelocity().getValue();
     inputs.mainFeederMotorStatorCurrent = mainFeederMotor.getStatorCurrent().getValue();
+    inputs.mainFeederMotorSupplyCurrent = mainFeederMotor.getSupplyCurrent().getValue();
 
     inputs.followerFeederMotorVoltage = followerFeederMotor.getMotorVoltage().getValue();
     inputs.followerFeederMotorRPS = followerFeederMotor.getRotorVelocity().getValue();
     inputs.followerFeederMotorStatorCurrent = followerFeederMotor.getStatorCurrent().getValue();
+    inputs.followerFeederMotorSupplyCurrent = followerFeederMotor.getSupplyCurrent().getValue();
 
     inputs.indexerMotorVoltage = indexerMotor.getMotorVoltage().getValue();
     inputs.indexerMotorRPS = indexerMotor.getRotorVelocity().getValue();
     inputs.indexerMotorStatorCurrent = indexerMotor.getStatorCurrent().getValue();
+    inputs.indexerMotorSupplyCurrent = indexerMotor.getSupplyCurrent().getValue();
   }
 
   public void updateSimulation() {
