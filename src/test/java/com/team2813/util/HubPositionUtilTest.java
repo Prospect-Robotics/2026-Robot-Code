@@ -96,7 +96,7 @@ public class HubPositionUtilTest {
       new TestData(
           Pose2d.kZero,
           0.3265177360538555, // Expected Red Angle (Radians)
-          12.47089988733772, // Expected Red Distance (Meters)
+          12.470899887337720, // Expected Red Distance (Meters)
           0.7179017820664226, // Expected Blue Angle (Radians)
           6.080822312812635), // Expected Blue Distance (Meters)
       new TestData(
