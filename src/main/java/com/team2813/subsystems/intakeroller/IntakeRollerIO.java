@@ -13,7 +13,8 @@ public interface IntakeRollerIO {
   class IntakeRollerIOInputs {
     public Voltage intakeMotorVoltage = Volts.of(0);
     public AngularVelocity intakeMotorRPS = RotationsPerSecond.of(0);
-    public Current intakeMotorCurrent = Amps.of(0);
+    public Current intakeMotorStatorCurrent = Amps.of(0);
+    public Current intakeMotorSupplyCurrent = Amps.of(0);
   }
 
   default void updateState(IntakeRollerIOInputs inputs) {}
