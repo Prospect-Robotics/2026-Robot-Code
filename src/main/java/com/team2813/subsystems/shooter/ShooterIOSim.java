@@ -56,14 +56,15 @@ public class ShooterIOSim implements ShooterIO {
     inputs.mainShooterMotorAngleRotations = mainShooterMotor.getPosition().getValue().in(Rotations);
     inputs.mainShooterMotorRotPerSec =
         mainShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.mainShooterMotorCurrentAmps = mainShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.mainShooterMotorStatorCurrentAmps =
+        mainShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.mainShooterSetpointRotsPerSec = mainShooterSetpoint.in(RotationsPerSecond);
 
     inputs.followerShooterMotorVoltageVolts =
         followerShooterMotor.getMotorVoltage().getValue().in(Volts);
     inputs.followerShooterMotorRotPerSec =
         followerShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.followerShooterMotorCurrentAmps =
+    inputs.followerShooterMotorStatorCurrentAmps =
         followerShooterMotor.getStatorCurrent().getValue().in(Amps);
   }
 
