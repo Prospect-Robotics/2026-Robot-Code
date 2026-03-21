@@ -20,10 +20,7 @@ import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
 import com.team2813.subsystems.hopper.*;
-import com.team2813.subsystems.intakeextension.IntakeExtension;
-import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
-import com.team2813.subsystems.intakeextension.IntakeExtensionIOReal;
-import com.team2813.subsystems.intakeextension.IntakeExtensionIOSim;
+import com.team2813.subsystems.intakeextension.*;
 import com.team2813.subsystems.intakeroller.IntakeRoller;
 import com.team2813.subsystems.intakeroller.IntakeRollerIO;
 import com.team2813.subsystems.intakeroller.IntakeRollerIOReal;
@@ -174,7 +171,7 @@ public class RobotContainer {
                 new VisionIO() {},
                 new VisionIO() {},
                 new VisionIO() {});
-        intakeExtension = new IntakeExtension(new IntakeExtensionIO() {});
+        intakeExtension = new IntakeExtension(new IntakeExtensionIOStub());
         intakeRoller = new IntakeRoller(new IntakeRollerIO() {});
 
         shooter = new Shooter(new ShooterIO() {});

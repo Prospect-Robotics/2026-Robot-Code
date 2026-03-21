@@ -16,12 +16,12 @@ public interface IntakeExtensionIO extends AutoCloseable {
     public Angle extenderMotorSetpoint = Rotation.of(0);
   }
 
-  default void updateState(IntakeExtensionIOInputs inputs) {}
+  void updateState(IntakeExtensionIOInputs inputs);
 
-  default void setExtenderVoltage(Voltage extensionVoltage) {}
+  void setExtenderVoltage(Voltage extensionVoltage);
 
-  default void setExtensionSetpoint(Angle setpoint) {}
+  void setExtensionSetpoint(Angle setpoint);
 
   @Override
-  default void close() throws Exception {}
+  void close();
 }
