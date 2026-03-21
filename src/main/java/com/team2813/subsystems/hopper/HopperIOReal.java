@@ -13,16 +13,16 @@ public class HopperIOReal implements HopperIO {
   private final TalonFX indexerMotor; // Runs the indexer.
 
   public HopperIOReal() {
-    mainFeederMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
+    mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_CAN_ID);
     mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
 
-    followerFeederMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
+    followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_CAN_ID);
     followerFeederMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
     // Motors are on opposite sides of the magazine.
     //    followerRollerMotor.setControl(
     //        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
 
-    indexerMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
+    indexerMotor = new TalonFX(Constants.INDEXER_MOTOR_ID);
     indexerMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
   }
 

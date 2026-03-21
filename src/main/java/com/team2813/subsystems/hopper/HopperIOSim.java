@@ -27,11 +27,11 @@ public class HopperIOSim implements HopperIO {
   private final TalonFXSimState indexerMotorSimState;
 
   public HopperIOSim() {
-    mainFeederMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
+    mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_CAN_ID);
     mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
     mainFeederMotorSimState = mainFeederMotor.getSimState();
 
-    followerFeederMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
+    followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_CAN_ID);
     followerFeederMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
     //    followerRollerMotor.setControl(
     //        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
@@ -43,11 +43,11 @@ public class HopperIOSim implements HopperIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(2),
-                HopperConstants.ROLLER_SIM_MOI,
-                HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
+                HopperConstants.FEEDER_SIM_MOI,
+                HopperConstants.FEEDER_MOTOR_TO_ROLLER_GEARING),
             DCMotor.getKrakenX60(2));
 
-    indexerMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
+    indexerMotor = new TalonFX(Constants.INDEXER_MOTOR_ID);
     indexerMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
     indexerMotorSimState = indexerMotor.getSimState();
   }
