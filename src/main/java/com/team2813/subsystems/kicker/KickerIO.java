@@ -10,9 +10,13 @@ import org.littletonrobotics.junction.AutoLog;
 public interface KickerIO extends AutoCloseable {
   @AutoLog
   class KickerIOInputs {
-    public Voltage motorVoltage = Volts.of(0);
-    public AngularVelocity motorRotationalVelocity = RotationsPerSecond.of(0);
-    public Current motorCurrent = Amps.of(0);
+    public Voltage motor1Voltage = Volts.of(0);
+    public AngularVelocity motor1RotationalVelocity = RotationsPerSecond.of(0);
+    public Current motor1Current = Amps.of(0);
+
+    public Voltage motor2Voltage = Volts.of(0);
+    public AngularVelocity motor2RotationalVelocity = RotationsPerSecond.of(0);
+    public Current motor2Current = Amps.of(0);
   }
 
   @Override

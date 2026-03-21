@@ -1,18 +1,10 @@
+// todo fix sim code
 package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.team2813.Constants;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-
 public class ShooterIOSim implements ShooterIO {
+  /*
   private final TalonFX mainShooterMotor;
   private final TalonFXSimState mainShooterSimState;
 
@@ -97,4 +89,5 @@ public class ShooterIOSim implements ShooterIO {
     followerShooterMotor.setVoltage(shooterMotorVoltage.in(Volts));
     shooterSim.setInputVoltage(shooterMotorVoltage.in(Volts));
   }
+    */
 }

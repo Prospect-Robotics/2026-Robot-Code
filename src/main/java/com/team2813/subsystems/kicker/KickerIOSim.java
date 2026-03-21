@@ -1,17 +1,9 @@
+// todo re add sim code
+
 package com.team2813.subsystems.kicker;
 
-import static edu.wpi.first.units.Units.KilogramSquareMeters;
-import static edu.wpi.first.units.Units.Volts;
-
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.team2813.Constants;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-
 public class KickerIOSim implements KickerIO {
+  /*
   private final FlywheelSim flywheelSim;
   private final TalonFX motor;
 
@@ -56,4 +48,5 @@ public class KickerIOSim implements KickerIO {
   public void close() {
     motor.close();
   }
+    */
 }

@@ -150,6 +150,7 @@ public class RobotContainer {
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
+        // todo fix sim code
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
         break;

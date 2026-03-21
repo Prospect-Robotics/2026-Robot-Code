@@ -48,7 +48,7 @@ public class ShooterConstants {
   }
 
   // Reminder: this is the right shooter motor when robot is viewed from behind.
-  public static final TalonFXConfiguration MAIN_SHOOTER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration SHOOTER_MOTOR_1_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
@@ -59,9 +59,31 @@ public class ShooterConstants {
                   .withStatorCurrentLimit(Amps.of(70))
                   .withSupplyCurrentLimit(50));
 
-  public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
+  public static final TalonFXConfiguration SHOOTER_MOTOR_2_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withSlot0(
+              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withStatorCurrentLimit(Amps.of(70))
+                  .withSupplyCurrentLimit(50));
+
+  public static final TalonFXConfiguration SHOOTER_MOTOR_3_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withSlot0(
+              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withCurrentLimits(
+              new CurrentLimitsConfigs()
+                  .withStatorCurrentLimit(Amps.of(70))
+                  .withSupplyCurrentLimit(50));
+
+  public static final TalonFXConfiguration SHOOTER_MOTOR_4_CONFIG =
+      new TalonFXConfiguration()
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
