@@ -45,14 +45,14 @@ public final class Constants {
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.
-  public static final int SHOOTER_MOTOR_1_ID = 19; // Right shooter motor.
-  public static final int SHOOTER_MOTOR_2_ID = 20; // Left shooter motor.
-  public static final int SHOOTER_MOTOR_3_ID = 0; // 2 and 3 are motors on the other side
-  public static final int SHOOTER_MOTOR_4_ID = 0;
+  public static final int SHOOTER_MOTOR_1_ID = 19;
+  public static final int SHOOTER_MOTOR_2_ID = 20;
+  public static final int SHOOTER_MOTOR_3_ID = 32; // 2 and 4 are motors on the other side
+  public static final int SHOOTER_MOTOR_4_ID = 33;
 
   // Kicker Motor
   public static final int KICKER_MOTOR_1_ID = 21;
-  public static final int KICKER_MOTOR_2_ID = 21;
+  public static final int KICKER_MOTOR_2_ID = 34;
 
   // Climb motors
   // TODO(Stefan): ID these motors!
