@@ -13,88 +13,88 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 public class HopperIOSim implements HopperIO {
 
   // Roller Motor simulation declaration.
-  private final TalonFX mainRollerMotor;
-  private final TalonFXSimState mainRollerMotorSimState;
+  private final TalonFX mainFeederMotor;
+  private final TalonFXSimState mainFeederMotorSimState;
 
-  private final TalonFX followerRollerMotor;
-  private final TalonFXSimState followerRollerMotorSimState;
+  private final TalonFX followerFeederMotor;
+  private final TalonFXSimState followerFeederMotorSimState;
 
-  private final FlywheelSim rollerSim; // Used for simulating voltage of the roller.
+  private final FlywheelSim feederSim; // Used for simulating voltage of the roller.
 
   // Feeder Motor simulation declaration
   // Right motor when seen from the back (shooter side).
-  private final TalonFX feederMotor;
-  private final TalonFXSimState feederMotorSimState;
+  private final TalonFX indexerMotor;
+  private final TalonFXSimState indexerMotorSimState;
 
   public HopperIOSim() {
-    mainRollerMotor = new TalonFX(Constants.MAIN_ROLLER_MOTOR_CAN_ID);
-    mainRollerMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
-    mainRollerMotorSimState = mainRollerMotor.getSimState();
+    mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_CAN_ID);
+    mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
+    mainFeederMotorSimState = mainFeederMotor.getSimState();
 
-    followerRollerMotor = new TalonFX(Constants.FOLLOWER_ROLLER_MOTOR_CAN_ID);
-    followerRollerMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
+    followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_CAN_ID);
+    followerFeederMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
     //    followerRollerMotor.setControl(
     //        new Follower(Constants.MAIN_ROLLER_MOTOR_CAN_ID, MotorAlignmentValue.Opposed));
-    followerRollerMotorSimState = followerRollerMotor.getSimState();
+    followerFeederMotorSimState = followerFeederMotor.getSimState();
 
     // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value
     // is unavailable.
-    rollerSim =
+    feederSim =
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(2),
-                HopperConstants.ROLLER_SIM_MOI,
-                HopperConstants.ROLLER_MOTOR_TO_ROLLER_GEARING),
+                HopperConstants.FEEDER_SIM_MOI,
+                HopperConstants.FEEDER_MOTOR_TO_ROLLER_GEARING),
             DCMotor.getKrakenX60(2));
 
-    feederMotor = new TalonFX(Constants.FEEDER_MOTOR_ID);
-    feederMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
-    feederMotorSimState = feederMotor.getSimState();
+    indexerMotor = new TalonFX(Constants.INDEXER_MOTOR_ID);
+    indexerMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
+    indexerMotorSimState = indexerMotor.getSimState();
   }
 
   @Override
   public void updateState(HopperIOInputs inputs) {
     updateSimulation();
 
-    mainRollerMotorSimState.setSupplyVoltage(Volts.of(12));
-    followerRollerMotorSimState.setSupplyVoltage(Volts.of(12));
-    feederMotorSimState.setSupplyVoltage(Volts.of(12));
+    mainFeederMotorSimState.setSupplyVoltage(Volts.of(12));
+    followerFeederMotorSimState.setSupplyVoltage(Volts.of(12));
+    indexerMotorSimState.setSupplyVoltage(Volts.of(12));
 
-    inputs.mainRollerMotorVoltage = mainRollerMotor.getMotorVoltage().getValue();
-    inputs.mainRollerMotorRPS = mainRollerMotor.getRotorVelocity().getValue();
-    inputs.mainRollerMotorCurrent = mainRollerMotor.getStatorCurrent().getValue();
+    inputs.mainFeederMotorVoltage = mainFeederMotor.getMotorVoltage().getValue();
+    inputs.mainFeederMotorRPS = mainFeederMotor.getRotorVelocity().getValue();
+    inputs.mainFeederMotorCurrent = mainFeederMotor.getStatorCurrent().getValue();
 
-    inputs.followerRollerMotorVoltage = followerRollerMotor.getMotorVoltage().getValue();
-    inputs.followerRollerMotorRPS = followerRollerMotor.getRotorVelocity().getValue();
-    inputs.followerRollerMotorCurrent = followerRollerMotor.getStatorCurrent().getValue();
+    inputs.followerFeederMotorVoltage = followerFeederMotor.getMotorVoltage().getValue();
+    inputs.followerFeederMotorRPS = followerFeederMotor.getRotorVelocity().getValue();
+    inputs.followerFeederMotorCurrent = followerFeederMotor.getStatorCurrent().getValue();
 
-    inputs.feederVoltage = feederMotor.getMotorVoltage().getValue();
-    inputs.feederRPS = feederMotor.getRotorVelocity().getValue();
-    inputs.feederCurrent = feederMotor.getStatorCurrent().getValue();
+    inputs.indexerVoltage = indexerMotor.getMotorVoltage().getValue();
+    inputs.indexerRPS = indexerMotor.getRotorVelocity().getValue();
+    inputs.indexerCurrent = indexerMotor.getStatorCurrent().getValue();
   }
 
   public void updateSimulation() {
-    rollerSim.update(Constants.SIM_TIME_PERIOD);
+    feederSim.update(Constants.SIM_TIME_PERIOD);
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.
-    mainRollerMotorSimState.setRotorAcceleration(rollerSim.getAngularAcceleration());
-    mainRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity());
+    mainFeederMotorSimState.setRotorAcceleration(feederSim.getAngularAcceleration());
+    mainFeederMotorSimState.setRotorVelocity(feederSim.getAngularVelocity());
 
     // The follower roller motor is aligned with the main motor, so it gets the same values.
-    followerRollerMotorSimState.setRotorAcceleration(rollerSim.getAngularAcceleration());
-    followerRollerMotorSimState.setRotorVelocity(rollerSim.getAngularVelocity());
+    followerFeederMotorSimState.setRotorAcceleration(feederSim.getAngularAcceleration());
+    followerFeederMotorSimState.setRotorVelocity(feederSim.getAngularVelocity());
   }
 
   @Override
   public void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {
     // Rollers
-    mainRollerMotor.setVoltage(rollerVoltage.in(Volts));
+    mainFeederMotor.setVoltage(rollerVoltage.in(Volts));
     // Don't set the voltage of the follower motor, as this will be done automatically by the
     // Follower command.
-    rollerSim.setInputVoltage(rollerVoltage.in(Volts));
+    feederSim.setInputVoltage(rollerVoltage.in(Volts));
 
     // Feeders
-    feederMotor.setVoltage(feederVoltage.in(Volts));
+    indexerMotor.setVoltage(feederVoltage.in(Volts));
   }
 }
