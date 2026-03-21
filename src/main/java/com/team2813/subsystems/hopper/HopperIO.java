@@ -15,16 +15,19 @@ public interface HopperIO {
     // Roller/Magazine
     public Voltage mainRollerMotorVoltage = Volts.of(0);
     public AngularVelocity mainRollerMotorRPS = RotationsPerSecond.of(0);
-    public Current mainRollerMotorCurrent = Amps.of(0);
+    public Current mainRollerMotorStatorCurrent = Amps.of(0);
+    public Current mainRollerMotorSupplyCurrent = Amps.of(0);
 
     public Voltage followerRollerMotorVoltage = Volts.of(0);
     public AngularVelocity followerRollerMotorRPS = RotationsPerSecond.of(0);
-    public Current followerRollerMotorCurrent = Amps.of(0);
+    public Current followerRollerMotorStatorCurrent = Amps.of(0);
+    public Current followerRollerMotorSupplyCurrent = Amps.of(0);
 
     // Feeder/Vector
     public Voltage feederVoltage = Volts.of(0);
     public AngularVelocity feederRPS = RotationsPerSecond.of(0);
-    public Current feederCurrent = Amps.of(0);
+    public Current feederStatorCurrent = Amps.of(0);
+    public Current feederSupplyCurrent = Amps.of(0);
   }
 
   /**
