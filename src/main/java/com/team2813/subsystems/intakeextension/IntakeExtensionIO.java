@@ -11,7 +11,8 @@ public interface IntakeExtensionIO extends AutoCloseable {
   class IntakeExtensionIOInputs {
     public Voltage extenderMotorVoltage = Volts.of(0);
     public AngularVelocity extenderMotorRPS = RotationsPerSecond.of(0);
-    public Current extenderMotorCurrent = Amps.of(0);
+    public Current extenderMotorStatorCurrent = Amps.of(0);
+    public Current extenderMotorSupplyCurrent = Amps.of(0);
     public Angle extenderMotorPosition = Rotation.of(0);
     public Angle extenderMotorSetpoint = Rotation.of(0);
   }

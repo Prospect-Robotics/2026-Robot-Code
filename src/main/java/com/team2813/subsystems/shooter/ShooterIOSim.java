@@ -49,27 +49,32 @@ public class ShooterIOSim implements ShooterIO {
   public void updateState(ShooterIOInputs inputs) {
     updateSimulation();
 
-    mainShooterSimState.setSupplyVoltage(Volts.of(12));
-    followerShooterSimState.setSupplyVoltage(Volts.of(12));
-
     inputs.mainShooterMotorVoltageVolts = mainShooterMotor.getMotorVoltage().getValue().in(Volts);
     inputs.mainShooterMotorAngleRotations = mainShooterMotor.getPosition().getValue().in(Rotations);
     inputs.mainShooterMotorRotPerSec =
         mainShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.mainShooterMotorCurrentAmps = mainShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.mainShooterMotorStatorCurrentAmps =
+        mainShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.mainShooterSetpointRotsPerSec = mainShooterSetpoint.in(RotationsPerSecond);
+    inputs.mainShooterMotorSupplyCurrentAmps =
+        mainShooterMotor.getSupplyCurrent().getValue().in(Amps);
 
     inputs.followerShooterMotorVoltageVolts =
         followerShooterMotor.getMotorVoltage().getValue().in(Volts);
     inputs.followerShooterMotorRotPerSec =
         followerShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.followerShooterMotorCurrentAmps =
+    inputs.followerShooterMotorStatorCurrentAmps =
         followerShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.followerShooterMotorSupplyCurrentAmps =
+        followerShooterMotor.getSupplyCurrent().getValue().in(Amps);
   }
 
   public void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
     shooterSim.update(Constants.SIM_TIME_PERIOD);
+
+    mainShooterSimState.setSupplyVoltage(Volts.of(12));
+    followerShooterSimState.setSupplyVoltage(Volts.of(12));
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.

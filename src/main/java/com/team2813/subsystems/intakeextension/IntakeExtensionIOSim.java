@@ -104,7 +104,8 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     // Report position directly from ElevatorSim to avoid TalonFX inversion issues
     inputs.extenderMotorVoltage = extenderMotor.getMotorVoltage().getValue();
     inputs.extenderMotorRPS = extenderMotor.getRotorVelocity().getValue();
-    inputs.extenderMotorCurrent = extenderMotor.getStatorCurrent().getValue();
+    inputs.extenderMotorStatorCurrent = extenderMotor.getStatorCurrent().getValue();
+    inputs.extenderMotorSupplyCurrent = extenderMotor.getSupplyCurrent().getValue();
     inputs.extenderMotorPosition =
         Rotations.of(
             extenderSim.getPositionMeters()
