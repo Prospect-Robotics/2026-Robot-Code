@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -32,6 +34,9 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final RobotContainer robotContainer;
   private final Mode mode;
+
+  private static final Path USB_LOG_PATH = Path.of("/U/logs");
+  private static final Path ROBORIO_LOG_PATH = Path.of("/home/lvuser/logs");
 
   public Robot() {
     // Record metadata
@@ -52,10 +57,13 @@ public class Robot extends LoggedRobot {
     mode = getCurrentModeFromEnv();
     System.out.printf("Current Mode: %s%n", mode);
 
+    Path logFilePath = Files.exists(USB_LOG_PATH) ? USB_LOG_PATH : ROBORIO_LOG_PATH;
+    Logger.recordMetadata("LogFilePath", logFilePath.toString());
+
     switch (mode) {
       case REAL:
         // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs"));
+        Logger.addDataReceiver(new WPILOGWriter(logFilePath.toString()));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
