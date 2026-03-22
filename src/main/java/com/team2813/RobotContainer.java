@@ -253,6 +253,7 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
+    operatorController.a().whileTrue(kicker.shootCommand());
 
     // Driver controls
     // Default command, normal field-relative drive
