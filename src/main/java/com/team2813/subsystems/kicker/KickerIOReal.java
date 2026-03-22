@@ -15,7 +15,7 @@ public class KickerIOReal implements KickerIO {
     motor1.getConfigurator().apply(KickerConstants.KICKER_MOTOR_CONFIG);
 
     motor2 = new TalonFX(Constants.KICKER_MOTOR_2_ID);
-    motor2.getConfigurator().apply(KickerConstants.KICKER_MOTOR_CONFIG);
+    motor2.getConfigurator().apply(KickerConstants.KICKER_MOTOR_2_CONFIG);
   }
 
   @Override
