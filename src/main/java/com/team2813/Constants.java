@@ -47,7 +47,7 @@ public final class Constants {
   // Shooter Motors. Aliases: Flywheel motors.
   public static final int SHOOTER_MOTOR_1_ID = 19;
   public static final int SHOOTER_MOTOR_2_ID = 20;
-  public static final int SHOOTER_MOTOR_3_ID = 32; // 2 and 4 are motors on the other side
+  public static final int SHOOTER_MOTOR_3_ID = 32; // 2 and 3 are motors on the other side
   public static final int SHOOTER_MOTOR_4_ID = 33;
 
   // Kicker Motor
