@@ -34,9 +34,11 @@ import com.team2813.subsystems.kicker.KickerIOReal;
 import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
+import com.team2813.util.HubPositionUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
@@ -287,6 +289,17 @@ public class RobotContainer {
             new InstantCommand(
                 () ->
                     drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()))));
+
+    driveController
+        .a()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                () ->
+                    HubPositionUtil.getBotToHubAngle(
+                        drive.getPose(), DriverStation.getAlliance())));
   }
 
   /**
