@@ -112,6 +112,7 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
+    Logger.recordOutput("HubStatus/Time in phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);

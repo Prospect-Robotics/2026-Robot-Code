@@ -265,7 +265,7 @@ public class RobotContainer {
             () -> -driveController.getRightX()));
 
     // Driver intake roller bindings
-    driveController.rightBumper().whileTrue(intakeRoller.intakeCommand());
+    driveController.rightBumper().whileTrue(Commands.parallel(intakeRoller.intakeCommand(),intakeExtension.extendCommand()));
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
