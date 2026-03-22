@@ -90,7 +90,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer(tunerConstants, mode);
+    robotContainer = new RobotContainer(tunerConstants, mode, DriverStation.getAlliance());
   }
 
   /** This function is called periodically during all modes. */
@@ -112,7 +112,8 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
-    Logger.recordOutput("HubStatus/Time in phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
+    Logger.recordOutput(
+        "HubStatus/Distance To Our Hub (Meters)", robotContainer.getDistanceToHub());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
@@ -135,6 +136,12 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(autonomousCommand);
     }
+  }
+
+  @Override
+  public void disabledExit() {
+    // We change the alliance sometimes when practicing.
+    robotContainer.setCurrentAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during autonomous. */
