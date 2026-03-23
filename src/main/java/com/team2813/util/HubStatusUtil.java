@@ -75,6 +75,9 @@ public class HubStatusUtil {
     }
   }
 
+  /**
+   * @return Returns the amount of time left in the current hub phase (in seconds).
+   */
   public static int timeLeftInCurrentPhase() {
     int matchTimeInSeconds = (int) DriverStation.getMatchTime();
     if (matchTimeInSeconds > 130) {
