@@ -13,15 +13,25 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 
 import java.util.function.Supplier;
 
+/**
+ * Helper class allowing for automatically adjusting shooter speed based on hub distance.
+ */
 public class VariableShooterCommand {
+  // TODO: Tweak the speeds and distance after pinnacles if we have time.
   private static final AngularVelocity MIN_SPEED =
-      RotationsPerSecond.of(60); // 0.5 meters. Hub shot speed.
+      RotationsPerSecond.of(60); // 1.5 meters. Hub shot speed.
   private static final AngularVelocity MAX_SPEED =
       RotationsPerSecond.of(100); // ~2.5 meters from hub speed.
 
   private static final Distance MIN_DIST = Meters.of(1.5);
   private static final Distance MAX_DIST = Meters.of(3.1);
 
+  /**
+   * Calculates the speed to shoot at if between the 1.5/3.1 MIN/MAX distance.
+   * @param shooter Instance of the shooter class to apply the calculated speed to.
+   * @param distanceSupplier A supplier of the distance from the hub
+   * @see com.team2813.util.HubPositionUtil For getting distance from hub.
+   */
   private static void shootBasedOnDistance(Shooter shooter, Supplier<Distance> distanceSupplier) {
     Distance distance = distanceSupplier.get();
 
