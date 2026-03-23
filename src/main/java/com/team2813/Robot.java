@@ -7,6 +7,7 @@
 
 package com.team2813;
 
+import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.util.HubStatusUtil;
@@ -90,7 +91,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer(tunerConstants, mode);
+    robotContainer = new RobotContainer(tunerConstants, mode, DriverStation.getAlliance());
   }
 
   /** This function is called periodically during all modes. */
@@ -112,6 +113,14 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
+    Logger.recordOutput(
+        "HubStatus/Distance To Our Hub (Meters)",
+        Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
+    Logger.recordOutput(
+        "HubStatus/Time left in current phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
+    Logger.recordOutput(
+        "HubStatus/In range",
+        robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
@@ -134,6 +143,12 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(autonomousCommand);
     }
+  }
+
+  @Override
+  public void disabledExit() {
+    // We change the alliance sometimes when practicing.
+    robotContainer.setCurrentAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during autonomous. */

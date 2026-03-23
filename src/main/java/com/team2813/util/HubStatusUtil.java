@@ -74,4 +74,30 @@ public class HubStatusUtil {
       return true;
     }
   }
+
+  /**
+   * @return Returns the amount of time left in the current hub phase (in seconds).
+   */
+  public static int timeLeftInCurrentPhase() {
+    int matchTimeInSeconds = (int) DriverStation.getMatchTime();
+    if (matchTimeInSeconds > 130) {
+      // transition
+      return matchTimeInSeconds - 130;
+    } else if (matchTimeInSeconds > 105) {
+      // shift 1
+      return matchTimeInSeconds - 105;
+    } else if (matchTimeInSeconds > 80) {
+      // shift 2
+      return matchTimeInSeconds - 80;
+    } else if (matchTimeInSeconds > 55) {
+      // shift 3
+      return matchTimeInSeconds - 55;
+    } else if (matchTimeInSeconds > 30) {
+      // shift 4
+      return matchTimeInSeconds - 30;
+    } else if (matchTimeInSeconds > 0) {
+      // endgame
+      return matchTimeInSeconds;
+    } else return 0;
+  }
 }

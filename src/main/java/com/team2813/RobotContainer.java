@@ -12,6 +12,7 @@ import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
+import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -34,14 +35,18 @@ import com.team2813.subsystems.kicker.KickerIOReal;
 import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
+import com.team2813.util.HubPositionUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.photonvision.simulation.VisionSystemSim;
@@ -71,13 +76,19 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+  private Optional<DriverStation.Alliance> currentAlliance;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    *
    * @param tunerConstants The tuner constants for the robot.
    */
-  public RobotContainer(AllTunerConstants tunerConstants, Mode mode) {
+  public RobotContainer(
+      AllTunerConstants tunerConstants,
+      Mode mode,
+      Optional<DriverStation.Alliance> currentAlliance) {
+    this.currentAlliance = currentAlliance;
+
     this.mode = mode;
     switch (mode) {
       case REAL:
@@ -266,9 +277,7 @@ public class RobotContainer {
     driveController
         .rightBumper()
         .whileTrue(
-            new ParallelCommandGroup(
-                intakeRoller.intakeCommand(),
-                intakeExtension.extendCommand().until(extensionInterruptionCondition)));
+            Commands.parallel(intakeRoller.intakeCommand(), intakeExtension.extendCommand()));
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
@@ -287,6 +296,19 @@ public class RobotContainer {
             new InstantCommand(
                 () ->
                     drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()))));
+
+    driveController
+        .a()
+        .whileTrue(
+            Commands.parallel(
+                DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driveController.getLeftY(),
+                    () -> -driveController.getLeftX(),
+                    () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),
+                VariableShooterCommand.shootBasedOnDistanceCommand(
+                    shooter,
+                    () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
   }
 
   /**
@@ -296,6 +318,22 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  /**
+   * @return Distance to the current alliance hub (note, the
+   */
+  public Distance getDistanceToHub() {
+    return HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance);
+  }
+
+  /**
+   * Used to update the current alliance when we enter/leave auto/teleop/disabled
+   *
+   * @param alliance
+   */
+  public void setCurrentAlliance(Optional<DriverStation.Alliance> alliance) {
+    this.currentAlliance = alliance;
   }
 
   /** Used for stopping all subsystems if auto commands end prematurely. */

@@ -8,45 +8,61 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.447074401445664,
-        "y": 6.429007060528618
+        "x": 7.6752756633926715,
+        "y": 5.883739872217505
       },
       "isLocked": false,
       "linkedName": "left mid neutral"
     },
     {
       "anchor": {
-        "x": 7.131398002853067,
-        "y": 7.2890727532097
+        "x": 5.082889072852621,
+        "y": 7.367309602647918
       },
       "prevControl": {
-        "x": 7.508652702109808,
-        "y": 6.948461468217094
+        "x": 7.0976264784777765,
+        "y": 7.353414861919472
       },
       "nextControl": {
-        "x": 6.696885298828355,
-        "y": 7.681380471987106
+        "x": 4.030198675501628,
+        "y": 7.374569536422751
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.2590156918687585,
-        "y": 7.625477888730385
+        "x": 3.1009271523228215,
+        "y": 6.677615894038647
       },
       "prevControl": {
-        "x": 5.710738297699772,
-        "y": 7.4822177030578345
+        "x": 2.273294701991696,
+        "y": 7.7738658940386465
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "left trench shoot"
+      "linkedName": "left midfield"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.3876040703052817,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.75,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 1.7974025974026056,
+      "maxWaypointRelativePos": 2.0,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
@@ -58,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -62.0
   },
   "reversed": false,
   "folder": null,

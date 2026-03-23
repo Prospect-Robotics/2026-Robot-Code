@@ -56,8 +56,8 @@ public class ShooterConstants {
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(70))
-                  .withSupplyCurrentLimit(50));
+                  .withStatorCurrentLimit(Amps.of(80))
+                  .withSupplyCurrentLimit(60));
 
   public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
@@ -66,8 +66,8 @@ public class ShooterConstants {
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(70))
-                  .withSupplyCurrentLimit(50));
+                  .withStatorCurrentLimit(Amps.of(80))
+                  .withSupplyCurrentLimit(60));
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
