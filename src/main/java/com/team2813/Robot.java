@@ -114,6 +114,7 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
     Logger.recordOutput(
         "HubStatus/Distance To Our Hub (Meters)", robotContainer.getDistanceToHub());
+        Logger.recordOutput("HubStatus/Time left in current phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
