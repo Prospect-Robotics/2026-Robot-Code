@@ -9,6 +9,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+
 import java.util.function.Supplier;
 
 public class VariableShooterCommand {
@@ -17,8 +19,8 @@ public class VariableShooterCommand {
   private static final AngularVelocity MAX_SPEED =
       RotationsPerSecond.of(100); // ~2.5 meters from hub speed.
 
-  private static final Distance MIN_DIST = Meters.of(0.5);
-  private static final Distance MAX_DIST = Meters.of(2.5);
+  private static final Distance MIN_DIST = Meters.of(1.5);
+  private static final Distance MAX_DIST = Meters.of(3.1);
 
   private static void shootBasedOnDistance(Shooter shooter, Supplier<Distance> distanceSupplier) {
     Distance distance = distanceSupplier.get();
@@ -34,6 +36,6 @@ public class VariableShooterCommand {
       Shooter shooter, Supplier<Distance> distanceSupplier) {
     return new RepeatCommand(
             new InstantCommand(() -> shootBasedOnDistance(shooter, distanceSupplier)))
-        .finallyDo(shooter::stop);
+        .finallyDo(shooter::stop).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
   }
 }

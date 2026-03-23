@@ -262,10 +262,8 @@ public class RobotContainer {
     // Spool shooter commands
     operatorController
         .rightTrigger()
-        .whileTrue(
-            VariableShooterCommand.shootBasedOnDistanceCommand(
-                shooter,
-                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
+        .whileTrue(shooter.spoolShooterTrenchSpeedCommand()
+            );
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
 
@@ -305,11 +303,13 @@ public class RobotContainer {
     driveController
         .a()
         .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
+            Commands.parallel(DriveCommands.joystickDriveAtAngle(
                 drive,
                 () -> -driveController.getLeftY(),
                 () -> -driveController.getLeftX(),
-                () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)));
+                () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),VariableShooterCommand.shootBasedOnDistanceCommand(
+                shooter,
+                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
   }
 
   /**
