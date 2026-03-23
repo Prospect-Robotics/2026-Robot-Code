@@ -8,17 +8,17 @@ public interface ShooterIO {
 
   @AutoLog
   class ShooterIOInputs {
-    public double mainShooterMotorVoltageVolts = 0;
-    public double mainShooterMotorAngleRotations = 0;
-    public double mainShooterMotorRotPerSec = 0;
-    public double mainShooterMotorStatorCurrentAmps = 0;
-    public double mainShooterMotorSupplyCurrentAmps = 0;
-    public double mainShooterSetpointRotsPerSec = 0;
+    public double rightMainShooterMotorVoltageVolts = 0;
+    public double rightMainShooterMotorAngleRotations = 0;
+    public double rightMainShooterMotorRotPerSec = 0;
+    public double rightMainShooterMotorStatorCurrentAmps = 0;
+    public double rightMainShooterMotorSupplyCurrentAmps = 0;
+    public double rightMainShooterSetpointRotsPerSec = 0;
 
-    public double followerShooterMotorVoltageVolts = 0;
-    public double followerShooterMotorRotPerSec = 0;
-    public double followerShooterMotorStatorCurrentAmps = 0;
-    public double followerShooterMotorSupplyCurrentAmps = 0;
+    public double leftFollowerShooterMotorVoltageVolts = 0;
+    public double leftFollowerShooterMotorRotPerSec = 0;
+    public double leftFollowerShooterMotorStatorCurrentAmps = 0;
+    public double leftFollowerShooterMotorSupplyCurrentAmps = 0;
   }
 
   /**
