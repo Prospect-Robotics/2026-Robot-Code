@@ -7,6 +7,7 @@
 
 package com.team2813;
 
+import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.util.HubStatusUtil;
@@ -116,7 +117,7 @@ public class Robot extends LoggedRobot {
         "HubStatus/Distance To Our Hub (Meters)", Math.round(100*robotContainer.getDistanceToHub().magnitude())/100.0);
     Logger.recordOutput(
         "HubStatus/Time left in current phase (Seconds)",HubStatusUtil.timeLeftInCurrentPhase());
-      Logger.recordOutput("HubStatus/In range",robotContainer.getDistanceToHub().magnitude()<3.11);
+      Logger.recordOutput("HubStatus/In range",robotContainer.getDistanceToHub().magnitude()<VariableShooterCommand.MAX_DIST.magnitude());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
