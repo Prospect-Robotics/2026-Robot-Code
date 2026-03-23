@@ -12,6 +12,7 @@ import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
+import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
 import com.team2813.subsystems.drive.GyroIO;
@@ -259,7 +260,12 @@ public class RobotContainer {
     operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
 
     // Spool shooter commands
-    operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
+    operatorController
+        .rightTrigger()
+        .whileTrue(
+            VariableShooterCommand.shootBasedOnDistanceCommand(
+                shooter,
+                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
 
@@ -273,7 +279,10 @@ public class RobotContainer {
             () -> -driveController.getRightX()));
 
     // Driver intake roller bindings
-    driveController.rightBumper().whileTrue(Commands.parallel(intakeRoller.intakeCommand(),intakeExtension.extendCommand()));
+    driveController
+        .rightBumper()
+        .whileTrue(
+            Commands.parallel(intakeRoller.intakeCommand(), intakeExtension.extendCommand()));
 
     // Runs the Kicker Wheels toward the shooter.
     driveController.leftTrigger().whileTrue(kicker.shootCommand());
