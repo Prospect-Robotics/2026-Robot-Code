@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class ShooterIOSim implements ShooterIO {
   private final TalonFX upperRightShooterMotor;
-  private final TalonFXSimState rightMainShooterSimState;
+  private final TalonFXSimState upperRightShooterSimState;
 
   private final TalonFX upperLeftShooterMotor;
   private final TalonFXSimState upperLeftShooterSimState;
@@ -28,7 +28,7 @@ public class ShooterIOSim implements ShooterIO {
   public ShooterIOSim() {
     upperRightShooterMotor = new TalonFX(Constants.RIGHT_MAIN_SHOOTER_MOTOR_ID);
     upperRightShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_RIGHT_SHOOTER_MOTOR_CONFIG);
-    rightMainShooterSimState = upperRightShooterMotor.getSimState();
+    upperRightShooterSimState = upperRightShooterMotor.getSimState();
 
     upperLeftShooterMotor = new TalonFX(Constants.LEFT_FOLLOWER_SHOOTER_MOTOR_ID);
     upperLeftShooterMotor
@@ -50,6 +50,7 @@ public class ShooterIOSim implements ShooterIO {
   @Override
   public void updateState(ShooterIOInputs inputs) {
     updateSimulation();
+    inputs.upperRightShooterSetpointRotsPerSec = upperRightShooterSetpoint.in(RotationsPerSecond);
 
     inputs.upperRightShooterMotorVoltageVolts =
         upperRightShooterMotor.getMotorVoltage().getValue().in(Volts);
@@ -59,7 +60,6 @@ public class ShooterIOSim implements ShooterIO {
         upperRightShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
     inputs.upperRightShooterMotorStatorCurrentAmps =
         upperRightShooterMotor.getStatorCurrent().getValue().in(Amps);
-    inputs.upperRightShooterSetpointRotsPerSec = upperRightShooterSetpoint.in(RotationsPerSecond);
     inputs.upperRightShooterMotorSupplyCurrentAmps =
         upperRightShooterMotor.getSupplyCurrent().getValue().in(Amps);
 
@@ -71,19 +71,21 @@ public class ShooterIOSim implements ShooterIO {
         upperLeftShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.upperLeftShooterMotorSupplyCurrentAmps =
         upperLeftShooterMotor.getSupplyCurrent().getValue().in(Amps);
+    inputs.upperLeftShooterMotorAngleRotations =
+        upperLeftShooterMotor.getPosition().getValue().in(Rotations);
   }
 
   public void updateSimulation() {
     // Update physics simulations every 20ms (like the actual bot).
     shooterSim.update(Constants.SIM_TIME_PERIOD);
 
-    rightMainShooterSimState.setSupplyVoltage(Volts.of(12));
+    upperRightShooterSimState.setSupplyVoltage(Volts.of(12));
     upperLeftShooterSimState.setSupplyVoltage(Volts.of(12));
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.
-    rightMainShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
-    rightMainShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
+    upperRightShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
+    upperRightShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
     // The follower roller motor is opposed with the main motor, so it gets negated values.
     upperLeftShooterSimState.setRotorAcceleration(
         shooterSim.getAngularAcceleration().unaryMinus());

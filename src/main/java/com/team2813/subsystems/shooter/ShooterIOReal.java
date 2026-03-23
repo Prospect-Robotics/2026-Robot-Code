@@ -15,7 +15,7 @@ public class ShooterIOReal implements ShooterIO {
   private TalonFX upperRightShooterMotor;
   private TalonFX upperLeftShooterMotor;
 
-  private AngularVelocity rightMainShooterSetpoint = RotationsPerSecond.of(0);
+  private AngularVelocity upperRightShooterSetpoint = RotationsPerSecond.of(0);
 
   public ShooterIOReal() {
     upperRightShooterMotor = new TalonFX(Constants.RIGHT_MAIN_SHOOTER_MOTOR_ID);
@@ -31,6 +31,8 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void updateState(ShooterIOInputs inputs) {
+    inputs.upperRightShooterSetpointRotsPerSec = upperRightShooterSetpoint.in(RotationsPerSecond);
+
     inputs.upperRightShooterMotorVoltageVolts =
         upperRightShooterMotor.getMotorVoltage().getValue().in(Volts);
     inputs.upperRightShooterMotorAngleRotations =
@@ -41,7 +43,6 @@ public class ShooterIOReal implements ShooterIO {
         upperRightShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.upperRightShooterMotorSupplyCurrentAmps =
         upperRightShooterMotor.getSupplyCurrent().getValue().in(Amps);
-    inputs.upperRightShooterSetpointRotsPerSec = rightMainShooterSetpoint.in(RotationsPerSecond);
 
     inputs.upperLeftShooterMotorVoltageVolts =
         upperLeftShooterMotor.getMotorVoltage().getValue().in(Volts);
@@ -51,13 +52,15 @@ public class ShooterIOReal implements ShooterIO {
         upperLeftShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.upperLeftShooterMotorSupplyCurrentAmps =
         upperLeftShooterMotor.getSupplyCurrent().getValue().in(Amps);
+    inputs.upperLeftShooterMotorAngleRotations =
+        upperLeftShooterMotor.getPosition().getValue().in(Rotations);
   }
 
   @Override
   public void setShooterMotorVelocity(AngularVelocity shooterMotorVelocity) {
     // Uses Rot/s rather than passing AngularVelocity because there seems to be some issue with
     // AngularVelocity converting its value (i.e. Rot/s) to the base unit (rad/s)
-    rightMainShooterSetpoint = shooterMotorVelocity;
+    upperRightShooterSetpoint = shooterMotorVelocity;
     upperRightShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
     // same velocity
     upperLeftShooterMotor.setControl(shooterVelocityControl);
@@ -65,7 +68,7 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterVoltage) {
-    rightMainShooterSetpoint = RotationsPerSecond.of(0);
+    upperRightShooterSetpoint = RotationsPerSecond.of(0);
     upperRightShooterMotor.setVoltage(shooterVoltage.in(Volts));
     upperLeftShooterMotor.setVoltage(shooterVoltage.in(Volts));
   }
