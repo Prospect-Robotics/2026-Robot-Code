@@ -7,16 +7,10 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
 import java.util.function.Supplier;
 
-/**
- * Helper class allowing for automatically adjusting shooter speed based on hub distance.
- */
+/** Helper class allowing for automatically adjusting shooter speed based on hub distance. */
 public class VariableShooterCommand {
   // TODO: Tweak the speeds and distance after pinnacles if we have time.
   private static final AngularVelocity MIN_SPEED =
@@ -29,6 +23,7 @@ public class VariableShooterCommand {
 
   /**
    * Calculates the speed to shoot at if between the 1.5/3.1 MIN/MAX distance.
+   *
    * @param shooter Instance of the shooter class to apply the calculated speed to.
    * @param distanceSupplier A supplier of the distance from the hub
    * @see com.team2813.util.HubPositionUtil For getting distance from hub.
@@ -45,8 +40,7 @@ public class VariableShooterCommand {
 
   public static Command shootBasedOnDistanceCommand(
       Shooter shooter, Supplier<Distance> distanceSupplier) {
-    return new RunCommand(
-            () -> shootBasedOnDistance(shooter, distanceSupplier), shooter)
+    return new RunCommand(() -> shootBasedOnDistance(shooter, distanceSupplier), shooter)
         .finallyDo(shooter::stop);
   }
 }

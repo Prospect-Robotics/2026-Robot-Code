@@ -114,10 +114,14 @@ public class Robot extends LoggedRobot {
 
     Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
     Logger.recordOutput(
-        "HubStatus/Distance To Our Hub (Meters)", Math.round(100*robotContainer.getDistanceToHub().magnitude())/100.0);
+        "HubStatus/Distance To Our Hub (Meters)",
+        Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
     Logger.recordOutput(
-        "HubStatus/Time left in current phase (Seconds)",HubStatusUtil.timeLeftInCurrentPhase());
-      Logger.recordOutput("HubStatus/In range",robotContainer.getDistanceToHub().magnitude()<VariableShooterCommand.MAX_DIST.magnitude());
+        "HubStatus/Time left in current phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
+    Logger.recordOutput(
+        "HubStatus/In range",
+        robotContainer.getDistanceToHub().magnitude()
+            < VariableShooterCommand.MAX_DIST.magnitude());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
