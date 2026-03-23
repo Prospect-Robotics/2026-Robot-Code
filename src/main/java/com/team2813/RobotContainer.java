@@ -300,7 +300,7 @@ public class RobotContainer {
     driveController
         .a()
         .whileTrue(
-            new ParallelCommandGroup(
+            Commands.parallel(
                 DriveCommands.joystickDriveAtAngle(
                     drive,
                     () -> -driveController.getLeftY(),
