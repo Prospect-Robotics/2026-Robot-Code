@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import java.util.function.Supplier;
 
@@ -44,8 +45,8 @@ public class VariableShooterCommand {
 
   public static Command shootBasedOnDistanceCommand(
       Shooter shooter, Supplier<Distance> distanceSupplier) {
-    return new RepeatCommand(
-            new InstantCommand(() -> shootBasedOnDistance(shooter, distanceSupplier)))
-        .finallyDo(shooter::stop).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+    return new RunCommand(
+            () -> shootBasedOnDistance(shooter, distanceSupplier), shooter)
+        .finallyDo(shooter::stop);
   }
 }
