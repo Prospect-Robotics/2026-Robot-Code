@@ -12,45 +12,45 @@ public class ShooterIOReal implements ShooterIO {
 
   // Declaring the control here saves on having to create a new object each time.
   private final VelocityVoltage shooterVelocityControl;
-  private TalonFX rightMainShooterMotor;
-  private TalonFX leftFollowerShooterMotor;
+  private TalonFX upperRightShooterMotor;
+  private TalonFX upperLeftShooterMotor;
 
   private AngularVelocity rightMainShooterSetpoint = RotationsPerSecond.of(0);
 
   public ShooterIOReal() {
-    rightMainShooterMotor = new TalonFX(Constants.RIGHT_MAIN_SHOOTER_MOTOR_ID);
-    rightMainShooterMotor.getConfigurator().apply(ShooterConstants.MAIN_SHOOTER_MOTOR_CONFIG);
+    upperRightShooterMotor = new TalonFX(Constants.RIGHT_MAIN_SHOOTER_MOTOR_ID);
+    upperRightShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_RIGHT_SHOOTER_MOTOR_CONFIG);
 
-    leftFollowerShooterMotor = new TalonFX(Constants.LEFT_FOLLOWER_SHOOTER_MOTOR_ID);
-    leftFollowerShooterMotor
+    upperLeftShooterMotor = new TalonFX(Constants.LEFT_FOLLOWER_SHOOTER_MOTOR_ID);
+    upperLeftShooterMotor
         .getConfigurator()
-        .apply(ShooterConstants.FOLLOWER_SHOOTER_MOTOR_CONFIG);
+        .apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
   }
 
   @Override
   public void updateState(ShooterIOInputs inputs) {
-    inputs.rightMainShooterMotorVoltageVolts =
-        rightMainShooterMotor.getMotorVoltage().getValue().in(Volts);
-    inputs.rightMainShooterMotorAngleRotations =
-        rightMainShooterMotor.getPosition().getValue().in(Rotations);
-    inputs.rightMainShooterMotorRotPerSec =
-        rightMainShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.rightMainShooterMotorStatorCurrentAmps =
-        rightMainShooterMotor.getStatorCurrent().getValue().in(Amps);
-    inputs.rightMainShooterMotorSupplyCurrentAmps =
-        rightMainShooterMotor.getSupplyCurrent().getValue().in(Amps);
-    inputs.rightMainShooterSetpointRotsPerSec = rightMainShooterSetpoint.in(RotationsPerSecond);
+    inputs.upperRightShooterMotorVoltageVolts =
+        upperRightShooterMotor.getMotorVoltage().getValue().in(Volts);
+    inputs.upperRightShooterMotorAngleRotations =
+        upperRightShooterMotor.getPosition().getValue().in(Rotations);
+    inputs.upperRightShooterMotorRotPerSec =
+        upperRightShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
+    inputs.upperRightShooterMotorStatorCurrentAmps =
+        upperRightShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.upperRightShooterMotorSupplyCurrentAmps =
+        upperRightShooterMotor.getSupplyCurrent().getValue().in(Amps);
+    inputs.upperRightShooterSetpointRotsPerSec = rightMainShooterSetpoint.in(RotationsPerSecond);
 
-    inputs.leftFollowerShooterMotorVoltageVolts =
-        leftFollowerShooterMotor.getMotorVoltage().getValue().in(Volts);
-    inputs.leftFollowerShooterMotorRotPerSec =
-        leftFollowerShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.leftFollowerShooterMotorStatorCurrentAmps =
-        leftFollowerShooterMotor.getStatorCurrent().getValue().in(Amps);
-    inputs.leftFollowerShooterMotorSupplyCurrentAmps =
-        leftFollowerShooterMotor.getSupplyCurrent().getValue().in(Amps);
+    inputs.upperLeftShooterMotorVoltageVolts =
+        upperLeftShooterMotor.getMotorVoltage().getValue().in(Volts);
+    inputs.upperLeftShooterMotorRotPerSec =
+        upperLeftShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
+    inputs.upperLeftShooterMotorStatorCurrentAmps =
+        upperLeftShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.upperLeftShooterMotorSupplyCurrentAmps =
+        upperLeftShooterMotor.getSupplyCurrent().getValue().in(Amps);
   }
 
   @Override
@@ -58,15 +58,15 @@ public class ShooterIOReal implements ShooterIO {
     // Uses Rot/s rather than passing AngularVelocity because there seems to be some issue with
     // AngularVelocity converting its value (i.e. Rot/s) to the base unit (rad/s)
     rightMainShooterSetpoint = shooterMotorVelocity;
-    rightMainShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
+    upperRightShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
     // same velocity
-    leftFollowerShooterMotor.setControl(shooterVelocityControl);
+    upperLeftShooterMotor.setControl(shooterVelocityControl);
   }
 
   @Override
   public void setShooterMotorVoltage(Voltage shooterVoltage) {
     rightMainShooterSetpoint = RotationsPerSecond.of(0);
-    rightMainShooterMotor.setVoltage(shooterVoltage.in(Volts));
-    leftFollowerShooterMotor.setVoltage(shooterVoltage.in(Volts));
+    upperRightShooterMotor.setVoltage(shooterVoltage.in(Volts));
+    upperLeftShooterMotor.setVoltage(shooterVoltage.in(Volts));
   }
 }
