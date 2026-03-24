@@ -71,7 +71,8 @@ public class ShooterConstants {
 
   public static final TalonFXConfiguration SHOOTER_MOTOR_3_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
