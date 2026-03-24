@@ -36,6 +36,7 @@ import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
 import com.team2813.util.HubPositionUtil;
+import com.team2813.util.HubStatusUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -264,6 +265,9 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
 
+    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
+      operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
+    }
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
@@ -309,6 +313,10 @@ public class RobotContainer {
                 VariableShooterCommand.shootBasedOnDistanceCommand(
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
+
+    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
+      driveController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
+    }
   }
 
   /**
