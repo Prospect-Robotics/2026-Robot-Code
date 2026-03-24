@@ -84,6 +84,9 @@ public class RobotContainer {
    *
    * @param tunerConstants The tuner constants for the robot.
    */
+
+  
+
   public RobotContainer(
       AllTunerConstants tunerConstants,
       Mode mode,
@@ -193,7 +196,9 @@ public class RobotContainer {
         kicker = new Kicker(new KickerIO() {});
         break;
     }
+    
 
+    
     // Registers all named commands.
     namedCommandsRegistration();
     // Creates the autoBuilder, necessary for pathplanner, must be run after
@@ -265,9 +270,6 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
 
-    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
-      operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-    }
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
@@ -314,9 +316,7 @@ public class RobotContainer {
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
 
-    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
-      driveController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-    }
+    
   }
 
   /**
@@ -409,4 +409,14 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
+
+   public void setRumbleOperator(){
+          operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
+          System.out.println("transitioning operator");
+    }
+
+    public void setRumbleDriver(){
+          driveController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
+          System.out.println("transitioning driver");
+    }
 }
