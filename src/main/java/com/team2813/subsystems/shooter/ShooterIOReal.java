@@ -46,14 +46,24 @@ public class ShooterIOReal implements ShooterIO {
 
     inputs.upperRightShooterMotorVoltageVolts =
         upperRightShooterMotor.getMotorVoltage().getValue().in(Volts);
-    inputs.upperRightShooterMotorAngleRotations =
-        upperRightShooterMotor.getPosition().getValue().in(Rotations);
     inputs.upperRightShooterMotorRotPerSec =
         upperRightShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
     inputs.upperRightShooterMotorStatorCurrentAmps =
         upperRightShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.upperRightShooterMotorSupplyCurrentAmps =
         upperRightShooterMotor.getSupplyCurrent().getValue().in(Amps);
+
+    inputs.upperRightShooterMotorAngleRotations =
+        upperRightShooterMotor.getPosition().getValue().in(Rotations);
+
+    inputs.lowerRightShooterMotorVoltageVolts =
+        lowerRightShooterMotor.getMotorVoltage().getValue().in(Volts);
+    inputs.lowerRightShooterMotorRotPerSec =
+        lowerRightShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
+    inputs.lowerRightShooterMotorStatorCurrentAmps =
+        lowerRightShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.lowerRightShooterMotorSupplyCurrentAmps =
+        lowerRightShooterMotor.getSupplyCurrent().getValue().in(Amps);
 
     inputs.upperLeftShooterMotorVoltageVolts =
         upperLeftShooterMotor.getMotorVoltage().getValue().in(Volts);
@@ -63,8 +73,18 @@ public class ShooterIOReal implements ShooterIO {
         upperLeftShooterMotor.getStatorCurrent().getValue().in(Amps);
     inputs.upperLeftShooterMotorSupplyCurrentAmps =
         upperLeftShooterMotor.getSupplyCurrent().getValue().in(Amps);
+
     inputs.upperLeftShooterMotorAngleRotations =
         upperLeftShooterMotor.getPosition().getValue().in(Rotations);
+
+    inputs.lowerLeftShooterMotorVoltageVolts =
+        lowerLeftShooterMotor.getMotorVoltage().getValue().in(Volts);
+    inputs.lowerLeftShooterMotorRotPerSec =
+        lowerLeftShooterMotor.getVelocity().getValue().in(RotationsPerSecond);
+    inputs.lowerLeftShooterMotorStatorCurrentAmps =
+        lowerLeftShooterMotor.getStatorCurrent().getValue().in(Amps);
+    inputs.lowerLeftShooterMotorSupplyCurrentAmps =
+        lowerLeftShooterMotor.getSupplyCurrent().getValue().in(Amps);
   }
 
   @Override
@@ -81,6 +101,9 @@ public class ShooterIOReal implements ShooterIO {
   public void setShooterMotorVoltage(Voltage shooterVoltage) {
     upperRightShooterSetpoint = RotationsPerSecond.of(0);
     upperRightShooterMotor.setVoltage(shooterVoltage.in(Volts));
+    lowerRightShooterMotor.setVoltage(shooterVoltage.in(Volts));
+
     upperLeftShooterMotor.setVoltage(shooterVoltage.in(Volts));
+    lowerLeftShooterMotor.setVoltage(shooterVoltage.in(Volts));
   }
 }
