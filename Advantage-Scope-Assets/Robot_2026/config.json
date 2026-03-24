@@ -1,96 +1,96 @@
 {
-  "name": "2026 Robot",
-  "isFTC": false,
-  "disableSimplification": true,
-  "rotations": [
-    {
-      "axis": "x",
-      "degrees": 90
-    },
-    {
-      "axis": "y",
-      "degrees": 0
-    },
-    {
-      "axis": "z",
-      "degrees": 90
-    }
-  ],
-  "position": [
-    0,
-    0,
-    0
-  ],
-  "cameras": [
-    {
-      "name": "Front Camera",
-      "rotations": [
-        {
-          "axis": "x",
-          "degrees": 0
-        },
-        {
-          "axis": "y",
-          "degrees": -17.5
-        },
-        {
-          "axis": "z",
-          "degrees": 0
-        }
-      ],
-      "position": [
-        -0.054564,
-        0,
-        0.501754
-      ],
-      "fov": 70
-    },
-    {
-      "name": "Back Left Red Camera",
-      "rotations": [
-        {
-          "axis": "x",
-          "degrees": 0
-        },
-        {
-          "axis": "y",
-          "degrees": -15
-        },
-        {
-          "axis": "z",
-          "degrees": -160.0
-        }
-      ],
-      "position": [
-        -0.26,
-        0.26,
-        0.23
-      ],
-      "fov": 70
-    },
-    {
-      "name": "Back Right Green Camera",
-      "rotations": [
-        {
-          "axis": "x",
-          "degrees": 0
-        },
-        {
-          "axis": "y",
-          "degrees": -15
-        },
-        {
-          "axis": "z",
-          "degrees": -90.0
-        }
-      ],
-      "position": [
-        -0.26,
-        -0.26,
-        0.23
-      ],
-      "fov": 70
-    }
-  ],
-  "components": []
+		"name": "2026 Robot",
+		"isFTC": false,
+		"disableSimplification": true,
+		"rotations": [
+				{
+						"axis": "x",
+						"degrees": 90
+				},
+				{
+						"axis": "y",
+						"degrees": 0
+				},
+				{
+						"axis": "z",
+						"degrees": 90
+				}
+		],
+		"position": [
+				0,
+				0,
+				0
+		],
+		"cameras": [
+				{
+						"name": "Front Camera",
+						"rotations": [
+								{
+										"axis": "x",
+										"degrees": 0
+								},
+								{
+										"axis": "y",
+										"degrees": -17.5
+								},
+								{
+										"axis": "z",
+										"degrees": 0
+								}
+						],
+						"position": [
+								-0.054564,
+								0,
+								0.501754
+						],
+						"fov": 70
+				},
+				{
+						"name": "Back Left Red Camera",
+						"rotations": [
+								{
+										"axis": "x",
+										"degrees": 0
+								},
+								{
+										"axis": "y",
+										"degrees": -15
+								},
+								{
+										"axis": "z",
+										"degrees": -160.0
+								}
+						],
+						"position": [
+								-0.26,
+								0.26,
+								0.23
+						],
+						"fov": 70
+				},
+				{
+						"name": "Back Right Green Camera",
+						"rotations": [
+								{
+										"axis": "x",
+										"degrees": 0
+								},
+								{
+										"axis": "y",
+										"degrees": -15
+								},
+								{
+										"axis": "z",
+										"degrees": -90.0
+								}
+						],
+						"position": [
+								-0.26,
+								-0.26,
+								0.23
+						],
+						"fov": 70
+				}
+		],
+		"components": []
 }
