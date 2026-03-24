@@ -107,9 +107,11 @@ public class Robot extends LoggedRobot {
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
 
-    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
-      robotContainer.setRumbleDriver(); 
-      robotContainer.setRumbleOperator(); 
+    if (DriverStation.isTeleopEnabled() && HubStatusUtil.timeLeftInCurrentPhase() <= 3) {
+      robotContainer.setRumbleDriver();
+      robotContainer.setRumbleOperator();
+    } else {
+      robotContainer.stopRumble();
     }
 
     CommandScheduler.getInstance().run();

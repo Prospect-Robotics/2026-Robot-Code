@@ -36,7 +36,6 @@ import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
 import com.team2813.util.HubPositionUtil;
-import com.team2813.util.HubStatusUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -84,9 +83,6 @@ public class RobotContainer {
    *
    * @param tunerConstants The tuner constants for the robot.
    */
-
-  
-
   public RobotContainer(
       AllTunerConstants tunerConstants,
       Mode mode,
@@ -196,9 +192,7 @@ public class RobotContainer {
         kicker = new Kicker(new KickerIO() {});
         break;
     }
-    
 
-    
     // Registers all named commands.
     namedCommandsRegistration();
     // Creates the autoBuilder, necessary for pathplanner, must be run after
@@ -315,8 +309,6 @@ public class RobotContainer {
                 VariableShooterCommand.shootBasedOnDistanceCommand(
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
-
-    
   }
 
   /**
@@ -410,13 +402,18 @@ public class RobotContainer {
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
 
-   public void setRumbleOperator(){
-          operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-          System.out.println("transitioning operator");
-    }
+  public void setRumbleOperator() {
+    // todo test rumble values with operator
+    operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .7);
+  }
 
-    public void setRumbleDriver(){
-          driveController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-          System.out.println("transitioning driver");
-    }
+  public void setRumbleDriver() {
+    // todo test rumble values with driver
+    driveController.setRumble(GenericHID.RumbleType.kRightRumble, .7);
+  }
+
+  public void stopRumble() {
+    operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
+    driveController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
+  }
 }
