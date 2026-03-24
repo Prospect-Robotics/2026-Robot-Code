@@ -26,14 +26,14 @@ public class ShooterIOSim implements ShooterIO {
   private AngularVelocity upperRightShooterSetpoint = RotationsPerSecond.of(0);
 
   public ShooterIOSim() {
-    upperRightShooterMotor = new TalonFX(Constants.RIGHT_MAIN_SHOOTER_MOTOR_ID);
-    upperRightShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_RIGHT_SHOOTER_MOTOR_CONFIG);
+    upperRightShooterMotor = new TalonFX(Constants.UPPER_RIGHT_SHOOTER_MOTOR_ID);
+    upperRightShooterMotor
+        .getConfigurator()
+        .apply(ShooterConstants.UPPER_RIGHT_SHOOTER_MOTOR_CONFIG);
     upperRightShooterSimState = upperRightShooterMotor.getSimState();
 
-    upperLeftShooterMotor = new TalonFX(Constants.LEFT_FOLLOWER_SHOOTER_MOTOR_ID);
-    upperLeftShooterMotor
-        .getConfigurator()
-        .apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
+    upperLeftShooterMotor = new TalonFX(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID);
+    upperLeftShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
     upperLeftShooterSimState = upperLeftShooterMotor.getSimState();
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
@@ -87,8 +87,7 @@ public class ShooterIOSim implements ShooterIO {
     upperRightShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
     upperRightShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
     // The follower roller motor is opposed with the main motor, so it gets negated values.
-    upperLeftShooterSimState.setRotorAcceleration(
-        shooterSim.getAngularAcceleration().unaryMinus());
+    upperLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
     upperLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
   }
 

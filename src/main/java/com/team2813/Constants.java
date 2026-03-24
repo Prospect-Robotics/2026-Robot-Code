@@ -45,16 +45,18 @@ public final class Constants {
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.
-  public static final int RIGHT_MAIN_SHOOTER_MOTOR_ID = 19; // Right shooter motor.
-  public static final int LEFT_FOLLOWER_SHOOTER_MOTOR_ID = 20; // Left shooter motor.
+  public static final int UPPER_RIGHT_SHOOTER_MOTOR_ID = 19; // Upper right shooter motor.
+  public static final int LOWER_RIGHT_SHOOTER_MOTOR_ID = 30; // Lower right shooter motor.
+
+  public static final int UPPER_LEFT_SHOOTER_MOTOR_ID = 20; // Upper left shooter motor.
+  public static final int LOWER_LEFT_SHOOTER_MOTOR_ID = 31; // Lower left shooter motor.
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
   // Climb motors
-  // TODO(Stefan): ID these motors!
-  public static final int INNER_CLIMB_MOTOR_ID = 30;
-  public static final int OUTER_CLIMB_MOTOR_ID = 31;
+  //  public static final int INNER_CLIMB_MOTOR_ID = 30;
+  //  public static final int OUTER_CLIMB_MOTOR_ID = 31;
 
   /**
    * Returns true if the robot is on the red alliance.

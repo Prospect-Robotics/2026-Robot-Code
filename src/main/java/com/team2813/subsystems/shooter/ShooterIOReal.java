@@ -13,18 +13,29 @@ public class ShooterIOReal implements ShooterIO {
   // Declaring the control here saves on having to create a new object each time.
   private final VelocityVoltage shooterVelocityControl;
   private TalonFX upperRightShooterMotor;
+  private TalonFX lowerRightShooterMotor;
+
   private TalonFX upperLeftShooterMotor;
+  private TalonFX lowerLeftShooterMotor;
 
   private AngularVelocity upperRightShooterSetpoint = RotationsPerSecond.of(0);
 
   public ShooterIOReal() {
-    upperRightShooterMotor = new TalonFX(Constants.RIGHT_MAIN_SHOOTER_MOTOR_ID);
-    upperRightShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_RIGHT_SHOOTER_MOTOR_CONFIG);
-
-    upperLeftShooterMotor = new TalonFX(Constants.LEFT_FOLLOWER_SHOOTER_MOTOR_ID);
-    upperLeftShooterMotor
+    upperRightShooterMotor = new TalonFX(Constants.UPPER_RIGHT_SHOOTER_MOTOR_ID);
+    upperRightShooterMotor
         .getConfigurator()
-        .apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
+        .apply(ShooterConstants.UPPER_RIGHT_SHOOTER_MOTOR_CONFIG);
+
+    lowerRightShooterMotor = new TalonFX(Constants.LOWER_RIGHT_SHOOTER_MOTOR_ID);
+    lowerRightShooterMotor
+        .getConfigurator()
+        .apply(ShooterConstants.LOWER_RIGHT_SHOOTER_MOTOR_CONFIG);
+
+    upperLeftShooterMotor = new TalonFX(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID);
+    upperLeftShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
+
+    lowerLeftShooterMotor = new TalonFX(Constants.LOWER_LEFT_SHOOTER_MOTOR_ID);
+    lowerLeftShooterMotor.getConfigurator().apply(ShooterConstants.LOWER_LEFT_SHOOTER_MOTOR_CONFIG);
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
   }
