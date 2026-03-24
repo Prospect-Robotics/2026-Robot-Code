@@ -241,7 +241,8 @@ spotless {
             include "**/*.json"
             exclude "**/build/**", "**/build-*/**", ".wpilib/**"
         }
-        gson().indentWithSpaces(2)
+        gson()
+        leadingSpacesToTabs(2)
     }
     format "misc", {
         target fileTree(".") {
@@ -249,7 +250,7 @@ spotless {
             exclude "**/build/**", "**/build-*/**"
         }
         trimTrailingWhitespace()
-        indentWithSpaces(2)
+        leadingTabsToSpaces(2)
         endWithNewline()
     }
 }
