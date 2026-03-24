@@ -14,13 +14,25 @@ public interface ShooterIO {
     public double upperRightShooterMotorRotPerSec = 0;
     public double upperRightShooterMotorStatorCurrentAmps = 0;
     public double upperRightShooterMotorSupplyCurrentAmps = 0;
+
     public double upperRightShooterMotorAngleRotations = 0;
+
+    public double lowerRightShooterMotorVoltageVolts = 0;
+    public double lowerRightShooterMotorRotPerSec = 0;
+    public double lowerRightShooterMotorStatorCurrentAmps = 0;
+    public double lowerRightShooterMotorSupplyCurrentAmps = 0;
 
     public double upperLeftShooterMotorVoltageVolts = 0;
     public double upperLeftShooterMotorRotPerSec = 0;
     public double upperLeftShooterMotorStatorCurrentAmps = 0;
     public double upperLeftShooterMotorSupplyCurrentAmps = 0;
+
     public double upperLeftShooterMotorAngleRotations = 0;
+
+    public double lowerLeftShooterMotorVoltageVolts = 0;
+    public double lowerLeftShooterMotorRotPerSec = 0;
+    public double lowerLeftShooterMotorStatorCurrentAmps = 0;
+    public double lowerLeftShooterMotorSupplyCurrentAmps = 0;
   }
 
   /**
