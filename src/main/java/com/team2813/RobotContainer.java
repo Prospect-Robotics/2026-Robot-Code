@@ -404,16 +404,16 @@ public class RobotContainer {
 
   public void setRumbleOperator() {
     // todo test rumble values with operator
-    operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .7);
+    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
   }
 
   public void setRumbleDriver() {
     // todo test rumble values with driver
-    driveController.setRumble(GenericHID.RumbleType.kRightRumble, .7);
+    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
   }
 
   public void stopRumble() {
-    operatorController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
-    driveController.setRumble(GenericHID.RumbleType.kRightRumble, 0);
+    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
+    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
   }
 }
