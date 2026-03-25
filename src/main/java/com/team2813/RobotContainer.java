@@ -310,8 +310,8 @@ public class RobotContainer {
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
   }
-  
-  //controller rumble 
+
+  // controller rumble
   public void setRumbleOperator() {
     // TODO: test rumble values with operator
     operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
@@ -417,6 +417,4 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
-
-  
 }
