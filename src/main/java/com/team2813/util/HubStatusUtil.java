@@ -78,8 +78,8 @@ public class HubStatusUtil {
   /**
    * @return Returns the amount of time left in the current hub phase (in seconds).
    */
-  public static int timeLeftInCurrentPhase() {
-    int matchTimeInSeconds = (int) (DriverStation.getMatchTime());
+  public static double timeLeftInCurrentPhase() {
+    double matchTimeInSeconds = DriverStation.getMatchTime();
     if (matchTimeInSeconds >= 130) {
       // transition
       return matchTimeInSeconds - 130;
