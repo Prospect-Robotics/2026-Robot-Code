@@ -223,7 +223,16 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
   }
-
+  //starts rumbling the controllers (phase 3 second warning)
+  public void rumbleControllers() {
+    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
+    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
+  }
+  //stops controller rumble
+  public void stopRumble() {
+    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+  }
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -265,9 +274,7 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
 
-    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
-      operatorController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-    }
+    
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
@@ -313,10 +320,6 @@ public class RobotContainer {
                 VariableShooterCommand.shootBasedOnDistanceCommand(
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
-
-    if (HubStatusUtil.timeLeftInCurrentPhase() < 2) {
-      driveController.setRumble(GenericHID.RumbleType.kRightRumble, .5);
-    }
   }
 
   /**

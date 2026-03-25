@@ -54,19 +54,19 @@ public class HubStatusUtil {
           case Blue -> !redActiveFirst;
         };
 
-    if (matchTimeInSeconds > 130) {
+    if (matchTimeInSeconds >= 130) {
       // Transition shift, hub is active.
       return true;
-    } else if (matchTimeInSeconds > 105) {
+    } else if (matchTimeInSeconds >= 105) {
       // Shift 1
       return shift1Active;
-    } else if (matchTimeInSeconds > 80) {
+    } else if (matchTimeInSeconds >= 80) {
       // Shift 2
       return !shift1Active;
-    } else if (matchTimeInSeconds > 55) {
+    } else if (matchTimeInSeconds >= 55) {
       // Shift 3
       return shift1Active;
-    } else if (matchTimeInSeconds > 30) {
+    } else if (matchTimeInSeconds >= 30) {
       // Shift 4
       return !shift1Active;
     } else {
@@ -79,23 +79,23 @@ public class HubStatusUtil {
    * @return Returns the amount of time left in the current hub phase (in seconds).
    */
   public static int timeLeftInCurrentPhase() {
-    int matchTimeInSeconds = (int) DriverStation.getMatchTime();
-    if (matchTimeInSeconds > 130) {
+    int matchTimeInSeconds = (int) (DriverStation.getMatchTime());
+    if (matchTimeInSeconds >= 130) {
       // transition
       return matchTimeInSeconds - 130;
-    } else if (matchTimeInSeconds > 105) {
+    } else if (matchTimeInSeconds >= 105) {
       // shift 1
       return matchTimeInSeconds - 105;
-    } else if (matchTimeInSeconds > 80) {
+    } else if (matchTimeInSeconds >= 80) {
       // shift 2
       return matchTimeInSeconds - 80;
-    } else if (matchTimeInSeconds > 55) {
+    } else if (matchTimeInSeconds >= 55) {
       // shift 3
       return matchTimeInSeconds - 55;
-    } else if (matchTimeInSeconds > 30) {
+    } else if (matchTimeInSeconds >= 30) {
       // shift 4
       return matchTimeInSeconds - 30;
-    } else if (matchTimeInSeconds > 0) {
+    } else if (matchTimeInSeconds >= 0) {
       // endgame
       return matchTimeInSeconds;
     } else return 0;

@@ -111,24 +111,29 @@ public class Robot extends LoggedRobot {
     if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
-
-    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
+    boolean hubActive = HubStatusUtil.isHubActive();
+    int timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
+    Logger.recordOutput("HubStatus/Our Hub Status", hubActive);
     Logger.recordOutput(
         "HubStatus/Distance To Our Hub (Meters)",
         Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
     Logger.recordOutput(
-        "HubStatus/Time left in current phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
+        "HubStatus/Time left in current phase (Seconds)", timeLeftInCurrentPhase);
     Logger.recordOutput(
         "HubStatus/In range",
         robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
 
+    
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
   }
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    //stop controller rumble
+    robotContainer.stopRumble();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -172,7 +177,16 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    int timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
+    //rumble controllers if the phase is about to end
+    if(timeLeftInCurrentPhase<=2) {
+      robotContainer.rumbleControllers();
+    }
+    else {
+      robotContainer.stopRumble();
+    }
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
