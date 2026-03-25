@@ -414,19 +414,4 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
   }
-
-  public void setRumbleOperator() {
-    // todo test rumble values with operator
-    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
-  }
-
-  public void setRumbleDriver() {
-    // todo test rumble values with driver
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
-  }
-
-  public void stopRumble() {
-    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
-  }
 }
