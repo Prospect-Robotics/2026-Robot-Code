@@ -106,18 +106,19 @@ public class Robot extends LoggedRobot {
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
 
     if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
-
-    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
+    boolean hubActive = HubStatusUtil.isHubActive();
+    int timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
+    Logger.recordOutput("HubStatus/Our Hub Status", hubActive);
     Logger.recordOutput(
         "HubStatus/Distance To Our Hub (Meters)",
         Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
-    Logger.recordOutput(
-        "HubStatus/Time left in current phase (Seconds)", HubStatusUtil.timeLeftInCurrentPhase());
+    Logger.recordOutput("HubStatus/Time left in current phase (Seconds)", timeLeftInCurrentPhase);
     Logger.recordOutput(
         "HubStatus/In range",
         robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
@@ -128,7 +129,10 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // stop controller rumble
+    robotContainer.stopRumble();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -172,7 +176,16 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    int timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
+    // rumble controllers if the phase is about to end
+    if (timeLeftInCurrentPhase <= 2) {
+      robotContainer.setRumbleDriver();
+      robotContainer.setRumbleOperator();
+    } else {
+      robotContainer.stopRumble();
+    }
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override

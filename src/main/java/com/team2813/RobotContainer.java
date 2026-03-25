@@ -311,6 +311,22 @@ public class RobotContainer {
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
   }
 
+  // controller rumble
+  public void setRumbleOperator() {
+    // TODO: test rumble values with operator
+    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+  }
+
+  public void setRumbleDriver() {
+    // TODO: test rumble values with driver
+    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+  }
+
+  public void stopRumble() {
+    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
