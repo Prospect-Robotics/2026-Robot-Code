@@ -275,12 +275,11 @@ public class RobotContainer {
 
     // Driver intake roller bindings
     driveController
-        .rightBumper()
+        .leftTrigger()
         .whileTrue(
             Commands.parallel(intakeRoller.intakeCommand(), intakeExtension.extendCommand()));
 
-    // Runs the Kicker Wheels toward the shooter.
-    driveController.leftTrigger().whileTrue(kicker.shootCommand());
+    
 
     // hub shot command
     driveController
@@ -291,7 +290,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .start()
+        .y()
         .onTrue(
             new InstantCommand(
                 () ->

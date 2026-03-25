@@ -118,7 +118,9 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput(
         "HubStatus/Distance To Our Hub (Meters)",
         Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
-    Logger.recordOutput("HubStatus/Time left in current phase (Seconds)", Math.round(10*HubStatusUtil.timeLeftInCurrentPhase())/10.0);
+    Logger.recordOutput(
+        "HubStatus/Time left in current phase (Seconds)",
+        Math.round(10 * HubStatusUtil.timeLeftInCurrentPhase()) / 10.0);
     Logger.recordOutput(
         "HubStatus/In range",
         robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
@@ -179,7 +181,8 @@ public class Robot extends LoggedRobot {
   public void teleopPeriodic() {
     double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
     // rumble controllers if the phase is about to end
-    if (timeLeftInCurrentPhase <= 3 && (timeLeftInCurrentPhase-(int)timeLeftInCurrentPhase)>0.7) {
+    if (timeLeftInCurrentPhase <= 3
+        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7) {
       robotContainer.setRumbleDriver();
       robotContainer.setRumbleOperator();
     } else {
