@@ -36,7 +36,6 @@ import com.team2813.subsystems.kicker.KickerIOSim;
 import com.team2813.subsystems.shooter.*;
 import com.team2813.subsystems.vision.*;
 import com.team2813.util.HubPositionUtil;
-import com.team2813.util.HubStatusUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -223,16 +222,19 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
   }
-  //starts rumbling the controllers (phase 3 second warning)
+
+  // starts rumbling the controllers (phase 3 second warning)
   public void rumbleControllers() {
     driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
     operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
   }
-  //stops controller rumble
+
+  // stops controller rumble
   public void stopRumble() {
     driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
     operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -274,7 +276,6 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
 
-    
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
