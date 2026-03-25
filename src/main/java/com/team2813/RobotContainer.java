@@ -223,18 +223,6 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  // starts rumbling the controllers (phase 3 second warning)
-  public void rumbleControllers() {
-    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
-    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
-  }
-
-  // stops controller rumble
-  public void stopRumble() {
-    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-  }
-
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -415,13 +403,13 @@ public class RobotContainer {
   }
 
   public void setRumbleOperator() {
-    // todo test rumble values with operator
-    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
+    // TODO: test rumble values with operator
+    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
   }
 
   public void setRumbleDriver() {
-    // todo test rumble values with driver
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
+    // TODO: test rumble values with driver
+    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
   }
 
   public void stopRumble() {
