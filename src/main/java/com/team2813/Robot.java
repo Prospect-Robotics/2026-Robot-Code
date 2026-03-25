@@ -125,13 +125,11 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput(
         "HubStatus/Distance To Our Hub (Meters)",
         Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
-    Logger.recordOutput(
-        "HubStatus/Time left in current phase (Seconds)", timeLeftInCurrentPhase);
+    Logger.recordOutput("HubStatus/Time left in current phase (Seconds)", timeLeftInCurrentPhase);
     Logger.recordOutput(
         "HubStatus/In range",
         robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
 
-    
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
   }
@@ -139,7 +137,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    //stop controller rumble
+    // stop controller rumble
     robotContainer.stopRumble();
   }
 
@@ -187,11 +185,10 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
     int timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
-    //rumble controllers if the phase is about to end
-    if(timeLeftInCurrentPhase<=2) {
+    // rumble controllers if the phase is about to end
+    if (timeLeftInCurrentPhase <= 2) {
       robotContainer.rumbleControllers();
-    }
-    else {
+    } else {
       robotContainer.stopRumble();
     }
   }
