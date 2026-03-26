@@ -279,8 +279,6 @@ public class RobotContainer {
         .whileTrue(
             Commands.parallel(intakeRoller.intakeCommand(), intakeExtension.extendCommand()));
 
-    
-
     // hub shot command
     driveController
         .rightTrigger()
