@@ -257,7 +257,7 @@ public class RobotContainer {
 
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
-    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
+    operatorController.leftTrigger().whileTrue(Commands.parallel(intakeRoller.outtakeCommand(),hopper.outtakeCommand()));
 
     // Spool shooter commands
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());

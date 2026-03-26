@@ -182,7 +182,7 @@ public class Robot extends LoggedRobot {
     double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
     // rumble controllers if the phase is about to end
     if (timeLeftInCurrentPhase <= 3
-        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7) {
+        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7&&timeLeftInCurrentPhase>0) {
       robotContainer.setRumbleDriver();
       robotContainer.setRumbleOperator();
     } else {
