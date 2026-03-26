@@ -52,7 +52,8 @@ public final class Constants {
   public static final int LOWER_LEFT_SHOOTER_MOTOR_ID = 31; // Lower left shooter motor.
 
   // Kicker Motor
-  public static final int KICKER_MOTOR_ID = 21;
+  public static final int UPPER_KICKER_MOTOR_ID = 21;
+  public static final int LOWER_KICKER_MOTOR_ID = 22;
 
   // Climb motors
   //  public static final int INNER_CLIMB_MOTOR_ID = 30;

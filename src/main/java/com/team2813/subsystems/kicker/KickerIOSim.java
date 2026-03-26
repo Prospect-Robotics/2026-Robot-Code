@@ -12,40 +12,59 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 public class KickerIOSim implements KickerIO {
-  private final FlywheelSim flywheelSim;
-  private final TalonFX motor;
+  private final FlywheelSim upperMotorFlywheelSim;
+  private final FlywheelSim lowerMotorFlywheelSim;
+  private final TalonFX upperKickerMotor;
+  private final TalonFX lowerKickerMotor;
 
   public KickerIOSim() {
-    motor = new TalonFX(Constants.KICKER_MOTOR_ID);
-    flywheelSim =
+    upperKickerMotor = new TalonFX(Constants.UPPER_KICKER_MOTOR_ID);
+    upperKickerMotor.getConfigurator().apply(KickerConstants.UPPER_KICKER_MOTOR_CONFIG);
+    lowerKickerMotor = new TalonFX(Constants.LOWER_KICKER_MOTOR_ID);
+    lowerKickerMotor.getConfigurator().apply(KickerConstants.LOWER_KICKER_MOTOR_CONFIG);
+
+    upperMotorFlywheelSim =
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(1),
                 KickerConstants.KICKER_SIM_MOI.in(
                     KilogramSquareMeters), // "Moment of Inertia" taken from OnShape.
-                KickerConstants.KICKER_MOTOR_TO_FLYWHEEL_GEARING),
+                KickerConstants.UPPER_MOTOR_GEARING),
+            DCMotor.getKrakenX60(1));
+
+    lowerMotorFlywheelSim =
+        new FlywheelSim(
+            LinearSystemId.createFlywheelSystem(
+                DCMotor.getKrakenX60(1),
+                KickerConstants.KICKER_SIM_MOI.in(
+                    KilogramSquareMeters), // "Moment of Inertia" taken from OnShape.
+                KickerConstants.LOWER_MOTOR_GEARING),
             DCMotor.getKrakenX60(1));
   }
 
   @Override
-  public void setMotorVoltage(Voltage kickerMotorVoltage) {
-    double volts = kickerMotorVoltage.in(Volts);
-    motor.setVoltage(volts);
-    flywheelSim.setInputVoltage(volts);
-  }
+    public void setMotorVoltage(Voltage upperKickerMotorVoltage, Voltage lowerKickerMotorVoltage) {
+        upperKickerMotor.setVoltage(upperKickerMotorVoltage.in(Volts));
+        lowerKickerMotor.setVoltage(lowerKickerMotorVoltage.in(Volts));
+    }
 
   @Override
   public void updateState(KickerIOInputs inputs) {
     updateSimulation();
 
-    inputs.motorVoltage = motor.getMotorVoltage().getValue();
-    inputs.motorRotationalVelocity = motor.getVelocity().getValue();
-    inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();
-    inputs.motorSupplyCurrent = motor.getSupplyCurrent().getValue();
+    inputs.upperMotorVoltage = upperKickerMotor.getMotorVoltage().getValue();
+    inputs.upperMotorRotationalVelocity = upperKickerMotor.getVelocity().getValue();
+    inputs.upperMotorStatorCurrent = upperKickerMotor.getStatorCurrent().getValue();
+    inputs.upperMotorSupplyCurrent = upperKickerMotor.getSupplyCurrent().getValue();
+
+    inputs.lowerMotorVoltage = lowerKickerMotor.getMotorVoltage().getValue();
+    inputs.lowerMotorRotationalVelocity = lowerKickerMotor.getVelocity().getValue();
+    inputs.lowerMotorStatorCurrent = lowerKickerMotor.getStatorCurrent().getValue();
+    inputs.lowerMotorSupplyCurrent = lowerKickerMotor.getSupplyCurrent().getValue();
   }
 
   private void updateSimulation() {
-    flywheelSim.update(Constants.SIM_TIME_PERIOD);
+    upperMotorFlywheelSim.update(Constants.SIM_TIME_PERIOD);
 
     TalonFXSimState simState = motor.getSimState();
     simState.setRotorAcceleration(flywheelSim.getAngularAcceleration());

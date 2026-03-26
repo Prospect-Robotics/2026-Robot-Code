@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -14,12 +15,18 @@ class KickerConstants {
   static final String SHOOT_PREFERENCE_NT = "Kicker/SHOOT_VOLTAGE";
   static final String RESIST_FUEL_PREFERENCE_NT = "Kicker/RESIST_FUEL_VOLTAGE";
 
-  static final TalonFXConfiguration KICKER_MOTOR_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(35)));
+  static final TalonFXConfiguration UPPER_KICKER_MOTOR_CONFIG =
+          new TalonFXConfiguration()
+                  .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(8))
+                  .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)); // needs 8 rotations of the motor to rotate the upper kicker once
 
-  static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
+  static final TalonFXConfiguration LOWER_KICKER_MOTOR_CONFIG =
+          new TalonFXConfiguration()
+                  .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(2))
+                  .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)); // needs 2 rotations of the motor to rotate the lower kicker once
+
+  static final double UPPER_MOTOR_GEARING = 8;
+  static final double LOWER_MOTOR_GEARING = 2;
 
   static final double SHOOT_VOLTAGE = 7;
   static final double RESIST_FUEL_VOLTAGE = -3;
