@@ -15,6 +15,9 @@ java {
 
 def ROBOT_MAIN_CLASS = "com.team2813.Main"
 
+// Enables the opening of 10.28.13.2:1198 for profiling.
+def enableDebug = false
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
 deploy {
@@ -44,14 +47,16 @@ deploy {
                     jvmArgs.add("-Xms" + MAX_JAVA_HEAP_SIZE_MB + "M")
                     jvmArgs.add("-XX:+AlwaysPreTouch")
 
-                    // Source https://docs.wpilib.org/en/stable/docs/software/advanced-gradlerio/profiling-with-visualvm.html.
-                    // Enable VisualVM connection.
-                    jvmArgs.add("-Dcom.sun.management.jmxremote=true")
-                    jvmArgs.add("-Dcom.sun.management.jmxremote.port=1198")
-                    jvmArgs.add("-Dcom.sun.management.jmxremote.local.only=false")
-                    jvmArgs.add("-Dcom.sun.management.jmxremote.ssl=false")
-                    jvmArgs.add("-Dcom.sun.management.jmxremote.authenticate=false")
-                    jvmArgs.add("-Djava.rmi.server.hostname=10.28.13.2")
+                    if (enableDebug) {
+                        // Source https://docs.wpilib.org/en/stable/docs/software/advanced-gradlerio/profiling-with-visualvm.html.
+                        // Enable VisualVM connection.
+                        jvmArgs.add("-Dcom.sun.management.jmxremote=true")
+                        jvmArgs.add("-Dcom.sun.management.jmxremote.port=1198")
+                        jvmArgs.add("-Dcom.sun.management.jmxremote.local.only=false")
+                        jvmArgs.add("-Dcom.sun.management.jmxremote.ssl=false")
+                        jvmArgs.add("-Dcom.sun.management.jmxremote.authenticate=false")
+                        jvmArgs.add("-Djava.rmi.server.hostname=10.28.13.2")
+                    }
                 }
 
                 // Static files artifact
