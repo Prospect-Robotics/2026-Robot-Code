@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.478972895863052,
-        "y": 7.625477888730385
+        "x": 3.1009271523228215,
+        "y": 6.677615894038647
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.402326158940398,
-        "y": 7.577847682119204
+        "x": 2.5491721854286395,
+        "y": 7.396349337751505
       },
       "isLocked": false,
-      "linkedName": "left trench"
+      "linkedName": "left midfield"
     },
     {
       "anchor": {
-        "x": 7.551266556291392,
-        "y": 7.236630794701986
+        "x": 4.552913907282945,
+        "y": 7.476208609274684
       },
       "prevControl": {
-        "x": 7.455112710137546,
-        "y": 7.467400025471218
+        "x": 3.093304172211311,
+        "y": 7.481348080172824
       },
       "nextControl": {
-        "x": 7.805364238410595,
-        "y": 6.626796357615893
+        "x": 6.614735099335925,
+        "y": 7.468948675499848
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.848923841059602,
-        "y": 4.898932119205297
+        "x": 6.810753311258278,
+        "y": 4.775513245033112
       },
       "prevControl": {
-        "x": 7.81262417218543,
-        "y": 5.683004966887416
+        "x": 6.78171357615894,
+        "y": 6.590496688741721
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "left mid neutral"
+      "linkedName": "center pass 2"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.1341350601295181,
-      "rotationDegrees": -70.0
+      "waypointRelativePos": 0.83996299722478,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
@@ -63,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -70.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -70.0
   },
   "useDefaultConstraints": true
 }
