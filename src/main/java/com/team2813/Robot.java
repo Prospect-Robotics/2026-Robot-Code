@@ -113,7 +113,6 @@ public class Robot extends LoggedRobot {
       SimulationVisualizer.getInstance().periodic();
     }
     boolean hubActive = HubStatusUtil.isHubActive();
-    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
     Logger.recordOutput("HubStatus/Our Hub Status", hubActive);
     Logger.recordOutput(
         "HubStatus/Distance To Our Hub (Meters)",
