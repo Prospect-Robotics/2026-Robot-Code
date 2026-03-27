@@ -257,7 +257,9 @@ public class RobotContainer {
 
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
-    operatorController.leftTrigger().whileTrue(intakeRoller.outtakeCommand());
+    operatorController
+        .leftTrigger()
+        .whileTrue(Commands.parallel(intakeRoller.outtakeCommand(), hopper.outtakeCommand()));
 
     // Spool shooter commands
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
@@ -275,12 +277,9 @@ public class RobotContainer {
 
     // Driver intake roller bindings
     driveController
-        .rightBumper()
+        .leftTrigger()
         .whileTrue(
             Commands.parallel(intakeRoller.intakeCommand(), intakeExtension.extendCommand()));
-
-    // Runs the Kicker Wheels toward the shooter.
-    driveController.leftTrigger().whileTrue(kicker.shootCommand());
 
     // hub shot command
     driveController
@@ -291,7 +290,7 @@ public class RobotContainer {
 
     // Reset robot orientation, but keeps its position on the field.
     driveController
-        .start()
+        .y()
         .onTrue(
             new InstantCommand(
                 () ->
@@ -309,6 +308,22 @@ public class RobotContainer {
                 VariableShooterCommand.shootBasedOnDistanceCommand(
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
+  }
+
+  // controller rumble
+  public void setRumbleOperator() {
+    // TODO: test rumble values with operator
+    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+  }
+
+  public void setRumbleDriver() {
+    // TODO: test rumble values with driver
+    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
+  }
+
+  public void stopRumble() {
+    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
 
   /**
@@ -400,20 +415,5 @@ public class RobotContainer {
     NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
-  }
-
-  public void setRumbleOperator() {
-    // todo test rumble values with operator
-    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
-  }
-
-  public void setRumbleDriver() {
-    // todo test rumble values with driver
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, .7);
-  }
-
-  public void stopRumble() {
-    operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 0);
   }
 }

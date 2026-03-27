@@ -16,10 +16,10 @@ public class VariableShooterCommand {
   private static final AngularVelocity MIN_SPEED =
       RotationsPerSecond.of(60); // 1.5 meters. Hub shot speed.
   private static final AngularVelocity MAX_SPEED =
-      RotationsPerSecond.of(100); // ~2.5 meters from hub speed.
+      RotationsPerSecond.of(100); // 3.5 meters from hub speed.
 
   public static final Distance MIN_DIST = Meters.of(1.5);
-  public static final Distance MAX_DIST = Meters.of(3.1);
+  public static final Distance MAX_DIST = Meters.of(3.5);
 
   /**
    * Calculates the speed to shoot at if between the 1.5/3.1 MIN/MAX distance.

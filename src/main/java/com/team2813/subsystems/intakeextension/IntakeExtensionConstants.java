@@ -35,7 +35,7 @@ class IntakeExtensionConstants {
   public static final Distance EXTENDED_POSITION = Inches.of(10.75);
   public static final Distance RETRACTED_POSITION = Inches.of(0);
 
-  public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.25);
+  public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.15);
 
   // TODO: Migrate this enum to a more suitable location than a Constants Class.
   public enum ExtenderPositions {
