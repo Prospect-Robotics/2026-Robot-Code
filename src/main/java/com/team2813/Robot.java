@@ -180,7 +180,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
     double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
-    // rumble controllers if the phase is about to end
+    // rumble controllers 3 times if the phase is about to end
+    // TODO: Rework the comment, Tamir or Tom
     if (timeLeftInCurrentPhase <= 3
         && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7
         && timeLeftInCurrentPhase > 0) {
