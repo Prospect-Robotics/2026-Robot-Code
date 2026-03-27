@@ -241,8 +241,7 @@ spotless {
             include "**/*.json"
             exclude "**/build/**", "**/build-*/**", ".wpilib/**"
         }
-        gson()
-        leadingSpacesToTabs(2)
+        gson().indentWithSpaces(2)
     }
     format "misc", {
         target fileTree(".") {
