@@ -96,8 +96,7 @@ public class HopperIOReal implements HopperIO {
         indexerVoltage,
         indexerRPS,
         indexerStatorCurrent,
-        indexerSupplyCurrent
-    );
+        indexerSupplyCurrent);
 
     inputs.mainFeederMotorVoltage = mainFeederVoltage.getValue();
     inputs.mainFeederMotorRPS = mainFeederRPS.getValue();
