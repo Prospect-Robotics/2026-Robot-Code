@@ -88,4 +88,12 @@ public class LockDrivetrainCommand extends Command {
       crossed = true;
     }
   }
+
+  @Override
+  public void end(boolean interrupted) {
+    if (wasFacingHub) {
+      prepareShooter.end(interrupted);
+    }
+    drive.stop();
+  }
 }
