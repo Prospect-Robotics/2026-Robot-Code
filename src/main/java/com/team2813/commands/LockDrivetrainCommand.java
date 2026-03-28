@@ -1,6 +1,7 @@
 package com.team2813.commands;
 
 import com.team2813.subsystems.drive.Drive;
+import com.team2813.subsystems.shooter.Shooter;
 import com.team2813.util.HubPositionUtil;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,11 +17,14 @@ public class LockDrivetrainCommand extends Command {
   private final BooleanSupplier faceHub;
   private final Drive drive;
   private boolean crossed;
+  private boolean wasFacingHub = false;
   private final Command facingCommand;
   private final Command normalCommand;
+  private final Command prepareShooter;
 
   public LockDrivetrainCommand(
       Drive drive,
+      Shooter shooter,
       DoubleSupplier vxSupplier,
       DoubleSupplier vySupplier,
       DoubleSupplier omegaSupplier,
@@ -41,11 +45,16 @@ public class LockDrivetrainCommand extends Command {
             () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), alliance));
 
     normalCommand = DriveCommands.joystickDrive(drive, vxSupplier, vySupplier, omegaSupplier);
+
+    prepareShooter =
+        VariableShooterCommand.shootBasedOnDistanceCommand(
+            shooter, () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), alliance));
   }
 
   @Override
   public void initialize() {
     crossed = false;
+    wasFacingHub = false;
   }
 
   @Override
@@ -61,11 +70,21 @@ public class LockDrivetrainCommand extends Command {
       crossed = false;
       if (faceHub.getAsBoolean()) {
         facingCommand.execute();
+        if (wasFacingHub) {
+          wasFacingHub = false;
+          prepareShooter.end(true);
+        }
       } else {
+        wasFacingHub = true;
         normalCommand.execute();
+        prepareShooter.execute();
       }
     } else if (!crossed) {
       drive.stopWithX();
+      if (wasFacingHub) {
+        prepareShooter.end(true);
+        wasFacingHub = false;
+      }
       crossed = true;
     }
   }

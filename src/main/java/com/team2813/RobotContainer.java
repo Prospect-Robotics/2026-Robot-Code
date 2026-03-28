@@ -12,6 +12,7 @@ import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.team2813.commands.DriveCommands;
+import com.team2813.commands.LockDrivetrainCommand;
 import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.subsystems.drive.Drive;
@@ -249,7 +250,17 @@ public class RobotContainer {
     // intakeRoller.intakeCommand()));
 
     // Defensive Stop.
-    operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
+    operatorController
+        .rightBumper()
+        .whileTrue(
+            new LockDrivetrainCommand(
+                drive,
+                shooter,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                () -> -driveController.getRightX(),
+                driveController.a(),
+                currentAlliance));
 
     // Feeder controls
     operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
@@ -298,6 +309,7 @@ public class RobotContainer {
 
     driveController
         .a()
+        .and(operatorController.rightBumper().negate()) // lock drivetrain handles this
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
