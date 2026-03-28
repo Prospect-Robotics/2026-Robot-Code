@@ -61,7 +61,7 @@ public class LockDrivetrainCommand extends Command {
   public void execute() {
     double vx = vxSupplier.getAsDouble();
     double vy = vySupplier.getAsDouble();
-    double omega = vxSupplier.getAsDouble();
+    double omega = omegaSupplier.getAsDouble();
 
     if (MathUtil.isNear(0, vx, 0.1)
         || MathUtil.isNear(0, vy, 0.1)
