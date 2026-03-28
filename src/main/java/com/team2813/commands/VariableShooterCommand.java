@@ -41,6 +41,6 @@ public class VariableShooterCommand {
   public static Command shootBasedOnDistanceCommand(
       Shooter shooter, Supplier<Distance> distanceSupplier) {
     return new RunCommand(() -> shootBasedOnDistance(shooter, distanceSupplier), shooter)
-        .finallyDo(shooter::stop);
+        .finallyDo(shooter::stop).withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
   }
 }

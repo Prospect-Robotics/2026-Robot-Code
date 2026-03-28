@@ -299,15 +299,15 @@ public class RobotContainer {
     driveController
         .a()
         .whileTrue(
-            Commands.parallel(
-                DriveCommands.joystickDriveAtAngle(
-                    drive,
-                    () -> -driveController.getLeftY(),
-                    () -> -driveController.getLeftX(),
-                    () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),
-                VariableShooterCommand.shootBasedOnDistanceCommand(
-                    shooter,
-                    () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)))
+        .whileTrue(
+            VariableShooterCommand.shootBasedOnDistanceCommand(
+                shooter,
+                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
   }
 
   // controller rumble
