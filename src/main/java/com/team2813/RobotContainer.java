@@ -385,6 +385,18 @@ public class RobotContainer {
             new WaitCommand(6)));
 
     NamedCommands.registerCommand(
+        "VariableShot",
+        new ParallelRaceGroup(
+            new ParallelCommandGroup(
+                VariableShooterCommand.shootBasedOnDistanceCommand(
+                    shooter,
+                    () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)),
+                new SequentialCommandGroup(
+                    new WaitCommand(0.5),
+                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+            new WaitCommand(6)));
+
+    NamedCommands.registerCommand(
         "ExtendIntake",
         intakeExtension
             .extendCommand()
