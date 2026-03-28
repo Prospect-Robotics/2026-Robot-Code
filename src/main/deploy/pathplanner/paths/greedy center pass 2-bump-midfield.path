@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.403109843081312,
+        "y": 2.9287446504992873
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.872624821682827,
+        "y": 4.494322396569266
+      },
+      "isLocked": false,
+      "linkedName": "greedy center pass 2"
+    },
+    {
+      "anchor": {
+        "x": 6.2515691868754075,
+        "y": 5.904636233944443
+      },
+      "prevControl": {
+        "x": 7.196077088227971,
+        "y": 5.832306433544779
+      },
+      "nextControl": {
+        "x": 5.307061285522844,
+        "y": 5.976966034344108
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8228555555555555,
+        "y": 6.198266666666666
+      },
+      "prevControl": {
+        "x": 4.090813124107933,
+        "y": 5.231825962903074
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "left midfield"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 7.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -54.32359177813802
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": false
+}
