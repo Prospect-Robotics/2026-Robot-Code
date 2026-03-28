@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 6.2515691868754075,
-        "y": 5.904636233944443
+        "x": 6.031611982881596,
+        "y": 5.4647218259629105
       },
       "prevControl": {
-        "x": 7.196077088227971,
-        "y": 5.832306433544779
+        "x": 6.97611988423416,
+        "y": 5.392392025563246
       },
       "nextControl": {
-        "x": 5.307061285522844,
-        "y": 5.976966034344108
+        "x": 5.0871040815290325,
+        "y": 5.537051626362575
       },
       "isLocked": false,
       "linkedName": null
@@ -44,7 +44,12 @@
       "linkedName": "left midfield"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.510818438381926,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
