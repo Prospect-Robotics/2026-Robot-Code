@@ -49,6 +49,9 @@ public class LockDrivetrainCommand extends Command {
     prepareShooter =
         VariableShooterCommand.shootBasedOnDistanceCommand(
             shooter, () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), alliance));
+
+    addRequirements(drive);
+    // Don't require the shooter, so you can still spool up normally
   }
 
   @Override
