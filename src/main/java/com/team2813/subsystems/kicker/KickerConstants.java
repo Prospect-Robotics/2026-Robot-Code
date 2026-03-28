@@ -21,6 +21,6 @@ class KickerConstants {
 
   static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
 
-  static final double SHOOT_VOLTAGE = 7;
+  static final double SHOOT_VOLTAGE = 9;
   static final double RESIST_FUEL_VOLTAGE = -3;
 }
