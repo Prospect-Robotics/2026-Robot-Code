@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.512322222222224,
-        "y": 3.625733333333333
+        "x": 7.6752756633926715,
+        "y": 5.883739872217505
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "left mid neutral"
     },
     {
       "anchor": {
-        "x": 5.122544444444445,
-        "y": 5.408966666666666
+        "x": 5.082889072852621,
+        "y": 7.367309602647918
       },
       "prevControl": {
-        "x": 6.811984359230816,
-        "y": 5.443907681101022
+        "x": 7.081596261397869,
+        "y": 7.11328312390474
       },
       "nextControl": {
-        "x": 3.7869893916119466,
-        "y": 5.3813447027421315
+        "x": 2.0335663338088437,
+        "y": 7.754864479315264
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 5.788
       },
       "prevControl": {
-        "x": 4.479411111111111,
-        "y": 5.623344444444444
+        "x": 1.9822534269869911,
+        "y": 6.88425
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,26 +50,12 @@
       "rotationDegrees": 0.0
     }
   ],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7604301075268804,
-      "maxWaypointRelativePos": 1.596559139784947,
-      "constraints": {
-        "maxVelocity": 7.0,
-        "maxAcceleration": 10.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -83,7 +69,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -105.00000000000001
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
