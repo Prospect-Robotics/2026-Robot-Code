@@ -258,7 +258,7 @@ public class RobotContainer {
                         HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance))));
 
     // Feeder controls
-    operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
+    operatorController.leftBumper().whileTrue(Commands.parallel(hopper.outtakeCommand(), kicker.outtakeCommand()));
     operatorController.povLeft().whileTrue(hopper.intakeCommand());
 
     // Operator intake roller bindings.

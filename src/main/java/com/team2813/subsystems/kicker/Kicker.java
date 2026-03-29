@@ -12,7 +12,7 @@ import org.littletonrobotics.junction.Logger;
 /**
  * The kicker wheel that brings fuel that has gone through the indexer into the shooter. {@link
  * #shootCommand()} should be used when fuel needs to be brought into the shooter, while {@link
- * #resistFuelCommand()} should be used when you want to resist the flow of fuel into the shooter.
+ * #outtakeCommand()} should be used when you want to resist the flow of fuel into the shooter.
  */
 public class Kicker extends SubsystemBase implements AutoCloseable {
   private final KickerIO io;
@@ -35,8 +35,8 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
     io.setMotorVoltage(KickerConstants.getShootVoltage());
   }
 
-  private void resistFuel() {
-    io.setMotorVoltage(KickerConstants.getResistFuelVoltage());
+  private void outtake() {
+    io.setMotorVoltage(KickerConstants.getOuttakeVoltage());
   }
 
   public void stop() {
@@ -60,8 +60,8 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
    *
    * @return The command to resist fuel
    */
-  public Command resistFuelCommand() {
-    return new StartEndCommand(this::resistFuel, this::stop, this);
+  public Command outtakeCommand() {
+    return new StartEndCommand(this::outtake, this::stop, this);
   }
 
   /**
