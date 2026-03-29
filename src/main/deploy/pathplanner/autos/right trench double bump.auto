@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left trench - left midfield"
+                              "pathName": "right trench - nz - bump - midfield"
                             }
                           },
                           {
@@ -27,8 +27,20 @@
                             "data": {
                               "name": "ExtendIntake"
                             }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SpinRollerIntake"
+                            }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "StopRoller"
                       }
                     },
                     {
@@ -102,7 +114,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "midfield-bump-neutral zone close"
+                              "pathName": "midfield-right pass 2"
                             }
                           },
                           {
@@ -127,7 +139,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "neutral zone close-bump-midfield"
+                              "pathName": "right pass 2-bump-midfield"
                             }
                           },
                           {
