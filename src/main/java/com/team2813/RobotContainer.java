@@ -249,7 +249,13 @@ public class RobotContainer {
     // intakeRoller.intakeCommand()));
 
     // Defensive Stop.
-    operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
+    operatorController
+        .rightBumper()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    drive.stopTowardHub(
+                        HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance))));
 
     // Feeder controls
     operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
