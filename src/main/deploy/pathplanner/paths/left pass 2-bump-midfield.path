@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.810753311258278,
-        "y": 4.776
+        "x": 5.876348074179743,
+        "y": 4.817788873038516
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.033940397350993,
-        "y": 6.184427152317881
+        "x": 7.519557774607703,
+        "y": 6.098716119828817
       },
       "isLocked": false,
       "linkedName": "center pass 2"
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -41.67259575827345
+    "rotation": -41.67259575827346
   },
   "reversed": false,
   "folder": null,
