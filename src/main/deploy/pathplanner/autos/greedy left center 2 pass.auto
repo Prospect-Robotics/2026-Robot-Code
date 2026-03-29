@@ -127,7 +127,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "greedy midfield-center pass 2"
+                              "pathName": "greedy midfield-left pass 2"
                             }
                           },
                           {
@@ -152,7 +152,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "greedy center pass 2-bump-midfield"
+                              "pathName": "greedy left pass 2-bump-midfield"
                             }
                           },
                           {
