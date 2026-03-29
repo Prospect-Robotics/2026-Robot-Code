@@ -35,6 +35,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -267,6 +268,33 @@ public class Drive extends SubsystemBase {
     }
     kinematics.resetHeadings(headings);
     stop();
+  }
+
+  /**
+   * Stops the wheels so they face the hub, so any applied movement will push us toward the hub. As
+   * the angle applied is up the user, it can be used for other positions, not only the hub. (i.e.
+   * tower)
+   *
+   * @param rotationToHub The rotation needed to face the wheels toward.
+   */
+  public void stopTowardHub(Rotation2d rotationToHub) {
+    Rotation2d[] headings = new Rotation2d[4];
+    for (int i = 0; i < 4; i++) {
+      headings[i] = rotationToHub.relativeTo(getRotation());
+    }
+    kinematics.resetHeadings(headings);
+    stop();
+  }
+
+  /**
+   * Stops the wheels so they face the hub, so any applied movement will push us toward the hub. As
+   * the angle applied is up the user, it can be used for other positions, not only the hub. (i.e.
+   * tower)
+   *
+   * @param angleToHub The angle needed to face the wheels toward.
+   */
+  public void stopTowardHub(Angle angleToHub) {
+    stopTowardHub(new Rotation2d(angleToHub));
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */
