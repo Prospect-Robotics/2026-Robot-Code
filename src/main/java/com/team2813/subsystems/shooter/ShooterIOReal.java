@@ -40,25 +40,29 @@ public class ShooterIOReal implements ShooterIO {
     inputs.shooterMotor1VoltageVolts = shooterMotor1.getMotorVoltage().getValue().in(Volts);
     inputs.shooterMotor1AngleRotations = shooterMotor1.getPosition().getValue().in(Rotations);
     inputs.shooterMotor1RotPerSec = shooterMotor1.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.shooterMotor1CurrentAmps = shooterMotor1.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor1StatorCurrentAmps = shooterMotor1.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor1SupplyCurrentAmps = shooterMotor1.getSupplyCurrent().getValue().in(Amps);
     inputs.shooter1SetpointRotsPerSec = mainShooterSetpoint.in(RotationsPerSecond);
 
     inputs.shooterMotor2VoltageVolts = shooterMotor2.getMotorVoltage().getValue().in(Volts);
     inputs.shooterMotor2AngleRotations = shooterMotor2.getPosition().getValue().in(Rotations);
     inputs.shooterMotor2RotPerSec = shooterMotor2.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.shooterMotor2CurrentAmps = shooterMotor2.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor2StatorCurrentAmps = shooterMotor2.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor2SupplyCurrentAmps = shooterMotor2.getSupplyCurrent().getValue().in(Amps);
     inputs.shooter2SetpointRotsPerSec = mainShooterSetpoint.in(RotationsPerSecond);
 
     inputs.shooterMotor3VoltageVolts = shooterMotor3.getMotorVoltage().getValue().in(Volts);
     inputs.shooterMotor3AngleRotations = shooterMotor3.getPosition().getValue().in(Rotations);
     inputs.shooterMotor3RotPerSec = shooterMotor3.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.shooterMotor3CurrentAmps = shooterMotor3.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor3StatorCurrentAmps = shooterMotor3.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor3SupplyCurrentAmps = shooterMotor3.getSupplyCurrent().getValue().in(Amps);
     inputs.shooter3SetpointRotsPerSec = mainShooterSetpoint.in(RotationsPerSecond);
 
     inputs.shooterMotor4VoltageVolts = shooterMotor4.getMotorVoltage().getValue().in(Volts);
     inputs.shooterMotor4AngleRotations = shooterMotor4.getPosition().getValue().in(Rotations);
     inputs.shooterMotor4RotPerSec = shooterMotor4.getVelocity().getValue().in(RotationsPerSecond);
-    inputs.shooterMotor4CurrentAmps = shooterMotor4.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor4StatorCurrentAmps = shooterMotor4.getStatorCurrent().getValue().in(Amps);
+    inputs.shooterMotor4SupplyCurrentAmps = shooterMotor4.getSupplyCurrent().getValue().in(Amps);
     inputs.shooter4SetpointRotsPerSec = mainShooterSetpoint.in(RotationsPerSecond);
   }
 

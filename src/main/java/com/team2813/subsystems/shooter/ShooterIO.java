@@ -11,25 +11,29 @@ public interface ShooterIO {
     public double shooterMotor1VoltageVolts = 0;
     public double shooterMotor1AngleRotations = 0;
     public double shooterMotor1RotPerSec = 0;
-    public double shooterMotor1CurrentAmps = 0;
+    public double shooterMotor1SupplyCurrentAmps = 0;
+    public double shooterMotor1StatorCurrentAmps = 0;
     public double shooter1SetpointRotsPerSec = 0;
 
     public double shooterMotor2VoltageVolts = 0;
     public double shooterMotor2AngleRotations = 0;
     public double shooterMotor2RotPerSec = 0;
-    public double shooterMotor2CurrentAmps = 0;
+    public double shooterMotor2SupplyCurrentAmps = 0;
+    public double shooterMotor2StatorCurrentAmps = 0;
     public double shooter2SetpointRotsPerSec = 0;
 
     public double shooterMotor3VoltageVolts = 0;
     public double shooterMotor3AngleRotations = 0;
     public double shooterMotor3RotPerSec = 0;
-    public double shooterMotor3CurrentAmps = 0;
+    public double shooterMotor3SupplyCurrentAmps = 0;
+    public double shooterMotor3StatorCurrentAmps = 0;
     public double shooter3SetpointRotsPerSec = 0;
 
     public double shooterMotor4VoltageVolts = 0;
     public double shooterMotor4AngleRotations = 0;
     public double shooterMotor4RotPerSec = 0;
-    public double shooterMotor4CurrentAmps = 0;
+    public double shooterMotor4SupplyCurrentAmps = 0;
+    public double shooterMotor4StatorCurrentAmps = 0;
     public double shooter4SetpointRotsPerSec = 0;
   }
 

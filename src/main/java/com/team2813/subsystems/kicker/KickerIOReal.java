@@ -22,11 +22,13 @@ public class KickerIOReal implements KickerIO {
   public void updateState(KickerIOInputs inputs) {
     inputs.motor1Voltage = motor1.getMotorVoltage().getValue();
     inputs.motor1RotationalVelocity = motor1.getVelocity().getValue();
-    inputs.motor1Current = motor1.getStatorCurrent().getValue();
+    inputs.motor1StatorCurrent = motor1.getStatorCurrent().getValue();
+    inputs.motor1SupplyCurrent = motor1.getSupplyCurrent().getValue();
 
     inputs.motor2Voltage = motor2.getMotorVoltage().getValue();
     inputs.motor2RotationalVelocity = motor2.getVelocity().getValue();
-    inputs.motor2Current = motor2.getStatorCurrent().getValue();
+    inputs.motor2StatorCurrent = motor2.getStatorCurrent().getValue();
+    inputs.motor2SupplyCurrent = motor2.getSupplyCurrent().getValue();
   }
 
   @Override

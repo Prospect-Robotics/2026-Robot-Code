@@ -9,6 +9,12 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "left trench - left mid neutral"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "ExtendIntake"
@@ -19,12 +25,6 @@
                 "data": {
                   "name": "SpinRollerIntake"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "left trench - left mid neutral"
-                }
               }
             ]
           }
@@ -33,17 +33,17 @@
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "netural zone-left midfield"
+                }
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "StopRoller"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "neutral zone-left trench-hub"
-                }
               }
             ]
           }
@@ -55,7 +55,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "HubShot"
+                  "name": "TrenchShot"
                 }
               },
               {
@@ -65,7 +65,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.5
+                        "waitTime": 1.0
                       }
                     },
                     {
@@ -83,7 +83,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.5
+                        "waitTime": 1.0
                       }
                     },
                     {
@@ -95,7 +95,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.5
                       }
                     },
                     {
@@ -108,6 +108,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ExtendIntake"
           }
         }
       ]

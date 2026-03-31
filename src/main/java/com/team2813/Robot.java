@@ -7,6 +7,7 @@
 
 package com.team2813;
 
+import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.util.HubStatusUtil;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -32,6 +35,9 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private final RobotContainer robotContainer;
   private final Mode mode;
+
+  private static final Path USB_LOG_PATH = Path.of("/U/logs");
+  private static final Path ROBORIO_LOG_PATH = Path.of("/home/lvuser/logs");
 
   public Robot() {
     // Record metadata
@@ -52,10 +58,13 @@ public class Robot extends LoggedRobot {
     mode = getCurrentModeFromEnv();
     System.out.printf("Current Mode: %s%n", mode);
 
+    Path logFilePath = Files.exists(USB_LOG_PATH) ? USB_LOG_PATH : ROBORIO_LOG_PATH;
+    Logger.recordMetadata("LogFilePath", logFilePath.toString());
+
     switch (mode) {
       case REAL:
         // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs"));
+        Logger.addDataReceiver(new WPILOGWriter(logFilePath.toString()));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
@@ -82,7 +91,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer(tunerConstants, mode);
+    robotContainer = new RobotContainer(tunerConstants, mode, DriverStation.getAlliance());
   }
 
   /** This function is called periodically during all modes. */
@@ -97,13 +106,23 @@ public class Robot extends LoggedRobot {
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
 
     if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
-
-    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
+    boolean hubActive = HubStatusUtil.isHubActive();
+    Logger.recordOutput("HubStatus/Our Hub Status", hubActive);
+    Logger.recordOutput(
+        "HubStatus/Distance To Our Hub (Meters)",
+        Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
+    Logger.recordOutput(
+        "HubStatus/Time left in current phase (Seconds)",
+        Math.round(10 * HubStatusUtil.timeLeftInCurrentPhase()) / 10.0);
+    Logger.recordOutput(
+        "HubStatus/In range",
+        robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
@@ -111,7 +130,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    robotContainer.stopRumble();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -126,6 +147,12 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(autonomousCommand);
     }
+  }
+
+  @Override
+  public void disabledExit() {
+    // We change the alliance sometimes when practicing.
+    robotContainer.setCurrentAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during autonomous. */
@@ -149,7 +176,19 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
+    // rumble controllers 3 times if the phase is about to end
+    // TODO: Rework the comment, Tamir or Tom
+    if (timeLeftInCurrentPhase <= 3
+        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7
+        && timeLeftInCurrentPhase > 0) {
+      robotContainer.setRumbleDriver();
+      robotContainer.setRumbleOperator();
+    } else {
+      robotContainer.stopRumble();
+    }
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override

@@ -18,7 +18,8 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
   public void updateState(IntakeRollerIOInputs inputs) {
     inputs.intakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
     inputs.intakeMotorRPS = intakeMotor.getVelocity().getValue();
-    inputs.intakeMotorCurrent = intakeMotor.getStatorCurrent().getValue();
+    inputs.intakeMotorStatorCurrent = intakeMotor.getStatorCurrent().getValue();
+    inputs.intakeMotorSupplyCurrent = intakeMotor.getSupplyCurrent().getValue();
   }
 
   @Override

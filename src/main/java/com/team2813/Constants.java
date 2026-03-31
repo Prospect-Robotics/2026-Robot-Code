@@ -30,12 +30,12 @@ public final class Constants {
 
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.
-  // Roller Motors. Aliases: Magazine motors
-  public static final int MAIN_ROLLER_MOTOR_CAN_ID = 25; // Top roller motor.
-  public static final int FOLLOWER_ROLLER_MOTOR_CAN_ID = 15; // Bottom roller motor.
+  // Roller Motors. Aliases: Feeder motors, Magazine motors
+  public static final int MAIN_FEEDER_MOTOR_CAN_ID = 25; // Top roller motor.
+  public static final int FOLLOWER_FEEDER_MOTOR_CAN_ID = 15; // Bottom roller motor.
 
-  // Feeder Motors. Aliases: Vectoring motors
-  public static final int FEEDER_MOTOR_ID = 24;
+  // Indexer Motors. Aliases: Vectoring motors
+  public static final int INDEXER_MOTOR_ID = 24;
 
   // Motor runs the robot intake.
   public static final int INTAKE_MOTOR_CAN_ID = 26;
@@ -55,9 +55,8 @@ public final class Constants {
   public static final int KICKER_MOTOR_2_ID = 34;
 
   // Climb motors
-  // TODO(Stefan): ID these motors!
-  public static final int INNER_CLIMB_MOTOR_ID = 30;
-  public static final int OUTER_CLIMB_MOTOR_ID = 31;
+  //  public static final int INNER_CLIMB_MOTOR_ID = 30;
+  //  public static final int OUTER_CLIMB_MOTOR_ID = 31;
 
   /**
    * Returns true if the robot is on the red alliance.

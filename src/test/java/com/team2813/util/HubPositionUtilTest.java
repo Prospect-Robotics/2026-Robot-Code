@@ -1,56 +1,123 @@
 package com.team2813.util;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.team2813.lib2813.testing.truth.Rotation2dSubject.assertThat;
 import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class HubPositionUtilTest {
 
-  @Test
-  public void doesDistanceToBlueHubCalculateRight() {
-    Pose2d testPosition = Pose2d.kZero;
-
-    Distance distanceFromHub =
-        HubPositionUtil.getBotToHubDistance(testPosition, Optional.of(DriverStation.Alliance.Blue));
-
-    // The distance from bot to hub is sqrt(4^2+4.48^2), calculated by java it is this number.
-    Assertions.assertEquals(6.080822312812635, distanceFromHub.in(Meters), 1e-5);
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
+  @MethodSource("allData")
+  public void angleCalculation(Alliance alliance, TestData data) {
+    Rotation2d angleToHub =
+        HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
+    assertThat(angleToHub).isWithin(1e-5).of(data.getAngle(alliance));
   }
 
-  @Test
-  public void doesDistanceToRedHubCalculateRight() {
-    Pose2d testPosition = Pose2d.kZero;
-
-    Distance distanceFromHub =
-        HubPositionUtil.getBotToHubDistance(testPosition, Optional.of(DriverStation.Alliance.Red));
-
-    // The distance from bot to hub is sqrt(4^2+11.812^2), calculated by java it is this number.
-    Assertions.assertEquals(12.47089988733772, distanceFromHub.in(Meters), 1e-5);
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
+  @MethodSource("allData")
+  public void distanceCalculation(Alliance alliance, TestData data) {
+    Distance distanceToHub =
+        HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
+    assertThat(distanceToHub.in(Meters)).isWithin(1e-5).of(data.getDistance(alliance));
   }
 
-  @Test
-  public void doesAngleToBlueHubCalculateRight() {
-    Pose2d testPosition = Pose2d.kZero;
-
-    Rotation2d angleFromHub =
-        HubPositionUtil.getBotToHubAngle(testPosition, Optional.of(DriverStation.Alliance.Blue));
-
-    Assertions.assertEquals(0.7179017820664226, angleFromHub.getRadians(), 1e-5);
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
+  @MethodSource("allData")
+  public void startingRotationDoesNotChangeAngle(Alliance alliance, TestData data) {
+    Rotation2d expectedAngleToHub =
+        HubPositionUtil.getBotToHubAngle(data.testPosition, Optional.of(alliance));
+    Rotation2d actualAngleToHub =
+        HubPositionUtil.getBotToHubAngle(
+            data.withRotation(Rotation2d.k180deg).testPosition, Optional.of(alliance));
+    assertThat(actualAngleToHub).isWithin(1e-5).of(expectedAngleToHub);
   }
 
-  @Test
-  public void doesAngleToRedHubCalculateRight() {
-    Pose2d testPosition = Pose2d.kZero;
+  @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
+  @MethodSource("allData")
+  public void startingRotationDoesNotChangeDistance(Alliance alliance, TestData data) {
+    Distance expectedDistanceToHub =
+        HubPositionUtil.getBotToHubDistance(data.testPosition, Optional.of(alliance));
+    Distance actualDistanceToHub =
+        HubPositionUtil.getBotToHubDistance(
+            data.withRotation(Rotation2d.k180deg).testPosition, Optional.of(alliance));
+    assertThat(actualDistanceToHub.baseUnitMagnitude())
+        .isWithin(1e-5)
+        .of(expectedDistanceToHub.baseUnitMagnitude());
+  }
 
-    Rotation2d angleFromHub =
-        HubPositionUtil.getBotToHubAngle(testPosition, Optional.of(DriverStation.Alliance.Red));
+  public record TestData(
+      Pose2d testPosition,
+      double expectedRedAngle,
+      double expectedRedDistance,
+      double expectedBlueAngle,
+      double expectedBlueDistance) {
+    @Override
+    public String toString() {
+      return testPosition.toString();
+    }
 
-    Assertions.assertEquals(0.3265177360538555, angleFromHub.getRadians(), 1e-5);
+    public Rotation2d getAngle(Alliance alliance) {
+      return switch (alliance) {
+        case Blue -> new Rotation2d(expectedBlueAngle);
+        case Red -> new Rotation2d(expectedRedAngle);
+      };
+    }
+
+    public double getDistance(Alliance alliance) {
+      return switch (alliance) {
+        case Blue -> expectedBlueDistance;
+        case Red -> expectedRedDistance;
+      };
+    }
+
+    public TestData withRotation(Rotation2d rotation) {
+      return new TestData(
+          new Pose2d(testPosition.getTranslation(), rotation),
+          expectedRedAngle,
+          expectedRedDistance,
+          expectedBlueAngle,
+          expectedBlueDistance);
+    }
+  }
+
+  static Stream<Arguments> allData() {
+    TestData[] data = {
+      new TestData(
+          Pose2d.kZero,
+          0.3265177360538555, // Expected Red Angle (Radians)
+          12.470899887337720, // Expected Red Distance (Meters)
+          0.7179017820664226, // Expected Blue Angle (Radians)
+          6.080822312812635), // Expected Blue Distance (Meters)
+      new TestData(
+          new Pose2d(15, 5, Rotation2d.kZero),
+          -2.8376365100925645,
+          3.3411590803192835,
+          -3.0459163753242049,
+          10.4678746648973592),
+      new TestData(
+          new Pose2d(5, 2, Rotation2d.kZero),
+          0.2855745093824902,
+          7.0995312521320730,
+          1.7777885210147176,
+          2.0436242316042350)
+    };
+    // Make the arguments consist of each test case (specified in `data`) with both `Alliance#Blue`
+    // and `Alliance#Red`
+    return Stream.of(Alliance.values())
+        .flatMap(
+            (alliance) -> {
+              return Stream.of(data).map(testData -> Arguments.of(alliance, testData));
+            });
   }
 }

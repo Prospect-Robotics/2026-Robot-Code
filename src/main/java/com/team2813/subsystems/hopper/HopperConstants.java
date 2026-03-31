@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Preferences;
 
 public class HopperConstants {
 
-  public static final double ROLLER_SIM_MOI = 0.00057684; // in kilograms*meters squared.
+  public static final double FEEDER_SIM_MOI = 0.00057684; // in kilograms*meters squared.
 
   public static final String FEEDER_INTAKE_VOLTAGE_NT = "Hopper/FEEDER_INTAKE_VOLTAGE";
   public static final String FEEDER_OUTTAKE_VOLTAGE_NT = "Hopper/FEEDER_OUTTAKE_VOLTAGE";
@@ -31,11 +31,11 @@ public class HopperConstants {
   }
 
   // Roller Motor Configs
-  public static Voltage getRollerIntakeVoltage() {
+  public static Voltage getFeederIntakeVoltage() {
     return Volts.of(Preferences.getDouble(FEEDER_INTAKE_VOLTAGE_NT, 6.5)); // 5 is the backup.
   }
 
-  public static Voltage getRollerOuttakeVoltage() {
+  public static Voltage getFeederOuttakeVoltage() {
     return Volts.of(Preferences.getDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
@@ -59,14 +59,14 @@ public class HopperConstants {
                   .withStatorCurrentLimit(Amps.of(80)));
 
   // TODO: Change this later to the actual number.
-  public static final double ROLLER_MOTOR_TO_ROLLER_GEARING = 1;
+  public static final double FEEDER_MOTOR_TO_ROLLER_GEARING = 1;
 
   // Feeder Motor Configs
-  public static Voltage getFeederIntakeVoltage() {
+  public static Voltage getIndexerIntakeVoltage() {
     return Volts.of(Preferences.getDouble(INDEXER_INTAKE_VOLTAGE_NT, 5));
   }
 
-  public static Voltage getFeederOuttakeVoltage() {
+  public static Voltage getIndexerOuttakeVoltage() {
     return Volts.of(Preferences.getDouble(INDEXER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
