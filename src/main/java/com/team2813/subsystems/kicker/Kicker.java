@@ -23,12 +23,16 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   /**
    * @see #shootCommand()
    */
-  private double shootVoltage = KickerConstants.SHOOT_VOLTAGE;
+  private double upperShootVoltage = KickerConstants.UPPER_SHOOT_VOLTAGE;
+
+  private double lowerShootVoltage = KickerConstants.LOWER_SHOOT_VOLTAGE;
 
   /**
    * @see #resistFuelCommand()
    */
-  private double resistFuelVoltage = KickerConstants.RESIST_FUEL_VOLTAGE;
+  private double upperResistFuelVoltage = KickerConstants.UPPER_RESIST_FUEL_VOLTAGE;
+
+  private double lowerResistFuelVoltage = KickerConstants.LOWER_RESIST_FUEL_VOLTAGE;
 
   // note: could put alerts in a kicker-specific location, but it will be easier for seeing alerts
   // to put them all in the same place
@@ -42,8 +46,10 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
     this.io = Objects.requireNonNull(io, "io");
     this.replayedInputs = new KickerIOInputsAutoLogged();
 
-    Preferences.initDouble(KickerConstants.SHOOT_PREFERENCE_NT, shootVoltage);
-    Preferences.initDouble(KickerConstants.RESIST_FUEL_PREFERENCE_NT, resistFuelVoltage);
+    Preferences.initDouble(KickerConstants.UPPER_SHOOT_PREFERENCE_NT, upperShootVoltage);
+    Preferences.initDouble(KickerConstants.LOWER_SHOOT_PREFERENCE_NT, lowerShootVoltage);
+    Preferences.initDouble(KickerConstants.UPPER_RESIST_FUEL_PREFERENCE_NT, upperResistFuelVoltage);
+    Preferences.initDouble(KickerConstants.LOWER_RESIST_FUEL_PREFERENCE_NT, lowerResistFuelVoltage);
     shootVoltageWarning.set(false);
     resistFuelVoltageWarning.set(false);
   }
@@ -58,15 +64,15 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   }
 
   private void shoot() {
-    io.setMotorVoltage(Volts.of(shootVoltage));
+    io.setMotorVoltage(Volts.of(upperShootVoltage), Volts.of(lowerShootVoltage));
   }
 
   private void resistFuel() {
-    io.setMotorVoltage(Volts.of(resistFuelVoltage));
+    io.setMotorVoltage(Volts.of(upperResistFuelVoltage), Volts.of(lowerResistFuelVoltage));
   }
 
   public void stop() {
-    io.setMotorVoltage(Volts.of(0));
+    io.setMotorVoltage(Volts.of(0), Volts.of(0));
   }
 
   /**
@@ -94,12 +100,15 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
    * Creates a command to run the kicker with a custom voltage. This command will run indefinitely,
    * and must be canceled or interrupted to stop the kicker.
    *
-   * @param voltageToRun The voltage to run the kicker at. Positive voltage runs the kicker in the
-   *     direction of shooting.
+   * @param upperVoltage The voltage to run the upper kicker motor at. Positive voltage runs the
+   *     kicker in the direction of shooting.
+   * @param lowerVoltage The voltage to run the lower kicker motor at. Positive voltage runs the
+   *     kicker in the direction of shooting.
    * @return A command to run the kicker at the desired voltage.
    */
-  public Command customVoltageCommand(Voltage voltageToRun) {
-    return new StartEndCommand(() -> io.setMotorVoltage(voltageToRun), this::stop, this);
+  public Command customVoltageCommand(Voltage upperVoltage, Voltage lowerVoltage) {
+    return new StartEndCommand(
+        () -> io.setMotorVoltage(upperVoltage, lowerVoltage), this::stop, this);
   }
 
   /**
@@ -108,11 +117,20 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
    */
   // note: if we update preferences somewhere else, we may need to change the visibility of this.
   private void updatePreferences() {
-    shootVoltage = Preferences.getDouble(KickerConstants.SHOOT_PREFERENCE_NT, shootVoltage);
-    shootVoltageWarning.set(shootVoltage != KickerConstants.SHOOT_VOLTAGE);
-    resistFuelVoltage =
-        Preferences.getDouble(KickerConstants.RESIST_FUEL_PREFERENCE_NT, resistFuelVoltage);
-    resistFuelVoltageWarning.set(resistFuelVoltage != KickerConstants.RESIST_FUEL_VOLTAGE);
+    upperShootVoltage =
+        Preferences.getDouble(KickerConstants.UPPER_SHOOT_PREFERENCE_NT, upperShootVoltage);
+    shootVoltageWarning.set(upperShootVoltage != KickerConstants.UPPER_SHOOT_VOLTAGE);
+    lowerShootVoltage =
+        Preferences.getDouble(KickerConstants.LOWER_SHOOT_PREFERENCE_NT, lowerShootVoltage);
+    shootVoltageWarning.set(upperShootVoltage != KickerConstants.UPPER_SHOOT_VOLTAGE);
+    upperResistFuelVoltage =
+        Preferences.getDouble(KickerConstants.UPPER_SHOOT_PREFERENCE_NT, upperResistFuelVoltage);
+    resistFuelVoltageWarning.set(
+        upperResistFuelVoltage != KickerConstants.UPPER_RESIST_FUEL_VOLTAGE);
+    lowerResistFuelVoltage =
+        Preferences.getDouble(KickerConstants.LOWER_SHOOT_PREFERENCE_NT, lowerResistFuelVoltage);
+    resistFuelVoltageWarning.set(
+        lowerResistFuelVoltage != KickerConstants.LOWER_RESIST_FUEL_VOLTAGE);
   }
 
   private static String createAlertMessage(String preference) {

@@ -43,10 +43,10 @@ public class KickerIOSim implements KickerIO {
   }
 
   @Override
-    public void setMotorVoltage(Voltage upperKickerMotorVoltage, Voltage lowerKickerMotorVoltage) {
-        upperKickerMotor.setVoltage(upperKickerMotorVoltage.in(Volts));
-        lowerKickerMotor.setVoltage(lowerKickerMotorVoltage.in(Volts));
-    }
+  public void setMotorVoltage(Voltage upperKickerMotorVoltage, Voltage lowerKickerMotorVoltage) {
+    upperKickerMotor.setVoltage(upperKickerMotorVoltage.in(Volts));
+    lowerKickerMotor.setVoltage(lowerKickerMotorVoltage.in(Volts));
+  }
 
   @Override
   public void updateState(KickerIOInputs inputs) {
