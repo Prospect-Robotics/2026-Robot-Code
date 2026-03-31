@@ -7,6 +7,7 @@
 
 package com.team2813;
 
+import com.team2813.commands.VariableShooterCommand;
 import com.team2813.subsystems.drive.AllDrivetrains;
 import com.team2813.subsystems.drive.AllTunerConstants;
 import com.team2813.util.HubStatusUtil;
@@ -90,7 +91,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer(tunerConstants, mode);
+    robotContainer = new RobotContainer(tunerConstants, mode, DriverStation.getAlliance());
   }
 
   /** This function is called periodically during all modes. */
@@ -105,13 +106,23 @@ public class Robot extends LoggedRobot {
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
 
     if (mode != Mode.REAL) {
       SimulationVisualizer.getInstance().periodic();
     }
-
-    Logger.recordOutput("HubStatus/Our Hub Status", HubStatusUtil.isHubActive());
+    boolean hubActive = HubStatusUtil.isHubActive();
+    Logger.recordOutput("HubStatus/Our Hub Status", hubActive);
+    Logger.recordOutput(
+        "HubStatus/Distance To Our Hub (Meters)",
+        Math.round(100 * robotContainer.getDistanceToHub().magnitude()) / 100.0);
+    Logger.recordOutput(
+        "HubStatus/Time left in current phase (Seconds)",
+        Math.round(10 * HubStatusUtil.timeLeftInCurrentPhase()) / 10.0);
+    Logger.recordOutput(
+        "HubStatus/In range",
+        robotContainer.getDistanceToHub().lte(VariableShooterCommand.MAX_DIST));
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
@@ -119,7 +130,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    robotContainer.stopRumble();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -134,6 +147,12 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(autonomousCommand);
     }
+  }
+
+  @Override
+  public void disabledExit() {
+    // We change the alliance sometimes when practicing.
+    robotContainer.setCurrentAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called periodically during autonomous. */
@@ -157,7 +176,19 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
+    // rumble controllers 3 times if the phase is about to end
+    // TODO: Rework the comment, Tamir or Tom
+    if (timeLeftInCurrentPhase <= 3
+        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7
+        && timeLeftInCurrentPhase > 0) {
+      robotContainer.setRumbleDriver();
+      robotContainer.setRumbleOperator();
+    } else {
+      robotContainer.stopRumble();
+    }
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
