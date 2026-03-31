@@ -27,7 +27,7 @@ public class KickerIOSim implements KickerIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(1),
-                KickerConstants.KICKER_SIM_MOI.in(
+                KickerConstants.UPPER_KICKER_MOI.in(
                     KilogramSquareMeters), // "Moment of Inertia" taken from OnShape.
                 KickerConstants.UPPER_MOTOR_GEARING),
             DCMotor.getKrakenX60(1));
@@ -36,7 +36,7 @@ public class KickerIOSim implements KickerIO {
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(
                 DCMotor.getKrakenX60(1),
-                KickerConstants.KICKER_SIM_MOI.in(
+                KickerConstants.LOWER_KICKER_MOI.in(
                     KilogramSquareMeters), // "Moment of Inertia" taken from OnShape.
                 KickerConstants.LOWER_MOTOR_GEARING),
             DCMotor.getKrakenX60(1));
@@ -65,15 +65,22 @@ public class KickerIOSim implements KickerIO {
 
   private void updateSimulation() {
     upperMotorFlywheelSim.update(Constants.SIM_TIME_PERIOD);
+    lowerMotorFlywheelSim.update(Constants.SIM_TIME_PERIOD);
 
-    TalonFXSimState simState = motor.getSimState();
-    simState.setRotorAcceleration(flywheelSim.getAngularAcceleration());
-    simState.setRotorVelocity(flywheelSim.getAngularVelocity());
-    simState.setSupplyVoltage(Volts.of(12));
+    TalonFXSimState upperMotorSimState = upperKickerMotor.getSimState();
+    upperMotorSimState.setRotorAcceleration(upperMotorFlywheelSim.getAngularAcceleration());
+    upperMotorSimState.setRotorVelocity(upperMotorFlywheelSim.getAngularVelocity());
+    upperMotorSimState.setSupplyVoltage(Volts.of(12));
+
+    TalonFXSimState lowerMotorSimState = lowerKickerMotor.getSimState();
+    lowerMotorSimState.setRotorAcceleration(lowerMotorFlywheelSim.getAngularAcceleration());
+    lowerMotorSimState.setRotorVelocity(lowerMotorFlywheelSim.getAngularVelocity());
+    lowerMotorSimState.setSupplyVoltage(Volts.of(12));
   }
 
   @Override
   public void close() {
-    motor.close();
+    upperKickerMotor.close();
+    lowerKickerMotor.close();
   }
 }

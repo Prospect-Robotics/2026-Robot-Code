@@ -13,8 +13,8 @@ import edu.wpi.first.units.measure.MomentOfInertia;
 class KickerConstants {
   static final MomentOfInertia KICKER_SIM_MOI = KilogramSquareMeters.of(0.0000535531);
 
-  static final MomentOfInertia UPPER_KICKER_MOI = KilogramSquareMeters.of(0.00418882);
-    static final MomentOfInertia LOWER_KICKER_MOI = KilogramSquareMeters.of(0.000364422);
+  static final MomentOfInertia UPPER_KICKER_MOI = KilogramSquareMeters.of(0.0094843);
+    static final MomentOfInertia LOWER_KICKER_MOI = KilogramSquareMeters.of(0.003038495);
   static final String SHOOT_PREFERENCE_NT = "Kicker/SHOOT_VOLTAGE";
   static final String RESIST_FUEL_PREFERENCE_NT = "Kicker/RESIST_FUEL_VOLTAGE";
 
