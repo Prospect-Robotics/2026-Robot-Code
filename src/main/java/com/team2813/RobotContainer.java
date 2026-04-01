@@ -254,7 +254,7 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () ->
-                    drive.stopTowardHub(
+                    drive.stopTowardPoint(
                         HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance))));
 
     // Feeder controls

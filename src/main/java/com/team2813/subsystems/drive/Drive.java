@@ -271,30 +271,32 @@ public class Drive extends SubsystemBase {
   }
 
   /**
-   * Stops the wheels so they face the hub, so any applied movement will push us toward the hub. As
-   * the angle applied is up the user, it can be used for other positions, not only the hub. (i.e.
-   * tower)
+   * Stops the wheels so they face toward the given rotation, so any applied movement will push us
+   * toward that point. This is used to point the robot's wheels toward the hub, so we cant get
+   * pushed around while shooting.
    *
-   * @param rotationToHub The rotation needed to face the wheels toward.
+   * @param robotRotationRelativeToPoint The rotation to the desired point. This is
+   *     field relative, but the rotation should be to the robot's center.
    */
-  public void stopTowardHub(Rotation2d rotationToHub) {
+  public void stopTowardPoint(Rotation2d robotRotationRelativeToPoint) {
     Rotation2d[] headings = new Rotation2d[4];
     for (int i = 0; i < 4; i++) {
-      headings[i] = rotationToHub.relativeTo(getRotation());
+      headings[i] = robotRotationRelativeToPoint.relativeTo(getRotation());
     }
     kinematics.resetHeadings(headings);
     stop();
   }
 
   /**
-   * Stops the wheels so they face the hub, so any applied movement will push us toward the hub. As
-   * the angle applied is up the user, it can be used for other positions, not only the hub. (i.e.
-   * tower)
+   * Stops the wheels so they face toward the given rotation, so any applied movement will push us
+   * toward that point. This is used to point the robot's wheels toward the hub, so we cant get
+   * pushed around while shooting.
    *
-   * @param angleToHub The angle needed to face the wheels toward.
+   * @param robotRotationRelativeToPoint The angle to the desired point. This is
+   *     field relative, but the rotation should be to the robot's center.
    */
-  public void stopTowardHub(Angle angleToHub) {
-    stopTowardHub(new Rotation2d(angleToHub));
+  public void stopTowardPoint(Angle robotRotationRelativeToPoint) {
+    stopTowardPoint(new Rotation2d(robotRotationRelativeToPoint));
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */
