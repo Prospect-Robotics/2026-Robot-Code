@@ -275,8 +275,8 @@ public class Drive extends SubsystemBase {
    * toward that point. This is used to point the robot's wheels toward the hub, so we cant get
    * pushed around while shooting.
    *
-   * @param robotRotationRelativeToPoint The rotation to the desired point. This is
-   *     field relative, but the rotation should be to the robot's center.
+   * @param robotRotationRelativeToPoint The rotation to the desired point. This is field relative,
+   *     but the rotation should be to the robot's center.
    */
   public void stopTowardPoint(Rotation2d robotRotationRelativeToPoint) {
     Rotation2d[] headings = new Rotation2d[4];
@@ -292,8 +292,8 @@ public class Drive extends SubsystemBase {
    * toward that point. This is used to point the robot's wheels toward the hub, so we cant get
    * pushed around while shooting.
    *
-   * @param robotRotationRelativeToPoint The angle to the desired point. This is
-   *     field relative, but the rotation should be to the robot's center.
+   * @param robotRotationRelativeToPoint The angle to the desired point. This is field relative, but
+   *     the rotation should be to the robot's center.
    */
   public void stopTowardPoint(Angle robotRotationRelativeToPoint) {
     stopTowardPoint(new Rotation2d(robotRotationRelativeToPoint));
