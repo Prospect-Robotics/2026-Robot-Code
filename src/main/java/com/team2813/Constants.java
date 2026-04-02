@@ -7,12 +7,6 @@
 
 package com.team2813;
 
-import static edu.wpi.first.units.Units.Degree;
-import static edu.wpi.first.units.Units.Meters;
-
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
@@ -22,11 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 public final class Constants {
   public static double SIM_TIME_PERIOD =
       0.02; // Update physics simulations every 20ms (like the actual bot).
-
-  public static final Transform3d FRONT_CAMERA_POSITION =
-      new Transform3d(
-          new Translation3d(Meters.of(-0.054564), Meters.of(0), Meters.of(0.501754)),
-          new Rotation3d(Degree.of(0), Degree.of(-29.5), Degree.of(0)));
 
   // CAN IDs - All directions are from when the robot is viewed from behind, unless otherwise
   // stated.
@@ -50,11 +39,6 @@ public final class Constants {
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
-
-  // Climb motors
-  // TODO(Stefan): ID these motors!
-  public static final int INNER_CLIMB_MOTOR_ID = 30;
-  public static final int OUTER_CLIMB_MOTOR_ID = 31;
 
   /**
    * Returns true if the robot is on the red alliance.

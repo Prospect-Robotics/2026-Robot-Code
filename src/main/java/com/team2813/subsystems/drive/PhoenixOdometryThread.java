@@ -132,7 +132,7 @@ public class PhoenixOdometryThread extends Thread {
           if (phoenixSignals.length > 0) BaseStatusSignal.refreshAll(phoenixSignals);
         }
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        DriverStation.reportError(e.toString(), false);
       } finally {
         signalsLock.unlock();
       }
