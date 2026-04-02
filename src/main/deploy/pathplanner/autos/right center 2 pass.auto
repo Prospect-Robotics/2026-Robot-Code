@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "TrenchShot"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
@@ -25,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left trench - left mid neutral"
+                              "pathName": "right trench - right mid neutral"
                             }
                           },
                           {
@@ -50,7 +44,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left mid neutral - left trench"
+                              "pathName": "netural zone-right midfield"
                             }
                           },
                           {
@@ -63,19 +57,44 @@
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "TrenchShot"
+                              "name": "VariableShot"
                             }
                           },
                           {
-                            "type": "named",
+                            "type": "sequential",
                             "data": {
-                              "name": "WalleMode"
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 1.0
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "HalfwayIntake"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.5
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "RetractIntake"
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
@@ -87,7 +106,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 9.0
+                  "waitTime": 9.5
                 }
               }
             ]
@@ -108,7 +127,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left trench - left mid neutral"
+                              "pathName": "midfield-right pass 2"
                             }
                           },
                           {
@@ -133,7 +152,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left mid neutral - left trench"
+                              "pathName": "right pass 2-bump-midfield"
                             }
                           },
                           {
@@ -146,19 +165,44 @@
                       }
                     },
                     {
-                      "type": "race",
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "named",
                             "data": {
-                              "name": "TrenchShot"
+                              "name": "VariableShot"
                             }
                           },
                           {
-                            "type": "named",
+                            "type": "sequential",
                             "data": {
-                              "name": "WalleMode"
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 1.0
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "HalfwayIntake"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 1.0
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "RetractIntake"
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
