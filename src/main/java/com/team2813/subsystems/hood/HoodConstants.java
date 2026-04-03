@@ -10,7 +10,7 @@ import edu.wpi.first.units.measure.MomentOfInertia;
 
 class HoodConstants {
   // TODO: Get real value!
-  static final double HOOD_GEAR_RATIO = 8;
+  static final double HOOD_GEAR_RATIO = 8 * 14.5;
   static final MomentOfInertia HOOD_MOI = Units.KilogramSquareMeters.of(0.0529);
   static final Angle MINIMUM_SHOOTER_ANGLE = Units.Radians.of(0.284256);
   static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Radians.of(0.685682);
