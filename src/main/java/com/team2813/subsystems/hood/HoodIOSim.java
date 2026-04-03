@@ -21,7 +21,14 @@ public class HoodIOSim implements HoodIO {
     motor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
     hoodSim =
         new SingleJointedArmSim(
-            DCMotor.getKrakenX60(1), 8, 0.0529, 8.982529, 0.284256, 0.685682, true, 0.284256);
+            DCMotor.getKrakenX60(1),
+            HoodConstants.HOOD_GEAR_RATIO,
+            HoodConstants.HOOD_MOI.in(KilogramSquareMeters),
+            HoodConstants.SHOOTER_RADIUS.in(Meters),
+            HoodConstants.MINIMUM_SHOOTER_ANGLE.in(Radians),
+            HoodConstants.MAXIMUM_SHOOTER_ANGLE.in(Radians),
+            true,
+            HoodConstants.MINIMUM_SHOOTER_ANGLE.in(Radians));
   }
 
   @Override
@@ -32,8 +39,10 @@ public class HoodIOSim implements HoodIO {
     hoodSim.update(Constants.SIM_TIME_PERIOD);
 
     var simState = motor.getSimState();
-    simState.setRawRotorPosition(Radians.of(hoodSim.getAngleRads()).times(8));
-    simState.setRotorVelocity(RadiansPerSecond.of(hoodSim.getVelocityRadPerSec()).times(8));
+    simState.setRawRotorPosition(
+        Radians.of(hoodSim.getAngleRads()).times(HoodConstants.HOOD_GEAR_RATIO));
+    simState.setRotorVelocity(
+        RadiansPerSecond.of(hoodSim.getVelocityRadPerSec()).times(HoodConstants.HOOD_GEAR_RATIO));
     simState.setSupplyVoltage(Volts.of(12));
 
     inputs.motorVelocity = motor.getVelocity().getValue();
