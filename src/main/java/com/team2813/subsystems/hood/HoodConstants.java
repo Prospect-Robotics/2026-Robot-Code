@@ -1,6 +1,7 @@
 package com.team2813.subsystems.hood;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -16,6 +17,8 @@ class HoodConstants {
   static final Distance SHOOTER_RADIUS = Units.Meters.of(8.982529);
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
+          // TODO: Run sysid to get PID values
+          .withSlot0(new Slot0Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKA(0))
           .withFeedback(new FeedbackConfigs().withRotorToSensorRatio(HOOD_GEAR_RATIO));
 
   static final String HUB_ANGLE_PREFERENCE = "Hub/hubAngle";
