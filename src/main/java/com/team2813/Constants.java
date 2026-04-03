@@ -34,14 +34,14 @@ public final class Constants {
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.
-  public static final int UPPER_RIGHT_SHOOTER_MOTOR_ID = 19; // Upper right shooter motor.
-  public static final int LOWER_RIGHT_SHOOTER_MOTOR_ID = 30; // Lower right shooter motor.
-
-  public static final int UPPER_LEFT_SHOOTER_MOTOR_ID = 20; // Upper left shooter motor.
-  public static final int LOWER_LEFT_SHOOTER_MOTOR_ID = 31; // Lower left shooter motor.
+  public static final int SHOOTER_MOTOR_1_ID = 19;
+  public static final int SHOOTER_MOTOR_2_ID = 20;
+  public static final int SHOOTER_MOTOR_3_ID = 32; // 2 and 3 are motors on the other side
+  public static final int SHOOTER_MOTOR_4_ID = 33;
 
   // Kicker Motor
-  public static final int KICKER_MOTOR_ID = 21;
+  public static final int KICKER_MOTOR_1_ID = 21;
+  public static final int KICKER_MOTOR_2_ID = 34;
 
   /**
    * Returns true if the robot is on the red alliance.

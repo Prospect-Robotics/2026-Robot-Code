@@ -86,9 +86,9 @@ public class Shooter extends SubsystemBase {
    *     ShooterConstants#SHOOTER_SPOOL_SPEED_TOLERANCE} of the current motor setpoint
    */
   public boolean isMotorVelocityWithinTolerance() {
-    return RotationsPerSecond.of(replayedInputs.upperRightShooterMotorRotPerSec)
+    return RotationsPerSecond.of(replayedInputs.shooterMotor1RotPerSec)
         .isNear(
-            RotationsPerSecond.of(replayedInputs.upperRightShooterSetpointRotsPerSec),
+            RotationsPerSecond.of(replayedInputs.shooter1SetpointRotsPerSec),
             ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }

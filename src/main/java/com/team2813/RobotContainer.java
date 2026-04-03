@@ -161,6 +161,7 @@ public class RobotContainer {
         intakeExtension = new IntakeExtension(new IntakeExtensionIOSim());
         intakeRoller = new IntakeRoller(new IntakeRollerIOSim());
 
+        // todo add sim code for shooter and kicker if we go with the drum shooter
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
         break;
@@ -273,6 +274,7 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
+    operatorController.a().whileTrue(kicker.shootCommand());
 
     // Driver controls
     // Default command, normal field-relative drive

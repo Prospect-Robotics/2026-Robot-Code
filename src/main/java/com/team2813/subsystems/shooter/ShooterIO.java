@@ -8,31 +8,33 @@ public interface ShooterIO {
 
   @AutoLog
   class ShooterIOInputs {
-    public double upperRightShooterSetpointRotsPerSec = 0;
+    public double shooterMotor1VoltageVolts = 0;
+    public double shooterMotor1AngleRotations = 0;
+    public double shooterMotor1RotPerSec = 0;
+    public double shooterMotor1SupplyCurrentAmps = 0;
+    public double shooterMotor1StatorCurrentAmps = 0;
+    public double shooter1SetpointRotsPerSec = 0;
 
-    public double upperRightShooterMotorVoltageVolts = 0;
-    public double upperRightShooterMotorRotPerSec = 0;
-    public double upperRightShooterMotorStatorCurrentAmps = 0;
-    public double upperRightShooterMotorSupplyCurrentAmps = 0;
+    public double shooterMotor2VoltageVolts = 0;
+    public double shooterMotor2AngleRotations = 0;
+    public double shooterMotor2RotPerSec = 0;
+    public double shooterMotor2SupplyCurrentAmps = 0;
+    public double shooterMotor2StatorCurrentAmps = 0;
+    public double shooter2SetpointRotsPerSec = 0;
 
-    public double upperRightShooterMotorAngleRotations = 0;
+    public double shooterMotor3VoltageVolts = 0;
+    public double shooterMotor3AngleRotations = 0;
+    public double shooterMotor3RotPerSec = 0;
+    public double shooterMotor3SupplyCurrentAmps = 0;
+    public double shooterMotor3StatorCurrentAmps = 0;
+    public double shooter3SetpointRotsPerSec = 0;
 
-    public double lowerRightShooterMotorVoltageVolts = 0;
-    public double lowerRightShooterMotorRotPerSec = 0;
-    public double lowerRightShooterMotorStatorCurrentAmps = 0;
-    public double lowerRightShooterMotorSupplyCurrentAmps = 0;
-
-    public double upperLeftShooterMotorVoltageVolts = 0;
-    public double upperLeftShooterMotorRotPerSec = 0;
-    public double upperLeftShooterMotorStatorCurrentAmps = 0;
-    public double upperLeftShooterMotorSupplyCurrentAmps = 0;
-
-    public double upperLeftShooterMotorAngleRotations = 0;
-
-    public double lowerLeftShooterMotorVoltageVolts = 0;
-    public double lowerLeftShooterMotorRotPerSec = 0;
-    public double lowerLeftShooterMotorStatorCurrentAmps = 0;
-    public double lowerLeftShooterMotorSupplyCurrentAmps = 0;
+    public double shooterMotor4VoltageVolts = 0;
+    public double shooterMotor4AngleRotations = 0;
+    public double shooterMotor4RotPerSec = 0;
+    public double shooterMotor4SupplyCurrentAmps = 0;
+    public double shooterMotor4StatorCurrentAmps = 0;
+    public double shooter4SetpointRotsPerSec = 0;
   }
 
   /**

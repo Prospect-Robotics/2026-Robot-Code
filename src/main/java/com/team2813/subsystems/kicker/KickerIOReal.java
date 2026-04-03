@@ -7,28 +7,39 @@ import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
 
 public class KickerIOReal implements KickerIO {
-  private final TalonFX motor;
+  private final TalonFX motor1;
+  private final TalonFX motor2;
 
   public KickerIOReal() {
-    motor = new TalonFX(Constants.KICKER_MOTOR_ID);
-    motor.getConfigurator().apply(KickerConstants.KICKER_MOTOR_CONFIG);
+    motor1 = new TalonFX(Constants.KICKER_MOTOR_1_ID);
+    motor1.getConfigurator().apply(KickerConstants.KICKER_MOTOR_CONFIG);
+
+    motor2 = new TalonFX(Constants.KICKER_MOTOR_2_ID);
+    motor2.getConfigurator().apply(KickerConstants.KICKER_MOTOR_2_CONFIG);
   }
 
   @Override
   public void updateState(KickerIOInputs inputs) {
-    inputs.motorVoltage = motor.getMotorVoltage().getValue();
-    inputs.motorRotationalVelocity = motor.getVelocity().getValue();
-    inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();
-    inputs.motorSupplyCurrent = motor.getSupplyCurrent().getValue();
+    inputs.motor1Voltage = motor1.getMotorVoltage().getValue();
+    inputs.motor1RotationalVelocity = motor1.getVelocity().getValue();
+    inputs.motor1StatorCurrent = motor1.getStatorCurrent().getValue();
+    inputs.motor1SupplyCurrent = motor1.getSupplyCurrent().getValue();
+
+    inputs.motor2Voltage = motor2.getMotorVoltage().getValue();
+    inputs.motor2RotationalVelocity = motor2.getVelocity().getValue();
+    inputs.motor2StatorCurrent = motor2.getStatorCurrent().getValue();
+    inputs.motor2SupplyCurrent = motor2.getSupplyCurrent().getValue();
   }
 
   @Override
   public void setMotorVoltage(Voltage kickerMotorVoltage) {
-    motor.setVoltage(kickerMotorVoltage.in(Volts));
+    motor1.setVoltage(kickerMotorVoltage.in(Volts));
+    motor2.setVoltage(kickerMotorVoltage.in(Volts));
   }
 
   @Override
   public void close() {
-    motor.close();
+    motor1.close();
+    motor2.close();
   }
 }
