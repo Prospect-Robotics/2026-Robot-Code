@@ -135,7 +135,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
     io.close();
   }
 }

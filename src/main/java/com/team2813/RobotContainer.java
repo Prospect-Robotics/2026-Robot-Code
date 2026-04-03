@@ -20,6 +20,10 @@ import com.team2813.subsystems.drive.GyroIOPigeon2;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
+import com.team2813.subsystems.hood.Hood;
+import com.team2813.subsystems.hood.HoodIO;
+import com.team2813.subsystems.hood.HoodIOReal;
+import com.team2813.subsystems.hood.HoodIOSim;
 import com.team2813.subsystems.hopper.*;
 import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
@@ -57,7 +61,7 @@ import org.photonvision.simulation.VisionSystemSim;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer implements AutoCloseable {
   private final Mode mode;
 
   // Subsystems
@@ -70,6 +74,7 @@ public class RobotContainer {
 
   private final Shooter shooter;
   private final Kicker kicker;
+  private final Hood hood;
   // Controller
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -124,6 +129,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
+        hood = new Hood(new HoodIOReal());
         break;
 
       case SIM:
@@ -163,6 +169,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
+        hood = new Hood(new HoodIOSim());
         break;
 
       default:
@@ -190,6 +197,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
+        hood = new Hood(new HoodIO() {});
         break;
     }
 
@@ -435,5 +443,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
+  }
+
+  @Override
+  public void close() {
+    hood.close();
   }
 }
