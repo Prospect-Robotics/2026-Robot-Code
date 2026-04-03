@@ -19,7 +19,7 @@ public class VariableShooterCommand {
       RotationsPerSecond.of(100); // 3.5 meters from hub speed.
 
   public static final Distance MIN_DIST = Meters.of(1.5);
-  public static final Distance MAX_DIST = Meters.of(3.5);
+  public static final Distance MAX_DIST = Meters.of(3.33);
 
   /**
    * Calculates the speed to shoot at if between the 1.5/3.1 MIN/MAX distance.
@@ -41,6 +41,7 @@ public class VariableShooterCommand {
   public static Command shootBasedOnDistanceCommand(
       Shooter shooter, Supplier<Distance> distanceSupplier) {
     return new RunCommand(() -> shootBasedOnDistance(shooter, distanceSupplier), shooter)
-        .finallyDo(shooter::stop);
+        .finallyDo(shooter::stop)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
   }
 }

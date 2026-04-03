@@ -29,8 +29,8 @@ public class IntakeRollerConstants {
   public static final double INTAKE_SIM_MOI = 0.00011331; // In kg*m^2
 
   static {
-    Preferences.initFloat(INTAKE_PREFERENCE_NT, 8);
-    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -6);
+    Preferences.initFloat(INTAKE_PREFERENCE_NT, 9);
+    Preferences.initFloat(OUTTAKE_PREFERENCE_NT, -9);
   }
 
   public static Voltage getIntakeVoltage() {

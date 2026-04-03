@@ -249,10 +249,18 @@ public class RobotContainer {
     // intakeRoller.intakeCommand()));
 
     // Defensive Stop.
-    operatorController.rightBumper().onTrue(new InstantCommand(drive::stopWithX));
+    operatorController
+        .rightBumper()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    drive.stopTowardPoint(
+                        HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance))));
 
     // Feeder controls
-    operatorController.leftBumper().whileTrue(hopper.outtakeCommand());
+    operatorController
+        .leftBumper()
+        .whileTrue(Commands.parallel(hopper.outtakeCommand(), kicker.outtakeCommand()));
     operatorController.povLeft().whileTrue(hopper.intakeCommand());
 
     // Operator intake roller bindings.
@@ -299,15 +307,15 @@ public class RobotContainer {
     driveController
         .a()
         .whileTrue(
-            Commands.parallel(
-                DriveCommands.joystickDriveAtAngle(
-                    drive,
-                    () -> -driveController.getLeftY(),
-                    () -> -driveController.getLeftX(),
-                    () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),
-                VariableShooterCommand.shootBasedOnDistanceCommand(
-                    shooter,
-                    () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))));
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)))
+        .whileTrue(
+            VariableShooterCommand.shootBasedOnDistanceCommand(
+                shooter,
+                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
   }
 
   // controller rumble
@@ -380,6 +388,18 @@ public class RobotContainer {
                 shooter.spoolShooterHubSpeedCommand(),
                 new SequentialCommandGroup(
                     // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new WaitCommand(0.5),
+                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+            new WaitCommand(6)));
+
+    NamedCommands.registerCommand(
+        "VariableShot",
+        new ParallelRaceGroup(
+            new ParallelCommandGroup(
+                VariableShooterCommand.shootBasedOnDistanceCommand(
+                    shooter,
+                    () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)),
+                new SequentialCommandGroup(
                     new WaitCommand(0.5),
                     new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
             new WaitCommand(6)));

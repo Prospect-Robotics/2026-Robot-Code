@@ -60,7 +60,8 @@ public class TunerConstants {
   // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
   private static final TalonFXConfiguration driveInitialConfigs =
       new TalonFXConfiguration()
-          .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Amps.of(50)));
+          .withCurrentLimits(new CurrentLimitsConfigs().withSupplyCurrentLimit(Amps.of(50)))
+          .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
   private static final TalonFXConfiguration steerInitialConfigs =
       new TalonFXConfiguration()
           .withCurrentLimits(

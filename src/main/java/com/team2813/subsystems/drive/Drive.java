@@ -35,6 +35,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -267,6 +268,35 @@ public class Drive extends SubsystemBase {
     }
     kinematics.resetHeadings(headings);
     stop();
+  }
+
+  /**
+   * Stops the wheels so they face toward the given rotation, so any applied movement will push us
+   * toward that point. This is used to point the robot's wheels toward the hub, so we cant get
+   * pushed around while shooting.
+   *
+   * @param robotRotationRelativeToPoint The rotation to the desired point. This is field relative,
+   *     but the rotation should be to the robot's center.
+   */
+  public void stopTowardPoint(Rotation2d robotRotationRelativeToPoint) {
+    Rotation2d[] headings = new Rotation2d[4];
+    for (int i = 0; i < 4; i++) {
+      headings[i] = robotRotationRelativeToPoint.relativeTo(getRotation());
+    }
+    kinematics.resetHeadings(headings);
+    stop();
+  }
+
+  /**
+   * Stops the wheels so they face toward the given rotation, so any applied movement will push us
+   * toward that point. This is used to point the robot's wheels toward the hub, so we cant get
+   * pushed around while shooting.
+   *
+   * @param robotRotationRelativeToPoint The angle to the desired point. This is field relative, but
+   *     the rotation should be to the robot's center.
+   */
+  public void stopTowardPoint(Angle robotRotationRelativeToPoint) {
+    stopTowardPoint(new Rotation2d(robotRotationRelativeToPoint));
   }
 
   /** Returns a command to run a quasistatic test in the specified direction. */
