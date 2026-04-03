@@ -24,7 +24,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     // initialize preferences
     Preferences.initDouble(HoodConstants.HUB_ANGLE_PREFERENCE, HoodConstants.DEFAULT_HUB_ANGLE);
     Preferences.initDouble(
-        HoodConstants.TRENCH_ANGLE_PREFERENCE, HoodConstants.DEFUALT_TRENCH_ANGLE);
+        HoodConstants.TRENCH_ANGLE_PREFERENCE, HoodConstants.DEFAULT_TRENCH_ANGLE);
     updatePreferences();
   }
 
@@ -102,7 +102,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   }
 
   private double currentHubAngle = HoodConstants.DEFAULT_HUB_ANGLE;
-  private double currentTrenchAngle = HoodConstants.DEFUALT_TRENCH_ANGLE;
+  private double currentTrenchAngle = HoodConstants.DEFAULT_TRENCH_ANGLE;
   private final Alert hubAngleAlert = new Alert(createAlertMessage("hubAngle"), AlertType.kInfo);
   private final Alert trenchAngleAlert =
       new Alert(createAlertMessage("trenchAngle"), AlertType.kInfo);
@@ -137,7 +137,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     hubAngleAlert.set(currentHubAngle != HoodConstants.DEFAULT_HUB_ANGLE);
     currentTrenchAngle =
         Preferences.getDouble(HoodConstants.TRENCH_ANGLE_PREFERENCE, currentTrenchAngle);
-    trenchAngleAlert.set(currentTrenchAngle != HoodConstants.DEFUALT_TRENCH_ANGLE);
+    trenchAngleAlert.set(currentTrenchAngle != HoodConstants.DEFAULT_TRENCH_ANGLE);
   }
 
   private static String createAlertMessage(String preference) {

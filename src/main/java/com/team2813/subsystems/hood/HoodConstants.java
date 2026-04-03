@@ -24,7 +24,7 @@ class HoodConstants {
   static final String HUB_ANGLE_PREFERENCE = "Hub/hubAngle";
   static final double DEFAULT_HUB_ANGLE = 45;
   static final String TRENCH_ANGLE_PREFERENCE = "Hub/trenchAngle";
-  static final double DEFUALT_TRENCH_ANGLE = 30;
+  static final double DEFAULT_TRENCH_ANGLE = 30;
 
   private HoodConstants() {
     throw new AssertionError("Not Instantiable!");
