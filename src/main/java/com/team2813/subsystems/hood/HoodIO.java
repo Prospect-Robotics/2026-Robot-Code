@@ -1,5 +1,7 @@
 package com.team2813.subsystems.hood;
 
+import static edu.wpi.first.units.Units.*;
+
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -9,12 +11,12 @@ import org.littletonrobotics.junction.AutoLog;
 public interface HoodIO extends AutoCloseable {
   @AutoLog
   class HoodIOInputs {
-    public Voltage motorVoltage;
-    public AngularVelocity motorVelocity;
-    public Current motorStatorCurrent;
-    public Current motorSupplyCurrent;
-    public Angle motorAngle;
-    public Angle motorSetpoint;
+    public Voltage motorVoltage = Volts.of(0);
+    public AngularVelocity motorVelocity = RadiansPerSecond.of(0);
+    public Current motorStatorCurrent = Amps.of(0);
+    public Current motorSupplyCurrent = Amps.of(0);
+    public Angle motorAngle = Radians.of(0);
+    public Angle motorSetpoint = Radians.of(0);
   }
 
   default void updateState(HoodIOInputs inputs) {}
