@@ -107,10 +107,22 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   private final Alert trenchAngleAlert =
       new Alert(createAlertMessage("trenchAngle"), AlertType.kInfo);
 
+  /**
+   * Get the angle required for hub shooting. This angle can directly be passed to {@link
+   * #gotoAngleCommand(Angle)}.
+   *
+   * @return The angle for shooting at the hub
+   */
   public Angle hubAngle() {
     return Degrees.of(currentHubAngle);
   }
 
+  /**
+   * Get the angle required for trench shooting. This angle can directly be passed to {@link
+   * #gotoAngleCommand(Angle)}.
+   *
+   * @return The angle for shooting in the trench
+   */
   public Angle trenchAngle() {
     return Degrees.of(currentTrenchAngle);
   }
