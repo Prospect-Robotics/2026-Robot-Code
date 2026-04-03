@@ -86,7 +86,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle in the other reference point
    */
   private Angle transformAngle(Angle angle) {
-    return Radians.of(Math.PI / 2 - 0.284256).minus(angle);
+    return Radians.of(Math.PI / 2).minus(HoodConstants.MINIMUM_SHOOTER_ANGLE).minus(angle);
   }
 
   @Override
