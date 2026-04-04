@@ -22,7 +22,7 @@ public class HoodIOSim implements HoodIO {
             DCMotor.getKrakenX60(1),
             HoodConstants.HOOD_GEAR_RATIO,
             HoodConstants.HOOD_MOI.in(KilogramSquareMeters),
-            HoodConstants.SHOOTER_RADIUS.in(Meters),
+            HoodConstants.SIM_ARM_LENGTH.in(Meters),
             HoodConstants.MINIMUM_SHOOTER_ANGLE.in(Radians),
             HoodConstants.MAXIMUM_SHOOTER_ANGLE.in(Radians),
             true,

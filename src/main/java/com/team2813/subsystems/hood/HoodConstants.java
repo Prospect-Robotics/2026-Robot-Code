@@ -14,7 +14,8 @@ class HoodConstants {
   static final MomentOfInertia HOOD_MOI = Units.KilogramSquareMeters.of(0.0529);
   static final Angle MINIMUM_SHOOTER_ANGLE = Units.Radians.of(0.284256);
   static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Radians.of(0.685682);
-  static final Distance SHOOTER_RADIUS = Units.Meters.of(8.982529);
+  static final Distance SIM_ARM_LENGTH = Units.Centimeter.of(10);
+
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
           // TODO: Run sysid to get PID values
