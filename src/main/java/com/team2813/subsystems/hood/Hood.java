@@ -16,7 +16,7 @@ import org.littletonrobotics.junction.Logger;
 public class Hood extends SubsystemBase implements AutoCloseable {
   private final HoodIO io;
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
-  private boolean atPosition = true;
+  private boolean isAtPosition = true;
 
   public Hood(HoodIO io) {
     this.io = Objects.requireNonNull(io, "io");
@@ -73,7 +73,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   }
 
   public boolean atPosition() {
-    return atPosition;
+    return isAtPosition;
   }
 
   /**
@@ -95,8 +95,9 @@ public class Hood extends SubsystemBase implements AutoCloseable {
 
     double error = replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Radians);
 
-    atPosition = error < Math.PI / 16;
-    Logger.recordOutput("Hood/atPosition", atPosition);
+    isAtPosition = error < Math.PI / 16;
+    Logger.recordOutput("Hood/atPosition", isAtPosition);
+    Logger.recordOutput("Hood/error", error);
     Logger.recordOutput("Hood/shootAngle", transformAngle(replayedInputs.motorAngle));
     Logger.processInputs("Hood", replayedInputs);
   }
