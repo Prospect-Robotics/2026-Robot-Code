@@ -2,7 +2,6 @@ package com.team2813.subsystems.hood;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
@@ -13,7 +12,6 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 public class HoodIOSim implements HoodIO {
   private final TalonFX motor;
   private final PositionVoltage positionVoltage = new PositionVoltage(0);
-  private final NeutralOut neutralOut = new NeutralOut();
   private final SingleJointedArmSim hoodSim;
 
   public HoodIOSim() {
@@ -24,7 +22,7 @@ public class HoodIOSim implements HoodIO {
             DCMotor.getKrakenX60(1),
             HoodConstants.HOOD_GEAR_RATIO,
             HoodConstants.HOOD_MOI.in(KilogramSquareMeters),
-            HoodConstants.SHOOTER_RADIUS.in(Meters),
+            HoodConstants.SIM_ARM_LENGTH.in(Meters),
             HoodConstants.MINIMUM_SHOOTER_ANGLE.in(Radians),
             HoodConstants.MAXIMUM_SHOOTER_ANGLE.in(Radians),
             true,
@@ -58,7 +56,7 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void neutral() {
-    motor.setControl(neutralOut);
+    motor.stopMotor();
   }
 
   @Override
