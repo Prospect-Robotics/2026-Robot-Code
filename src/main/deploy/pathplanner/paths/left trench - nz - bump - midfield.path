@@ -69,8 +69,8 @@
   "constraintZones": [
     {
       "name": "slowdown for intake",
-      "minWaypointRelativePos": 0.42838709677419196,
-      "maxWaypointRelativePos": 2.178064516129011,
+      "minWaypointRelativePos": 0.7896774193548217,
+      "maxWaypointRelativePos": 1.971612903225806,
       "constraints": {
         "maxVelocity": 1.5,
         "maxAcceleration": 5.0,
