@@ -49,10 +49,6 @@ public class SimulationVisualizer {
   private LoggedMechanism2d intakeExtensionCanvas =
       new LoggedMechanism2d(2, 1, new Color8Bit("#008cff"));
 
-  /** The Mech2d Canvas to draw the elevator on (Units in meters). */
-  private LoggedMechanism2d climbElevatorCanvas =
-      new LoggedMechanism2d(2, 1, new Color8Bit("#00ff65"));
-
   /**
    * Root node of the intake extension mechanism, located at the pivot point of the intake (relative
    * to the robot center)
@@ -109,5 +105,4 @@ public class SimulationVisualizer {
     intakeExtensionPosition = position;
     intakeExtensionLigament.setLength(intakeExtensionPosition.in(Meters));
   }
-
 }
