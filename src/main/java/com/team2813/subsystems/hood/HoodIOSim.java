@@ -65,4 +65,5 @@ public class HoodIOSim implements HoodIO {
   public void close() {
     motor.close();
   }
+
 }
