@@ -50,7 +50,8 @@ public class ShooterConstants {
   // Reminder: this is the upper right shooter motor when robot is viewed from behind.
   public static final TalonFXConfiguration UPPER_RIGHT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
@@ -61,7 +62,8 @@ public class ShooterConstants {
   // Reminder: this is the lower right shooter motor.
   public static final TalonFXConfiguration LOWER_RIGHT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+          .withMotorOutput(
+              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
@@ -72,8 +74,7 @@ public class ShooterConstants {
   // Reminder: this is the upper left shooter motor when the robot is viewed from behind.
   public static final TalonFXConfiguration UPPER_LEFT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
@@ -84,8 +85,7 @@ public class ShooterConstants {
   // Reminder: this is the lower left shooter motor.
   public static final TalonFXConfiguration LOWER_LEFT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
-          .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
+          .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withSlot0(
               new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
           .withCurrentLimits(
