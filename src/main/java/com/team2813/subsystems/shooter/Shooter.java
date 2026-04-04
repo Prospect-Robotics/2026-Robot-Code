@@ -2,6 +2,7 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -36,7 +37,7 @@ public class Shooter extends SubsystemBase {
 
   public Command spoolShooterHubSpeedCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
+        () -> io.setShooterMotorVelocity(RotationsPerSecond.of(1)),
         this::stop,
         this);
   }
