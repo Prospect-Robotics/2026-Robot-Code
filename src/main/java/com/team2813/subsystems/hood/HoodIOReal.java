@@ -9,7 +9,6 @@ import edu.wpi.first.units.measure.Angle;
 public class HoodIOReal implements HoodIO {
   private final TalonFX motor;
   private final PositionVoltage positionVoltage = new PositionVoltage(0);
-  private final NeutralOut neutralOut = new NeutralOut();
 
   public HoodIOReal() {
     motor = new TalonFX(Constants.HOOD_MOTOR_ID);
@@ -32,7 +31,7 @@ public class HoodIOReal implements HoodIO {
 
   @Override
   public void neutral() {
-    motor.setControl(neutralOut);
+    motor.stopMotor();
   }
 
   @Override

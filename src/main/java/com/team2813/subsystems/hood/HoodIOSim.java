@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 public class HoodIOSim implements HoodIO {
   private final TalonFX motor;
   private final PositionVoltage positionVoltage = new PositionVoltage(0);
-  private final NeutralOut neutralOut = new NeutralOut();
   private final SingleJointedArmSim hoodSim;
 
   public HoodIOSim() {
@@ -58,7 +57,7 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void neutral() {
-    motor.setControl(neutralOut);
+    motor.stopMotor();
   }
 
   @Override

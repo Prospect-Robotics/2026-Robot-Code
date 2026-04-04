@@ -13,6 +13,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
+/**
+ * Code for the moving hood to angle the shot from the shooter.
+ */
 public class Hood extends SubsystemBase implements AutoCloseable {
   private final HoodIO io;
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
@@ -55,6 +58,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   public Command gotoAngleCommand(Supplier<Angle> angleSupplier) {
     return new DeferredCommand(() -> gotoAngleCommand(angleSupplier.get()), Set.of(this));
   }
+
 
   /**
    * Creates a command to put the hood into neutral mode. In neutral mode, the hood will stop
