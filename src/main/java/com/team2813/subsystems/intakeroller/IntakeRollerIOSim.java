@@ -37,10 +37,10 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
 
     intakeSimState.setSupplyVoltage(Volts.of(12));
 
-    inputs.intakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
-    inputs.intakeMotorRPS = intakeMotor.getVelocity().getValue();
-    inputs.intakeMotorStatorCurrent = intakeMotor.getStatorCurrent().getValue();
-    inputs.intakeMotorSupplyCurrent = intakeMotor.getSupplyCurrent().getValue();
+    inputs.leftIntakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
+    inputs.leftIntakeMotorRPS = intakeMotor.getVelocity().getValue();
+    inputs.leftIntakeMotorStatorCurrent = intakeMotor.getStatorCurrent().getValue();
+    inputs.leftIntakeMotorSupplyCurrent = intakeMotor.getSupplyCurrent().getValue();
   }
 
   public void updateSimulation() {
