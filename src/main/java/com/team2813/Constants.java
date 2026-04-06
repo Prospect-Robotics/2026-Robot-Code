@@ -26,8 +26,9 @@ public final class Constants {
   // Indexer Motors. Aliases: Vectoring motors
   public static final int INDEXER_MOTOR_ID = 24;
 
-  // Motor runs the robot intake.
-  public static final int INTAKE_MOTOR_CAN_ID = 26;
+  // Motors that run the robot intake.
+  public static final int LEFT_INTAKE_MOTOR_CAN_ID = 26;
+  public static final int RIGHT_INTAKE_MOTOR_CAN_ID = 28;
   // Motor controls the extension of the front of the hopper plate.
   public static final int EXTENDER_MOTOR_CAN_ID = 27;
 

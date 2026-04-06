@@ -11,10 +11,15 @@ public interface IntakeRollerIO {
 
   @AutoLog
   class IntakeRollerIOInputs {
-    public Voltage intakeMotorVoltage = Volts.of(0);
-    public AngularVelocity intakeMotorRPS = RotationsPerSecond.of(0);
-    public Current intakeMotorStatorCurrent = Amps.of(0);
-    public Current intakeMotorSupplyCurrent = Amps.of(0);
+    public Voltage leftIntakeMotorVoltage = Volts.of(0);
+    public AngularVelocity leftIntakeMotorRPS = RotationsPerSecond.of(0);
+    public Current leftIntakeMotorStatorCurrent = Amps.of(0);
+    public Current leftIntakeMotorSupplyCurrent = Amps.of(0);
+
+    public Voltage rightIntakeMotorVoltage = Volts.of(0);
+    public AngularVelocity rightIntakeMotorRPS = RotationsPerSecond.of(0);
+    public Current rightIntakeMotorStatorCurrent = Amps.of(0);
+    public Current rightIntakeMotorSupplyCurrent = Amps.of(0);
   }
 
   default void updateState(IntakeRollerIOInputs inputs) {}
