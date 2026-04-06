@@ -7,23 +7,33 @@ import com.team2813.Constants;
 import edu.wpi.first.units.measure.Voltage;
 
 public class IntakeRollerIOReal implements IntakeRollerIO {
-  private TalonFX intakeMotor;
+  private TalonFX leftIntakeMotor;
+  private TalonFX rightIntakeMotor;
 
   public IntakeRollerIOReal() {
-    intakeMotor = new TalonFX(Constants.INTAKE_MOTOR_CAN_ID);
-    intakeMotor.getConfigurator().apply(IntakeRollerConstants.LEFT_INTAKE_MOTOR_CONFIG);
+    leftIntakeMotor = new TalonFX(Constants.LEFT_INTAKE_MOTOR_CAN_ID);
+    leftIntakeMotor.getConfigurator().apply(IntakeRollerConstants.LEFT_INTAKE_MOTOR_CONFIG);
+
+    rightIntakeMotor = new TalonFX(Constants.RIGHT_INTAKE_MOTOR_CAN_ID);
+    rightIntakeMotor.getConfigurator().apply(IntakeRollerConstants.RIGHT_INTAKE_MOTOR_CONFIG);
   }
 
   @Override
   public void updateState(IntakeRollerIOInputs inputs) {
-    inputs.leftIntakeMotorVoltage = intakeMotor.getMotorVoltage().getValue();
-    inputs.leftIntakeMotorRPS = intakeMotor.getVelocity().getValue();
-    inputs.leftIntakeMotorStatorCurrent = intakeMotor.getStatorCurrent().getValue();
-    inputs.leftIntakeMotorSupplyCurrent = intakeMotor.getSupplyCurrent().getValue();
+    inputs.leftIntakeMotorVoltage = leftIntakeMotor.getMotorVoltage().getValue();
+    inputs.leftIntakeMotorRPS = leftIntakeMotor.getVelocity().getValue();
+    inputs.leftIntakeMotorStatorCurrent = leftIntakeMotor.getStatorCurrent().getValue();
+    inputs.leftIntakeMotorSupplyCurrent = leftIntakeMotor.getSupplyCurrent().getValue();
+
+    inputs.rightIntakeMotorVoltage = rightIntakeMotor.getMotorVoltage().getValue();
+    inputs.rightIntakeMotorRPS = rightIntakeMotor.getVelocity().getValue();
+    inputs.rightIntakeMotorStatorCurrent = rightIntakeMotor.getStatorCurrent().getValue();
+    inputs.rightIntakeMotorSupplyCurrent = rightIntakeMotor.getSupplyCurrent().getValue();
   }
 
   @Override
   public void setIntakeMotorVoltage(Voltage intakeMotorVoltage) {
-    intakeMotor.setVoltage(intakeMotorVoltage.in(Volts));
+    leftIntakeMotor.setVoltage(intakeMotorVoltage.in(Volts));
+    rightIntakeMotor.setVoltage(intakeMotorVoltage.in(Volts));
   }
 }
