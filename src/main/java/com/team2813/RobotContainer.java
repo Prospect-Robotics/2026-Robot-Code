@@ -282,8 +282,8 @@ public class RobotContainer implements AutoCloseable {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
-    operatorController.povUp().whileTrue(hood.gotoAngleCommand(hood::hubAngle));
-    operatorController.povDown().whileTrue(hood.gotoAngleCommand(hood::trenchAngle));
+    operatorController.povUp().whileTrue(hood.goToAngleCommand(hood::hubAngle));
+    operatorController.povDown().whileTrue(hood.goToAngleCommand(hood::trenchAngle));
 
     // Driver controls
     // Default command, normal field-relative drive

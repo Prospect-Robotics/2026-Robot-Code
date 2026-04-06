@@ -1,7 +1,6 @@
 package com.team2813.subsystems.hood;
 
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
@@ -17,7 +16,7 @@ import org.littletonrobotics.junction.Logger;
 public class Hood extends SubsystemBase implements AutoCloseable {
   private final HoodIO io;
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
-  private boolean atPosition = true;
+  private boolean isAtPosition = true;
 
   public Hood(HoodIO io) {
     this.io = Objects.requireNonNull(io, "io");
@@ -37,10 +36,10 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    *
    * @param angle The angle to move the hood to
    * @return A command to bring the hood to the specified angle
-   * @see #gotoAngleCommand(Supplier)
+   * @see #goToAngleCommand(Supplier)
    */
-  public Command gotoAngleCommand(Angle angle) {
-    return new StartEndCommand(() -> gotoAngle(angle), () -> {}, this).until(this::atPosition);
+  public Command goToAngleCommand(Angle angle) {
+    return new StartEndCommand(() -> goToAngle(angle), () -> {}, this).until(this::atPosition);
   }
 
   /**
@@ -51,16 +50,16 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    *
    * @param angleSupplier A supplier of the angle to move the hood to
    * @return A command to bring the hood to the specified angle
-   * @see #gotoAngleCommand(Angle)
+   * @see #goToAngleCommand(Angle)
    */
-  public Command gotoAngleCommand(Supplier<Angle> angleSupplier) {
-    return new DeferredCommand(() -> gotoAngleCommand(angleSupplier.get()), Set.of(this));
+  public Command goToAngleCommand(Supplier<Angle> angleSupplier) {
+    return new DeferredCommand(() -> goToAngleCommand(angleSupplier.get()), Set.of(this));
   }
 
   /**
    * Creates a command to put the hood into neutral mode. In neutral mode, the hood will stop
    * attempting to stay at the last requested position, and let gravity move the hood down. This
-   * state will end upon {@link #gotoAngleCommand(Angle)} or {@link #gotoAngleCommand(Supplier)}
+   * state will end upon {@link #goToAngleCommand(Angle)} or {@link #goToAngleCommand(Supplier)}
    * gives the hood another angle to go to.
    *
    * @return A command that puts the hood into neutral mode
@@ -69,12 +68,12 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     return new InstantCommand(io::neutral, this);
   }
 
-  private void gotoAngle(Angle angle) {
+  private void goToAngle(Angle angle) {
     io.setSetpoint(transformAngle(angle));
   }
 
   public boolean atPosition() {
-    return atPosition;
+    return isAtPosition;
   }
 
   /**
@@ -96,8 +95,9 @@ public class Hood extends SubsystemBase implements AutoCloseable {
 
     double error = replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Radians);
 
-    atPosition = error < Math.PI / 16;
-    Logger.recordOutput("Hood/atPosition", atPosition);
+    isAtPosition = error < Math.PI / 16;
+    Logger.recordOutput("Hood/atPosition", isAtPosition);
+    Logger.recordOutput("Hood/error", error);
     Logger.recordOutput("Hood/shootAngle", transformAngle(replayedInputs.motorAngle));
     Logger.processInputs("Hood", replayedInputs);
   }
@@ -110,7 +110,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
 
   /**
    * Get the angle required for hub shooting. This angle can directly be passed to {@link
-   * #gotoAngleCommand(Angle)}.
+   * #goToAngleCommand(Angle)}.
    *
    * @return The angle for shooting at the hub
    */
@@ -120,12 +120,19 @@ public class Hood extends SubsystemBase implements AutoCloseable {
 
   /**
    * Get the angle required for trench shooting. This angle can directly be passed to {@link
-   * #gotoAngleCommand(Angle)}.
+   * #goToAngleCommand(Angle)}.
    *
    * @return The angle for shooting in the trench
    */
   public Angle trenchAngle() {
     return Degrees.of(currentTrenchAngle);
+  }
+
+  /**
+   * @return The current motor position.
+   */
+  public Angle getCurrentHoodMotorAngle() {
+    return replayedInputs.motorAngle;
   }
 
   /**

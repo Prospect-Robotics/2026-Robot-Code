@@ -36,9 +36,7 @@ public class Shooter extends SubsystemBase {
 
   public Command spoolShooterHubSpeedCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
-        this::stop,
-        this);
+        () -> io.setShooterMotorVelocity(RotationsPerSecond.of(1)), this::stop, this);
   }
 
   public Command spoolShooterHerdSpeedCommand() {
