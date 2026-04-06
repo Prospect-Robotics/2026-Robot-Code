@@ -389,7 +389,10 @@ public class RobotContainer {
                 new SequentialCommandGroup(
                     // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                     new WaitCommand(0.5),
-                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+                    new ParallelCommandGroup(
+                        kicker.shootCommand(),
+                        hopper.intakeCommand(),
+                        intakeRoller.intakeCommand()))),
             new WaitCommand(6)));
 
     NamedCommands.registerCommand(
@@ -401,7 +404,10 @@ public class RobotContainer {
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)),
                 new SequentialCommandGroup(
                     new WaitCommand(0.5),
-                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+                    new ParallelCommandGroup(
+                        kicker.shootCommand(),
+                        hopper.intakeCommand(),
+                        intakeRoller.intakeCommand()))),
             new WaitCommand(6)));
 
     NamedCommands.registerCommand(
