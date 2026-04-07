@@ -2,6 +2,7 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -36,7 +37,9 @@ public class Shooter extends SubsystemBase {
 
   public Command spoolShooterHubSpeedCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(RotationsPerSecond.of(1)), this::stop, this);
+        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
+        this::stop,
+        this);
   }
 
   public Command spoolShooterHerdSpeedCommand() {
@@ -57,8 +60,8 @@ public class Shooter extends SubsystemBase {
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                null,
-                null,
+                Volts.per(Seconds).of(0.1),
+                Volts.of(1),
                 null,
                 (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setShooterMotorVoltage, null, this));
@@ -67,8 +70,11 @@ public class Shooter extends SubsystemBase {
 
     return new SequentialCommandGroup(
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward),
+        new WaitCommand(5),
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
+        new WaitCommand(5),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
+        new WaitCommand(5),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
