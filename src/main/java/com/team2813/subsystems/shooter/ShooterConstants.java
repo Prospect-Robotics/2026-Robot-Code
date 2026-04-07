@@ -99,11 +99,11 @@ public class ShooterConstants {
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 115));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60));
   }
 
   public static AngularVelocity getShooterHerdShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 60));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 115));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
