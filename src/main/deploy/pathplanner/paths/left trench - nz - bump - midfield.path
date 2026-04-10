@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 3.5789916963226576,
-        "y": 5.652577777777777
+        "x": 3.535954922894425,
+        "y": 5.804887307236061
       },
       "prevControl": {
-        "x": 7.602930011862397,
-        "y": 5.740332147093714
+        "x": 7.559893238434165,
+        "y": 5.892641676551998
       },
       "nextControl": {
-        "x": 3.229210936514092,
-        "y": 5.644949730931902
+        "x": 3.1861741630858598,
+        "y": 5.797259260390186
       },
       "isLocked": false,
       "linkedName": null
@@ -94,7 +94,7 @@
     {
       "name": "slowdown for intake",
       "minWaypointRelativePos": 1.4017363851617828,
-      "maxWaypointRelativePos": 1.971612903225806,
+      "maxWaypointRelativePos": 2.652071931196247,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 5.0,

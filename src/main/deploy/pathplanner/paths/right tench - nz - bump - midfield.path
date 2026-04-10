@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 3.8802491103202854,
-        "y": 2.4480189798339267
+        "x": 4.1492289442467385,
+        "y": 2.2113167259786475
       },
       "prevControl": {
-        "x": 8.001076349467862,
-        "y": 2.4480189798339267
+        "x": 8.270056183394313,
+        "y": 2.2113167259786475
       },
       "nextControl": {
-        "x": 3.041032028469752,
-        "y": 2.4480189798339267
+        "x": 3.310011862396205,
+        "y": 2.2113167259786475
       },
       "isLocked": false,
       "linkedName": null
@@ -68,8 +68,8 @@
         "y": 2.709755555555556
       },
       "prevControl": {
-        "x": 1.6315776986951376,
-        "y": 1.5334875444839857
+        "x": 1.6423368920521952,
+        "y": 1.7163938315539744
       },
       "nextControl": null,
       "isLocked": false,
@@ -93,8 +93,8 @@
   "constraintZones": [
     {
       "name": "slowdown for intake",
-      "minWaypointRelativePos": 1.4,
-      "maxWaypointRelativePos": 1.971612903225806,
+      "minWaypointRelativePos": 1.5637216575449568,
+      "maxWaypointRelativePos": 2.789679437060213,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 5.0,
