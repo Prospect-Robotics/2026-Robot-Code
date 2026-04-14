@@ -19,13 +19,13 @@ public class IntakeRollerConstants {
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withCurrentLimits(
-              new CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(60));
+              new CurrentLimitsConfigs().withSupplyCurrentLimit(40).withStatorCurrentLimit(60));
 
   public static final TalonFXConfiguration RIGHT_INTAKE_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withCurrentLimits(
-              new CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(60));
+              new CurrentLimitsConfigs().withSupplyCurrentLimit(40).withStatorCurrentLimit(60));
 
   public static final String INTAKE_PREFERENCE_NT = "IntakeRoller/INTAKE_MOTOR_VOLTAGE";
   public static final String OUTTAKE_PREFERENCE_NT = "IntakeRoller/OUTTAKE_MOTOR_VOLTAGE";

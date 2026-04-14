@@ -45,8 +45,8 @@ public class HopperConstants {
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withSupplyCurrentLimit(Amps.of(40))
-                  .withStatorCurrentLimit(Amps.of(80)));
+                  .withSupplyCurrentLimit(Amps.of(30))
+                  .withStatorCurrentLimit(Amps.of(60)));
 
   // Bottom Motor, opposite of main motor.
   public static final TalonFXConfiguration FOLLOWER_FEEDER_MOTOR_CONFIG =
@@ -55,8 +55,8 @@ public class HopperConstants {
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withSupplyCurrentLimit(Amps.of(40))
-                  .withStatorCurrentLimit(Amps.of(80)));
+                  .withSupplyCurrentLimit(Amps.of(30))
+                  .withStatorCurrentLimit(Amps.of(60)));
 
   // TODO: Change this later to the actual number.
   public static final double FEEDER_MOTOR_TO_ROLLER_GEARING = 1;

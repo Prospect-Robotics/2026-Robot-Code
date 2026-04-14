@@ -42,7 +42,7 @@ public class ShooterConstants {
   static {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100);
-    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 65);
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 115);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
@@ -57,7 +57,7 @@ public class ShooterConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimit(Amps.of(80))
-                  .withSupplyCurrentLimit(60));
+                  .withSupplyCurrentLimit(50));
 
   public static final TalonFXConfiguration FOLLOWER_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
@@ -67,7 +67,7 @@ public class ShooterConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimit(Amps.of(80))
-                  .withSupplyCurrentLimit(60));
+                  .withSupplyCurrentLimit(50));
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
@@ -80,7 +80,7 @@ public class ShooterConstants {
   }
 
   public static AngularVelocity getShooterHerdShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 60));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 65));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
