@@ -327,6 +327,8 @@ public class RobotContainer implements AutoCloseable {
             VariableShooterCommand.shootBasedOnDistanceCommand(
                 shooter,
                 () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
+    // temporary drum test binding
+    driveController.b().whileTrue(shooter.outakeCommand());
   }
 
   // controller rumble
