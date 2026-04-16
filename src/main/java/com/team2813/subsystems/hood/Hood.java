@@ -96,9 +96,9 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     double error = replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Radians);
 
     isAtPosition = error < Math.PI / 16;
-    Logger.recordOutput("Hood/atPosition", isAtPosition);
-    Logger.recordOutput("Hood/error", error);
-    Logger.recordOutput("Hood/shootAngle", transformAngle(replayedInputs.motorAngle));
+    Logger.recordOutput("Hood/AtPostion", isAtPosition);
+    Logger.recordOutput("Hood/PositionSetpointError", error);
+    Logger.recordOutput("Hood/HoodAngle", transformAngle(replayedInputs.motorAngle));
     Logger.processInputs("Hood", replayedInputs);
   }
 

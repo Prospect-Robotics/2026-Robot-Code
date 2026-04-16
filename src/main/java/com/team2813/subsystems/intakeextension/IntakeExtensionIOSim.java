@@ -40,7 +40,7 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
     extenderSim =
         new ElevatorSim(
-            DCMotor.getKrakenX44(1),
+            DCMotor.getKrakenX44(2),
             IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING,
             IntakeExtensionConstants.WEIGHT_OF_EXTENDER_CARRIAGE.in(Kilograms),
             IntakeExtensionConstants.PULLEY_RADIUS.in(Meters),

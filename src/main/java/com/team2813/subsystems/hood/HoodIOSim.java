@@ -38,11 +38,12 @@ public class HoodIOSim implements HoodIO {
     hoodSim.update(Constants.SIM_TIME_PERIOD);
 
     var simState = motor.getSimState();
+    simState.setSupplyVoltage(Volts.of(12));
+    motor.setVoltage(inputs.motorVoltage.in(Volts));
     simState.setRawRotorPosition(
         Radians.of(hoodSim.getAngleRads()).times(HoodConstants.HOOD_GEAR_RATIO));
     simState.setRotorVelocity(
         RadiansPerSecond.of(hoodSim.getVelocityRadPerSec()).times(HoodConstants.HOOD_GEAR_RATIO));
-    simState.setSupplyVoltage(Volts.of(12));
 
     SimulationVisualizer.getInstance().updateShooterHoodAngle(Radians.of(hoodSim.getAngleRads()));
 
