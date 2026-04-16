@@ -20,7 +20,7 @@ class HoodConstants {
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
           // TODO: Run sysid to get PID values
-          .withSlot0(new Slot0Configs().withKP(1).withKI(0).withKD(0).withKS(0).withKA(0))
+          .withSlot0(new Slot0Configs().withKP(5).withKI(0).withKD(0).withKS(0).withKA(0))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   static final String HUB_ANGLE_PREFERENCE = "Hood/hubAngle";

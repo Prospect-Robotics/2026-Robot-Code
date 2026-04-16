@@ -19,6 +19,8 @@ public class HoodIOSim implements HoodIO {
   private final PositionVoltage positionVoltage = new PositionVoltage(0);
   private final SingleJointedArmSim hoodSim;
 
+  private Angle motorSetpoint = Rotations.of(0);
+
   public HoodIOSim() {
     hoodMotor = new TalonFX(Constants.HOOD_MOTOR_ID);
     hoodMotor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
@@ -58,12 +60,14 @@ public class HoodIOSim implements HoodIO {
     inputs.motorVelocity = hoodMotor.getVelocity().getValue();
     inputs.motorStatorCurrent = hoodMotor.getStatorCurrent().getValue();
     inputs.motorSupplyCurrent = hoodMotor.getSupplyCurrent().getValue();
+    inputs.motorSetpoint = motorSetpoint;
     inputs.motorAngle = hoodMotor.getPosition().getValue();
   }
 
   @Override
   public void setSetpoint(Angle angle) {
     Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Degree));
+    motorSetpoint = angle;
     hoodMotor.setControl(positionVoltage.withPosition(angle));
   }
 
