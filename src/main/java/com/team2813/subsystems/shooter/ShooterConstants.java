@@ -42,7 +42,7 @@ public class ShooterConstants {
   static {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100);
-    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 65);
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 115);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
@@ -80,7 +80,7 @@ public class ShooterConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimit(Amps.of(80))
-                  .withSupplyCurrentLimit(60));
+                  .withSupplyCurrentLimit(50));
 
   // Reminder: this is the lower left shooter motor.
   public static final TalonFXConfiguration LOWER_LEFT_SHOOTER_MOTOR_CONFIG =
@@ -90,7 +90,7 @@ public class ShooterConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimit(Amps.of(80))
-                  .withSupplyCurrentLimit(60));
+                  .withSupplyCurrentLimit(50));
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
