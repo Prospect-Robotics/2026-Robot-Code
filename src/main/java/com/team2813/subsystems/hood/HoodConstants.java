@@ -24,9 +24,9 @@ class HoodConstants {
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   static final String HUB_ANGLE_PREFERENCE = "Hood/hubAngle";
-  static final double DEFAULT_HUB_ANGLE = 45;
+  static final double DEFAULT_HUB_ANGLE_DEGREES = 45;
   static final String TRENCH_ANGLE_PREFERENCE = "Hood/trenchAngle";
-  static final double DEFAULT_TRENCH_ANGLE = 30;
+  static final double DEFAULT_TRENCH_ANGLE_DEGREES = 30;
 
   private HoodConstants() {
     throw new AssertionError("Not Instantiable!");

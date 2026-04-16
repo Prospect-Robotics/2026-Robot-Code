@@ -17,8 +17,8 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
   private boolean isAtPosition = true;
 
-  private double currentHubAngle = HoodConstants.DEFAULT_HUB_ANGLE;
-  private double currentTrenchAngle = HoodConstants.DEFAULT_TRENCH_ANGLE;
+  private double currentHubAngle = HoodConstants.DEFAULT_HUB_ANGLE_DEGREES;
+  private double currentTrenchAngle = HoodConstants.DEFAULT_TRENCH_ANGLE_DEGREES;
   private final Alert hubAngleAlert = new Alert(createAlertMessage("hubAngle"), AlertType.kInfo);
   private final Alert trenchAngleAlert =
       new Alert(createAlertMessage("trenchAngle"), AlertType.kInfo);
@@ -27,9 +27,10 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     this.io = Objects.requireNonNull(io, "io");
 
     // initialize preferences
-    Preferences.initDouble(HoodConstants.HUB_ANGLE_PREFERENCE, HoodConstants.DEFAULT_HUB_ANGLE);
     Preferences.initDouble(
-        HoodConstants.TRENCH_ANGLE_PREFERENCE, HoodConstants.DEFAULT_TRENCH_ANGLE);
+        HoodConstants.HUB_ANGLE_PREFERENCE, HoodConstants.DEFAULT_HUB_ANGLE_DEGREES);
+    Preferences.initDouble(
+        HoodConstants.TRENCH_ANGLE_PREFERENCE, HoodConstants.DEFAULT_TRENCH_ANGLE_DEGREES);
     updatePreferences();
   }
 
@@ -101,7 +102,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle for shooting at the hub
    */
   public Angle hubAngle() {
-    return Degrees.of(0);
+    return Degrees.of(currentHubAngle);
   }
 
   /**
@@ -111,7 +112,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle for shooting in the trench
    */
   public Angle trenchAngle() {
-    return Degrees.of(90);
+    return Degrees.of(currentTrenchAngle);
   }
 
   /**
@@ -128,10 +129,10 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   private void updatePreferences() {
     // Get new preference values, and set the alerts to pop up if they aren't the default value
     currentHubAngle = Preferences.getDouble(HoodConstants.HUB_ANGLE_PREFERENCE, currentHubAngle);
-    hubAngleAlert.set(currentHubAngle != HoodConstants.DEFAULT_HUB_ANGLE);
+    hubAngleAlert.set(currentHubAngle != HoodConstants.DEFAULT_HUB_ANGLE_DEGREES);
     currentTrenchAngle =
         Preferences.getDouble(HoodConstants.TRENCH_ANGLE_PREFERENCE, currentTrenchAngle);
-    trenchAngleAlert.set(currentTrenchAngle != HoodConstants.DEFAULT_TRENCH_ANGLE);
+    trenchAngleAlert.set(currentTrenchAngle != HoodConstants.DEFAULT_TRENCH_ANGLE_DEGREES);
   }
 
   private static String createAlertMessage(String preference) {

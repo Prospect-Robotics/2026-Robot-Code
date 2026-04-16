@@ -1,11 +1,11 @@
 package com.team2813.subsystems.hood;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
-
-import static edu.wpi.first.units.Units.Rotations;
 
 public class HoodIOReal implements HoodIO {
   private final TalonFX motor;
