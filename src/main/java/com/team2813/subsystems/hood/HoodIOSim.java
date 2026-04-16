@@ -9,6 +9,7 @@ import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import org.littletonrobotics.junction.Logger;
 
 public class HoodIOSim implements HoodIO {
   private final TalonFX motor;
@@ -32,8 +33,8 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void updateState(HoodIOInputs inputs) {
-    inputs.motorVoltage = motor.getMotorVoltage().getValue();
     hoodSim.setInputVoltage(inputs.motorVoltage.in(Volts));
+    Logger.recordOutput("Hood/HoodAngleDegrees", Radians.of(hoodSim.getAngleRads()).in(Degree));
 
     hoodSim.update(Constants.SIM_TIME_PERIOD);
 
@@ -47,6 +48,7 @@ public class HoodIOSim implements HoodIO {
 
     SimulationVisualizer.getInstance().updateShooterHoodAngle(Radians.of(hoodSim.getAngleRads()));
 
+    inputs.motorVoltage = motor.getMotorVoltage().getValue();
     inputs.motorVelocity = motor.getVelocity().getValue();
     inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();
     inputs.motorSupplyCurrent = motor.getSupplyCurrent().getValue();
