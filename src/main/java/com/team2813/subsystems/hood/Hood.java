@@ -115,7 +115,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle for shooting at the hub
    */
   public Angle hubAngle() {
-    return Degrees.of(0);
+    return Degrees.of(currentHubAngle);
   }
 
   /**
@@ -125,7 +125,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle for shooting in the trench
    */
   public Angle trenchAngle() {
-    return Degrees.of(90);
+    return Degrees.of(currentTrenchAngle);
   }
 
   /**
