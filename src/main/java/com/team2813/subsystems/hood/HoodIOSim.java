@@ -5,7 +5,9 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
+import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
@@ -19,7 +21,7 @@ public class HoodIOSim implements HoodIO {
     motor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
     hoodSim =
         new SingleJointedArmSim(
-            DCMotor.getKrakenX60(1),
+            DCMotor.getKrakenX44(1),
             HoodConstants.HOOD_GEAR_RATIO,
             HoodConstants.HOOD_MOI.in(KilogramSquareMeters),
             HoodConstants.SIM_ARM_LENGTH.in(Meters),
@@ -42,6 +44,8 @@ public class HoodIOSim implements HoodIO {
     simState.setRotorVelocity(
         RadiansPerSecond.of(hoodSim.getVelocityRadPerSec()).times(HoodConstants.HOOD_GEAR_RATIO));
     simState.setSupplyVoltage(Volts.of(12));
+
+    SimulationVisualizer.getInstance().updateShooterHoodAngle(Radians.of(hoodSim.getAngleRads()));
 
     inputs.motorVelocity = motor.getVelocity().getValue();
     inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();

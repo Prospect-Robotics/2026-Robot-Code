@@ -112,8 +112,11 @@ public class SimulationVisualizer {
 
   /** Update the simulation visualizer with the current position of the intake extension. */
   public void periodic() {
-    SmartDashboard.putData("Intake Extension Visualization", intakeExtensionCanvas);
-    Logger.recordOutput("Intake Extension Visualization", intakeExtensionCanvas);
+    SmartDashboard.putData("SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
+    Logger.recordOutput("SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
+
+    SmartDashboard.putData("SimulationVisualizer/Shooter Hood Visualization", intakeExtensionCanvas);
+    Logger.recordOutput("SimulationVisualizer/Shooter Hood Visualization", intakeExtensionCanvas);
 
     double intakeExtensionX =
         intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
