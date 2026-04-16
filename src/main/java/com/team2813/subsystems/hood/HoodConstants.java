@@ -1,10 +1,8 @@
 package com.team2813.subsystems.hood;
 
-import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -15,16 +13,15 @@ class HoodConstants {
   // TODO: Get real value!
   static final double HOOD_GEAR_RATIO = 128;
   static final MomentOfInertia HOOD_MOI = Units.KilogramSquareMeters.of(0.0529);
-  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Radians.of(0.284256);
-  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Radians.of(0.685682);
+  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Degrees.of(0);
+  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Degrees.of(90);
   static final Distance SIM_ARM_LENGTH = Units.Centimeter.of(10);
 
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
           // TODO: Run sysid to get PID values
           .withSlot0(new Slot0Configs().withKP(1).withKI(0).withKD(0).withKS(0).withKA(0))
-          .withFeedback(new FeedbackConfigs().withRotorToSensorRatio(HOOD_GEAR_RATIO))
-          .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake).withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   static final String HUB_ANGLE_PREFERENCE = "Hood/hubAngle";
   static final double DEFAULT_HUB_ANGLE = 45;

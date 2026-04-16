@@ -29,7 +29,7 @@ public class HoodIOReal implements HoodIO {
   }
 
   @Override
-  public void neutral() {
+  public void stop() {
     motor.stopMotor();
   }
 

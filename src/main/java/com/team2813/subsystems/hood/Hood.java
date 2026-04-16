@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.*;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -17,6 +16,12 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   private final HoodIO io;
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
   private boolean isAtPosition = true;
+
+  private double currentHubAngle = HoodConstants.DEFAULT_HUB_ANGLE;
+  private double currentTrenchAngle = HoodConstants.DEFAULT_TRENCH_ANGLE;
+  private final Alert hubAngleAlert = new Alert(createAlertMessage("hubAngle"), AlertType.kInfo);
+  private final Alert trenchAngleAlert =
+      new Alert(createAlertMessage("trenchAngle"), AlertType.kInfo);
 
   public Hood(HoodIO io) {
     this.io = Objects.requireNonNull(io, "io");
@@ -39,7 +44,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @see #goToAngleCommand(Supplier)
    */
   public Command goToAngleCommand(Angle angle) {
-    return new StartEndCommand(() -> goToAngle(angle), () -> {}, this).until(this::atPosition);
+    return new StartEndCommand(() -> goToAngle(angle), () -> {}, this);
   }
 
   /**
@@ -53,7 +58,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @see #goToAngleCommand(Angle)
    */
   public Command goToAngleCommand(Supplier<Angle> angleSupplier) {
-    return new DeferredCommand(() -> goToAngleCommand(angleSupplier.get()), Set.of(this));
+    return goToAngleCommand(angleSupplier.get());
   }
 
   /**
@@ -65,28 +70,15 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return A command that puts the hood into neutral mode
    */
   public Command neutralCommand() {
-    return new InstantCommand(io::neutral, this);
+    return new InstantCommand(io::stop, this);
   }
 
   public void goToAngle(Angle angle) {
-    io.setSetpoint(transformAngle(angle));
+    io.setSetpoint(angle);
   }
 
   public boolean atPosition() {
     return isAtPosition;
-  }
-
-  /**
-   * Transform an angle between the angle to shoot and the angle of the shooter. This operation is
-   * symmetrical, so inputting an angle from either reference point will give the angle of the
-   * other. The behavior of this function is undefined if the angle provided is not an angle that
-   * can be reached physically.
-   *
-   * @param angle The angle in either reference point
-   * @return The angle in the other reference point
-   */
-  private Angle transformAngle(Angle angle) {
-    return Radians.of(Math.PI / 2).minus(HoodConstants.MINIMUM_SHOOTER_ANGLE).minus(angle);
   }
 
   @Override
@@ -98,15 +90,9 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     isAtPosition = error < Math.PI / 16;
     Logger.recordOutput("Hood/AtPostion", isAtPosition);
     Logger.recordOutput("Hood/PositionSetpointError", error);
-    Logger.recordOutput("Hood/HoodAngle", transformAngle(replayedInputs.motorAngle));
+    Logger.recordOutput("Hood/HoodAngle", replayedInputs.motorAngle);
     Logger.processInputs("Hood", replayedInputs);
   }
-
-  private double currentHubAngle = HoodConstants.DEFAULT_HUB_ANGLE;
-  private double currentTrenchAngle = HoodConstants.DEFAULT_TRENCH_ANGLE;
-  private final Alert hubAngleAlert = new Alert(createAlertMessage("hubAngle"), AlertType.kInfo);
-  private final Alert trenchAngleAlert =
-      new Alert(createAlertMessage("trenchAngle"), AlertType.kInfo);
 
   /**
    * Get the angle required for hub shooting. This angle can directly be passed to {@link

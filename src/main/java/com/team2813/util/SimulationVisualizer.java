@@ -119,7 +119,7 @@ public class SimulationVisualizer {
 
     // Component Simulation for the 3D robot.
     Logger.recordOutput(
-        "Component Positions",
+        "SimulationVisualizer/Component Positions",
         new Pose3d[] {
           // Hopper and indexer
           new Pose3d(intakeExtensionX, 0, intakeExtensionZ, new Rotation3d(0, 0, 0)),

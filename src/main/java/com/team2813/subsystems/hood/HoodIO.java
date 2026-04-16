@@ -23,7 +23,7 @@ public interface HoodIO extends AutoCloseable {
 
   default void setSetpoint(Angle angle) {}
 
-  default void neutral() {}
+  default void stop() {}
 
   @Override
   default void close() {}
