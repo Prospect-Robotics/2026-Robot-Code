@@ -78,7 +78,7 @@ public class SimulationVisualizer {
    * Root node of the hood mechanism.
    */
   private LoggedMechanismRoot2d shooterHoodRoot =
-      intakeExtensionCanvas.getRoot("Shooter Hood",
+      shooterHoodCanvas.getRoot("Shooter Hood",
           1, // Arbitrary values to make the ligament visible.
           0.5);
 
@@ -100,7 +100,7 @@ public class SimulationVisualizer {
    * The angle of the ligament is updated to match the angle of the hood.
    */
   private LoggedMechanismLigament2d shooterHoodLigament =
-      intakeExtensionRoot.append(
+      shooterHoodRoot.append(
           new LoggedMechanismLigament2d(
               "Shooter Hood",
               0.3,
@@ -115,8 +115,8 @@ public class SimulationVisualizer {
     SmartDashboard.putData("SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
     Logger.recordOutput("SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
 
-    SmartDashboard.putData("SimulationVisualizer/Shooter Hood Visualization", intakeExtensionCanvas);
-    Logger.recordOutput("SimulationVisualizer/Shooter Hood Visualization", intakeExtensionCanvas);
+    SmartDashboard.putData("SimulationVisualizer/Shooter Hood Visualization", shooterHoodCanvas);
+    Logger.recordOutput("SimulationVisualizer/Shooter Hood Visualization", shooterHoodCanvas);
 
     double intakeExtensionX =
         intakeExtensionPosition.in(Meters) * Math.cos(INDEXER_PITCH_ANGLE.in(Radians));
