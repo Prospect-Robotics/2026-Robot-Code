@@ -68,7 +68,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     return new InstantCommand(io::neutral, this);
   }
 
-  private void goToAngle(Angle angle) {
+  public void goToAngle(Angle angle) {
     io.setSetpoint(transformAngle(angle));
   }
 
