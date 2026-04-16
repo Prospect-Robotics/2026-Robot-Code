@@ -30,9 +30,9 @@ public class Hood extends SubsystemBase implements AutoCloseable {
 
   /**
    * Creates a command to bring the variable hood to the specified angle. This angle is the angle
-   * that should be shot at. After this command finishes executing normally, the hood will be at the
-   * requested angle, and stay there until another angle is requested, or {@link #neutralCommand()}
-   * puts the hood into neutral mode.
+   * that fuel should be shot at. After this command finishes executing normally, the hood will be
+   * at the requested angle, and stay there until another angle is requested, or {@link
+   * #neutralCommand()} puts the hood into neutral mode.
    *
    * @param angle The angle to move the hood to
    * @return A command to bring the hood to the specified angle

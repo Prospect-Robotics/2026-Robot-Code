@@ -24,7 +24,10 @@ class HoodConstants {
           // TODO: Run sysid to get PID values
           .withSlot0(new Slot0Configs().withKP(1).withKI(0).withKD(0).withKS(0).withKA(0))
           .withFeedback(new FeedbackConfigs().withRotorToSensorRatio(HOOD_GEAR_RATIO))
-          .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake).withInverted(InvertedValue.Clockwise_Positive));
+          .withMotorOutput(
+              new MotorOutputConfigs()
+                  .withNeutralMode(NeutralModeValue.Brake)
+                  .withInverted(InvertedValue.Clockwise_Positive));
 
   static final String HUB_ANGLE_PREFERENCE = "Hood/hubAngle";
   static final double DEFAULT_HUB_ANGLE = 45;
