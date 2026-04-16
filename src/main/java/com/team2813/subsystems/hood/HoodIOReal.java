@@ -12,6 +12,7 @@ public class HoodIOReal implements HoodIO {
   public HoodIOReal() {
     motor = new TalonFX(Constants.HOOD_MOTOR_ID);
     motor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
+    motor.setPosition(0);
   }
 
   @Override
