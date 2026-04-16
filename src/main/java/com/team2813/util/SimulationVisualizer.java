@@ -2,7 +2,6 @@ package com.team2813.util;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.units.measure.Angle;
@@ -47,8 +46,8 @@ public class SimulationVisualizer {
   private Distance intakeExtensionPosition = Inches.of(0);
 
   /**
-   * The angle of the shooter hood. Defaults to 0 rotations (horizontal, pointing east).
-   * This value is used for both updating the 3D model.
+   * The angle of the shooter hood. Defaults to 0 rotations (horizontal, pointing east). This value
+   * is used for both updating the 3D model.
    */
   private Angle shooterHoodAngle = Rotations.of(0);
 
@@ -74,11 +73,10 @@ public class SimulationVisualizer {
           0.1 // placeholder value for now: 0.1m off robot base.
           );
 
-  /**
-   * Root node of the hood mechanism.
-   */
+  /** Root node of the hood mechanism. */
   private LoggedMechanismRoot2d shooterHoodRoot =
-      shooterHoodCanvas.getRoot("Shooter Hood",
+      shooterHoodCanvas.getRoot(
+          "Shooter Hood",
           1, // Arbitrary values to make the ligament visible.
           0.5);
 
@@ -96,24 +94,20 @@ public class SimulationVisualizer {
               new Color8Bit("#ff9900")));
 
   /**
-   * Ligament representing the shooter hood.
-   * The angle of the ligament is updated to match the angle of the hood.
+   * Ligament representing the shooter hood. The angle of the ligament is updated to match the angle
+   * of the hood.
    */
   private LoggedMechanismLigament2d shooterHoodLigament =
       shooterHoodRoot.append(
           new LoggedMechanismLigament2d(
-              "Shooter Hood",
-              0.3,
-              shooterHoodAngle.in(Degrees),
-              10.0,
-              new Color8Bit("#ff9900")
-          )
-      );
+              "Shooter Hood", 0.3, shooterHoodAngle.in(Degrees), 10.0, new Color8Bit("#ff9900")));
 
   /** Update the simulation visualizer with the current position of the intake extension. */
   public void periodic() {
-    SmartDashboard.putData("SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
-    Logger.recordOutput("SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
+    SmartDashboard.putData(
+        "SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
+    Logger.recordOutput(
+        "SimulationVisualizer/Intake Extension Visualization", intakeExtensionCanvas);
 
     SmartDashboard.putData("SimulationVisualizer/Shooter Hood Visualization", shooterHoodCanvas);
     Logger.recordOutput("SimulationVisualizer/Shooter Hood Visualization", shooterHoodCanvas);
@@ -147,6 +141,7 @@ public class SimulationVisualizer {
 
   /**
    * Update the rotation of the shooter hood in the simulation visualizer.
+   *
    * @param angle Angle from the starting position.
    */
   public void updateShooterHoodAngle(Angle angle) {

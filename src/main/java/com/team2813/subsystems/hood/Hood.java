@@ -2,7 +2,6 @@ package com.team2813.subsystems.hood;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
