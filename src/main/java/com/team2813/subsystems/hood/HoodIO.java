@@ -21,6 +21,12 @@ public interface HoodIO extends AutoCloseable {
 
   default void updateState(HoodIOInputs inputs) {}
 
+  /**
+   * Sets the angle to bring the shooter to. This angle is from the hard stop to the hood position;
+   * higher angle values are a flatter angle
+   *
+   * @param angle The shooter angle
+   */
   default void setSetpoint(Angle angle) {}
 
   default void neutral() {}
