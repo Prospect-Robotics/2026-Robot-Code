@@ -13,8 +13,8 @@ class HoodConstants {
   // TODO: Get real value!
   static final double HOOD_GEAR_RATIO = 128;
   static final MomentOfInertia HOOD_MOI = Units.KilogramSquareMeters.of(0.0529);
-  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Degrees.of(0);
-  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Degrees.of(90);
+  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Degrees.of(14);
+  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Degrees.of(40);
   static final Distance SIM_ARM_LENGTH = Units.Centimeter.of(10);
 
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
@@ -23,9 +23,9 @@ class HoodConstants {
           .withSlot0(new Slot0Configs().withKP(5).withKI(0).withKD(0).withKS(0).withKA(0))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
-  static final String HUB_ANGLE_PREFERENCE = "Hood/hubAngle";
+  static final String HUB_ANGLE_PREFERENCE = "Hood/HUB_HOOD_ANGLE_DEGREES";
   static final double DEFAULT_HUB_ANGLE_DEGREES = 45;
-  static final String TRENCH_ANGLE_PREFERENCE = "Hood/trenchAngle";
+  static final String TRENCH_ANGLE_PREFERENCE = "Hood/TRENCH_HOOD_ANGLE_DEGREES";
   static final double DEFAULT_TRENCH_ANGLE_DEGREES = 30;
 
   private HoodConstants() {
