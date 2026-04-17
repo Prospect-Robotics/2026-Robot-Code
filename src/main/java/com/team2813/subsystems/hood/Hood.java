@@ -3,9 +3,6 @@ package com.team2813.subsystems.hood;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.*;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -34,7 +31,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @see #goToAngleCommand(Supplier)
    */
   public Command goToAngleCommand(Angle angle) {
-    return new StartEndCommand(() -> goToAngle(angle), () -> {}, this);
+    return new StartEndCommand(() -> goToAngle(angle), io::stop, this).until(this::atPosition).raceWith(new WaitCommand(HoodConstants.HOOD_MOVEMENT_TIMEOUT));
   }
 
   /**
@@ -49,18 +46,6 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    */
   public Command goToAngleCommand(Supplier<Angle> angleSupplier) {
     return goToAngleCommand(angleSupplier.get());
-  }
-
-  /**
-   * Creates a command to put the hood into neutral mode. In neutral mode, the hood will stop
-   * attempting to stay at the last requested position, and let gravity move the hood down. This
-   * state will end upon {@link #goToAngleCommand(Angle)} or {@link #goToAngleCommand(Supplier)}
-   * gives the hood another angle to go to.
-   *
-   * @return A command that puts the hood into neutral mode
-   */
-  public Command neutralCommand() {
-    return new InstantCommand(io::stop, this);
   }
 
   public void goToAngle(Angle angle) {
@@ -80,8 +65,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
     isAtPosition = error < Math.PI / 16;
     Logger.recordOutput("Hood/AtPostion", isAtPosition);
     Logger.recordOutput("Hood/PositionSetpointError", error);
-    Logger.recordOutput("Hood/HoodAngle", replayedInputs.motorAngle);
-    Logger.processInputs("Hood", replayedInputs);
+    Logger.recordOutput("Hood/HoodAngle", replayedInputs.motorAngle);    Logger.processInputs("Hood", replayedInputs);
   }
 
   /**
