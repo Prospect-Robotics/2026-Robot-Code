@@ -8,6 +8,7 @@
 package com.team2813;
 
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
+import static edu.wpi.first.units.Units.Degree;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -61,7 +62,7 @@ import org.photonvision.simulation.VisionSystemSim;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements AutoCloseable {
+public class RobotContainer {
   private final Mode mode;
 
   // Subsystems
@@ -282,12 +283,8 @@ public class RobotContainer implements AutoCloseable {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
-    operatorController
-        .povUp()
-        .onTrue(hood.goToAngleCommand(hood::hubAngle));
-    operatorController
-        .povDown()
-        .onTrue(hood.goToAngleCommand(hood::trenchAngle));
+    operatorController.povDown().onTrue(hood.goToAngleCommand(Degree.of(17)));
+    operatorController.povUp().onTrue(hood.goToAngleCommand(Degree.of(40)));
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -458,10 +455,5 @@ public class RobotContainer implements AutoCloseable {
     NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
-  }
-
-  @Override
-  public void close() {
-    hood.close();
   }
 }

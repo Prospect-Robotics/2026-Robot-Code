@@ -1,102 +1,82 @@
 package com.team2813.subsystems.hood;
 
+import static com.team2813.subsystems.hood.HoodConstants.HOOD_MOVEMENT_TIMEOUT;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj2.command.*;
-import java.util.Objects;
-import java.util.function.Supplier;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
-/** Code for the moving hood to angle the shot from the shooter. */
-public class Hood extends SubsystemBase implements AutoCloseable {
+public class Hood extends SubsystemBase {
   private final HoodIO io;
-  private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
-  private boolean isAtPosition = true;
+  private HoodIOInputsAutoLogged replayedInputs;
+  private Angle hoodAngleSetpoint;
+
+  // Note: This variable may be a little delayed to the actual position.
+  private boolean atPosition = true;
 
   public Hood(HoodIO io) {
-    this.io = Objects.requireNonNull(io, "io");
-
-    // initialize preferences
-  }
-
-  /**
-   * Creates a command to bring the variable hood to the specified angle. This angle is the angle
-   * that should be shot at. After this command finishes executing normally, the hood will be at the
-   * requested angle, and stay there until another angle is requested, or {@link #neutralCommand()}
-   * puts the hood into neutral mode.
-   *
-   * @param angle The angle to move the hood to
-   * @return A command to bring the hood to the specified angle
-   * @see #goToAngleCommand(Supplier)
-   */
-  public Command goToAngleCommand(Angle angle) {
-    return new StartEndCommand(() -> goToAngle(angle), io::stop, this).until(this::atPosition).raceWith(new WaitCommand(HoodConstants.HOOD_MOVEMENT_TIMEOUT));
-  }
-
-  /**
-   * Creates a command to bring the variable hood to the angle returned by the given supplier when
-   * it is scheduled. This angle is the angle that should be shot at. After this command finishes
-   * executing normally, the hood will be at the requested angle, and stay there until another angle
-   * is requested, or {@link #neutralCommand()} puts the hood into neutral mode.
-   *
-   * @param angleSupplier A supplier of the angle to move the hood to
-   * @return A command to bring the hood to the specified angle
-   * @see #goToAngleCommand(Angle)
-   */
-  public Command goToAngleCommand(Supplier<Angle> angleSupplier) {
-    return goToAngleCommand(angleSupplier.get());
-  }
-
-  public void goToAngle(Angle angle) {
-    io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
-  }
-
-  public boolean atPosition() {
-    return isAtPosition;
+    this.io = io;
+    this.replayedInputs = new HoodIOInputsAutoLogged();
   }
 
   @Override
   public void periodic() {
+    Logger.processInputs("Hood", replayedInputs);
     io.updateState(replayedInputs);
 
-    double error = replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Radians);
+    atPosition = withinAcceptableErrorCalculation();
 
-    isAtPosition = error < Math.PI / 16;
-    Logger.recordOutput("Hood/AtPostion", isAtPosition);
-    Logger.recordOutput("Hood/PositionSetpointError", error);
-    Logger.recordOutput("Hood/HoodAngle", replayedInputs.motorAngle);    Logger.processInputs("Hood", replayedInputs);
+    Logger.recordOutput("Hood/currentHoodAngleDegrees", getCurrentHoodAngle().in(Degrees));
+    Logger.recordOutput("Hood/atPosition", atPosition);
   }
 
   /**
-   * Get the angle required for hub shooting. This angle can directly be passed to {@link
-   * #goToAngleCommand(Angle)}.
+   * @param angle Angle for the hood to move to.
+   * @return A start end command that stops the motor on completion.
+   */
+  public Command goToAngleCommand(Angle angle) {
+    //    atPosition = withinAcceptableErrorCalculation();
+    return new StartEndCommand(() -> goToAngle(angle), this::stopMotor, this)
+        .until(
+            () ->
+                replayedInputs.motorAngle.minus(angle).abs(Rotation)
+                    <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotation))
+        .withTimeout(HOOD_MOVEMENT_TIMEOUT);
+  }
+
+  /**
+   * Wrapper for the {@link HoodIO#setSetpoint(Angle)} method, taking into account the.
    *
-   * @return The angle for shooting at the hub
+   * @param angle Angle of the <b>HOOD</b> to move to.
    */
-  public Angle hubAngle() {
-    return Degrees.of(17);
+  public void goToAngle(Angle angle) {
+    hoodAngleSetpoint = angle;
+    io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
   }
 
   /**
-   * Get the angle required for trench shooting. This angle can directly be passed to {@link
-   * #goToAngleCommand(Angle)}.
+   * @return The current angle of the hood (likely in radians).
+   */
+  public Angle getCurrentHoodAngle() {
+    return replayedInputs.motorAngle.div(HoodConstants.HOOD_GEAR_RATIO);
+  }
+
+  /**
+   * Calculates whether the motor is within the acceptable range of motor rotations
    *
-   * @return The angle for shooting in the trench
+   * @return true if within range, false otherwise.
    */
-  public Angle trenchAngle() {
-    return Degrees.of(40);
+  private boolean withinAcceptableErrorCalculation() {
+    double errorRotations =
+        replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotation);
+    return errorRotations <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotation);
   }
 
-  /**
-   * @return The current motor position.
-   */
-  public Angle getCurrentHoodMotorAngle() {
-    return replayedInputs.motorAngle;
-  }
-
-  @Override
-  public void close() {
-    io.close();
+  /** Stops the motor in its current position, causing it to brake and resist motion. */
+  public void stopMotor() {
+    io.stop();
   }
 }

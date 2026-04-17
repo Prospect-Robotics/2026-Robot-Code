@@ -42,13 +42,14 @@ public class HoodIOSim implements HoodIO {
   @Override
   public void updateState(HoodIOInputs inputs) {
     hoodSim.setInputVoltage(inputs.motorVoltage.in(Volts));
+    hoodMotorSimState.setSupplyVoltage(Volts.of(12));
+
     Logger.recordOutput("Hood/HoodAngleDegrees", Radians.of(hoodSim.getAngleRads()).in(Degree));
 
     hoodSim.update(Constants.SIM_TIME_PERIOD);
 
-    hoodMotorSimState.setSupplyVoltage(Volts.of(12));
-
     hoodMotor.setVoltage(inputs.motorVoltage.in(Volts));
+
     hoodMotorSimState.setRawRotorPosition(
         Radians.of(hoodSim.getAngleRads()).times(HoodConstants.HOOD_GEAR_RATIO));
     hoodMotorSimState.setRotorVelocity(
@@ -66,14 +67,14 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void setSetpoint(Angle angle) {
-    Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Degree));
+    Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Rotations));
     motorSetpoint = angle;
     hoodMotor.setControl(positionVoltage.withPosition(angle));
   }
 
   @Override
   public void stop() {
-    hoodMotor.disable();
+    hoodMotor.setControl(new PositionVoltage(hoodMotor.getPosition().getValue()));
   }
 
   @Override
