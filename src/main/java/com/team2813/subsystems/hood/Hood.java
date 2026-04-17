@@ -17,18 +17,10 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
   private boolean isAtPosition = true;
 
-  private double currentHubAngle = HoodConstants.DEFAULT_HUB_ANGLE_DEGREES;
-  private double currentTrenchAngle = HoodConstants.DEFAULT_TRENCH_ANGLE_DEGREES;
-
   public Hood(HoodIO io) {
     this.io = Objects.requireNonNull(io, "io");
 
     // initialize preferences
-    Preferences.initDouble(
-        HoodConstants.HUB_ANGLE_PREFERENCE, HoodConstants.DEFAULT_HUB_ANGLE_DEGREES);
-    Preferences.initDouble(
-        HoodConstants.TRENCH_ANGLE_PREFERENCE, HoodConstants.DEFAULT_TRENCH_ANGLE_DEGREES);
-    updatePreferences();
   }
 
   /**
@@ -72,7 +64,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
   }
 
   public void goToAngle(Angle angle) {
-    io.setSetpoint(angle);
+    io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
   }
 
   public boolean atPosition() {
@@ -99,7 +91,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle for shooting at the hub
    */
   public Angle hubAngle() {
-    return Degrees.of(currentHubAngle);
+    return Degrees.of(17);
   }
 
   /**
@@ -109,7 +101,7 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    * @return The angle for shooting in the trench
    */
   public Angle trenchAngle() {
-    return Degrees.of(currentTrenchAngle);
+    return Degrees.of(40);
   }
 
   /**
@@ -117,23 +109,6 @@ public class Hood extends SubsystemBase implements AutoCloseable {
    */
   public Angle getCurrentHoodMotorAngle() {
     return replayedInputs.motorAngle;
-  }
-
-  /**
-   * Sets {@link #currentHubAngle} and {@link #currentTrenchAngle} to reflect the current preference
-   * values. Additionally, puts up alerts if the preference value does not match the default value.
-   */
-  private void updatePreferences() {
-    // Get new preference values, and set the alerts to pop up if they aren't the default value
-    currentHubAngle = Preferences.getDouble(HoodConstants.HUB_ANGLE_PREFERENCE, currentHubAngle);
-    currentTrenchAngle =
-        Preferences.getDouble(HoodConstants.TRENCH_ANGLE_PREFERENCE, currentTrenchAngle);
-  }
-
-  private static String createAlertMessage(String preference) {
-    return String.format(
-        "[HOOD] The %s was changed in Preferences! Once you are done tuning, please update the code!",
-        preference);
   }
 
   @Override
