@@ -4,27 +4,28 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.MomentOfInertia;
 import edu.wpi.first.units.measure.Time;
 
+import static edu.wpi.first.units.Units.*;
+
 class HoodConstants {
   static final double HOOD_GEAR_RATIO = 128;
-  static final MomentOfInertia HOOD_MOI = Units.KilogramSquareMeters.of(0.0529);
-  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Degrees.of(0);
-  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Degrees.of(23);
-  static final Distance SIM_ARM_LENGTH = Units.Centimeter.of(10);
+  static final MomentOfInertia HOOD_MOI = KilogramSquareMeters.of(0.0529);
+  static final Angle MINIMUM_SHOOTER_ANGLE = Degrees.of(0);
+  static final Angle MAXIMUM_SHOOTER_ANGLE = Degrees.of(23);
+  static final Distance SIM_ARM_LENGTH = Centimeter.of(10);
 
   /**
    * After trying to move the hood for this many seconds, the command will timeout and stop the
    * motor where it is.
    */
-  static final Time HOOD_MOVEMENT_TIMEOUT = Units.Seconds.of(3);
+  static final Time HOOD_MOVEMENT_TIMEOUT = Seconds.of(3);
 
   /** The accepted difference between the motor angle and its setpoint. */
-  static final Angle ACCEPTABLE_MOTOR_ERROR = Units.Rotations.of(0.4);
+  static final Angle ACCEPTABLE_MOTOR_ERROR = Rotations.of(0.4);
 
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
