@@ -38,6 +38,7 @@ public class HoodIOSim implements HoodIO {
             HoodConstants.MAXIMUM_SHOOTER_ANGLE.in(Radians),
             true,
             HoodConstants.MINIMUM_SHOOTER_ANGLE.in(Radians));
+    motor.setPosition(0);
   }
 
   @Override
