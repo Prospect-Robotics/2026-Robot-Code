@@ -1,5 +1,6 @@
 package com.team2813.util;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,6 +19,11 @@ public class HubPositionUtil {
   public static final Translation2d RED_HUB_POSITION = new Translation2d(11.812, 4.000);
 
   /**
+   * Used to flip the bot the hub angle by 180 degrees because we shoot toward the back of the bot now.
+   */
+  private static Rotation2d HALF_ROTATION = new Rotation2d(Degrees.of(180));
+
+  /**
    * Calculates the angle to the hub (based on the current alliance). Defaults to blue hub if no
    * alliance present.
    *
@@ -27,7 +33,7 @@ public class HubPositionUtil {
    */
   public static Rotation2d getBotToHubAngle(
       Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
-    return getCurrentHub(currentAlliance).minus(robotPosition.getTranslation()).getAngle();
+    return getCurrentHub(currentAlliance).minus(robotPosition.getTranslation()).getAngle().plus(HALF_ROTATION);
   }
 
   /**
