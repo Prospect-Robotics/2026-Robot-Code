@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
 
+import java.util.function.BooleanSupplier;
+
 public class Hood extends SubsystemBase {
   private final HoodIO io;
   private final HoodIOInputsAutoLogged replayedInputs = new HoodIOInputsAutoLogged();
@@ -49,12 +51,17 @@ public class Hood extends SubsystemBase {
    */
   public void goToAngle(Angle angle) {
     hoodAtPosition = false;
-    Angle currentSetpoint = angle;
-    Logger.recordOutput("Hood/Setpoint", currentSetpoint);
+    Logger.recordOutput("Hood/Setpoint", angle);
     io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
   }
 
   public Command sysIDRoutine() {
+    // If we are to close to either hardstop, kill the routine
+    BooleanSupplier sysIDCancelCondition = () -> {
+      return getCurrentHoodAngle().isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR)
+        || getCurrentHoodAngle().isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR);
+    };
+
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -66,13 +73,13 @@ public class Hood extends SubsystemBase {
     // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than
 
     return new SequentialCommandGroup(
-        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward),
+        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward).until(sysIDCancelCondition),
         new WaitCommand(5),
-        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
+        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse).until(sysIDCancelCondition),
         new WaitCommand(5),
-        sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
+        sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward).until(sysIDCancelCondition),
         new WaitCommand(5),
-        sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+        sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse).until(sysIDCancelCondition));
   }
 
   public boolean isHoodAtPosition() {
