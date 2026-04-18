@@ -23,7 +23,7 @@
   ],
   "cameras": [
     {
-      "name": "Front Camera",
+      "name": "Blue Front Camera",
       "rotations": [
         {
           "axis": "x",
@@ -58,7 +58,7 @@
         },
         {
           "axis": "z",
-          "degrees": -160.0
+          "degrees": 55
         }
       ],
       "position": [
@@ -81,7 +81,7 @@
         },
         {
           "axis": "z",
-          "degrees": -90.0
+          "degrees": -55
         }
       ],
       "position": [
