@@ -67,7 +67,7 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void setSetpoint(Angle angle) {
-    Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Rotations));
+    Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Degree));
     motorSetpoint = angle;
     hoodMotor.setControl(positionVoltage.withPosition(angle));
   }
