@@ -17,12 +17,6 @@ public interface HopperIO {
     public AngularVelocity mainFeederMotorRPS = RotationsPerSecond.of(0);
     public Current mainFeederMotorStatorCurrent = Amps.of(0);
     public Current mainFeederMotorSupplyCurrent = Amps.of(0);
-
-    // Feeder/Vector
-    public Voltage indexerMotorVoltage = Volts.of(0);
-    public AngularVelocity indexerMotorRPS = RotationsPerSecond.of(0);
-    public Current indexerMotorStatorCurrent = Amps.of(0);
-    public Current indexerMotorSupplyCurrent = Amps.of(0);
   }
 
   /**
