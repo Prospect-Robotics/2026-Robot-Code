@@ -9,6 +9,7 @@ import com.team2813.Constants;
 import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import org.littletonrobotics.junction.Logger;
 
@@ -41,14 +42,13 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void updateState(HoodIOInputs inputs) {
-    hoodSim.setInputVoltage(inputs.motorVoltage.in(Volts));
     hoodMotorSimState.setSupplyVoltage(Volts.of(12));
 
     Logger.recordOutput("Hood/HoodAngleDegrees", Radians.of(hoodSim.getAngleRads()).in(Degree));
 
     hoodSim.update(Constants.SIM_TIME_PERIOD);
 
-    hoodMotor.setVoltage(inputs.motorVoltage.in(Volts));
+    hoodSim.setInputVoltage(inputs.motorVoltage.in(Volts));
 
     hoodMotorSimState.setRawRotorPosition(
         Radians.of(hoodSim.getAngleRads()).times(HoodConstants.HOOD_GEAR_RATIO));
@@ -70,6 +70,11 @@ public class HoodIOSim implements HoodIO {
     Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Rotations));
     motorSetpoint = angle;
     hoodMotor.setControl(positionVoltage.withPosition(angle));
+  }
+
+  @Override
+  public void setVoltage(Voltage voltage) {
+    hoodMotor.setVoltage(voltage.in(Volts));
   }
 
   @Override

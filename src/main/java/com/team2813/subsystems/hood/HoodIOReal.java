@@ -1,11 +1,13 @@
 package com.team2813.subsystems.hood;
 
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 
 public class HoodIOReal implements HoodIO {
   private final TalonFX motor;
@@ -15,6 +17,8 @@ public class HoodIOReal implements HoodIO {
   public HoodIOReal() {
     motor = new TalonFX(Constants.HOOD_MOTOR_ID);
     motor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
+
+    motor.setPosition(HoodConstants.MINIMUM_SHOOTER_ANGLE.times(HoodConstants.HOOD_GEAR_RATIO));
   }
 
   @Override
@@ -31,6 +35,11 @@ public class HoodIOReal implements HoodIO {
   public void setSetpoint(Angle angle) {
     motorSetpoint = angle;
     motor.setControl(positionVoltage.withPosition(angle));
+  }
+
+  @Override
+  public void setVoltage(Voltage voltage) {
+    motor.setVoltage(voltage.in(Volts));
   }
 
   @Override

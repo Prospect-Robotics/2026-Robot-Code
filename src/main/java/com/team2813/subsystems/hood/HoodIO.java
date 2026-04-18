@@ -21,6 +21,13 @@ public interface HoodIO extends AutoCloseable {
 
   default void updateState(HoodIOInputs inputs) {}
 
+  /**
+   * Used for sysID
+   *
+   * @param voltage
+   */
+  default void setVoltage(Voltage voltage) {}
+
   default void setSetpoint(Angle angle) {}
 
   default void stop() {}

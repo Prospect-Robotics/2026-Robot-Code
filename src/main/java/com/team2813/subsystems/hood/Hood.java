@@ -4,9 +4,8 @@ import static com.team2813.subsystems.hood.HoodConstants.HOOD_MOVEMENT_TIMEOUT;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
 
 public class Hood extends SubsystemBase {
@@ -55,6 +54,27 @@ public class Hood extends SubsystemBase {
     Angle currentSetpoint = angle;
     Logger.recordOutput("Hood/Setpoint", currentSetpoint);
     io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
+  }
+
+  public Command sysIDRoutine() {
+    SysIdRoutine sysIdRoutine =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.per(Seconds).of(0.1),
+                Volts.of(1),
+                null,
+                (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
+            new SysIdRoutine.Mechanism(io::setVoltage, null, this));
+    // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than
+
+    return new SequentialCommandGroup(
+        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward),
+        new WaitCommand(5),
+        sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
+        new WaitCommand(5),
+        sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
+        new WaitCommand(5),
+        sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
   public boolean isHoodAtPosition() {
