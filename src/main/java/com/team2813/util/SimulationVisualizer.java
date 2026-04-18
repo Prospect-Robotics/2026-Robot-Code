@@ -96,11 +96,13 @@ public class SimulationVisualizer {
   /**
    * Ligament representing the shooter hood. The angle of the ligament is updated to match the angle
    * of the hood.
+   * An extra 14 degrees will be added to the reported hood angle because the hood rests at a 14 degree incline by default.
+   * This is for visualization purposes.
    */
   private LoggedMechanismLigament2d shooterHoodLigament =
       shooterHoodRoot.append(
           new LoggedMechanismLigament2d(
-              "Shooter Hood", 0.3, shooterHoodAngle.in(Degrees), 10.0, new Color8Bit("#ff9900")));
+              "Shooter Hood", 0.3, shooterHoodAngle.plus(Degrees.of(14)).in(Degrees), 10.0, new Color8Bit("#ff9900")));
 
   /** Update the simulation visualizer with the current position of the intake extension. */
   public void periodic() {

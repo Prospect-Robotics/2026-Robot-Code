@@ -13,8 +13,8 @@ import edu.wpi.first.units.measure.Time;
 class HoodConstants {
   static final double HOOD_GEAR_RATIO = 128;
   static final MomentOfInertia HOOD_MOI = Units.KilogramSquareMeters.of(0.0529);
-  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Degrees.of(17);
-  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Degrees.of(40);
+  static final Angle MINIMUM_SHOOTER_ANGLE = Units.Degrees.of(0);
+  static final Angle MAXIMUM_SHOOTER_ANGLE = Units.Degrees.of(23);
   static final Distance SIM_ARM_LENGTH = Units.Centimeter.of(10);
 
   /**
