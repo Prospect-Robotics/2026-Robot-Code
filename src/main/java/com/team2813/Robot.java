@@ -174,19 +174,27 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopInit() {}
 
-  /** This function is called periodically during operator control. */
+  /** This function is called periodically during operator control.
+   * <p>The controller rumbles for 2 seconds at the end of an inactive shift</p>
+   * <p>and rumbles for 1 second when 5 seconds left in an active shift.</p>
+   */
   @Override
   public void teleopPeriodic() {
-    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
-    // rumble controllers 3 times if the phase is about to end
-    // TODO: Rework the comment, Tamir or Tom
-    if (timeLeftInCurrentPhase <= 3
-        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7
-        && timeLeftInCurrentPhase > 0) {
-      robotContainer.setRumbleDriver();
-      robotContainer.setRumbleOperator();
-    } else {
-      robotContainer.stopRumble();
+    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase(); // in seconds
+    if (HubStatusUtil.isHubActive()) { // Active shift
+      if (timeLeftInCurrentPhase <= 5 && timeLeftInCurrentPhase > 4) { // rumble beteween 4 and 5 seconds left in active shift, equivalent to rumbling for 1 second with 5 seconds left.
+        robotContainer.setRumbleDriver(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
+        robotContainer.setRumbleOperator(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
+      } else {
+        robotContainer.stopRumble(); // stop rumble at all other times, including when the hub is active with more than 5 seconds left in the shift.
+      }
+    } else { // inactive shift
+      if (timeLeftInCurrentPhase <= 2 && timeLeftInCurrentPhase > 0) { // rumble during the last 2 seconds of an inactive shift, equivalent to rumbling for 2 seconds at the end of an inactive shift.
+        robotContainer.setRumbleDriver(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
+        robotContainer.setRumbleOperator(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
+      } else {
+        robotContainer.stopRumble(); // stop rumble at all other times, including when the hub is inactive with more than 2 seconds left in the shift.
+      }
     }
   }
 

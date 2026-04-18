@@ -40,6 +40,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -228,6 +229,9 @@ public class RobotContainer {
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   *
+   * See <a href="https://docs.google.com/document/d/1c1zoiYpnxV-vbh7Lwg_JNCNO7cJSAgor_JbsUmiQnXE/edit?tab=t.0">Controls Documentation</a>
+    * for more details on the recommended button bindings.
    */
   private void configureButtonBindings() {
     // Operator controls
