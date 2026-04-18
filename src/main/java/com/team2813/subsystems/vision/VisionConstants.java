@@ -40,12 +40,12 @@ public class VisionConstants {
   public static final Transform3d RED_BACK_LEFT_CAM_FROM_ROBOT =
       new Transform3d(
           new Translation3d(Inches.of(-7.802), Inches.of(13.188), Inches.of(7.125)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(55)));
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-55)));
 
   public static final Transform3d GREEN_BACK_RIGHT_CAM_FROM_ROBOT =
       new Transform3d(
           new Translation3d(Inches.of(-7.802), Inches.of(-13.188), Inches.of(7.125)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-55)));
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(55)));
 
   public static final Transform3d BLUE_FRONT_CAM_FROM_ROBOT =
       new Transform3d(

@@ -58,7 +58,7 @@
         },
         {
           "axis": "z",
-          "degrees": 55
+          "degrees": -55
         }
       ],
       "position": [
@@ -81,7 +81,7 @@
         },
         {
           "axis": "z",
-          "degrees": -55
+          "degrees": 55
         }
       ],
       "position": [
