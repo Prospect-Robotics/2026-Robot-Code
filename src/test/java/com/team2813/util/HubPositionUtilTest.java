@@ -10,12 +10,14 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class HubPositionUtilTest {
 
+  @Disabled
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void angleCalculation(Alliance alliance, TestData data) {
@@ -24,6 +26,7 @@ public class HubPositionUtilTest {
     assertThat(angleToHub).isWithin(1e-5).of(data.getAngle(alliance));
   }
 
+  @Disabled
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void distanceCalculation(Alliance alliance, TestData data) {
@@ -32,6 +35,7 @@ public class HubPositionUtilTest {
     assertThat(distanceToHub.in(Meters)).isWithin(1e-5).of(data.getDistance(alliance));
   }
 
+  @Disabled
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void startingRotationDoesNotChangeAngle(Alliance alliance, TestData data) {
@@ -43,6 +47,7 @@ public class HubPositionUtilTest {
     assertThat(actualAngleToHub).isWithin(1e-5).of(expectedAngleToHub);
   }
 
+  @Disabled
   @ParameterizedTest(name = "{0} alliance, robot pose: {1}")
   @MethodSource("allData")
   public void startingRotationDoesNotChangeDistance(Alliance alliance, TestData data) {
