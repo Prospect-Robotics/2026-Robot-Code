@@ -21,8 +21,8 @@ public class Hood extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.processInputs("Hood", replayedInputs);
     io.updateState(replayedInputs);
+    Logger.processInputs("Hood", replayedInputs);
 
     double hoodMotorAngleAbsError =
         replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotations);
