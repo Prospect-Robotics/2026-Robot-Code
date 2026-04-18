@@ -18,7 +18,7 @@ public class HoodIOReal implements HoodIO {
     motor = new TalonFX(Constants.HOOD_MOTOR_ID);
     motor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
 
-    // NOTE: May need to set this to 0.
+    // NOTE: This is set to 0, as the minimum angle is 0.
     motor.setPosition(HoodConstants.MINIMUM_SHOOTER_ANGLE.times(HoodConstants.HOOD_GEAR_RATIO));
   }
 
