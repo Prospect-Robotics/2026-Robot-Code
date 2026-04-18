@@ -1,5 +1,7 @@
 package com.team2813.subsystems.hood;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -8,8 +10,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.MomentOfInertia;
 import edu.wpi.first.units.measure.Time;
-
-import static edu.wpi.first.units.Units.*;
 
 class HoodConstants {
   static final double HOOD_GEAR_RATIO = 128;

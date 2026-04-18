@@ -5,9 +5,8 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import org.littletonrobotics.junction.Logger;
-
 import java.util.function.BooleanSupplier;
+import org.littletonrobotics.junction.Logger;
 
 public class Hood extends SubsystemBase {
   private final HoodIO io;
@@ -25,7 +24,8 @@ public class Hood extends SubsystemBase {
     Logger.processInputs("Hood", replayedInputs);
     io.updateState(replayedInputs);
 
-    double hoodMotorAngleAbsError = replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotations);
+    double hoodMotorAngleAbsError =
+        replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotations);
 
     hoodAtPosition = hoodMotorAngleAbsError <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotations);
 
@@ -57,10 +57,14 @@ public class Hood extends SubsystemBase {
 
   public Command sysIDRoutine() {
     // If we are to close to either hardstop, kill the routine
-    BooleanSupplier sysIDCancelCondition = () -> {
-      return getCurrentHoodAngle().isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR)
-        || getCurrentHoodAngle().isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR);
-    };
+    BooleanSupplier sysIDCancelCondition =
+        () -> {
+          return getCurrentHoodAngle()
+                  .isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR)
+              || getCurrentHoodAngle()
+                  .isNear(
+                      HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR);
+        };
 
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
