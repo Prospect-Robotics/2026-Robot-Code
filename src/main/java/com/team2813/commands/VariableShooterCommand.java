@@ -14,13 +14,14 @@ import java.util.function.Supplier;
 public class VariableShooterCommand {
   // TODO: Tweak the speeds and distance after pinnacles if we have time.
   private static final AngularVelocity MIN_SPEED =
-      RotationsPerSecond.of(36); // 1.5 meters. Hub shot speed.
+      RotationsPerSecond.of(36); // 2 meters. Hub shot speed.
   private static final AngularVelocity MAX_SPEED =
-      RotationsPerSecond.of(60); // 3.5 meters from hub speed.
+      RotationsPerSecond.of(60); // 5 meters from hub speed.
 
   // Hub to square edge is 1.3 based on the HubStatus/Utils calculation meters.
-  public static final Distance MIN_DIST = Meters.of(1.4);
-  public static final Distance MAX_DIST = Meters.of(3.33);
+  // Get these values off of the /AdvantageKit/RealOutputs/HubStatus/Distance To Our Hub (Meters)
+  public static final Distance MIN_DIST = Meters.of(2.0);
+  public static final Distance MAX_DIST = Meters.of(5.0);
 
   /**
    * Calculates the speed to shoot at if between the 1.5/3.1 MIN/MAX distance.
