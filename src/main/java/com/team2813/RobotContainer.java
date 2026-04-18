@@ -9,6 +9,7 @@ package com.team2813;
 
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -283,8 +284,8 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
-    operatorController.povDown().onTrue(hood.goToAngleCommand(Degree.of(17)));
-    operatorController.povUp().onTrue(hood.goToAngleCommand(Degree.of(40)));
+    operatorController.povDown().whileTrue(hood.goToAngleCommand(Degree.of(17)));
+    operatorController.povUp().whileTrue(hood.goToAngleCommand(Degree.of(40)));
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -429,21 +430,21 @@ public class RobotContainer {
         intakeExtension
             .extendCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     NamedCommands.registerCommand(
         "RetractIntake",
         intakeExtension
             .retractCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     NamedCommands.registerCommand(
         "HalfwayIntake",
         intakeExtension
             .halfRetractCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     // Intake roller motor control.
     NamedCommands.registerCommand(

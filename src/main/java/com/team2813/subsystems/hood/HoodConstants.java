@@ -21,15 +21,15 @@ class HoodConstants {
    * After trying to move the hood for this many seconds, the command will timeout and stop the
    * motor where it is.
    */
-  static final Time HOOD_MOVEMENT_TIMEOUT = Units.Seconds.of(1.5);
+  static final Time HOOD_MOVEMENT_TIMEOUT = Units.Seconds.of(3);
 
   /** The accepted difference between the motor angle and its setpoint. */
-  static final Angle ACCEPTABLE_MOTOR_ERROR = Units.Rotations.of(0.5);
+  static final Angle ACCEPTABLE_MOTOR_ERROR = Units.Rotations.of(0.4);
 
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
           // TODO: Run sysid to get PID values
-          .withSlot0(new Slot0Configs().withKP(.5).withKI(0).withKD(0).withKS(0).withKA(0))
+          .withSlot0(new Slot0Configs().withKP(2).withKI(0).withKD(0).withKS(0).withKA(0))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   static final String HUB_ANGLE_PREFERENCE = "Hood/HUB_HOOD_ANGLE_DEGREES";

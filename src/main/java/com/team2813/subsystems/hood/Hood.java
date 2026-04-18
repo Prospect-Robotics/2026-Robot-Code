@@ -12,10 +12,9 @@ import org.littletonrobotics.junction.Logger;
 public class Hood extends SubsystemBase {
   private final HoodIO io;
   private HoodIOInputsAutoLogged replayedInputs;
-  private Angle hoodAngleSetpoint;
 
   // Note: This variable may be a little delayed to the actual position.
-  private boolean atPosition = true;
+  private boolean hoodAtPosition = true;
 
   public Hood(HoodIO io) {
     this.io = io;
@@ -27,10 +26,12 @@ public class Hood extends SubsystemBase {
     Logger.processInputs("Hood", replayedInputs);
     io.updateState(replayedInputs);
 
-    atPosition = withinAcceptableErrorCalculation();
+    double hoodError = replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotations);
+
+    hoodAtPosition = hoodError <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotations);
 
     Logger.recordOutput("Hood/currentHoodAngleDegrees", getCurrentHoodAngle().in(Degrees));
-    Logger.recordOutput("Hood/atPosition", atPosition);
+    Logger.recordOutput("Hood/atPosition", hoodAtPosition);
   }
 
   /**
@@ -40,10 +41,7 @@ public class Hood extends SubsystemBase {
   public Command goToAngleCommand(Angle angle) {
     //    atPosition = withinAcceptableErrorCalculation();
     return new StartEndCommand(() -> goToAngle(angle), this::stopMotor, this)
-        .until(
-            () ->
-                replayedInputs.motorAngle.minus(angle).abs(Rotation)
-                    <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotation))
+        .until(this::isHoodAtPosition)
         .withTimeout(HOOD_MOVEMENT_TIMEOUT);
   }
 
@@ -53,8 +51,14 @@ public class Hood extends SubsystemBase {
    * @param angle Angle of the <b>HOOD</b> to move to.
    */
   public void goToAngle(Angle angle) {
-    hoodAngleSetpoint = angle;
+    hoodAtPosition = false;
+    Angle currentSetpoint = angle;
+    Logger.recordOutput("Hood/Setpoint", currentSetpoint);
     io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
+  }
+
+  public boolean isHoodAtPosition() {
+    return hoodAtPosition;
   }
 
   /**
@@ -62,17 +66,6 @@ public class Hood extends SubsystemBase {
    */
   public Angle getCurrentHoodAngle() {
     return replayedInputs.motorAngle.div(HoodConstants.HOOD_GEAR_RATIO);
-  }
-
-  /**
-   * Calculates whether the motor is within the acceptable range of motor rotations
-   *
-   * @return true if within range, false otherwise.
-   */
-  private boolean withinAcceptableErrorCalculation() {
-    double errorRotations =
-        replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotation);
-    return errorRotations <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotation);
   }
 
   /** Stops the motor in its current position, causing it to brake and resist motion. */
