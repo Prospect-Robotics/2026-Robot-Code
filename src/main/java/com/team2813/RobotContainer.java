@@ -228,6 +228,7 @@ public class RobotContainer {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     autoChooser.addOption("Shooter SysID Routine", shooter.sysIDRoutine());
+    autoChooser.addOption("Hood SysID Routine", hood.sysIDRoutine());
 
     // Configure the button bindings
     configureButtonBindings();
