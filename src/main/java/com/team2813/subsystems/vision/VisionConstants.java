@@ -50,7 +50,7 @@ public class VisionConstants {
   public static final Transform3d BLUE_FRONT_CAM_FROM_ROBOT =
       new Transform3d(
           new Translation3d(Inches.of(13.263), Centimeters.of(0), Inches.of(14.028)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(0)));
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(180)));
 
   // Basic filtering thresholds
   public static double maxAmbiguity = 0.3;
