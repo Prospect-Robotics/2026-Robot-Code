@@ -18,11 +18,6 @@ public interface HopperIO {
     public Current mainFeederMotorStatorCurrent = Amps.of(0);
     public Current mainFeederMotorSupplyCurrent = Amps.of(0);
 
-    public Voltage followerFeederMotorVoltage = Volts.of(0);
-    public AngularVelocity followerFeederMotorRPS = RotationsPerSecond.of(0);
-    public Current followerFeederMotorStatorCurrent = Amps.of(0);
-    public Current followerFeederMotorSupplyCurrent = Amps.of(0);
-
     // Feeder/Vector
     public Voltage indexerMotorVoltage = Volts.of(0);
     public AngularVelocity indexerMotorRPS = RotationsPerSecond.of(0);
