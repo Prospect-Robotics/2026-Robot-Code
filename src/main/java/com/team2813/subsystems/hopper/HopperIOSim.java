@@ -16,9 +16,6 @@ public class HopperIOSim implements HopperIO {
   private final TalonFX mainFeederMotor;
   private final TalonFXSimState mainFeederMotorSimState;
 
-  private final TalonFX followerFeederMotor;
-  private final TalonFXSimState followerFeederMotorSimState;
-
   private final FlywheelSim feederSim; // Used for simulating voltage of the roller.
 
   // Feeder Motor simulation declaration
@@ -30,10 +27,6 @@ public class HopperIOSim implements HopperIO {
     mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_CAN_ID);
     mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
     mainFeederMotorSimState = mainFeederMotor.getSimState();
-
-    followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_CAN_ID);
-    followerFeederMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
-    followerFeederMotorSimState = followerFeederMotor.getSimState();
 
     // The "0.01" value is the moment of inertia, as the CAD is not complete, a more accurate value
     // is unavailable.
@@ -55,18 +48,12 @@ public class HopperIOSim implements HopperIO {
     updateSimulation();
 
     mainFeederMotorSimState.setSupplyVoltage(Volts.of(12));
-    followerFeederMotorSimState.setSupplyVoltage(Volts.of(12));
     indexerMotorSimState.setSupplyVoltage(Volts.of(12));
 
     inputs.mainFeederMotorVoltage = mainFeederMotor.getMotorVoltage().getValue();
     inputs.mainFeederMotorRPS = mainFeederMotor.getRotorVelocity().getValue();
     inputs.mainFeederMotorStatorCurrent = mainFeederMotor.getStatorCurrent().getValue();
     inputs.mainFeederMotorSupplyCurrent = mainFeederMotor.getSupplyCurrent().getValue();
-
-    inputs.followerFeederMotorVoltage = followerFeederMotor.getMotorVoltage().getValue();
-    inputs.followerFeederMotorRPS = followerFeederMotor.getRotorVelocity().getValue();
-    inputs.followerFeederMotorStatorCurrent = followerFeederMotor.getStatorCurrent().getValue();
-    inputs.followerFeederMotorSupplyCurrent = followerFeederMotor.getSupplyCurrent().getValue();
 
     inputs.indexerMotorVoltage = indexerMotor.getMotorVoltage().getValue();
     inputs.indexerMotorRPS = indexerMotor.getRotorVelocity().getValue();
@@ -81,10 +68,6 @@ public class HopperIOSim implements HopperIO {
     // accurately model them.
     mainFeederMotorSimState.setRotorAcceleration(feederSim.getAngularAcceleration());
     mainFeederMotorSimState.setRotorVelocity(feederSim.getAngularVelocity());
-
-    // The follower roller motor is aligned with the main motor, so it gets the same values.
-    followerFeederMotorSimState.setRotorAcceleration(feederSim.getAngularAcceleration());
-    followerFeederMotorSimState.setRotorVelocity(feederSim.getAngularVelocity());
   }
 
   @Override

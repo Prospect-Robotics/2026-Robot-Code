@@ -13,7 +13,6 @@ import edu.wpi.first.units.measure.Voltage;
 
 public class HopperIOReal implements HopperIO {
   private final TalonFX mainFeederMotor; // Top magazine motor.
-  private final TalonFX followerFeederMotor; // Bottom magazine motor.
 
   private final TalonFX indexerMotor; // Runs the indexer.
 
@@ -26,11 +25,6 @@ public class HopperIOReal implements HopperIO {
   StatusSignal<Current> mainFeederStatorCurrent; // Motor Control to Stator
   StatusSignal<Current> mainFeederSupplyCurrent; // Battery to Stator
 
-  StatusSignal<Voltage> followerFeederVoltage;
-  StatusSignal<AngularVelocity> followerFeederRPS;
-  StatusSignal<Current> followerFeederStatorCurrent;
-  StatusSignal<Current> followerFeederSupplyCurrent;
-
   StatusSignal<Voltage> indexerVoltage;
   StatusSignal<AngularVelocity> indexerRPS;
   StatusSignal<Current> indexerStatorCurrent;
@@ -40,9 +34,6 @@ public class HopperIOReal implements HopperIO {
     mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_CAN_ID);
     mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
 
-    followerFeederMotor = new TalonFX(Constants.FOLLOWER_FEEDER_MOTOR_CAN_ID);
-    followerFeederMotor.getConfigurator().apply(HopperConstants.FOLLOWER_FEEDER_MOTOR_CONFIG);
-
     indexerMotor = new TalonFX(Constants.INDEXER_MOTOR_ID);
     indexerMotor.getConfigurator().apply(HopperConstants.INDEXER_MOTOR_CONFIG);
 
@@ -50,11 +41,6 @@ public class HopperIOReal implements HopperIO {
     mainFeederRPS = mainFeederMotor.getRotorVelocity();
     mainFeederStatorCurrent = mainFeederMotor.getStatorCurrent();
     mainFeederSupplyCurrent = mainFeederMotor.getSupplyCurrent();
-
-    followerFeederVoltage = followerFeederMotor.getMotorVoltage();
-    followerFeederRPS = followerFeederMotor.getRotorVelocity();
-    followerFeederStatorCurrent = followerFeederMotor.getStatorCurrent();
-    followerFeederSupplyCurrent = followerFeederMotor.getSupplyCurrent();
 
     indexerVoltage = indexerMotor.getMotorVoltage();
     indexerRPS = indexerMotor.getRotorVelocity();
@@ -67,16 +53,12 @@ public class HopperIOReal implements HopperIO {
         mainFeederRPS,
         mainFeederStatorCurrent,
         mainFeederSupplyCurrent,
-        followerFeederVoltage,
-        followerFeederRPS,
-        followerFeederStatorCurrent,
-        followerFeederSupplyCurrent,
         indexerVoltage,
         indexerRPS,
         indexerStatorCurrent,
         indexerSupplyCurrent);
 
-    ParentDevice.optimizeBusUtilizationForAll(mainFeederMotor, followerFeederMotor, indexerMotor);
+    ParentDevice.optimizeBusUtilizationForAll(mainFeederMotor, indexerMotor);
   }
 
   @Override
@@ -86,10 +68,6 @@ public class HopperIOReal implements HopperIO {
         mainFeederRPS,
         mainFeederStatorCurrent,
         mainFeederSupplyCurrent,
-        followerFeederVoltage,
-        followerFeederRPS,
-        followerFeederStatorCurrent,
-        followerFeederSupplyCurrent,
         indexerVoltage,
         indexerRPS,
         indexerStatorCurrent,
@@ -100,11 +78,6 @@ public class HopperIOReal implements HopperIO {
     inputs.mainFeederMotorStatorCurrent = mainFeederStatorCurrent.getValue();
     inputs.mainFeederMotorSupplyCurrent = mainFeederSupplyCurrent.getValue();
 
-    inputs.followerFeederMotorVoltage = followerFeederVoltage.getValue();
-    inputs.followerFeederMotorRPS = followerFeederRPS.getValue();
-    inputs.followerFeederMotorStatorCurrent = followerFeederStatorCurrent.getValue();
-    inputs.followerFeederMotorSupplyCurrent = followerFeederSupplyCurrent.getValue();
-
     inputs.indexerMotorVoltage = indexerVoltage.getValue();
     inputs.indexerMotorRPS = indexerRPS.getValue();
     inputs.indexerMotorStatorCurrent = indexerStatorCurrent.getValue();
@@ -114,7 +87,6 @@ public class HopperIOReal implements HopperIO {
   @Override
   public void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {
     mainFeederMotor.setVoltage(rollerVoltage.in(Volts));
-    followerFeederMotor.setVoltage(feederVoltage.in(Volts));
     indexerMotor.setVoltage(feederVoltage.in(Volts));
   }
 }
