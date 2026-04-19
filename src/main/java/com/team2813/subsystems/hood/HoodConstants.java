@@ -32,7 +32,7 @@ public class HoodConstants {
           // TODO: Run sysid to get PID values
           .withSlot0(
               new Slot0Configs()
-                  .withKP(0.0077835)
+                  .withKP(0.2)
                   .withKS(0.22349)
                   .withKV(0.0081471)
                   .withKA(0.00044251)
