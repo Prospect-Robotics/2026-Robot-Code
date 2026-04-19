@@ -331,19 +331,26 @@ public class RobotContainer {
                 shooter,
                 () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
     // temporary drum test binding
-//    driveController.b().whileTrue(shooter.outakeCommand());
+    //    driveController.b().whileTrue(shooter.outakeCommand());
 
-    driveController.rightBumper().whileTrue(
-        new ParallelCommandGroup(
-                DriveCommands.joystickDriveAtAngle(drive,
-                        () -> -driveController.getLeftY(),
+    driveController
+        .rightBumper()
+        .whileTrue(
+            new ParallelCommandGroup(
+                DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driveController.getLeftY(),
                     () -> -driveController.getLeftX(),
-                    () -> ((DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)) ? Rotation2d.k180deg : Rotation2d.kZero)),
+                    () ->
+                        ((DriverStation.getAlliance().isPresent()
+                                && DriverStation.getAlliance()
+                                    .get()
+                                    .equals(DriverStation.Alliance.Red))
+                            ? Rotation2d.k180deg
+                            : Rotation2d.kZero)),
                 shooter.spoolShooterHerdSpeedCommand(),
                 hood.goToUpPosCommand() // this is supposed to be the herd angle
-        )
-
-    );
+                ));
   }
 
   // controller rumble
