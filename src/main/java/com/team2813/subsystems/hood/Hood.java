@@ -42,6 +42,14 @@ public class Hood extends SubsystemBase {
         .until(this::isHoodAtPosition);
   }
 
+  public Command goToUpPosCommand() {
+    return goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE);
+  }
+
+  public Command goToDownPosCommand() {
+    return goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE);
+  }
+
   /**
    * Wrapper for the {@link HoodIO#setSetpoint(Angle)} method, taking into account the.
    *
