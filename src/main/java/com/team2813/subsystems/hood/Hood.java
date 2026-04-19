@@ -65,15 +65,13 @@ public class Hood extends SubsystemBase {
     // If we are to close to the top hard stop, kill the routine
     BooleanSupplier sysIDCancelConditionTop =
         () -> {
-          return getCurrentHoodAngle()
-              .isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR);
+          return getCurrentHoodAngle().isNear(HoodConstants.MAXIMUM_SHOOTER_ANGLE, Degrees.of(.5));
         };
 
     // If we are to close to the bottom hard stop, kill the routine
     BooleanSupplier sysIDCancelConditionBottom =
         () -> {
-          return getCurrentHoodAngle()
-              .isNear(HoodConstants.MINIMUM_SHOOTER_ANGLE, HoodConstants.ACCEPTABLE_MOTOR_ERROR);
+          return getCurrentHoodAngle().isNear(HoodConstants.MINIMUM_SHOOTER_ANGLE, Degrees.of(.5));
         };
 
     SysIdRoutine sysIdRoutine =
