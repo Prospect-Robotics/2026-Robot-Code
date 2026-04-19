@@ -8,7 +8,6 @@
 package com.team2813;
 
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
-import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -22,10 +21,7 @@ import com.team2813.subsystems.drive.GyroIOPigeon2;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
-import com.team2813.subsystems.hood.Hood;
-import com.team2813.subsystems.hood.HoodIO;
-import com.team2813.subsystems.hood.HoodIOReal;
-import com.team2813.subsystems.hood.HoodIOSim;
+import com.team2813.subsystems.hood.*;
 import com.team2813.subsystems.hopper.*;
 import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
@@ -285,8 +281,12 @@ public class RobotContainer {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
-    operatorController.povDown().whileTrue(hood.goToAngleCommand(Degree.of(17)));
-    operatorController.povUp().whileTrue(hood.goToAngleCommand(Degree.of(40)));
+    operatorController
+        .povDown()
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE));
+    operatorController
+        .povUp()
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
 
     // Driver controls
     // Default command, normal field-relative drive

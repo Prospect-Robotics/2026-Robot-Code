@@ -11,12 +11,12 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.MomentOfInertia;
 import edu.wpi.first.units.measure.Time;
 
-class HoodConstants {
-  static final double HOOD_GEAR_RATIO = 128;
-  static final MomentOfInertia HOOD_MOI = KilogramSquareMeters.of(0.0529);
-  static final Angle MINIMUM_SHOOTER_ANGLE = Degrees.of(0);
-  static final Angle MAXIMUM_SHOOTER_ANGLE = Degrees.of(23);
-  static final Distance SIM_ARM_LENGTH = Centimeter.of(10);
+public class HoodConstants {
+  public static final double HOOD_GEAR_RATIO = 128;
+  public static final MomentOfInertia HOOD_MOI = KilogramSquareMeters.of(0.0529);
+  public static final Angle MINIMUM_SHOOTER_ANGLE = Degrees.of(0);
+  public static final Angle MAXIMUM_SHOOTER_ANGLE = Degrees.of(22);
+  public static final Distance SIM_ARM_LENGTH = Centimeter.of(10);
 
   /**
    * After trying to move the hood for this many seconds, the command will timeout and stop the

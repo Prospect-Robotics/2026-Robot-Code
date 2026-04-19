@@ -40,8 +40,7 @@ public class Hood extends SubsystemBase {
   public Command goToAngleCommand(Angle angle) {
     //    atPosition = withinAcceptableErrorCalculation();
     return new StartEndCommand(() -> goToAngle(angle), this::stopMotor, this)
-        .until(this::isHoodAtPosition)
-        .withTimeout(HoodConstants.HOOD_MOVEMENT_TIMEOUT);
+        .until(this::isHoodAtPosition);
   }
 
   /**
