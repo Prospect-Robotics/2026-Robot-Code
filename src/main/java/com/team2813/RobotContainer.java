@@ -338,7 +338,7 @@ public class RobotContainer {
                 DriveCommands.joystickDriveAtAngle(drive,
                         () -> -driveController.getLeftY(),
                     () -> -driveController.getLeftX(),
-                    () -> Rotation2d.k180deg),
+                    () -> ((DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(DriverStation.Alliance.Red)) ? Rotation2d.k180deg : Rotation2d.kZero)),
                 shooter.spoolShooterHerdSpeedCommand(),
                 hood.goToUpPosCommand() // this is supposed to be the herd angle
         )
