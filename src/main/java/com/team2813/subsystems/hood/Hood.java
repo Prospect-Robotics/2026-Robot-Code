@@ -38,7 +38,6 @@ public class Hood extends SubsystemBase {
    * @return A start end command that stops the motor on completion.
    */
   public Command goToAngleCommand(Angle angle) {
-    //    atPosition = withinAcceptableErrorCalculation();
     return new StartEndCommand(() -> goToAngle(angle), this::stopMotor, this)
         .until(this::isHoodAtPosition);
   }
