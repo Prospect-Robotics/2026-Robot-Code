@@ -11,10 +11,12 @@ import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Preferences;
+import org.littletonrobotics.junction.Logger;
 
 public class VisionConstants {
 
@@ -39,17 +41,17 @@ public class VisionConstants {
   // (Not used by Limelight, configure in web UI instead)
   public static final Transform3d RED_BACK_LEFT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Inches.of(-7.802), Inches.of(13.188), Inches.of(7.125)),
+          new Translation3d(Inches.of(-7.802), Inches.of(-13.188), Inches.of(7.125)),
           new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-55)));
 
   public static final Transform3d GREEN_BACK_RIGHT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Inches.of(-7.802), Inches.of(-13.188), Inches.of(7.125)),
+          new Translation3d(Inches.of(-7.802), Inches.of(13.188), Inches.of(7.125)),
           new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(55)));
 
   public static final Transform3d BLUE_FRONT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Inches.of(13.263), Centimeters.of(0), Inches.of(14.028)),
+          new Translation3d(Inches.of(-13.263), Centimeters.of(0), Inches.of(14.028)),
           new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(180)));
 
   // Basic filtering thresholds
