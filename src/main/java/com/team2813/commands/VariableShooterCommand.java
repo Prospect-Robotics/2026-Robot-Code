@@ -23,7 +23,7 @@ public class VariableShooterCommand {
   public static final Distance MIN_DIST = Meters.of(2.0);
   public static final Distance MAX_DIST = Meters.of(5.0);
 
-    /**
+  /**
    * Calculates the speed to shoot at if between the 1.5/3.1 MIN/MAX distance.
    *
    * @param shooter Instance of the shooter class to apply the calculated speed to.
