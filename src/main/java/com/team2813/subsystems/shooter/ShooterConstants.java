@@ -38,7 +38,7 @@ public class ShooterConstants {
    * this value of Rot/s of the setpoint, {@link Shooter#isMotorVelocityWithinTolerance()} will
    * return true.
    */
-  public static final AngularVelocity SHOOTER_SPOOL_SPEED_TOLERANCE = RotationsPerSecond.of(2);
+  public static final AngularVelocity SHOOTER_SPOOL_SPEED_TOLERANCE = RotationsPerSecond.of(3.5);
 
   static {
     // Shooter motors.
