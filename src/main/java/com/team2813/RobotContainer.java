@@ -441,7 +441,7 @@ public class RobotContainer {
                     drive,
                     () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),
                 new SequentialCommandGroup(
-                    new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
+                    new WaitCommand(0.75),
                     new ParallelCommandGroup(
                         kicker.shootCommand(),
                         hopper.intakeCommand(),
