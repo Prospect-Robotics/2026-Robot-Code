@@ -349,7 +349,7 @@ public class RobotContainer {
                             ? Rotation2d.k180deg
                             : Rotation2d.kZero)),
                 shooter.spoolShooterHerdSpeedCommand(),
-                hood.goToUpPosCommand() // this is supposed to be the herd angle
+                    new RepeatCommand(hood.goToUpPosCommand()) // this is supposed to be the herd angle
                 ));
   }
 
