@@ -437,6 +437,9 @@ public class RobotContainer {
                 VariableShooterCommand.shootBasedOnDistanceCommand(
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)),
+                DriveCommands.turnToPoint(
+                    drive,
+                    () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),
                 new SequentialCommandGroup(
                     new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                     new ParallelCommandGroup(
