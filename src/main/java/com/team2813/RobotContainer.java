@@ -8,6 +8,7 @@
 package com.team2813;
 
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -20,10 +21,7 @@ import com.team2813.subsystems.drive.GyroIOPigeon2;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
-import com.team2813.subsystems.hood.Hood;
-import com.team2813.subsystems.hood.HoodIO;
-import com.team2813.subsystems.hood.HoodIOReal;
-import com.team2813.subsystems.hood.HoodIOSim;
+import com.team2813.subsystems.hood.*;
 import com.team2813.subsystems.hopper.*;
 import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
@@ -61,7 +59,7 @@ import org.photonvision.simulation.VisionSystemSim;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements AutoCloseable {
+public class RobotContainer {
   private final Mode mode;
 
   // Subsystems
@@ -226,6 +224,7 @@ public class RobotContainer implements AutoCloseable {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     autoChooser.addOption("Shooter SysID Routine", shooter.sysIDRoutine());
+    autoChooser.addOption("Hood SysID Routine", hood.sysIDRoutine());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -282,8 +281,12 @@ public class RobotContainer implements AutoCloseable {
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
-    operatorController.povUp().whileTrue(hood.goToAngleCommand(hood::hubAngle));
-    operatorController.povDown().whileTrue(hood.goToAngleCommand(hood::trenchAngle));
+    operatorController
+        .povDown()
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE));
+    operatorController
+        .povUp()
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -327,6 +330,27 @@ public class RobotContainer implements AutoCloseable {
             VariableShooterCommand.shootBasedOnDistanceCommand(
                 shooter,
                 () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
+    // temporary drum test binding
+    //    driveController.b().whileTrue(shooter.outakeCommand());
+
+    driveController
+        .rightBumper()
+        .whileTrue(
+            new ParallelCommandGroup(
+                DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driveController.getLeftY(),
+                    () -> -driveController.getLeftX(),
+                    () ->
+                        ((DriverStation.getAlliance().isPresent()
+                                && DriverStation.getAlliance()
+                                    .get()
+                                    .equals(DriverStation.Alliance.Red))
+                            ? Rotation2d.k180deg
+                            : Rotation2d.kZero)),
+                shooter.spoolShooterHerdSpeedCommand(),
+                new RepeatCommand(hood.goToUpPosCommand()) // this is supposed to be the herd angle
+                ));
   }
 
   // controller rumble
@@ -400,7 +424,10 @@ public class RobotContainer implements AutoCloseable {
                 new SequentialCommandGroup(
                     // new WaitUntilCommand(shooter::isMotorVelocityWithinTolerance),
                     new WaitCommand(0.5),
-                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+                    new ParallelCommandGroup(
+                        kicker.shootCommand(),
+                        hopper.intakeCommand(),
+                        intakeRoller.intakeCommand()))),
             new WaitCommand(6)));
 
     NamedCommands.registerCommand(
@@ -412,7 +439,10 @@ public class RobotContainer implements AutoCloseable {
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)),
                 new SequentialCommandGroup(
                     new WaitCommand(0.5),
-                    new ParallelCommandGroup(kicker.shootCommand(), hopper.intakeCommand()))),
+                    new ParallelCommandGroup(
+                        kicker.shootCommand(),
+                        hopper.intakeCommand(),
+                        intakeRoller.intakeCommand()))),
             new WaitCommand(6)));
 
     NamedCommands.registerCommand(
@@ -420,21 +450,21 @@ public class RobotContainer implements AutoCloseable {
         intakeExtension
             .extendCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     NamedCommands.registerCommand(
         "RetractIntake",
         intakeExtension
             .retractCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     NamedCommands.registerCommand(
         "HalfwayIntake",
         intakeExtension
             .halfRetractCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     // Intake roller motor control.
     NamedCommands.registerCommand(
@@ -446,10 +476,5 @@ public class RobotContainer implements AutoCloseable {
     NamedCommands.registerCommand("StopRoller", new InstantCommand(intakeRoller::stop));
 
     NamedCommands.registerCommand("WalleMode", intakeExtension.wallEMode());
-  }
-
-  @Override
-  public void close() {
-    hood.close();
   }
 }

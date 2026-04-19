@@ -4,22 +4,33 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
+import com.team2813.util.SimulationVisualizer;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import org.littletonrobotics.junction.Logger;
 
 public class HoodIOSim implements HoodIO {
-  private final TalonFX motor;
+  private final TalonFX hoodMotor;
+  private final TalonFXSimState hoodMotorSimState;
+
   private final PositionVoltage positionVoltage = new PositionVoltage(0);
   private final SingleJointedArmSim hoodSim;
 
+  private Angle motorSetpoint = Rotations.of(0);
+
   public HoodIOSim() {
-    motor = new TalonFX(Constants.HOOD_MOTOR_ID);
-    motor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
+    hoodMotor = new TalonFX(Constants.HOOD_MOTOR_ID);
+    hoodMotor.getConfigurator().apply(HoodConstants.PIVOT_MOTOR_CONFIG);
+
+    hoodMotorSimState = hoodMotor.getSimState();
+
     hoodSim =
         new SingleJointedArmSim(
-            DCMotor.getKrakenX60(1),
+            DCMotor.getKrakenX44(1),
             HoodConstants.HOOD_GEAR_RATIO,
             HoodConstants.HOOD_MOI.in(KilogramSquareMeters),
             HoodConstants.SIM_ARM_LENGTH.in(Meters),
@@ -31,36 +42,48 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void updateState(HoodIOInputs inputs) {
-    inputs.motorVoltage = motor.getMotorVoltage().getValue();
-    hoodSim.setInputVoltage(inputs.motorVoltage.in(Volts));
+    hoodMotorSimState.setSupplyVoltage(Volts.of(12));
+
+    Logger.recordOutput("Hood/HoodAngleDegrees", Radians.of(hoodSim.getAngleRads()).in(Degree));
 
     hoodSim.update(Constants.SIM_TIME_PERIOD);
 
-    var simState = motor.getSimState();
-    simState.setRawRotorPosition(
-        Radians.of(hoodSim.getAngleRads()).times(HoodConstants.HOOD_GEAR_RATIO));
-    simState.setRotorVelocity(
-        RadiansPerSecond.of(hoodSim.getVelocityRadPerSec()).times(HoodConstants.HOOD_GEAR_RATIO));
-    simState.setSupplyVoltage(Volts.of(12));
+    hoodSim.setInputVoltage(inputs.motorVoltage.in(Volts));
 
-    inputs.motorVelocity = motor.getVelocity().getValue();
-    inputs.motorStatorCurrent = motor.getStatorCurrent().getValue();
-    inputs.motorSupplyCurrent = motor.getSupplyCurrent().getValue();
-    inputs.motorAngle = motor.getPosition().getValue();
+    hoodMotorSimState.setRawRotorPosition(
+        Radians.of(hoodSim.getAngleRads()).times(HoodConstants.HOOD_GEAR_RATIO));
+    hoodMotorSimState.setRotorVelocity(
+        RadiansPerSecond.of(hoodSim.getVelocityRadPerSec()).times(HoodConstants.HOOD_GEAR_RATIO));
+
+    SimulationVisualizer.getInstance().updateShooterHoodAngle(Radians.of(hoodSim.getAngleRads()));
+
+    inputs.motorVoltage = hoodMotor.getMotorVoltage().getValue();
+    inputs.motorVelocity = hoodMotor.getVelocity().getValue();
+    inputs.motorStatorCurrent = hoodMotor.getStatorCurrent().getValue();
+    inputs.motorSupplyCurrent = hoodMotor.getSupplyCurrent().getValue();
+    inputs.motorSetpoint = motorSetpoint;
+    inputs.motorAngle = hoodMotor.getPosition().getValue();
   }
 
   @Override
   public void setSetpoint(Angle angle) {
-    motor.setControl(positionVoltage);
+    Logger.recordOutput("Hood/SimMotorSetpointDegrees", angle.in(Degree));
+    motorSetpoint = angle;
+    hoodMotor.setControl(positionVoltage.withPosition(angle));
   }
 
   @Override
-  public void neutral() {
-    motor.stopMotor();
+  public void setVoltage(Voltage voltage) {
+    hoodMotor.setVoltage(voltage.in(Volts));
+  }
+
+  @Override
+  public void stop() {
+    hoodMotor.setControl(new PositionVoltage(hoodMotor.getPosition().getValue()));
   }
 
   @Override
   public void close() {
-    motor.close();
+    hoodMotor.close();
   }
 }

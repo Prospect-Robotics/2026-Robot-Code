@@ -27,7 +27,10 @@ public class HubPositionUtil {
    */
   public static Rotation2d getBotToHubAngle(
       Pose2d robotPosition, Optional<DriverStation.Alliance> currentAlliance) {
-    return getCurrentHub(currentAlliance).minus(robotPosition.getTranslation()).getAngle();
+    return getCurrentHub(currentAlliance)
+        .minus(robotPosition.getTranslation())
+        .getAngle()
+        .plus(Rotation2d.k180deg);
   }
 
   /**

@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Preferences;
@@ -43,55 +44,57 @@ public class ShooterConstants {
     // Shooter motors.
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100);
     Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
-    Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 115);
+    Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
+
+  public static final Current SHOOTER_MOTOR_STATOR_LIMIT = Amps.of(60);
+  public static final Current SHOOTER_SUPPLY_STATOR_LIMIT = Amp.of(40);
+
+  static final Slot0Configs MOTORS_SLOT0_CONFIG =
+      new Slot0Configs().withKS(0.22432).withKV(0.12688).withKA(0.010285).withKP(0.076732);
 
   // Reminder: this is the upper right shooter motor when robot is viewed from behind.
   public static final TalonFXConfiguration UPPER_RIGHT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
-          .withSlot0(
-              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(70))
-                  .withSupplyCurrentLimit(50));
+                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
 
   // Reminder: this is the lower right shooter motor.
   public static final TalonFXConfiguration LOWER_RIGHT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(
               new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
-          .withSlot0(
-              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(70))
-                  .withSupplyCurrentLimit(50));
+                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
 
   // Reminder: this is the upper left shooter motor when the robot is viewed from behind.
   public static final TalonFXConfiguration UPPER_LEFT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withSlot0(
-              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(80))
-                  .withSupplyCurrentLimit(60));
+                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
 
   // Reminder: this is the lower left shooter motor.
   public static final TalonFXConfiguration LOWER_LEFT_SHOOTER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withSlot0(
-              new Slot0Configs().withKS(0.099892).withKV(0.115).withKA(0.0020241).withKP(0.026743))
+          .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(Amps.of(80))
-                  .withSupplyCurrentLimit(60));
+                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
@@ -100,11 +103,11 @@ public class ShooterConstants {
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 115));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60));
   }
 
   public static AngularVelocity getShooterHerdShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 60));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55));
   }
 
   public static Voltage getShooterOuttakeVoltage() {

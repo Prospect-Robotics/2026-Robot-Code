@@ -239,6 +239,5 @@ public class Robot extends LoggedRobot {
   @Override
   public void close() {
     super.close();
-    robotContainer.close();
   }
 }
