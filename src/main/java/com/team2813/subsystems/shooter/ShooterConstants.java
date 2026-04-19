@@ -47,7 +47,7 @@ public class ShooterConstants {
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
-  
+
   public static final Current SHOOTER_MOTOR_STATOR_LIMIT = Amps.of(60);
   public static final Current SHOOTER_SUPPLY_STATOR_LIMIT = Amp.of(40);
 

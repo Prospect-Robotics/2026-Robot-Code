@@ -31,7 +31,12 @@ public class HoodConstants {
       new TalonFXConfiguration()
           // TODO: Run sysid to get PID values
           .withSlot0(
-              new Slot0Configs().withKP(0.5).withKI(0).withKD(0).withKS(0.5).withKA(0).withKG(0))
+              new Slot0Configs()
+                  .withKP(0.0077835)
+                  .withKS(0.22349)
+                  .withKV(0.0081471)
+                  .withKA(0.00044251)
+                  .withKG(0.15395))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   static final String HUB_ANGLE_PREFERENCE = "Hood/HUB_HOOD_ANGLE_DEGREES";
