@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left trench - nz - bump - midfield"
+                              "pathName": "DEPRECATED_left trench - left mid neutral"
                             }
                           },
                           {
@@ -38,9 +38,22 @@
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "parallel",
                       "data": {
-                        "name": "StopRoller"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "DEPRECATED_netural zone-left midfield"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "StopRoller"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -114,7 +127,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "midfield-left pass 2"
+                              "pathName": "DEPRECATED_midfield-left pass 2"
                             }
                           },
                           {
@@ -139,7 +152,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left pass 2-bump-midfield"
+                              "pathName": "DEPRECATED_left pass 2-bump-midfield"
                             }
                           },
                           {
