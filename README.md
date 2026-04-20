@@ -7,7 +7,7 @@
 
 ```
 # Navigate to the home directory
-cd /home/lvuser
+cd ~lvuser
 # Delete existing table
 rm NetworkTable.json
 # Reboot the robot
