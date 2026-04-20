@@ -48,8 +48,8 @@ public class ShooterConstants {
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
 
-  public static final Current SHOOTER_MOTOR_STATOR_LIMIT = Amps.of(60);
-  public static final Current SHOOTER_SUPPLY_STATOR_LIMIT = Amp.of(40);
+  public static final Current SHOOTER_STATOR_LIMIT = Amps.of(60);
+  public static final Current SHOOTER_SUPPLY_LIMIT = Amp.of(40);
 
   static final Slot0Configs MOTORS_SLOT0_CONFIG =
       new Slot0Configs().withKS(0.22432).withKV(0.12688).withKA(0.010285).withKP(0.076732);
@@ -62,8 +62,8 @@ public class ShooterConstants {
           .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
-                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
+                  .withStatorCurrentLimit(SHOOTER_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_LIMIT));
 
   // Reminder: this is the lower right shooter motor.
   public static final TalonFXConfiguration LOWER_RIGHT_SHOOTER_MOTOR_CONFIG =
@@ -73,8 +73,8 @@ public class ShooterConstants {
           .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
-                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
+                  .withStatorCurrentLimit(SHOOTER_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_LIMIT));
 
   // Reminder: this is the upper left shooter motor when the robot is viewed from behind.
   public static final TalonFXConfiguration UPPER_LEFT_SHOOTER_MOTOR_CONFIG =
@@ -83,8 +83,8 @@ public class ShooterConstants {
           .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
-                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
+                  .withStatorCurrentLimit(SHOOTER_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_LIMIT));
 
   // Reminder: this is the lower left shooter motor.
   public static final TalonFXConfiguration LOWER_LEFT_SHOOTER_MOTOR_CONFIG =
@@ -93,8 +93,8 @@ public class ShooterConstants {
           .withSlot0(MOTORS_SLOT0_CONFIG)
           .withCurrentLimits(
               new CurrentLimitsConfigs()
-                  .withStatorCurrentLimit(SHOOTER_MOTOR_STATOR_LIMIT)
-                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_STATOR_LIMIT));
+                  .withStatorCurrentLimit(SHOOTER_STATOR_LIMIT)
+                  .withSupplyCurrentLimit(SHOOTER_SUPPLY_LIMIT));
 
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
