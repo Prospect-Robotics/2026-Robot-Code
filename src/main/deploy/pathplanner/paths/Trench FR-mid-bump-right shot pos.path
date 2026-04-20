@@ -1,0 +1,145 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.480314569536423,
+        "y": 0.46311258278145717
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.066721854304635,
+        "y": 0.4921523178807956
+      },
+      "isLocked": false,
+      "linkedName": "DRUM-Trench FR"
+    },
+    {
+      "anchor": {
+        "x": 8.132061258278146,
+        "y": 2.212756622516557
+      },
+      "prevControl": {
+        "x": 8.132061258278146,
+        "y": 1.2956743856436232
+      },
+      "nextControl": {
+        "x": 8.132061258278146,
+        "y": 3.6653966245756404
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.064850993377482,
+        "y": 3.5050248344370853
+      },
+      "prevControl": {
+        "x": 7.906472229482004,
+        "y": 3.468030494388535
+      },
+      "nextControl": {
+        "x": 6.404197019867548,
+        "y": 3.5340645695364232
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.692723509933774,
+        "y": 2.4523344370860936
+      },
+      "prevControl": {
+        "x": 6.28855100557808,
+        "y": 2.4523344370860936
+      },
+      "nextControl": {
+        "x": 4.879092525708018,
+        "y": 2.4523344370860936
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.5437831125827817,
+        "y": 2.4523344370860936
+      },
+      "prevControl": {
+        "x": 5.32618366029928,
+        "y": 2.4352779725146454
+      },
+      "nextControl": {
+        "x": 2.0264569536423838,
+        "y": 2.466854304635761
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.970248344370861,
+        "y": 3.018609271523179
+      },
+      "prevControl": {
+        "x": 2.3967135761589407,
+        "y": 3.2727069536423845
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "DRUM-Right Shot Pos"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9751609935602532,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.872125114995369,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 4.0,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.8363448631905099,
+      "maxWaypointRelativePos": 1.8688693856479086,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 6.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -145.40771131248994
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0.0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": false
+}
