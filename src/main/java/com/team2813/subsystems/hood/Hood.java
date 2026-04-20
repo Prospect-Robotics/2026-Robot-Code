@@ -24,10 +24,10 @@ public class Hood extends SubsystemBase {
     io.updateState(replayedInputs);
     Logger.processInputs("Hood", replayedInputs);
 
-    double hoodMotorAngleAbsError =
+    double motorAngleAbsError =
         replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotations);
 
-    hoodAtPosition = hoodMotorAngleAbsError <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotations);
+    hoodAtPosition = motorAngleAbsError <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotations);
 
     Logger.recordOutput("Hood/currentHoodAngleDegrees", getCurrentHoodAngle().in(Degrees));
     Logger.recordOutput("Hood/atPosition", hoodAtPosition);

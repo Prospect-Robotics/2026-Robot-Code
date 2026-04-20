@@ -342,10 +342,9 @@ public class RobotContainer {
                     () -> -driveController.getLeftY(),
                     () -> -driveController.getLeftX(),
                     () ->
-                        ((DriverStation.getAlliance().isPresent()
-                                && DriverStation.getAlliance()
-                                    .get()
-                                    .equals(DriverStation.Alliance.Red))
+                        (DriverStation.getAlliance()
+                                .orElse(DriverStation.Alliance.Blue)
+                                .equals(DriverStation.Alliance.Red)
                             ? Rotation2d.k180deg
                             : Rotation2d.kZero)),
                 shooter.spoolShooterHerdSpeedCommand(),
