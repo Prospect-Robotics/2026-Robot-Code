@@ -183,6 +183,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    // TODO: mayhaps add a unit test to cover this(?)
     double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase(); // in seconds
     if (HubStatusUtil.isHubActive()) { // Active shift
       if (timeLeftInCurrentPhase <= 5
