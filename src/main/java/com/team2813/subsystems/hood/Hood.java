@@ -47,7 +47,7 @@ public class Hood extends SubsystemBase {
    *
    * @param angle The angle in relation to the <b>HOOD</b> to for the hood move to.
    */
-  public void goToAngle(Angle angle) {
+  private void goToAngle(Angle angle) {
     hoodAtPosition = false;
     Logger.recordOutput("Hood/Setpoint", angle);
     io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
