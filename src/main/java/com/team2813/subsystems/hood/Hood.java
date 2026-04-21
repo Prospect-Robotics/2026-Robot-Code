@@ -66,6 +66,7 @@ public class Hood extends SubsystemBase {
           return getCurrentHoodAngle().isNear(HoodConstants.MINIMUM_SHOOTER_ANGLE, Degrees.of(.5));
         };
 
+    // These values should stay low, because we have a very small range of motion.
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -74,8 +75,8 @@ public class Hood extends SubsystemBase {
                 null,
                 (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setVoltage, null, this));
-    // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than
 
+    // The commands cancel before hitting the hardstop to ensure our values are not messed up.
     return new SequentialCommandGroup(
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward).until(sysIDCancelConditionTop),
         new WaitCommand(5),
