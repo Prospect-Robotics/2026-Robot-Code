@@ -79,7 +79,7 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void stop() {
-    hoodMotor.setControl(new PositionVoltage(hoodMotor.getPosition().getValue()));
+    hoodMotor.stopMotor();
   }
 
   @Override
