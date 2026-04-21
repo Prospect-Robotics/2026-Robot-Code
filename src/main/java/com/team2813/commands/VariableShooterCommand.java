@@ -18,7 +18,7 @@ public class VariableShooterCommand {
   private static final AngularVelocity MAX_SPEED =
       RotationsPerSecond.of(55); // 5 meters from hub speed.
 
-  // Hub to square edge is 1.3 based on the HubStatus/Utils calculation meters.
+  // Hub to square edge is 1.3 meters based on the HubStatus/Utils calculation  .
   // Get these values off of the /AdvantageKit/RealOutputs/HubStatus/Distance To Our Hub (Meters)
   public static final Distance MIN_DIST = Meters.of(2.0);
   public static final Distance MAX_DIST = Meters.of(5.0);
