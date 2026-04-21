@@ -25,7 +25,7 @@ public class HoodConstants {
   static final Time HOOD_MOVEMENT_TIMEOUT = Seconds.of(3);
 
   /** The accepted difference between the motor angle and its setpoint. */
-  static final Angle ACCEPTABLE_MOTOR_ERROR = Rotations.of(0.4);
+  static final Angle ACCEPTABLE_MOTOR_ANGLE_ERROR = Rotations.of(0.4);
 
   static final TalonFXConfiguration PIVOT_MOTOR_CONFIG =
       new TalonFXConfiguration()
@@ -38,11 +38,6 @@ public class HoodConstants {
                   .withKA(0.00044251)
                   .withKG(0.15395))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
-
-  static final String HUB_ANGLE_PREFERENCE = "Hood/HUB_HOOD_ANGLE_DEGREES";
-  static final double DEFAULT_HUB_ANGLE_DEGREES = 17;
-  static final String TRENCH_ANGLE_PREFERENCE = "Hood/TRENCH_HOOD_ANGLE_DEGREES";
-  static final double DEFAULT_TRENCH_ANGLE_DEGREES = 40;
 
   private HoodConstants() {
     throw new AssertionError("Not Instantiable!");
