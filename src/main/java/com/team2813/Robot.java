@@ -183,33 +183,20 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    // TODO: mayhaps add a unit test to cover this(?)
-    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase(); // in seconds
-    if (HubStatusUtil.isHubActive()) { // Active shift
-      if (timeLeftInCurrentPhase <= 5
-          && timeLeftInCurrentPhase
-              > 4) { // rumble beteween 4 and 5 seconds left in active shift, equivalent to rumbling
-        // for 1 second with 5 seconds left.
-        robotContainer.setRumbleDriver(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
-        robotContainer.setRumbleOperator(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
-      } else {
-        robotContainer
-            .stopRumble(); // stop rumble at all other times, including when the hub is active with
-        // more than 5 seconds left in the shift.
-      }
-    } else { // inactive shift
-      if (timeLeftInCurrentPhase <= 2
-          && timeLeftInCurrentPhase
-              > 0) { // rumble during the last 2 seconds of an inactive shift, equivalent to
-        // rumbling for 2 seconds at the end of an inactive shift.
-        robotContainer.setRumbleDriver(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
-        robotContainer.setRumbleOperator(); // RRRRRRRRRRUMMMBLLLLLEEEEEEEEEEEEE
-      } else {
-        robotContainer
-            .stopRumble(); // stop rumble at all other times, including when the hub is inactive
-        // with more than 2 seconds left in the shift.
-      }
+    boolean shouldRumble =
+        shouldRumble(HubStatusUtil.isHubActive(), HubStatusUtil.timeLeftInCurrentPhase());
+    if (shouldRumble) {
+      robotContainer.setRumbleDriver();
+      robotContainer.setRumbleOperator();
+    } else {
+      robotContainer.stopRumble();
     }
+  }
+
+  static boolean shouldRumble(boolean hubActive, double timeLeftInCurrentPhase) {
+    return hubActive
+        ? timeLeftInCurrentPhase <= 5 && timeLeftInCurrentPhase > 4
+        : timeLeftInCurrentPhase <= 2 && timeLeftInCurrentPhase > 0;
   }
 
   /** This function is called once when test mode is enabled. */
