@@ -235,4 +235,9 @@ public class Robot extends LoggedRobot {
       return Mode.SIM;
     }
   }
+
+  @Override
+  public void close() {
+    super.close();
+  }
 }

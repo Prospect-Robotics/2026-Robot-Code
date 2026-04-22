@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DEPRECATED_hub-depot"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -19,12 +31,6 @@
                 "data": {
                   "name": "SpinRollerIntake"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "left trench - left mid neutral"
-                }
               }
             ]
           }
@@ -33,17 +39,17 @@
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DEPRECATED_depot-center_shot"
+                }
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "StopRoller"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "neutral zone-left trench-hub"
-                }
               }
             ]
           }
@@ -55,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "HubShot"
+                  "name": "VariableShot"
                 }
               },
               {
@@ -65,25 +71,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "HalfwayIntake"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "ExtendIntake"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.5
+                        "waitTime": 0.5
                       }
                     },
                     {
@@ -95,7 +83,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.5
                       }
                     },
                     {

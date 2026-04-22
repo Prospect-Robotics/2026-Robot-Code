@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "right tench - nz - bump - midfield"
+                              "pathName": "DEPRECATED_left trench - nz - bump - midfield"
                             }
                           },
                           {
@@ -114,7 +114,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "midfield-right pass 2"
+                              "pathName": "DEPRECATED_midfield-left pass 2"
                             }
                           },
                           {
@@ -139,7 +139,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "right pass 2-bump-midfield"
+                              "pathName": "DEPRECATED_left pass 2-bump-midfield"
                             }
                           },
                           {

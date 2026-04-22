@@ -56,6 +56,18 @@ public class DriveCommands {
   }
 
   /**
+   * Rotates the robot to face toward a position. Especially useful for autos, so we can realign
+   * with the hub before shooting.
+   *
+   * @param drive Instance of drive to apply this command to.
+   * @param rotationSupplier The rotation to face toward
+   * @return A command to turn the drive toward the given rotation.
+   */
+  public static Command turnToPoint(Drive drive, Supplier<Rotation2d> rotationSupplier) {
+    return joystickDriveAtAngle(drive, () -> 0, () -> 0, rotationSupplier);
+  }
+
+  /**
    * Field relative drive command using two joysticks (controlling linear and angular velocities).
    */
   public static Command joystickDrive(

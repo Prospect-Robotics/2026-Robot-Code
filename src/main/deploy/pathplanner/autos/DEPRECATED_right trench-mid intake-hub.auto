@@ -9,12 +9,6 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "left trench - left mid neutral"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "ExtendIntake"
@@ -25,6 +19,12 @@
                 "data": {
                   "name": "SpinRollerIntake"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DEPRECATED_right trench - right mid neutral"
+                }
               }
             ]
           }
@@ -33,17 +33,17 @@
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "netural zone-left midfield"
-                }
-              },
               {
                 "type": "named",
                 "data": {
                   "name": "StopRoller"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DEPRECATED_neutral zone-right trench-hub"
+                }
               }
             ]
           }
@@ -55,7 +55,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "TrenchShot"
+                  "name": "HubShot"
                 }
               },
               {
@@ -77,30 +77,6 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "ExtendIntake"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "HalfwayIntake"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
                         "name": "RetractIntake"
                       }
                     }
@@ -108,12 +84,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ExtendIntake"
           }
         }
       ]
