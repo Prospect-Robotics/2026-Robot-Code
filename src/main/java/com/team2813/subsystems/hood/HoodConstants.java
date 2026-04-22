@@ -12,7 +12,7 @@ import edu.wpi.first.units.measure.MomentOfInertia;
 import edu.wpi.first.units.measure.Time;
 
 public class HoodConstants {
-  public static final double HOOD_GEAR_RATIO = 128;
+  public static final double HOOD_GEAR_RATIO = 128; // Reduction of 128:1
   public static final MomentOfInertia HOOD_MOI = KilogramSquareMeters.of(0.0529);
 
   // This is the lowest angle the hood can reach. The motor angle will also be 0 here.
