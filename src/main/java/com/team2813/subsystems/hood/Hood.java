@@ -27,7 +27,7 @@ public class Hood extends SubsystemBase {
     double motorAngleAbsError =
         replayedInputs.motorAngle.minus(replayedInputs.motorSetpoint).abs(Rotations);
 
-    hoodAtPosition = motorAngleAbsError <= HoodConstants.ACCEPTABLE_MOTOR_ERROR.in(Rotations);
+    hoodAtPosition = motorAngleAbsError <= HoodConstants.ACCEPTABLE_MOTOR_ANGLE_ERROR.in(Rotations);
 
     Logger.recordOutput("Hood/currentHoodAngleDegrees", getCurrentHoodAngle().in(Degrees));
     Logger.recordOutput("Hood/atPosition", hoodAtPosition);
@@ -42,20 +42,12 @@ public class Hood extends SubsystemBase {
         .until(this::isHoodAtPosition);
   }
 
-  public Command goToUpPosCommand() {
-    return goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE);
-  }
-
-  public Command goToDownPosCommand() {
-    return goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE);
-  }
-
   /**
    * Wrapper for the {@link HoodIO#setSetpoint(Angle)} method, taking into account the.
    *
    * @param angle The angle in relation to the <b>HOOD</b> to for the hood move to.
    */
-  public void goToAngle(Angle angle) {
+  private void goToAngle(Angle angle) {
     hoodAtPosition = false;
     Logger.recordOutput("Hood/Setpoint", angle);
     io.setSetpoint(angle.times(HoodConstants.HOOD_GEAR_RATIO));
@@ -74,6 +66,7 @@ public class Hood extends SubsystemBase {
           return getCurrentHoodAngle().isNear(HoodConstants.MINIMUM_SHOOTER_ANGLE, Degrees.of(.5));
         };
 
+    // These values should stay low, because we have a very small range of motion.
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
@@ -82,8 +75,8 @@ public class Hood extends SubsystemBase {
                 null,
                 (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setVoltage, null, this));
-    // NOTE(spderman3333): I may need to use this::setShooterMotorVoltage rather than
 
+    // The commands cancel before hitting the hardstop to ensure our values are not messed up.
     return new SequentialCommandGroup(
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward).until(sysIDCancelConditionTop),
         new WaitCommand(5),

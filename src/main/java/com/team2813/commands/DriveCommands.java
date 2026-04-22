@@ -56,7 +56,8 @@ public class DriveCommands {
   }
 
   /**
-   * Rotates the robot to face toward a position.
+   * Rotates the robot to face toward a position. Especially useful for autos, so we can realign
+   * with the hub before shooting.
    *
    * @param drive Instance of drive to apply this command to.
    * @param rotationSupplier The rotation to face toward
