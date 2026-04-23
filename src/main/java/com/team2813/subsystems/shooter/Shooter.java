@@ -52,6 +52,9 @@ public class Shooter extends SubsystemBase {
     return new StartEndCommand(
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
   }
+  public Command idleCommand() {
+    return new StartEndCommand(()->io.setShooterMotorVoltage(ShooterConstants.getIdleVoltage()),this::stop,this);
+  }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html

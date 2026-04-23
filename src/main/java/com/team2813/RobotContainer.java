@@ -237,6 +237,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //shooter idle command (runs motors at 1V unless controlled by another subsystem)
+    shooter.setDefaultCommand(shooter.idleCommand());
     // Operator controls
     // Operator Intake roller Bindings
     operatorController.leftBumper().whileTrue(intakeRoller.outtakeCommand());
@@ -287,7 +289,9 @@ public class RobotContainer {
     operatorController
         .povUp()
         .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
-
+    //kicker manual controls
+    operatorController.leftTrigger().whileTrue(kicker.outtakeCommand());
+    operatorController.rightTrigger().whileTrue(kicker.intakeCommand());
     // Driver controls
     // Default command, normal field-relative drive
     drive.setDefaultCommand(

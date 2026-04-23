@@ -36,9 +36,11 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   }
 
   private void outtake() {
-    io.setMotorVoltage(KickerConstants.getOuttakeVoltage());
+    io.setMotorVoltage(KickerConstants.getManualVoltage().times(-1));
   }
-
+  private void intake() {
+    io.setMotorVoltage(KickerConstants.getManualVoltage());
+  }
   public void stop() {
     io.setMotorVoltage(Volts.of(0));
   }
@@ -63,7 +65,9 @@ public class Kicker extends SubsystemBase implements AutoCloseable {
   public Command outtakeCommand() {
     return new StartEndCommand(this::outtake, this::stop, this);
   }
-
+  public Command intakeCommand() {
+    return new StartEndCommand(this::intake,this::stop,this);
+  }
   /**
    * Creates a command to run the kicker with a custom voltage. This command will run indefinitely,
    * and must be canceled or interrupted to stop the kicker.
