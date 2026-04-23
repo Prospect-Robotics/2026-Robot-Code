@@ -10,6 +10,7 @@ package com.team2813;
 import static com.team2813.Constants.driveController;
 import static com.team2813.Constants.operatorController;
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
+import static edu.wpi.first.units.Units.Seconds;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -22,6 +23,7 @@ import com.team2813.subsystems.drive.GyroIOPigeon2;
 import com.team2813.subsystems.drive.ModuleIO;
 import com.team2813.subsystems.drive.ModuleIOSim;
 import com.team2813.subsystems.drive.ModuleIOTalonFX;
+import com.team2813.subsystems.hood.*;
 import com.team2813.subsystems.hopper.*;
 import com.team2813.subsystems.intakeextension.IntakeExtension;
 import com.team2813.subsystems.intakeextension.IntakeExtensionIO;
@@ -71,6 +73,7 @@ public class RobotContainer {
 
   private final Shooter shooter;
   private final Kicker kicker;
+  private final Hood hood;
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -122,6 +125,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOReal());
         kicker = new Kicker(new KickerIOReal());
+        hood = new Hood(new HoodIOReal());
         break;
 
       case SIM:
@@ -161,6 +165,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIOSim());
         kicker = new Kicker(new KickerIOSim());
+        hood = new Hood(new HoodIOSim());
         break;
 
       default:
@@ -188,6 +193,7 @@ public class RobotContainer {
 
         shooter = new Shooter(new ShooterIO() {});
         kicker = new Kicker(new KickerIO() {});
+        hood = new Hood(new HoodIO() {});
         break;
     }
 
@@ -216,6 +222,7 @@ public class RobotContainer {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     autoChooser.addOption("Shooter SysID Routine", shooter.sysIDRoutine());
+    autoChooser.addOption("Hood SysID Routine", hood.sysIDRoutine());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -275,6 +282,13 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
+    // Hood controls
+    operatorController
+        .povDown()
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE));
+    operatorController
+        .povUp()
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
 
     // Driver controls
     // Default command, normal field-relative drive
@@ -318,6 +332,29 @@ public class RobotContainer {
             VariableShooterCommand.shootBasedOnDistanceCommand(
                 shooter,
                 () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
+    // temporary drum test binding
+    //    driveController.b().whileTrue(shooter.outakeCommand());
+
+    driveController
+        .rightBumper()
+        .whileTrue(
+            new ParallelCommandGroup(
+                DriveCommands.joystickDriveAtAngle(
+                    drive,
+                    () -> -driveController.getLeftY(),
+                    () -> -driveController.getLeftX(),
+                    () ->
+                        (DriverStation.getAlliance()
+                                .orElse(DriverStation.Alliance.Blue)
+                                .equals(DriverStation.Alliance.Red)
+                            ? Rotation2d.k180deg
+                            : Rotation2d.kZero)),
+                shooter.spoolShooterHerdSpeedCommand(),
+                new RepeatCommand(
+                    hood.goToAngleCommand(
+                        HoodConstants
+                            .MAXIMUM_SHOOTER_ANGLE)) // this is supposed to be the herd angle
+                ));
   }
 
   // controller rumble
@@ -394,8 +431,11 @@ public class RobotContainer {
                 VariableShooterCommand.shootBasedOnDistanceCommand(
                     shooter,
                     () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)),
+                DriveCommands.turnToPoint(
+                    drive,
+                    () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)),
                 new SequentialCommandGroup(
-                    new WaitCommand(0.5),
+                    new WaitCommand(0.75),
                     new ParallelCommandGroup(
                         kicker.shootCommand(),
                         hopper.intakeCommand(),
@@ -407,21 +447,21 @@ public class RobotContainer {
         intakeExtension
             .extendCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     NamedCommands.registerCommand(
         "RetractIntake",
         intakeExtension
             .retractCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     NamedCommands.registerCommand(
         "HalfwayIntake",
         intakeExtension
             .halfRetractCommand()
             .until(intakeExtension::isExtenderAtPosition)
-            .raceWith(new WaitCommand(3)));
+            .withTimeout(Seconds.of(3)));
 
     // Intake roller motor control.
     NamedCommands.registerCommand(

@@ -39,18 +39,18 @@ public class VisionConstants {
   // (Not used by Limelight, configure in web UI instead)
   public static final Transform3d RED_BACK_LEFT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Centimeters.of(-26), Centimeters.of(26), Centimeters.of(23)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-160)));
+          new Translation3d(Inches.of(-7.802), Inches.of(-13.188), Inches.of(7.125)),
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-55)));
 
   public static final Transform3d GREEN_BACK_RIGHT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Centimeters.of(-26), Centimeters.of(-26), Centimeters.of(23)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(-90)));
+          new Translation3d(Inches.of(-7.802), Inches.of(13.188), Inches.of(7.125)),
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(55)));
 
   public static final Transform3d BLUE_FRONT_CAM_FROM_ROBOT =
       new Transform3d(
-          new Translation3d(Centimeters.of(-5.5), Centimeters.of(0), Centimeter.of(50.1)),
-          new Rotation3d(Degrees.of(0), Degrees.of(-17.5), Degrees.of(0)));
+          new Translation3d(Inches.of(-13.263), Centimeters.of(0), Inches.of(14.028)),
+          new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(180)));
 
   // Basic filtering thresholds
   public static double maxAmbiguity = 0.3;

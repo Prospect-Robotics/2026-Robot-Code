@@ -19,7 +19,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "greedy left trench - left mid neutral"
+                              "pathName": "DEPRECATED_greedy left trench - left mid neutral"
                             }
                           },
                           {
@@ -44,7 +44,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "greedy netural zone-left midfield"
+                              "pathName": "DEPRECATED_greedy netural zone-left midfield"
                             }
                           },
                           {
@@ -127,7 +127,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "greedy midfield-left pass 2"
+                              "pathName": "DEPRECATED_greedy midfield-left pass 2"
                             }
                           },
                           {
@@ -152,7 +152,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "greedy left pass 2-bump-midfield"
+                              "pathName": "DEPRECATED_greedy left pass 2-bump-midfield"
                             }
                           },
                           {

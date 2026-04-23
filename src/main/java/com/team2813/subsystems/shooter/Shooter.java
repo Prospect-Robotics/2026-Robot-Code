@@ -59,8 +59,8 @@ public class Shooter extends SubsystemBase {
     SysIdRoutine sysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                null,
-                null,
+                Volts.per(Seconds).of(0.1),
+                Volts.of(1),
                 null,
                 (state) -> Logger.recordOutput("SysIDTestState", state.toString())),
             new SysIdRoutine.Mechanism(io::setShooterMotorVoltage, null, this));
@@ -69,8 +69,11 @@ public class Shooter extends SubsystemBase {
 
     return new SequentialCommandGroup(
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward),
+        new WaitCommand(5),
         sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse),
+        new WaitCommand(5),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward),
+        new WaitCommand(5),
         sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
@@ -86,9 +89,9 @@ public class Shooter extends SubsystemBase {
    *     ShooterConstants#SHOOTER_SPOOL_SPEED_TOLERANCE} of the current motor setpoint
    */
   public boolean isMotorVelocityWithinTolerance() {
-    return RotationsPerSecond.of(replayedInputs.mainShooterMotorRotPerSec)
+    return RotationsPerSecond.of(replayedInputs.upperRightShooterMotorRotPerSec)
         .isNear(
-            RotationsPerSecond.of(replayedInputs.mainShooterSetpointRotsPerSec),
+            RotationsPerSecond.of(replayedInputs.upperRightShooterSetpointRotsPerSec),
             ShooterConstants.SHOOTER_SPOOL_SPEED_TOLERANCE);
   }
 }

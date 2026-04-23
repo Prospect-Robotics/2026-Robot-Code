@@ -37,14 +37,20 @@ public final class Constants {
   // NOTE: The below motors are with placeholder CANIDs and are subject to change.
   // TODO: Discuss with electrical for permanent IDs.
   // Shooter Motors. Aliases: Flywheel motors.
-  public static final int MAIN_SHOOTER_MOTOR_ID = 19; // Right shooter motor.
-  public static final int FOLLOWER_SHOOTER_MOTOR_ID = 20; // Left shooter motor.
+  public static final int UPPER_RIGHT_SHOOTER_MOTOR_ID = 19; // Upper right shooter motor.
+  public static final int LOWER_RIGHT_SHOOTER_MOTOR_ID = 30; // Lower right shooter motor.
+
+  public static final int UPPER_LEFT_SHOOTER_MOTOR_ID = 20; // Upper left shooter motor.
+  public static final int LOWER_LEFT_SHOOTER_MOTOR_ID = 31; // Lower left shooter motor.
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
+  
+  public static final int HOOD_MOTOR_ID = 23;
 
   public static final CommandXboxController driveController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
+
 
   /**
    * Returns true if the robot is on the red alliance.
