@@ -274,16 +274,13 @@ public class RobotContainer {
 
     // Operator intake roller bindings.
     operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
-    operatorController
-        .leftTrigger()
-        .whileTrue(Commands.parallel(intakeRoller.outtakeCommand(), hopper.outtakeCommand()));
 
     // Spool shooter commands
-    //TODO: add the following controls and hardcoded values
-    //operator x: spool to hub speed (move hood down)
-    //operator y: spool to trench speed (move hood down)
-    //operator b: spool to herd speed (move hood up)
-    //operator a: spool to tower speed (move hood down)
+    // TODO: add the following controls and hardcoded values
+    // operator x: spool to hub speed (move hood down)
+    // operator y: spool to trench speed (move hood down)
+    // operator b: spool to herd speed (move hood up)
+    // operator a: spool to tower speed (move hood down)
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
