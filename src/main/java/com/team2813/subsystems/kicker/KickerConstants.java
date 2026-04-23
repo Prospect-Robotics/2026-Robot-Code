@@ -24,7 +24,7 @@ class KickerConstants {
   static final double KICKER_MOTOR_TO_FLYWHEEL_GEARING = 2.0 / 5.0;
 
   static final double SHOOT_VOLTAGE_DEFAULT = 9;
-  static final double MANUAL_VOLTAGE_DEFAULT = 3;
+  static final double MANUAL_VOLTAGE_DEFAULT = 1.5;
 
   static {
     Preferences.initDouble(SHOOT_PREFERENCE_NT, SHOOT_VOLTAGE_DEFAULT);
