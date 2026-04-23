@@ -1,4 +1,4 @@
-package com.team2813;
+package com.team2813.util;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,12 +22,12 @@ class RobotTeleopRumbleTest {
     "false,0.0,false",
     "false,-0.1,false"
   })
-  void shouldRumbleMatchesTeleopPeriodicLogic(boolean hubActive, double timeLeft, boolean expected) {
+  void shouldRumbleMatchesTeleopPeriodicLogic(
+      boolean hubActive, double timeLeft, boolean expected) {
     if (expected) {
-      assertTrue(Robot.shouldRumble(hubActive, timeLeft));
+      assertTrue(HubStatusUtil.shouldRumble(hubActive, timeLeft));
     } else {
-      assertFalse(Robot.shouldRumble(hubActive, timeLeft));
+      assertFalse(HubStatusUtil.shouldRumble(hubActive, timeLeft));
     }
   }
 }
-

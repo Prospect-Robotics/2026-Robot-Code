@@ -131,7 +131,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    robotContainer.stopRumble();
+    Constants.stopRumble();
   }
 
   /** This function is called periodically when disabled. */
@@ -183,20 +183,12 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    boolean shouldRumble =
-        shouldRumble(HubStatusUtil.isHubActive(), HubStatusUtil.timeLeftInCurrentPhase());
+    boolean shouldRumble = HubStatusUtil.shouldRumble();
     if (shouldRumble) {
-      robotContainer.setRumbleDriver();
-      robotContainer.setRumbleOperator();
+      Constants.rumble();
     } else {
-      robotContainer.stopRumble();
+      Constants.stopRumble();
     }
-  }
-
-  static boolean shouldRumble(boolean hubActive, double timeLeftInCurrentPhase) {
-    return hubActive
-        ? timeLeftInCurrentPhase <= 5 && timeLeftInCurrentPhase > 4
-        : timeLeftInCurrentPhase <= 2 && timeLeftInCurrentPhase > 0;
   }
 
   /** This function is called once when test mode is enabled. */

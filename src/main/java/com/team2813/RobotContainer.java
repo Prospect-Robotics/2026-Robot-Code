@@ -7,6 +7,8 @@
 
 package com.team2813;
 
+import static com.team2813.Constants.driveController;
+import static com.team2813.Constants.operatorController;
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -44,7 +46,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
@@ -70,9 +71,6 @@ public class RobotContainer {
 
   private final Shooter shooter;
   private final Kicker kicker;
-  // Controller
-  private final CommandXboxController driveController = new CommandXboxController(0);
-  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -326,16 +324,6 @@ public class RobotContainer {
   public void setRumbleOperator() {
     // TODO: test rumble values with operator
     operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
-  }
-
-  public void setRumbleDriver() {
-    // TODO: test rumble values with driver
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
-  }
-
-  public void stopRumble() {
-    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
 
   /**

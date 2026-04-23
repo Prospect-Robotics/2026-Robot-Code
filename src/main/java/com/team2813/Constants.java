@@ -8,6 +8,8 @@
 package com.team2813;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -41,6 +43,9 @@ public final class Constants {
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
 
+  public static final CommandXboxController driveController = new CommandXboxController(0);
+  public static final CommandXboxController operatorController = new CommandXboxController(1);
+
   /**
    * Returns true if the robot is on the red alliance.
    *
@@ -51,5 +56,15 @@ public final class Constants {
   public static boolean onRed() {
     return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
         == DriverStation.Alliance.Red;
+  }
+
+  public static void rumble() {
+    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+  }
+
+  public static void stopRumble() {
+    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
 }
