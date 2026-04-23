@@ -45,12 +45,11 @@ public final class Constants {
 
   // Kicker Motor
   public static final int KICKER_MOTOR_ID = 21;
-  
+
   public static final int HOOD_MOTOR_ID = 23;
 
   public static final CommandXboxController driveController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
-
 
   /**
    * Returns true if the robot is on the red alliance.
