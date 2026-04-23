@@ -237,7 +237,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //shooter idle command (runs motors at 1V unless controlled by another subsystem)
+    // shooter idle command (runs motors at 1V unless controlled by another subsystem)
     shooter.setDefaultCommand(shooter.idleCommand());
     // Operator controls
     // Operator Intake roller Bindings
@@ -279,7 +279,11 @@ public class RobotContainer {
         .whileTrue(Commands.parallel(intakeRoller.outtakeCommand(), hopper.outtakeCommand()));
 
     // Spool shooter commands
-    operatorController.rightTrigger().whileTrue(shooter.spoolShooterTrenchSpeedCommand());
+    //TODO: add the following controls and hardcoded values
+    //operator x: spool to hub speed (move hood down)
+    //operator y: spool to trench speed (move hood down)
+    //operator b: spool to herd speed (move hood up)
+    //operator a: spool to tower speed (move hood down)
     operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
     operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
     // Hood controls
@@ -289,7 +293,7 @@ public class RobotContainer {
     operatorController
         .povUp()
         .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
-    //kicker manual controls
+    // kicker manual controls
     operatorController.leftTrigger().whileTrue(kicker.outtakeCommand());
     operatorController.rightTrigger().whileTrue(kicker.intakeCommand());
     // Driver controls

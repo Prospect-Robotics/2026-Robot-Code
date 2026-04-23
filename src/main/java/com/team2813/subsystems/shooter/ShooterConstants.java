@@ -116,6 +116,7 @@ public class ShooterConstants {
   public static Voltage getShooterOuttakeVoltage() {
     return Volts.of(Preferences.getDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5));
   }
+
   public static Voltage getIdleVoltage() {
     return Volts.of(Preferences.getDouble(SHOOTER_IDLE_PREFERENCE_NT, 1));
   }
