@@ -348,11 +348,20 @@ public class RobotContainer {
                             ? Rotation2d.k180deg
                             : Rotation2d.kZero)),
                 shooter.spoolShooterHerdSpeedCommand(),
-                new RepeatCommand(
-                    hood.goToAngleCommand(
-                        HoodConstants
-                            .MAXIMUM_SHOOTER_ANGLE)) // this is supposed to be the herd angle
+                hood.goToAngleCommand(
+                    HoodConstants.MAXIMUM_SHOOTER_ANGLE) // this is supposed to be the herd angle
                 ));
+
+    driveController
+        .leftBumper()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)))
+        .whileTrue(shooter.spoolShooterTowerSpeedCommand())
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
   }
 
   // controller rumble

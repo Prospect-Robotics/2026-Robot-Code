@@ -28,29 +28,28 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command spoolShooterTrenchSpeedCommand() {
-    return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterTrenchShootVelocity()),
-        this::stop,
-        this);
+    return spoolCustomVelocityCommand(ShooterConstants.getShooterTrenchShootVelocity());
   }
 
   public Command spoolShooterHubSpeedCommand() {
-    return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHubShootVelocity()),
-        this::stop,
-        this);
+    return spoolCustomVelocityCommand(ShooterConstants.getShooterHubShootVelocity());
   }
 
   public Command spoolShooterHerdSpeedCommand() {
-    return new StartEndCommand(
-        () -> io.setShooterMotorVelocity(ShooterConstants.getShooterHerdShootVelocity()),
-        this::stop,
-        this);
+    return spoolCustomVelocityCommand(ShooterConstants.getShooterHerdShootVelocity());
+  }
+
+  public Command spoolShooterTowerSpeedCommand() {
+    return spoolCustomVelocityCommand(ShooterConstants.getShooterTowerShootVelocity());
   }
 
   public Command outakeCommand() {
     return new StartEndCommand(
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
+  }
+
+  public Command spoolCustomVelocityCommand(AngularVelocity velocity) {
+    return new StartEndCommand(() -> io.setShooterMotorVelocity(velocity), this::stop, this);
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and

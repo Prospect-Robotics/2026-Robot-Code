@@ -36,11 +36,11 @@ public class HoodConstants {
           // TODO: Run sysid to get PID values
           .withSlot0(
               new Slot0Configs()
-                  .withKP(0.2)
-                  .withKS(0.22349)
+                  .withKP(0.9)
+                  .withKS(0.87349)
                   .withKV(0.0081471)
                   .withKA(0.00044251)
-                  .withKG(0.15395))
+                  .withKG(0.55395))
           .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
 
   private HoodConstants() {
