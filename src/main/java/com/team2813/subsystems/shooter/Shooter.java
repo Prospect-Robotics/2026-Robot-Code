@@ -53,6 +53,10 @@ public class Shooter extends SubsystemBase {
         () -> io.setShooterMotorVoltage(ShooterConstants.getShooterOuttakeVoltage()), this::stop);
   }
 
+  public Command spoolCustomVelocityCommand(AngularVelocity velocity) {
+    return new StartEndCommand(() -> io.setShooterMotorVelocity(velocity), this::stop, this);
+  }
+
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/creating-routine.html
   public Command sysIDRoutine() {

@@ -23,6 +23,9 @@ public class ShooterConstants {
   public static final String SHOOTER_HERD_SHOOT_PREFERENCE_NT =
       "Shooter/SHOOTER_HERD_SHOOT_VELOCITY_RPS";
 
+  public static final String SHOOTER_TOWER_SHOOT_PREFERENCE_NT =
+      "Shooter/SHOOTER_TOWER_SHOOT_VELOCITY_RPS";
+
   public static final String SHOOTER_OUTTAKE_PREFERENCE_NT = "Shooter/SHOOTER_OUTTAKE_VOLTAGE";
 
   public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
@@ -45,6 +48,7 @@ public class ShooterConstants {
     Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100);
     Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55);
+    Preferences.initDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 40);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
   }
 
@@ -108,6 +112,10 @@ public class ShooterConstants {
 
   public static AngularVelocity getShooterHerdShootVelocity() {
     return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55));
+  }
+
+  public static AngularVelocity getShooterTowerShootVelocity() {
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 40));
   }
 
   public static Voltage getShooterOuttakeVoltage() {
