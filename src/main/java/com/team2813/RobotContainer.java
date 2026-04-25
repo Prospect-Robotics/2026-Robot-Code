@@ -353,6 +353,19 @@ public class RobotContainer {
                         HoodConstants
                             .MAXIMUM_SHOOTER_ANGLE)) // this is supposed to be the herd angle
                 ));
+
+    driveController
+        .leftBumper()
+        .whileTrue(
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driveController.getLeftY(),
+                () -> -driveController.getLeftX(),
+                () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)))
+        .whileTrue(
+            VariableShooterCommand.shootBasedOnDistanceCommand(
+                shooter,
+                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
   }
 
   // controller rumble
