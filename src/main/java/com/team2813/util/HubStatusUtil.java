@@ -102,13 +102,10 @@ public class HubStatusUtil {
   }
 
   public static boolean shouldRumble() {
-    double tLeft = timeLeftInCurrentPhase();
-    return isHubActive() ? tLeft <= 5 && tLeft > 4 : tLeft <= 2 && tLeft > 0;
+    return shouldRumble(isHubActive(), timeLeftInCurrentPhase());
   }
 
-  static boolean shouldRumble(boolean hubActive, double timeLeftInCurrentPhase) {
-    return hubActive
-        ? timeLeftInCurrentPhase <= 5 && timeLeftInCurrentPhase > 4
-        : timeLeftInCurrentPhase <= 2 && timeLeftInCurrentPhase > 0;
+  static boolean shouldRumble(boolean hubActive, double tLeft) {
+    return hubActive ? tLeft <= 5 && tLeft > 4 : tLeft <= 2 && tLeft > 0;
   }
 }
