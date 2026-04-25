@@ -365,7 +365,8 @@ public class RobotContainer {
         .whileTrue(
             VariableShooterCommand.shootBasedOnDistanceCommand(
                 shooter,
-                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
+                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)))
+        .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
   }
 
   // controller rumble
