@@ -360,8 +360,7 @@ public class RobotContainer {
                 () -> -driveController.getLeftY(),
                 () -> -driveController.getLeftX(),
                 () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)))
-        .whileTrue(
-            shooter.spoolCustomVelocityCommand(ShooterConstants.getShooterTowerShootVelocity()))
+        .whileTrue(shooter.spoolShooterTowerSpeedCommand())
         .whileTrue(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE));
   }
 
