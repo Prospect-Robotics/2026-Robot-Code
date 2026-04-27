@@ -28,6 +28,8 @@ public class ShooterConstants {
 
   public static final String SHOOTER_OUTTAKE_PREFERENCE_NT = "Shooter/SHOOTER_OUTTAKE_VOLTAGE";
 
+  public static final String SHOOTER_IDLE_PREFERENCE_NT = "Shooter/SHOOTER_IDLING_VOLTAGE";
+
   public static final double SHOOTER_SIM_MOI = 0.00303431; // in kilograms*meters squared.
 
   /**
@@ -50,6 +52,7 @@ public class ShooterConstants {
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55);
     Preferences.initDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 40);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
+    Preferences.initDouble(SHOOTER_IDLE_PREFERENCE_NT, 0);
   }
 
   public static final Current SHOOTER_STATOR_LIMIT = Amps.of(60);
@@ -120,5 +123,9 @@ public class ShooterConstants {
 
   public static Voltage getShooterOuttakeVoltage() {
     return Volts.of(Preferences.getDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5));
+  }
+
+  public static Voltage getIdleVoltage() {
+    return Volts.of(Preferences.getDouble(SHOOTER_IDLE_PREFERENCE_NT, 0));
   }
 }
