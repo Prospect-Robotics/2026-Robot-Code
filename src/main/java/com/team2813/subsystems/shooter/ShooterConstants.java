@@ -47,10 +47,10 @@ public class ShooterConstants {
 
   static {
     // Shooter motors.
-    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100);
-    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60);
+    Preferences.initDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 50);
+    Preferences.initDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 36);
     Preferences.initDouble(SHOOTER_HERD_SHOOT_PREFERENCE_NT, 55);
-    Preferences.initDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 40);
+    Preferences.initDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 44.5);
     Preferences.initDouble(SHOOTER_OUTTAKE_PREFERENCE_NT, -5);
     Preferences.initDouble(SHOOTER_IDLE_PREFERENCE_NT, 15);
   }
@@ -106,11 +106,11 @@ public class ShooterConstants {
   public static final double SHOOTER_MOTOR_TO_FLYWHEEL_GEARING = 1.0;
 
   public static AngularVelocity getShooterTrenchShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 100));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TRENCH_SHOOT_PREFERENCE_NT, 50));
   }
 
   public static AngularVelocity getShooterHubShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 60));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_HUB_SHOOT_PREFERENCE_NT, 36));
   }
 
   public static AngularVelocity getShooterHerdShootVelocity() {
@@ -118,7 +118,7 @@ public class ShooterConstants {
   }
 
   public static AngularVelocity getShooterTowerShootVelocity() {
-    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 40));
+    return RotationsPerSecond.of(Preferences.getDouble(SHOOTER_TOWER_SHOOT_PREFERENCE_NT, 44.5));
   }
 
   public static Voltage getShooterOuttakeVoltage() {

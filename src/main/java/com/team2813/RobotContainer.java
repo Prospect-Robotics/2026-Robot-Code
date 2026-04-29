@@ -282,8 +282,30 @@ public class RobotContainer {
     // operator y: spool to trench speed (move hood down)
     // operator b: spool to herd speed (move hood up)
     // operator a: spool to tower speed (move hood down)
-    operatorController.x().whileTrue(shooter.spoolShooterHubSpeedCommand());
-    operatorController.y().whileTrue(shooter.spoolShooterHerdSpeedCommand());
+    operatorController
+        .x()
+        .whileTrue(
+            shooter
+                .spoolShooterHubSpeedCommand()
+                .alongWith(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE)));
+    operatorController
+        .y()
+        .whileTrue(
+            shooter
+                .spoolShooterTrenchSpeedCommand()
+                .alongWith(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE)));
+    operatorController
+        .b()
+        .whileTrue(
+            shooter
+                .spoolShooterHerdSpeedCommand()
+                .alongWith(hood.goToAngleCommand(HoodConstants.MAXIMUM_SHOOTER_ANGLE)));
+    operatorController
+        .a()
+        .whileTrue(
+            shooter
+                .spoolShooterTowerSpeedCommand()
+                .alongWith(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE)));
     // Hood controls
     operatorController
         .povDown()
