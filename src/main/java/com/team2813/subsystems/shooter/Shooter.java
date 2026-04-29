@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase {
 
   public Command idleCommand() {
     return new StartEndCommand(
-        () -> io.setShooterMotorVoltage(ShooterConstants.getIdleVoltage()), this::stop, this);
+        () -> io.setShooterMotorVelocity(ShooterConstants.getIdleVelocity()), this::stop, this);
   }
 
   // Instructions taken from https://docs.advantagekit.org/data-flow/sysid-compatibility/ and

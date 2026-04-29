@@ -237,7 +237,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // shooter idle command (runs motors at 1V unless controlled by another subsystem)
+    // shooter idle command (runs motors at the preference velocity if no other commands use
+    // shooter).
     shooter.setDefaultCommand(shooter.idleCommand());
     // Operator controls
     // Operator Intake roller Bindings
