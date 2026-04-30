@@ -356,8 +356,9 @@ public class RobotContainer {
                 () -> HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance)))
         .whileTrue(
             VariableShooterCommand.shootBasedOnDistanceCommand(
-                shooter,
-                () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance)));
+                    shooter,
+                    () -> HubPositionUtil.getBotToHubDistance(drive.getPose(), currentAlliance))
+                .alongWith(hood.goToAngleCommand(HoodConstants.MINIMUM_SHOOTER_ANGLE)));
     // temporary drum test binding
     //    driveController.b().whileTrue(shooter.outakeCommand());
 
