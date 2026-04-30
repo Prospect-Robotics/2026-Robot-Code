@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Preferences;
-import org.littletonrobotics.junction.Logger;
 
 public class VisionConstants {
 
@@ -53,11 +52,11 @@ public class VisionConstants {
           new Translation3d(Inches.of(-13.263), Centimeters.of(0), Inches.of(14.028)),
           new Rotation3d(Degrees.of(0), Degrees.of(-15), Degrees.of(180)));
 
-//  static {
-//    Logger.recordOutput("VisTest/Red", RED_BACK_LEFT_CAM_FROM_ROBOT);
-//    Logger.recordOutput("VisTest/Green", GREEN_BACK_RIGHT_CAM_FROM_ROBOT);
-//    Logger.recordOutput("VisTest/Blue", BLUE_FRONT_CAM_FROM_ROBOT);
-//  }
+  //  static {
+  //    Logger.recordOutput("VisTest/Red", RED_BACK_LEFT_CAM_FROM_ROBOT);
+  //    Logger.recordOutput("VisTest/Green", GREEN_BACK_RIGHT_CAM_FROM_ROBOT);
+  //    Logger.recordOutput("VisTest/Blue", BLUE_FRONT_CAM_FROM_ROBOT);
+  //  }
 
   // Basic filtering thresholds
   public static double maxAmbiguity = 0.3;
