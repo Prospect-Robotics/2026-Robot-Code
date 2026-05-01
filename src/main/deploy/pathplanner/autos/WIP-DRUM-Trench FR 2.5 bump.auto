@@ -31,7 +31,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "Trench FL-mid-bump-left shot pos"
+                              "pathName": "Trench FR-mid-bump-right shot pos"
                             }
                           },
                           {
@@ -94,7 +94,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 11.0
+                  "waitTime": 9.0
                 }
               },
               {
@@ -108,7 +108,7 @@
                           {
                             "type": "path",
                             "data": {
-                              "pathName": "left shot pos-trench-hairpin-bump-left shot pos"
+                              "pathName": "right shot pos-trench-hairpin-bump-right shot pos"
                             }
                           },
                           {
@@ -168,6 +168,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right 2.5 pass"
           }
         }
       ]

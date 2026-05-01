@@ -94,7 +94,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 11.0
+                  "waitTime": 9.0
                 }
               },
               {
@@ -168,6 +168,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "left 2.5 pass"
           }
         }
       ]

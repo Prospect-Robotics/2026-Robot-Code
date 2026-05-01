@@ -267,21 +267,13 @@ public class RobotContainer {
                     drive.stopTowardPoint(
                         HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance))));
 
-    // Feeder controls
-    operatorController
-        .leftBumper()
-        .whileTrue(Commands.parallel(hopper.outtakeCommand(), kicker.outtakeCommand()));
-    operatorController.povLeft().whileTrue(hopper.intakeCommand());
+    
 
-    // Operator intake roller bindings.
-    operatorController.povRight().whileTrue(intakeRoller.intakeCommand());
-
+    //manual intake for operator
+    operatorController.povLeft().whileTrue(intakeExtension.retractCommand());
+    operatorController.povRight().whileTrue(intakeExtension.extendCommand());
     // Spool shooter commands
     // TODO: add the following controls and hardcoded values
-    // operator x: spool to hub speed (move hood down)
-    // operator y: spool to trench speed (move hood down)
-    // operator b: spool to herd speed (move hood up)
-    // operator a: spool to tower speed (move hood down)
     operatorController
         .x()
         .whileTrue(
