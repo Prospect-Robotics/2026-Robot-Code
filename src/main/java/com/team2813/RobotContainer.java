@@ -267,9 +267,7 @@ public class RobotContainer {
                     drive.stopTowardPoint(
                         HubPositionUtil.getBotToHubAngle(drive.getPose(), currentAlliance))));
 
-    
-
-    //manual intake for operator
+    // manual intake for operator
     operatorController.povLeft().whileTrue(intakeExtension.retractCommand());
     operatorController.povRight().whileTrue(intakeExtension.extendCommand());
     // Spool shooter commands
