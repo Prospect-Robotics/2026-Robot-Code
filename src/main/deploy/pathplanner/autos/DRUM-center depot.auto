@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DEPRECATED_hub-depot"
+                  "pathName": "hub-depot"
                 }
               },
               {
@@ -42,7 +42,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DEPRECATED_depot-center_shot"
+                  "pathName": "depot-center_shot"
                 }
               },
               {

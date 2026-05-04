@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.480314569536423,
-        "y": 0.46311258278145717
+        "x": 4.453095577746077,
+        "y": 0.5221540656205423
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.066721854304635,
-        "y": 0.4921523178807956
+        "x": 7.855962910128387,
+        "y": 1.337289586305278
       },
       "isLocked": false,
       "linkedName": "DRUM-Trench FR"
@@ -20,12 +20,12 @@
         "y": 2.212756622516557
       },
       "prevControl": {
-        "x": 8.132061258278146,
-        "y": 1.2956743856436232
+        "x": 8.14061340941512,
+        "y": 1.7383880171184036
       },
       "nextControl": {
-        "x": 8.132061258278146,
-        "y": 3.6653966245756404
+        "x": 8.105876603009214,
+        "y": 3.6651606088133
       },
       "isLocked": false,
       "linkedName": null
@@ -73,7 +73,7 @@
       },
       "nextControl": {
         "x": 2.0264569536423838,
-        "y": 2.466854304635761
+        "y": 2.4668543046357607
       },
       "isLocked": false,
       "linkedName": null
@@ -94,7 +94,11 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9751609935602532,
+      "waypointRelativePos": 0.39058709364387384,
+      "rotationDegrees": 45.0
+    },
+    {
+      "waypointRelativePos": 1.137797185832109,
       "rotationDegrees": 90.0
     },
     {
@@ -109,10 +113,10 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.8363448631905099,
+      "minWaypointRelativePos": 0.19798136645962736,
       "maxWaypointRelativePos": 1.8688693856479086,
       "constraints": {
-        "maxVelocity": 3.0,
+        "maxVelocity": 2.5,
         "maxAcceleration": 5.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -139,7 +143,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }
