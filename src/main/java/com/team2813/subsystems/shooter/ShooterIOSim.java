@@ -10,7 +10,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class ShooterIOSim implements ShooterIO {
   private final TalonFX upperRightShooterMotor;
@@ -27,7 +27,7 @@ public class ShooterIOSim implements ShooterIO {
 
   private final VelocityVoltage shooterVelocityControl;
 
-  private final FlywheelSim shooterSim;
+  private final DCMotorSim shooterSim;
 
   private AngularVelocity upperRightShooterSetpoint = RotationsPerSecond.of(0);
 
@@ -55,12 +55,19 @@ public class ShooterIOSim implements ShooterIO {
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
 
     shooterSim =
-        new FlywheelSim(
-            LinearSystemId.createFlywheelSystem(
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
                 DCMotor.getKrakenX60(4),
-                ShooterConstants.SHOOTER_SIM_MOI, // "Moment of Inertia" taken from OnShape.
+                ShooterConstants.SHOOTER_SIM_MOI,
                 ShooterConstants.SHOOTER_MOTOR_TO_FLYWHEEL_GEARING),
             DCMotor.getKrakenX60(4));
+
+    //        new FlywheelSim(
+    //            LinearSystemId.createFlywheelSystem(
+    //                DCMotor.getKrakenX60(4),
+    //                ShooterConstants.SHOOTER_SIM_MOI, // "Moment of Inertia" taken from OnShape.
+    //                ShooterConstants.SHOOTER_MOTOR_TO_FLYWHEEL_GEARING),
+    //            DCMotor.getKrakenX60(4));
   }
 
   @Override
@@ -122,18 +129,20 @@ public class ShooterIOSim implements ShooterIO {
 
     // Feed the velocity and acceleration of the roller simulation into the simulation motors to
     // accurately model them.
-    upperRightShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
-    upperRightShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
-
-    lowerLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
-    lowerLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
-
-    // The follower roller motor is opposed with the main motor, so it gets negated values.
-    upperLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
-    upperLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
-
-    lowerLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
-    lowerLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
+    //    upperRightShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
+    //    upperRightShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
+    //
+    //    lowerLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration());
+    //    lowerLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity());
+    //
+    //    // The follower roller motor is opposed with the main motor, so it gets negated values.
+    //
+    // upperLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
+    //    upperLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
+    //
+    //
+    // lowerLeftShooterSimState.setRotorAcceleration(shooterSim.getAngularAcceleration().unaryMinus());
+    //    lowerLeftShooterSimState.setRotorVelocity(shooterSim.getAngularVelocity().unaryMinus());
   }
 
   @Override
