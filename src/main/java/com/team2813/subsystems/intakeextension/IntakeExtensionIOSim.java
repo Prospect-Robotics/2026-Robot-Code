@@ -6,18 +6,22 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.team2813.Constants;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Resistance;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class IntakeExtensionIOSim implements IntakeExtensionIO {
   private final TalonFX extenderMotor;
   private final TalonFXSimState extenderMotorSimState;
 
-  private final ElevatorSim extenderSim;
+  private final Resistance motorResistance = MilliOhm.of(2);
+
+  private final DCMotorSim extenderSim;
 
   // PID controller for simulation - TalonFX sim doesn't run internal PID
   private final PIDController simPidController;
@@ -39,15 +43,21 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
     extenderMotor.getConfigurator().apply(IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG);
 
     extenderSim =
-        new ElevatorSim(
-            DCMotor.getKrakenX44(2),
-            IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING,
-            IntakeExtensionConstants.WEIGHT_OF_EXTENDER_CARRIAGE.in(Kilograms),
-            IntakeExtensionConstants.PULLEY_RADIUS.in(Meters),
-            IntakeExtensionConstants.RETRACTED_POSITION.in(Meters),
-            IntakeExtensionConstants.EXTENDED_POSITION.in(Meters),
-            false,
-            0); // Start unextended
+        //        new ElevatorSim(
+        //            DCMotor.getKrakenX44(2),
+        //            IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING,
+        //            IntakeExtensionConstants.WEIGHT_OF_EXTENDER_CARRIAGE.in(Kilograms),
+        //            IntakeExtensionConstants.PULLEY_RADIUS.in(Meters),
+        //            IntakeExtensionConstants.RETRACTED_POSITION.in(Meters),
+        //            IntakeExtensionConstants.EXTENDED_POSITION.in(Meters),
+        //            false,
+        //            0); // Start unextended
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
+                DCMotor.getKrakenX60(1),
+                IntakeExtensionConstants.MOTOR_MOMENT_OF_INERTIA,
+                IntakeExtensionConstants.EXTENDER_MOTOR_TO_EXTENDER_GEARING),
+            DCMotor.getKrakenX60(1));
 
     // Initialize PID controller with same gains as motor config
     var slot0 = IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG.Slot0;
@@ -58,59 +68,19 @@ public class IntakeExtensionIOSim implements IntakeExtensionIO {
 
   @Override
   public void updateState(IntakeExtensionIOInputs inputs) {
-    // Continue supplying the simulated motor with 12V voltage.
-    extenderMotorSimState.setSupplyVoltage(12);
+    extenderSim.setInputVoltage(extenderMotorSimState.getMotorVoltage());
 
-    // TalonFX simulation doesn't run the internal PID controller, so we simulate it ourselves
-    // using a WPILib PIDController with the same gains.
-    double currentPositionRotations =
-        extenderSim.getPositionMeters()
-            * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS;
-    double setpointRotations = extensionSetpoint.in(Rotations);
+    extenderSim.update(Constants.SIM_TIME_PERIOD);
 
-    // Calculate PID output voltage
-    double pidOutput = simPidController.calculate(currentPositionRotations, setpointRotations);
+    // Try with final before without
+    final double pos_rot = extenderSim.getAngularPositionRotations();
+    final double vel_rps = Units.radiansToRotations(extenderSim.getAngularVelocityRadPerSec());
 
-    // Add static friction feedforward (kS). Velocity feedforward (kV) is not used in this
-    // position-control simulation.
-    var slot0 = IntakeExtensionConstants.EXTENDER_MOTOR_CONFIG.Slot0;
-    double feedforward = Math.signum(pidOutput) * slot0.kS;
+    extenderMotorSimState.setRawRotorPosition(pos_rot);
+    extenderMotorSimState.setRotorVelocity(vel_rps);
 
-    // Clamp to supply voltage
-    double motorVoltage = MathUtil.clamp(pidOutput + feedforward, -12.0, 12.0);
-
-    extenderSim.setInput(motorVoltage);
-
-    // With the new motor voltage, step forward the simulation by 20ms. This will update the
-    // position and velocity of the simulated mechanism.
-    extenderSim.update(0.02);
-
-    // Now the simulated physical movement of the mechanism is fed back into the TalonFX motor
-    // simulation so its internal state and sensor readings (position/velocity) stay consistent with
-    // the ElevatorSim physics. PID control is handled by simPidController, not by the TalonFX.
-    // We apply MOTOR_DIRECTION because when the motor is inverted, getPosition() will negate the
-    // raw rotor position. By setting the raw rotor position with the opposite sign, getPosition()
-    // will return the correct positive value for extended positions.
-    extenderMotorSimState.setRotorVelocity(
-        MOTOR_DIRECTION
-            * extenderSim.getVelocityMetersPerSecond()
-            * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-    extenderMotorSimState.setRawRotorPosition(
-        MOTOR_DIRECTION
-            * extenderSim.getPositionMeters()
-            * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-
-    // Finally update all simulated inputs.
-    // Report position directly from ElevatorSim to avoid TalonFX inversion issues
-    inputs.extenderMotorVoltage = extenderMotor.getMotorVoltage().getValue();
-    inputs.extenderMotorRPS = extenderMotor.getRotorVelocity().getValue();
-    inputs.extenderMotorStatorCurrent = extenderMotor.getStatorCurrent().getValue();
-    inputs.extenderMotorSupplyCurrent = extenderMotor.getSupplyCurrent().getValue();
-    inputs.extenderMotorPosition =
-        Rotations.of(
-            extenderSim.getPositionMeters()
-                * IntakeExtensionConstants.DISTANCE_METERS_TO_MOTOR_ROTATIONS);
-    inputs.extenderMotorSetpoint = extensionSetpoint;
+    extenderMotorSimState.setSupplyVoltage(
+        12 - extenderMotorSimState.getSupplyCurrent() * motorResistance.in(Ohm));
   }
 
   @Override

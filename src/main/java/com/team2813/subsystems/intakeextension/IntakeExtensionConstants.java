@@ -36,6 +36,12 @@ class IntakeExtensionConstants {
   public static final Distance RETRACTED_POSITION = Inches.of(0);
 
   public static final Distance ANTI_STALL_DISTANCE = Inches.of(0.15);
+  // Via
+  // https://www.linearmotiontips.com/how-to-account-for-rack-and-pinion-inertia-during-system-design/
+  // Calculated via m*r^2 where m is the mass of the carriage, and r^2 is the radius of the pully in
+  // meters.
+  public static final double MOTOR_MOMENT_OF_INERTIA =
+      WEIGHT_OF_EXTENDER_CARRIAGE.in(Kilograms) * Math.pow(PULLEY_RADIUS.in(Meters), 2);
 
   // TODO: Migrate this enum to a more suitable location than a Constants Class.
   public enum ExtenderPositions {
