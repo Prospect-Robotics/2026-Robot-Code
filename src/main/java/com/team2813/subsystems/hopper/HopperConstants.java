@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Voltage;
@@ -46,7 +47,8 @@ public class HopperConstants {
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withSupplyCurrentLimit(Amps.of(30))
-                  .withStatorCurrentLimit(Amps.of(60)));
+                  .withStatorCurrentLimit(Amps.of(60)))
+          .withSlot0(new Slot0Configs().withKS(0.2).withKV(0.116));
 
   // TODO: Change this later to the actual number.
   public static final double FEEDER_MOTOR_TO_ROLLER_GEARING = 1;
