@@ -13,10 +13,10 @@ public interface HopperIO {
   @AutoLog
   class HopperIOInputs {
     // Roller/Magazine
-    public Voltage mainFeederMotorVoltage = Volts.of(0);
-    public AngularVelocity mainFeederMotorRPS = RotationsPerSecond.of(0);
-    public Current mainFeederMotorStatorCurrent = Amps.of(0);
-    public Current mainFeederMotorSupplyCurrent = Amps.of(0);
+    public Voltage feederMotorVoltage = Volts.of(0);
+    public AngularVelocity feederMotorRPS = RotationsPerSecond.of(0);
+    public Current feederMotorStatorCurrent = Amps.of(0);
+    public Current feederMotorSupplyCurrent = Amps.of(0);
   }
 
   /**

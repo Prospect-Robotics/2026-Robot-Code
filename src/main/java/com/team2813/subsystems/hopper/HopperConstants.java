@@ -39,20 +39,10 @@ public class HopperConstants {
     return Volts.of(Preferences.getDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
-  // TOP
-  public static final TalonFXConfiguration MAIN_ROLLER_MOTOR_CONFIG =
+  // The motor on the bottom feeders.
+  public static final TalonFXConfiguration FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
-          .withCurrentLimits(
-              new CurrentLimitsConfigs()
-                  .withSupplyCurrentLimit(Amps.of(30))
-                  .withStatorCurrentLimit(Amps.of(60)));
-
-  // Bottom Motor, opposite of main motor.
-  public static final TalonFXConfiguration FOLLOWER_FEEDER_MOTOR_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withSupplyCurrentLimit(Amps.of(30))
