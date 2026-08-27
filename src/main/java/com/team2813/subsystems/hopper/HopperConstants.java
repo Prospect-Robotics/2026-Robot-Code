@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.units.measure.Voltage;
@@ -39,24 +40,15 @@ public class HopperConstants {
     return Volts.of(Preferences.getDouble(FEEDER_OUTTAKE_VOLTAGE_NT, -6));
   }
 
-  // TOP
-  public static final TalonFXConfiguration MAIN_ROLLER_MOTOR_CONFIG =
+  // The motor on the bottom feeders.
+  public static final TalonFXConfiguration FEEDER_MOTOR_CONFIG =
       new TalonFXConfiguration()
           .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withSupplyCurrentLimit(Amps.of(30))
-                  .withStatorCurrentLimit(Amps.of(60)));
-
-  // Bottom Motor, opposite of main motor.
-  public static final TalonFXConfiguration FOLLOWER_FEEDER_MOTOR_CONFIG =
-      new TalonFXConfiguration()
-          .withMotorOutput(
-              new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive))
-          .withCurrentLimits(
-              new CurrentLimitsConfigs()
-                  .withSupplyCurrentLimit(Amps.of(30))
-                  .withStatorCurrentLimit(Amps.of(60)));
+                  .withStatorCurrentLimit(Amps.of(60)))
+          .withSlot0(new Slot0Configs().withKS(0.2).withKV(0.116));
 
   // TODO: Change this later to the actual number.
   public static final double FEEDER_MOTOR_TO_ROLLER_GEARING = 1;
