@@ -13,7 +13,7 @@ public class IntakeExtensionIOReal implements IntakeExtensionIO {
   private final TalonFX extenderMotor;
   private Angle extensionSetpoint;
 
-  private PositionVoltage positionVoltage = new PositionVoltage(0);
+  private final PositionVoltage positionVoltage = new PositionVoltage(0);
 
   public IntakeExtensionIOReal() {
     extenderMotor = new TalonFX(Constants.EXTENDER_MOTOR_CAN_ID);

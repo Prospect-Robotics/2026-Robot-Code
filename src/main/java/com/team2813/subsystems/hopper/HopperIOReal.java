@@ -12,45 +12,44 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
 public class HopperIOReal implements HopperIO {
-  private final TalonFX mainFeederMotor; // Top magazine motor.
+  private final TalonFX feederMotor; // Top magazine motor.
 
   // Prep the fields we will log for each motor.
   // By having a status signal stored, we can refresh all the motor values at once.
   // Before, we would refresh all the motor values just to get one value, causing a performance
   // issue.
-  StatusSignal<Voltage> mainFeederVoltage;
-  StatusSignal<AngularVelocity> mainFeederRPS;
-  StatusSignal<Current> mainFeederStatorCurrent; // Motor Control to Stator
-  StatusSignal<Current> mainFeederSupplyCurrent; // Battery to Stator
+  StatusSignal<Voltage> feederVoltage;
+  StatusSignal<AngularVelocity> feederRPS;
+  StatusSignal<Current> feederStatorCurrent; // Motor Control to Stator
+  StatusSignal<Current> feederSupplyCurrent; // Battery to Stator
 
   public HopperIOReal() {
-    mainFeederMotor = new TalonFX(Constants.MAIN_FEEDER_MOTOR_CAN_ID);
-    mainFeederMotor.getConfigurator().apply(HopperConstants.MAIN_ROLLER_MOTOR_CONFIG);
+    feederMotor = new TalonFX(Constants.FEEDER_MOTOR_CAN_ID);
+    feederMotor.getConfigurator().apply(HopperConstants.FEEDER_MOTOR_CONFIG);
 
-    mainFeederVoltage = mainFeederMotor.getMotorVoltage();
-    mainFeederRPS = mainFeederMotor.getRotorVelocity();
-    mainFeederStatorCurrent = mainFeederMotor.getStatorCurrent();
-    mainFeederSupplyCurrent = mainFeederMotor.getSupplyCurrent();
+    feederVoltage = feederMotor.getMotorVoltage();
+    feederRPS = feederMotor.getRotorVelocity();
+    feederStatorCurrent = feederMotor.getStatorCurrent();
+    feederSupplyCurrent = feederMotor.getSupplyCurrent();
 
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50, mainFeederVoltage, mainFeederRPS, mainFeederStatorCurrent, mainFeederSupplyCurrent);
+        50, feederVoltage, feederRPS, feederStatorCurrent, feederSupplyCurrent);
 
-    ParentDevice.optimizeBusUtilizationForAll(mainFeederMotor);
+    ParentDevice.optimizeBusUtilizationForAll(feederMotor);
   }
 
   @Override
   public void updateState(HopperIOInputs inputs) {
-    BaseStatusSignal.refreshAll(
-        mainFeederVoltage, mainFeederRPS, mainFeederStatorCurrent, mainFeederSupplyCurrent);
+    BaseStatusSignal.refreshAll(feederVoltage, feederRPS, feederStatorCurrent, feederSupplyCurrent);
 
-    inputs.mainFeederMotorVoltage = mainFeederVoltage.getValue();
-    inputs.mainFeederMotorRPS = mainFeederRPS.getValue();
-    inputs.mainFeederMotorStatorCurrent = mainFeederStatorCurrent.getValue();
-    inputs.mainFeederMotorSupplyCurrent = mainFeederSupplyCurrent.getValue();
+    inputs.feederMotorVoltage = feederVoltage.getValue();
+    inputs.feederMotorRPS = feederRPS.getValue();
+    inputs.feederMotorStatorCurrent = feederStatorCurrent.getValue();
+    inputs.feederMotorSupplyCurrent = feederSupplyCurrent.getValue();
   }
 
   @Override
   public void setMotorVoltage(Voltage rollerVoltage, Voltage feederVoltage) {
-    mainFeederMotor.setVoltage(rollerVoltage.in(Volts));
+    feederMotor.setVoltage(rollerVoltage.in(Volts));
   }
 }
