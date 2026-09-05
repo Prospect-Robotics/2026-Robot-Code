@@ -131,7 +131,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    robotContainer.stopRumble();
+    Constants.stopRumble();
   }
 
   /** This function is called periodically when disabled. */
@@ -174,19 +174,20 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopInit() {}
 
-  /** This function is called periodically during operator control. */
+  /**
+   * This function is called periodically during operator control.
+   *
+   * <p>The controller rumbles for 2 seconds at the end of an inactive shift
+   *
+   * <p>and rumbles for 1 second when 5 seconds left in an active shift.
+   */
   @Override
   public void teleopPeriodic() {
-    double timeLeftInCurrentPhase = HubStatusUtil.timeLeftInCurrentPhase();
-    // rumble controllers 3 times if the phase is about to end
-    // TODO: Rework the comment, Tamir or Tom
-    if (timeLeftInCurrentPhase <= 3
-        && (timeLeftInCurrentPhase - (int) timeLeftInCurrentPhase) > 0.7
-        && timeLeftInCurrentPhase > 0) {
-      robotContainer.setRumbleDriver();
-      robotContainer.setRumbleOperator();
+    boolean shouldRumble = HubStatusUtil.shouldRumble();
+    if (shouldRumble) {
+      Constants.rumble();
     } else {
-      robotContainer.stopRumble();
+      Constants.stopRumble();
     }
   }
 

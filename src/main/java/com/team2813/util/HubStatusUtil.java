@@ -100,4 +100,12 @@ public class HubStatusUtil {
       return matchTimeInSeconds;
     } else return 0;
   }
+
+  public static boolean shouldRumble() {
+    return shouldRumble(isHubActive(), timeLeftInCurrentPhase());
+  }
+
+  static boolean shouldRumble(boolean hubActive, double tLeft) {
+    return hubActive ? tLeft <= 5 && tLeft > 4 : tLeft <= 2 && tLeft > 0;
+  }
 }

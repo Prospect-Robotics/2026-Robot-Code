@@ -7,6 +7,8 @@
 
 package com.team2813;
 
+import static com.team2813.Constants.driveController;
+import static com.team2813.Constants.operatorController;
 import static com.team2813.subsystems.vision.VisionConstants.aprilTagLayout;
 import static edu.wpi.first.units.Units.Seconds;
 
@@ -46,7 +48,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
@@ -73,9 +74,6 @@ public class RobotContainer {
   private final Shooter shooter;
   private final Kicker kicker;
   private final Hood hood;
-  // Controller
-  private final CommandXboxController driveController = new CommandXboxController(0);
-  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -235,6 +233,10 @@ public class RobotContainer {
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   *
+   * <p>See <a
+   * href="https://docs.google.com/document/d/1c1zoiYpnxV-vbh7Lwg_JNCNO7cJSAgor_JbsUmiQnXE/edit?tab=t.0">Controls
+   * Documentation</a> for more details on the recommended button bindings.
    */
   private void configureButtonBindings() {
     // shooter idle command (runs motors at the preference velocity if no other commands use
@@ -387,16 +389,6 @@ public class RobotContainer {
   public void setRumbleOperator() {
     // TODO: test rumble values with operator
     operatorController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
-  }
-
-  public void setRumbleDriver() {
-    // TODO: test rumble values with driver
-    driveController.setRumble(GenericHID.RumbleType.kLeftRumble, 1);
-  }
-
-  public void stopRumble() {
-    operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
-    driveController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
   }
 
   /**
