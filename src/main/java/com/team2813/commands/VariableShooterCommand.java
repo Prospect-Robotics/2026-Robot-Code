@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public class VariableShooterCommand {
   // TODO: Tweak the speeds and distance after pinnacles if we have time.
   private static final AngularVelocity MIN_SPEED =
-      RotationsPerSecond.of(33); // 2 meters. Hub shot speed.
+      RotationsPerSecond.of(34); // 2 meters. Hub shot speed.
   private static final AngularVelocity MAX_SPEED =
       RotationsPerSecond.of(52); // 5 meters from hub speed.
 
