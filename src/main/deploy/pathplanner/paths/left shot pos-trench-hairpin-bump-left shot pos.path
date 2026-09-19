@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9339486754966884,
-        "y": 5.051390728476821
+        "x": 2.809885877318117,
+        "y": 5.076562054208274
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.454793046357616,
-        "y": 7.178551324503311
+        "x": 2.3307302481790444,
+        "y": 7.203722650234765
       },
       "isLocked": false,
       "linkedName": "DRUM-Left Shot pos"
@@ -128,12 +128,12 @@
     },
     {
       "anchor": {
-        "x": 2.9339486754966884,
-        "y": 5.051390728476821
+        "x": 2.809885877318117,
+        "y": 5.076562054208274
       },
       "prevControl": {
-        "x": 2.2587748344370855,
-        "y": 5.595885761589403
+        "x": 1.4642653352353778,
+        "y": 5.490599144079885
       },
       "nextControl": null,
       "isLocked": false,
@@ -168,11 +168,24 @@
   ],
   "constraintZones": [
     {
-      "name": "Constraints Zone",
+      "name": "Slow Intake",
       "minWaypointRelativePos": 2.6742385131646964,
       "maxWaypointRelativePos": 5.2,
       "constraints": {
         "maxVelocity": 3.0,
+        "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Faster Over Bump",
+      "minWaypointRelativePos": 5.7671068427370775,
+      "maxWaypointRelativePos": 6.84,
+      "constraints": {
+        "maxVelocity": 8.0,
         "maxAcceleration": 5.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
