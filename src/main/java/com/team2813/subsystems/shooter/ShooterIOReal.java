@@ -48,7 +48,7 @@ public class ShooterIOReal implements ShooterIO {
 
     leftShooterFollower =
         new Follower(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
-    lowerLeftShooterMotor.setControl(rightShooterFollower);
+    lowerLeftShooterMotor.setControl(leftShooterFollower);
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
   }
