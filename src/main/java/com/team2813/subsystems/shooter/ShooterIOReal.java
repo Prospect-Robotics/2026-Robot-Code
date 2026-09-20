@@ -2,10 +2,8 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
@@ -17,8 +15,8 @@ public class ShooterIOReal implements ShooterIO {
   private TalonFX upperRightShooterMotor;
   private TalonFX lowerRightShooterMotor;
 
-  private Follower rightShooterFollower;
-  private Follower leftShooterFollower;
+  //  private Follower rightShooterFollower;
+  //  private Follower leftShooterFollower;
 
   private TalonFX upperLeftShooterMotor;
   private TalonFX lowerLeftShooterMotor;
@@ -36,9 +34,9 @@ public class ShooterIOReal implements ShooterIO {
         .getConfigurator()
         .apply(ShooterConstants.LOWER_RIGHT_SHOOTER_MOTOR_CONFIG);
 
-    rightShooterFollower =
-        new Follower(Constants.UPPER_RIGHT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
-    lowerRightShooterMotor.setControl(rightShooterFollower);
+    //    rightShooterFollower =
+    //        new Follower(Constants.UPPER_RIGHT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
+    //    lowerRightShooterMotor.setControl(rightShooterFollower);
 
     upperLeftShooterMotor = new TalonFX(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID);
     upperLeftShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
@@ -46,9 +44,9 @@ public class ShooterIOReal implements ShooterIO {
     lowerLeftShooterMotor = new TalonFX(Constants.LOWER_LEFT_SHOOTER_MOTOR_ID);
     lowerLeftShooterMotor.getConfigurator().apply(ShooterConstants.LOWER_LEFT_SHOOTER_MOTOR_CONFIG);
 
-    leftShooterFollower =
-        new Follower(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
-    lowerLeftShooterMotor.setControl(leftShooterFollower);
+    //    leftShooterFollower =
+    //        new Follower(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
+    //    lowerLeftShooterMotor.setControl(leftShooterFollower);
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
   }
@@ -106,8 +104,10 @@ public class ShooterIOReal implements ShooterIO {
     // AngularVelocity converting its value (i.e. Rot/s) to the base unit (rad/s)
     upperRightShooterSetpoint = shooterMotorVelocity;
     upperRightShooterMotor.setControl(shooterVelocityControl.withVelocity(shooterMotorVelocity));
+    lowerRightShooterMotor.setControl(shooterVelocityControl);
     // same velocity
     upperLeftShooterMotor.setControl(shooterVelocityControl);
+    lowerLeftShooterMotor.setControl(shooterVelocityControl);
   }
 
   @Override
