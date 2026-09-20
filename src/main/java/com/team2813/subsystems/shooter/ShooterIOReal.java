@@ -2,8 +2,10 @@ package com.team2813.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.team2813.Constants;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
@@ -14,6 +16,9 @@ public class ShooterIOReal implements ShooterIO {
   private final VelocityVoltage shooterVelocityControl;
   private TalonFX upperRightShooterMotor;
   private TalonFX lowerRightShooterMotor;
+
+  private Follower rightShooterFollower;
+  private Follower leftShooterFollower;
 
   private TalonFX upperLeftShooterMotor;
   private TalonFX lowerLeftShooterMotor;
@@ -31,11 +36,19 @@ public class ShooterIOReal implements ShooterIO {
         .getConfigurator()
         .apply(ShooterConstants.LOWER_RIGHT_SHOOTER_MOTOR_CONFIG);
 
+    rightShooterFollower =
+        new Follower(Constants.UPPER_RIGHT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
+    lowerRightShooterMotor.setControl(rightShooterFollower);
+
     upperLeftShooterMotor = new TalonFX(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID);
     upperLeftShooterMotor.getConfigurator().apply(ShooterConstants.UPPER_LEFT_SHOOTER_MOTOR_CONFIG);
 
     lowerLeftShooterMotor = new TalonFX(Constants.LOWER_LEFT_SHOOTER_MOTOR_ID);
     lowerLeftShooterMotor.getConfigurator().apply(ShooterConstants.LOWER_LEFT_SHOOTER_MOTOR_CONFIG);
+
+    leftShooterFollower =
+        new Follower(Constants.UPPER_LEFT_SHOOTER_MOTOR_ID, MotorAlignmentValue.Aligned);
+    lowerLeftShooterMotor.setControl(rightShooterFollower);
 
     shooterVelocityControl = new VelocityVoltage(RotationsPerSecond.of(0));
   }
