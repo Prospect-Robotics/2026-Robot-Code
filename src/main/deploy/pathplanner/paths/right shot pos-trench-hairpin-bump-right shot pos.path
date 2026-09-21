@@ -132,8 +132,8 @@
         "y": 3.018609271523179
       },
       "prevControl": {
-        "x": 1.844958609271523,
-        "y": 2.510413907284768
+        "x": 1.3866333808844504,
+        "y": 2.5923395149786024
       },
       "nextControl": null,
       "isLocked": false,
@@ -168,11 +168,24 @@
   ],
   "constraintZones": [
     {
-      "name": "Constraints Zone",
+      "name": "Slow Intake",
       "minWaypointRelativePos": 2.992256066081573,
       "maxWaypointRelativePos": 4.9943211151264695,
       "constraints": {
         "maxVelocity": 3.0,
+        "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Faster Over Bump",
+      "minWaypointRelativePos": 6.132052821128415,
+      "maxWaypointRelativePos": 6.842737094837935,
+      "constraints": {
+        "maxVelocity": 8.0,
         "maxAcceleration": 5.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
